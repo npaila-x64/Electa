@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -18,7 +21,7 @@ public class ElectaPrototipo {
     private static void elegirIngreso() {
         int opcion = pedirOpcion();
         switch (opcion) {
-            case 1 -> System.out.println("INGRESASTE COMO USUARIO");
+            case 1 -> ingresarComoUsuario();
             case 2 -> System.out.println("INGRESASTE COMO ADMIN");
             case 3 -> System.out.println("REGISTRATE AQUI");
             case 4 -> System.out.println("Hasta pronto");
@@ -27,6 +30,41 @@ public class ElectaPrototipo {
                 elegirIngreso();
             }
         }
+    }
+    private static void ingresarComoUsuario() {
+        System.out.println("INGRESA TU RUT");
+        String rutUsuario = pedirString();
+        System.out.println("INGRESA TU CONTRASEÑA");
+        String contraseñaUsuario = pedirString();
+
+        String datosIngreso = rutUsuario + ";" + contraseñaUsuario;
+
+        if(existeUsuario("src/main/datosRegistro/registroUsuarios.txt", datosIngreso)){
+            System.out.println("BIENVENIDO");
+        }else{
+            System.out.println("RUT o contraseña incorrectos");
+        }
+    }
+
+    public static boolean existeUsuario(String ruta, String datos) {
+        FileReader leerFile;
+        BufferedReader leerBuffer;
+        String linea;
+        try{
+            leerFile = new FileReader(ruta);
+            leerBuffer = new BufferedReader(leerFile);
+            while((linea = leerBuffer.readLine()) != null){
+                if(linea.equals(datos)){
+                    return true;
+                }
+            }
+        }catch (IOException e){
+            System.out.println("El archivo no pudo ser leido");
+        }
+        return false;
+    }
+    private static String pedirString(){
+        return new Scanner(System.in).nextLine();
     }
     private static int pedirOpcion() {
         try{
