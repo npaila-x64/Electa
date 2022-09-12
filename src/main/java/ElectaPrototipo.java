@@ -55,13 +55,23 @@ public class ElectaPrototipo {
         switch (opcion) {
             case 1 -> mostrarVotacionesEnCurso();
             case 2 -> crearVotacion();
-            //case 3 -> terminarVotacion();
+            case 3 -> terminarVotacion();
             case 4 -> System.out.println("Hasta pronto");
             default -> {
                 System.out.println("Por favor, ingrese una de las opciones");
                 elegirOpcionAdmin();
             }
         }
+    }
+    private static void terminarVotacion() {
+        mostrarVotacionesEnCurso();
+        System.out.print("INGRESA LA VOTACION QUE QUIERAS TERMINAR: ");
+        String votacion = pedirString().toLowerCase().replace(" ", "_") + ".txt";
+        if(existeVotacion(votacion)){
+            escribirDatoEnArchivo("src/main/votaciones/" + votacion, "TERMINADA");
+            return;
+        }
+        System.out.println("No se encontro dicha votacion, intente de nuevo");
     }
     private static void crearVotacion() {
         System.out.print("Nombre Votacion (nombre corto y descriptivo):");
@@ -93,6 +103,7 @@ public class ElectaPrototipo {
         escribirDatoEnArchivo(ruta, "VOTANTES:");
     }
     public static void mostrarVotacionesEnCurso() {
+        //TODAVIA NO CACHO COMO MOSTRAR UN MENSAJE CUANDO EXISTAN VOTACIONES PERO ESTÉN TODAS TERMINADAS
         String ruta = "src/main/votaciones";
         File f = new File(ruta);
         String[] archivos = f.list();
