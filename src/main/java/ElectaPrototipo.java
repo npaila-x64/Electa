@@ -59,7 +59,7 @@ public class ElectaPrototipo {
             case 4 -> System.out.println("Hasta pronto");
             default -> {
                 System.out.println("Por favor, ingrese una de las opciones");
-                elegirIngreso();
+                elegirOpcionAdmin();
             }
         }
     }
