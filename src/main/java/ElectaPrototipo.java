@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.InputMismatchException;
@@ -31,18 +32,54 @@ public class ElectaPrototipo {
             }
         }
     }
-
     private static void ingresarComoAdmin() {
         System.out.println("INGRESA LA CONTRASEÑA DEL ADMINISTRADOR");
         String contraseñaAdmin = pedirString();
         String ruta = "src/main/datosRegistro/credencialesAdmin.txt";
         if(existeDatoEnArchivo(ruta, contraseñaAdmin)){
-            System.out.println("BIENVENIDO ADMIN");
+            menuAdmin();
         }else {
             System.out.println("Contraseña incorrecta");
         }
     }
+    private static void menuAdmin() {
+        System.out.println("BIENVENIDO AL MENU DEL ADMINISTRADOR");
+        mostrarOpcionesAdmin();
+        elegirOpcionAdmin();
+    }
+    private static void mostrarOpcionesAdmin() {
+        System.out.println("[1].Ver Votaciones en Curso");
+        System.out.println("[2].Crear Votacion");
+        System.out.println("[3].Terminar Votacion");
+        System.out.println("[4].Cerrar Sesion");
+    }
+    private static void elegirOpcionAdmin() {
+        int opcion = pedirOpcion();
+        switch (opcion) {
+            case 1 -> mostrarVotacionesEnCurso();
+            //case 2 -> crearVotacion();
+            //case 3 -> terminarVotacion();
+            case 4 -> System.out.println("Hasta pronto");
+            default -> {
+                System.out.println("Por favor, ingrese una de las opciones");
+                elegirIngreso();
+            }
+        }
+    }
+    public static void mostrarVotacionesEnCurso() {
+        String ruta = "src/main/votaciones";
+        File f = new File(ruta);
+        String[] archivos = f.list();
+        if(archivos.length == 0){
+            System.out.println("No hay votaciones en curso");
+            return;
+        }
 
+        System.out.println("VOTACIONES EN CURSO");
+        for (String archivo : archivos) {
+            System.out.println("["+archivo+"]");
+        }
+    }
     private static void ingresarComoUsuario() {
         System.out.println("INGRESA TU RUT");
         String rutUsuario = pedirString();
@@ -58,7 +95,6 @@ public class ElectaPrototipo {
             System.out.println("RUT o contraseña incorrectos");
         }
     }
-
     public static boolean existeDatoEnArchivo(String ruta, String datos) {
         FileReader leerFile;
         BufferedReader leerBuffer;
