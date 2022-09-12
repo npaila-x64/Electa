@@ -65,23 +65,32 @@ public class ElectaPrototipo {
     }
     private static void crearVotacion() {
         System.out.print("Nombre Votacion (nombre corto y descriptivo):");
-        String nombreVotacion = pedirString().toLowerCase().replace(" ", "_");
+        String nombreVotacion = pedirString().toLowerCase();
+        if(existeVotacion(nombreVotacion.replace(" ", "_") + ".txt")){
+            System.out.println("Ya existe una votacion con dicho nombre");
+            crearVotacion();
+            return;
+        }
 
         System.out.print("Breve descripcion Votacion:");
         String descripcionVotacion = pedirString().toLowerCase();
 
         System.out.print("Cantidad de opciones Votacion:");
-        int cantidadOpciones = pedirValor();
+        int cantidadOpciones;
+        do {
+            cantidadOpciones = pedirOpcion();
+        }while(cantidadOpciones<=0);
 
-        String ruta = "src/main/votaciones/" + nombreVotacion + ".txt";
-        escribirDatoEnArchivo(ruta, "NOMBRE VOTACION:\n"+nombreVotacion);
-        escribirDatoEnArchivo(ruta, "DESCRIPCION:\n"+descripcionVotacion);
-        escribirDatoEnArchivo(ruta, "OPCIONES:\n");
+        String ruta = "src/main/votaciones/" + nombreVotacion.replace(" ", "_") + ".txt";
+        escribirDatoEnArchivo(ruta, "NOMBRE VOTACION: " + nombreVotacion);
+        escribirDatoEnArchivo(ruta, "DESCRIPCION: " + descripcionVotacion);
+        escribirDatoEnArchivo(ruta, "OPCIONES:");
         for (int i = 0; i < cantidadOpciones; i++) {
             int posicion = i + 1;
             System.out.print("Ingresa la opcion " + posicion + ":");
-            escribirDatoEnArchivo(ruta, pedirString());
+            escribirDatoEnArchivo(ruta, "-" + pedirString());
         }
+        escribirDatoEnArchivo(ruta, "VOTANTES:");
     }
     public static void mostrarVotacionesEnCurso() {
         String ruta = "src/main/votaciones";
@@ -113,6 +122,17 @@ public class ElectaPrototipo {
         }else{
             System.out.println("RUT o contraseña incorrectos");
         }
+    }
+    public static boolean existeVotacion(String nombreVotacion){
+        String ruta = "src/main/votaciones";
+        File f = new File(ruta);
+        String[] archivos = f.list();
+        for (int i = 0; i < archivos.length; i++) {
+            if(archivos[i].equals(nombreVotacion)){
+                return true;
+            }
+        }
+        return false;
     }
     public static boolean existeDatoEnArchivo(String ruta, String datos) {
         FileReader leerFile;
