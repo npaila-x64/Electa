@@ -22,7 +22,7 @@ public class ElectaPrototipo {
         int opcion = pedirOpcion();
         switch (opcion) {
             case 1 -> ingresarComoUsuario();
-            case 2 -> System.out.println("INGRESASTE COMO ADMIN");
+            case 2 -> ingresarComoAdmin();
             case 3 -> System.out.println("REGISTRATE AQUI");
             case 4 -> System.out.println("Hasta pronto");
             default -> {
@@ -31,22 +31,35 @@ public class ElectaPrototipo {
             }
         }
     }
+
+    private static void ingresarComoAdmin() {
+        System.out.println("INGRESA LA CONTRASEÑA DEL ADMINISTRADOR");
+        String contraseñaAdmin = pedirString();
+        String ruta = "src/main/datosRegistro/credencialesAdmin.txt";
+        if(existeDatoEnArchivo(ruta, contraseñaAdmin)){
+            System.out.println("BIENVENIDO ADMIN");
+        }else {
+            System.out.println("Contraseña incorrecta");
+        }
+    }
+
     private static void ingresarComoUsuario() {
         System.out.println("INGRESA TU RUT");
         String rutUsuario = pedirString();
         System.out.println("INGRESA TU CONTRASEÑA");
         String contraseñaUsuario = pedirString();
 
+        String ruta = "src/main/datosRegistro/registroUsuarios.txt";
         String datosIngreso = rutUsuario + ";" + contraseñaUsuario;
 
-        if(existeUsuario("src/main/datosRegistro/registroUsuarios.txt", datosIngreso)){
+        if(existeDatoEnArchivo(ruta, datosIngreso)){
             System.out.println("BIENVENIDO");
         }else{
             System.out.println("RUT o contraseña incorrectos");
         }
     }
 
-    public static boolean existeUsuario(String ruta, String datos) {
+    public static boolean existeDatoEnArchivo(String ruta, String datos) {
         FileReader leerFile;
         BufferedReader leerBuffer;
         String linea;
