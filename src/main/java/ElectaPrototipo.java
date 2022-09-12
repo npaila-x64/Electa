@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -57,7 +54,7 @@ public class ElectaPrototipo {
         int opcion = pedirOpcion();
         switch (opcion) {
             case 1 -> mostrarVotacionesEnCurso();
-            //case 2 -> crearVotacion();
+            case 2 -> crearVotacion();
             //case 3 -> terminarVotacion();
             case 4 -> System.out.println("Hasta pronto");
             default -> {
@@ -66,18 +63,40 @@ public class ElectaPrototipo {
             }
         }
     }
+    private static void crearVotacion() {
+        System.out.print("Nombre Votacion (nombre corto y descriptivo):");
+        String nombreVotacion = pedirString().toLowerCase().replace(" ", "_");
+
+        System.out.print("Breve descripcion Votacion:");
+        String descripcionVotacion = pedirString().toLowerCase();
+
+        System.out.print("Cantidad de opciones Votacion:");
+        int cantidadOpciones = pedirValor();
+
+        String ruta = "src/main/votaciones/" + nombreVotacion + ".txt";
+        escribirDatoEnArchivo(ruta, "NOMBRE VOTACION:\n"+nombreVotacion);
+        escribirDatoEnArchivo(ruta, "DESCRIPCION:\n"+descripcionVotacion);
+        escribirDatoEnArchivo(ruta, "OPCIONES:\n");
+        for (int i = 0; i < cantidadOpciones; i++) {
+            int posicion = i + 1;
+            System.out.print("Ingresa la opcion " + posicion + ":");
+            escribirDatoEnArchivo(ruta, pedirString());
+        }
+    }
     public static void mostrarVotacionesEnCurso() {
         String ruta = "src/main/votaciones";
         File f = new File(ruta);
         String[] archivos = f.list();
         if(archivos.length == 0){
-            System.out.println("No hay votaciones en curso");
+            System.out.println("No hay votaciones creadas");
             return;
         }
 
         System.out.println("VOTACIONES EN CURSO");
         for (String archivo : archivos) {
-            System.out.println("["+archivo+"]");
+            if(!(existeDatoEnArchivo(ruta + "/" + archivo,"TERMINADA"))){
+                System.out.println("["+archivo.split(".txt")[0]+"]");
+            }
         }
     }
     private static void ingresarComoUsuario() {
@@ -111,6 +130,20 @@ public class ElectaPrototipo {
             System.out.println("El archivo no pudo ser leido");
         }
         return false;
+    }
+    public static void escribirDatoEnArchivo(String ruta, String datos){
+        FileWriter escribirFile;
+        BufferedWriter escribirBuffer;
+        try{
+            escribirFile = new FileWriter(ruta, true);
+            escribirBuffer = new BufferedWriter(escribirFile);
+            escribirBuffer.write(datos);
+            escribirBuffer.newLine();
+            escribirBuffer.close();
+            escribirFile.close();
+        }catch (IOException e){
+            System.out.println("No se pudo escribir en el archivo");
+        }
     }
     private static String pedirString(){
         return new Scanner(System.in).nextLine();
