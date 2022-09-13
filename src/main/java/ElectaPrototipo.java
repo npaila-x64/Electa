@@ -52,7 +52,7 @@ public class ElectaPrototipo {
     private static void elegirOpcionAdmin() {
         int opcion = pedirOpcion();
         switch (opcion) {
-            case 1 -> mostrarVotacionesEnCurso();
+            case 1 -> mostrarVotaciones();
             case 2 -> crearVotacion();
             case 3 -> terminarVotacion();
             case 4 -> System.out.println("Hasta pronto");
@@ -63,7 +63,7 @@ public class ElectaPrototipo {
         }
     }
     private static void terminarVotacion() {
-        mostrarVotacionesEnCurso();
+        mostrarVotaciones();
         System.out.print("INGRESA LA VOTACION QUE QUIERAS TERMINAR: ");
         String votacion = pedirString().toLowerCase().replace(" ", "_") + ".txt";
         if(existeVotacion(votacion)){
@@ -101,8 +101,7 @@ public class ElectaPrototipo {
         }
         escribirDatoEnArchivo(ruta, "VOTANTES:");
     }
-    public static void mostrarVotacionesEnCurso() {
-        //TODAVIA NO CACHO COMO MOSTRAR UN MENSAJE CUANDO EXISTAN VOTACIONES PERO ESTÉN TODAS TERMINADAS
+    public static void mostrarVotaciones() {
         String ruta = "src/main/votaciones";
         File f = new File(ruta);
         String[] archivos = f.list();
@@ -112,9 +111,13 @@ public class ElectaPrototipo {
         }
 
         System.out.println("VOTACIONES EN CURSO");
-        for (String archivo : archivos) {
-            if(!(existeDatoEnArchivo(ruta + "/" + archivo,"TERMINADA"))){
-                System.out.println("["+archivo.split(".txt")[0]+"]");
+        for (int i = 0; i < archivos.length; i++) {
+            String archivo = archivos[i];
+            int posicion = i + 1;
+            if (existeDatoEnArchivo(ruta + "/" + archivo, "TERMINADA")) {
+                System.out.println("[" + posicion + "]" + archivo.split(".txt")[0] + " (TERMINADA)");
+            }else{
+                System.out.println("[" + posicion + "]" + archivo.split(".txt")[0] + " (EN CURSO)");
             }
         }
     }
