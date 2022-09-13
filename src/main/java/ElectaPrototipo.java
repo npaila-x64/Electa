@@ -21,8 +21,7 @@ public class ElectaPrototipo {
         switch (opcion) {
             case 1 -> ingresarComoUsuario();
             case 2 -> ingresarComoAdmin();
-            case 3 -> System.out.println("REGISTRATE AQUI");
-            case 4 -> System.out.println("Hasta pronto");
+            case 3 -> System.out.println("Hasta pronto");
             default -> {
                 System.out.println("Por favor, ingrese una de las opciones");
                 elegirIngreso();
