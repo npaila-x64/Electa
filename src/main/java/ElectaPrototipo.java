@@ -66,6 +66,7 @@ public class ElectaPrototipo {
         mostrarVotaciones();
         System.out.print("INGRESA LA VOTACION QUE QUIERAS TERMINAR: ");
         String votacion = pedirString().toLowerCase().replace(" ", "_") + ".txt";
+
         if(existeVotacion(votacion)){
             escribirDatoEnArchivo("src/main/votaciones/" + votacion, "TERMINADA");
             return;
@@ -102,24 +103,29 @@ public class ElectaPrototipo {
         escribirDatoEnArchivo(ruta, "VOTANTES:");
     }
     public static void mostrarVotaciones() {
+        String[] listaVotaciones = crearListaVotaciones();
         String ruta = "src/main/votaciones";
-        File f = new File(ruta);
-        String[] archivos = f.list();
-        if(archivos.length == 0){
+        if(listaVotaciones.length == 0){
             System.out.println("No hay votaciones creadas");
             return;
         }
 
         System.out.println("VOTACIONES EN CURSO");
-        for (int i = 0; i < archivos.length; i++) {
-            String archivo = archivos[i];
+        for (int i = 0; i < listaVotaciones.length; i++) {
+            String votacion = listaVotaciones[i];
             int posicion = i + 1;
-            if (existeDatoEnArchivo(ruta + "/" + archivo, "TERMINADA")) {
-                System.out.println("[" + posicion + "]" + archivo.split(".txt")[0] + " (TERMINADA)");
+            if (existeDatoEnArchivo(ruta + "/" + votacion, "TERMINADA")) {
+                System.out.println("[" + posicion + "]" + votacion.split(".txt")[0] + " (TERMINADA)");
             }else{
-                System.out.println("[" + posicion + "]" + archivo.split(".txt")[0] + " (EN CURSO)");
+                System.out.println("[" + posicion + "]" + votacion.split(".txt")[0] + " (EN CURSO)");
             }
         }
+    }
+    private static String[] crearListaVotaciones() {
+        String ruta = "src/main/votaciones";
+        File f = new File(ruta);
+        String[] archivos = f.list();
+        return archivos;
     }
     private static void ingresarComoUsuario() {
         System.out.println("INGRESA TU RUT");
@@ -137,11 +143,10 @@ public class ElectaPrototipo {
         }
     }
     public static boolean existeVotacion(String nombreVotacion){
-        String ruta = "src/main/votaciones";
-        File f = new File(ruta);
-        String[] archivos = f.list();
-        for (int i = 0; i < archivos.length; i++) {
-            if(archivos[i].equals(nombreVotacion)){
+        String[] listaVotaciones = crearListaVotaciones();
+
+        for (String votacion : listaVotaciones) {
+            if (votacion.equals(nombreVotacion)) {
                 return true;
             }
         }
