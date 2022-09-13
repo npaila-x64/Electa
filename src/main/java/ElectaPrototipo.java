@@ -31,8 +31,8 @@ public class ElectaPrototipo {
     private static void ingresarComoAdmin() {
         System.out.println("INGRESA LA CONTRASEÑA DEL ADMINISTRADOR");
         String contraseñaAdmin = pedirString();
-        String ruta = "src/main/datosRegistro/credencialesAdmin.txt";
-        if(existeDatoEnArchivo(ruta, contraseñaAdmin)){
+        String rutaDatosAdmin = "src/main/datosRegistro/credencialesAdmin.txt";
+        if(existeDatoEnArchivo(rutaDatosAdmin, contraseñaAdmin)){
             menuAdmin();
         }else {
             System.out.println("Contraseña incorrecta");
@@ -65,13 +65,27 @@ public class ElectaPrototipo {
     private static void terminarVotacion() {
         mostrarVotaciones();
         System.out.print("INGRESA LA VOTACION QUE QUIERAS TERMINAR: ");
-        String votacion = pedirString().toLowerCase().replace(" ", "_") + ".txt";
+        String votacion = elegirVotacion();
+        String rutaVotacion = "src/main/votaciones/" + votacion;
 
-        if(existeVotacion(votacion)){
-            escribirDatoEnArchivo("src/main/votaciones/" + votacion, "TERMINADA");
+        if(existeDatoEnArchivo(rutaVotacion, "TERMINADA")){
+            System.out.println("La votación ya se encuentra terminada");
             return;
         }
-        System.out.println("No se encontro dicha votacion, intente de nuevo");
+        escribirDatoEnArchivo(rutaVotacion, "TERMINADA");
+    }
+    private static String elegirVotacion() {
+        String[] votaciones = crearListaVotaciones();
+        String votacion = "";
+        do{
+            try{
+                int opcion = pedirOpcion() - 1;
+                votacion = votaciones[opcion];
+            }catch (ArrayIndexOutOfBoundsException e){
+                System.out.println("Por favor elija una de las opciones");
+            }
+        }while(votacion.equals(""));
+        return votacion;
     }
     private static void crearVotacion() {
         System.out.print("Nombre Votacion (nombre corto y descriptivo):");
@@ -133,10 +147,10 @@ public class ElectaPrototipo {
         System.out.println("INGRESA TU CONTRASEÑA");
         String contraseñaUsuario = pedirString();
 
-        String ruta = "src/main/datosRegistro/registroUsuarios.txt";
+        String rutaRegistro = "src/main/datosRegistro/registroUsuarios.txt";
         String datosIngreso = rutUsuario + ";" + contraseñaUsuario;
 
-        if(existeDatoEnArchivo(ruta, datosIngreso)){
+        if(existeDatoEnArchivo(rutaRegistro, datosIngreso)){
             System.out.println("BIENVENIDO");
         }else{
             System.out.println("RUT o contraseña incorrectos");
