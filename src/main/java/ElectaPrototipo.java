@@ -13,8 +13,7 @@ public class ElectaPrototipo {
     private static void mostrarOpcionesDeIngreso() {
         System.out.println("[1].Ingresar como Usuario");
         System.out.println("[2].Ingresar como Admin");
-        System.out.println("[3].Registrar Usuario");
-        System.out.println("[4].Salir");
+        System.out.println("[3].Salir");
     }
     private static void elegirIngreso() {
         int opcion = pedirOpcion();
@@ -44,26 +43,36 @@ public class ElectaPrototipo {
         elegirOpcionAdmin();
     }
     private static void mostrarOpcionesAdmin() {
-        System.out.println("[1].Ver Votaciones en Curso");
-        System.out.println("[2].Crear Votacion");
-        System.out.println("[3].Terminar Votacion");
-        System.out.println("[4].Cerrar Sesion");
+        System.out.println("[1].Ver Lista de Votaciones");
+        System.out.println("[2].Ver Votacion");
+        System.out.println("[3].Crear Votacion");
+        System.out.println("[4].Terminar Votacion");
+        System.out.println("[5].Cerrar Sesion");
     }
     private static void elegirOpcionAdmin() {
         int opcion = pedirOpcion();
         switch (opcion) {
-            case 1 -> mostrarVotaciones();
-            case 2 -> crearVotacion();
-            case 3 -> terminarVotacion();
-            case 4 -> System.out.println("Hasta pronto");
+            case 1 -> verListaVotaciones();
+            case 2 -> verVotacion();
+            case 3 -> crearVotacion();
+            case 4 -> terminarVotacion();
+            case 5 -> System.out.println("Hasta pronto");
             default -> {
                 System.out.println("Por favor, ingrese una de las opciones");
                 elegirOpcionAdmin();
             }
         }
     }
+
+    private static void verVotacion() {
+        verListaVotaciones();
+        System.out.println("ELIGE UNA VOTACION");
+        String votacion = elegirVotacion();
+        String rutaVotacion = "src/main/votaciones/" + votacion;
+        leerVotacion(rutaVotacion);
+    }
     private static void terminarVotacion() {
-        mostrarVotaciones();
+        verListaVotaciones();
         System.out.print("INGRESA LA VOTACION QUE QUIERAS TERMINAR: ");
         String votacion = elegirVotacion();
         String rutaVotacion = "src/main/votaciones/" + votacion;
@@ -116,7 +125,21 @@ public class ElectaPrototipo {
         }
         escribirDatoEnArchivo(ruta, "VOTANTES:");
     }
-    public static void mostrarVotaciones() {
+    private static void leerVotacion(String ruta) {
+        FileReader leerFile;
+        BufferedReader leerBuffer;
+        String linea;
+        try{
+            leerFile = new FileReader(ruta);
+            leerBuffer = new BufferedReader(leerFile);
+            while((linea = leerBuffer.readLine()) != null){
+                System.out.println(linea);
+            }
+        }catch (IOException e){
+            System.out.println("El archivo no pudo ser leido");
+        }
+    }
+    public static void verListaVotaciones() {
         String[] listaVotaciones = crearListaVotaciones();
         String ruta = "src/main/votaciones";
         if(listaVotaciones.length == 0){
@@ -124,10 +147,11 @@ public class ElectaPrototipo {
             return;
         }
 
-        System.out.println("VOTACIONES EN CURSO");
-        for (int i = 0; i < listaVotaciones.length; i++) {
-            String votacion = listaVotaciones[i];
-            int posicion = i + 1;
+        System.out.println("VOTACIONES");
+        for (int index = 0; index < listaVotaciones.length; index++) {
+            String votacion = listaVotaciones[index];
+            int posicion = index + 1;
+
             if (existeDatoEnArchivo(ruta + "/" + votacion, "TERMINADA")) {
                 System.out.println("[" + posicion + "]" + votacion.split(".txt")[0] + " (TERMINADA)");
             }else{
@@ -138,8 +162,7 @@ public class ElectaPrototipo {
     private static String[] crearListaVotaciones() {
         String ruta = "src/main/votaciones";
         File f = new File(ruta);
-        String[] archivos = f.list();
-        return archivos;
+        return f.list();
     }
     private static void ingresarComoUsuario() {
         System.out.println("INGRESA TU RUT");
