@@ -47,7 +47,7 @@ public class ElectaPrototipo {
         System.out.print("\n[1].Ver Votacion ");
         System.out.print("[2].Crear Votacion ");
         System.out.print("[3].Terminar Votacion ");
-        System.out.print("[4].Cerrar Sesion");
+        System.out.print("[4].Cerrar Sesion\n");
     }
     private static void elegirOpcionAdmin() {
         int opcion = pedirOpcion();
@@ -165,7 +165,7 @@ public class ElectaPrototipo {
         escribirDatoEnArchivo(rutaVotantes, "VOTANTES:");
         escribirDatoEnArchivo(rutaVotos, "VOTOS");
     }
-    private static void ingresarOpciones(String rutaVotacion, int cantidadOpciones) {
+    public static void ingresarOpciones(String rutaVotacion, int cantidadOpciones) {
         for (int index = 0; index < cantidadOpciones; index++) {
             int posicion = index + 1;
             char caracter = (char) (posicion + 64);
@@ -200,14 +200,14 @@ public class ElectaPrototipo {
             return;
         }
         String[] listaVotaciones = crearListaVotaciones();
-        String ruta = "src/main/votaciones";
+        String ruta = "src/main/votaciones/";
 
         System.out.println("VOTACIONES");
         for (int index = 0; index < listaVotaciones.length; index++) {
             String votacion = listaVotaciones[index];
             int posicion = index + 1;
 
-            if (existeDatoEnArchivo(ruta + "/VOTACION_" + votacion, "TERMINADA")) {
+            if (existeDatoEnArchivo(ruta + votacion, "TERMINADA")) {
                 System.out.println("[" + posicion + "]" + votacion.split(".txt")[0] + " (TERMINADA)");
             }else{
                 System.out.println("[" + posicion + "]" + votacion.split(".txt")[0] + " (EN CURSO)");
