@@ -78,23 +78,84 @@ public class ElectaPrototipo {
         }
     }
     private static void menuVotaciones(String rut) {
-        System.out.println("ELIGE UNA VOTACION");
+        if(noHayVotacionesCreadas()){
+            mostrarListaVotaciones();
+            return;
+        }
         mostrarListaVotaciones();
-        String votacion = elegirVotacion();
-        votar(votacion, rut);
+        mostrarOpcionesUsuario();
+        elegirOpcionUsuario(rut);
     }
-    public static void votar(String votacion, String rut){
-        String rutaVotacion = "src/main/votaciones/VOTACION_" + votacion;
-        String rutaVotantes = "src/main/votantes/VOTANTES_" + votacion;
+    private static void mostrarOpcionesUsuario() {
+        System.out.println("\nOPCIONES");
+        System.out.print("\n[1].Votar ");
+        System.out.print("[2].Ver Resultados\n");
+    }
+    private static void elegirOpcionUsuario(String rut) {
+        int opcion = pedirOpcion();
+        switch (opcion) {
+            case 1 -> votar(rut);
+            case 2 -> verResultados();
+            default -> {
+                System.out.println("Por favor, ingrese una de las opciones");
+                elegirOpcionAdmin();
+            }
+        }
+    }
+    public static void verResultados(){
+        System.out.println("ELIGE UNA VOTACION");
+        String votacion = elegirVotacion();
+        String rutaVotacion = "src/main/votaciones/"+votacion;
+
+        if(!existeDatoEnArchivo(rutaVotacion, "TERMINADA")){
+            System.out.println("La votacion todavia sigue en curso");
+            return;
+        }
+        System.out.println("RESULTADOS");
+
+        String rutaVotos = "src/main/votos/VOTOS_"+votacion.substring(9);
+        String[] posiblesOpciones = {"A", "B", "C", "D", "E"};
+        int numeroOpciones = cantidadOcurrencias(rutaVotacion, "[OPCION");
+        int[] cantidadVotosPorOpcion = new int[numeroOpciones];
+        for (int i = 0; i < numeroOpciones; i++) {
+            cantidadVotosPorOpcion[i] = cantidadOcurrencias(rutaVotos, posiblesOpciones[i]);
+            System.out.println("[OPCION "+posiblesOpciones[i] + "]" + " = " + cantidadVotosPorOpcion[i]);
+        }
+
+    }
+    private static int cantidadOcurrencias(String ruta, String opcion) {
+        FileReader leerFile;
+        BufferedReader leerBuffer;
+        String linea;
+        int cont = 0;
+        try{
+            leerFile = new FileReader(ruta);
+            leerBuffer = new BufferedReader(leerFile);
+            while((linea = leerBuffer.readLine()) != null){
+                if(linea.contains(opcion)){
+                    cont++;
+                }
+            }
+        }catch (IOException e){
+            System.out.println("El archivo no pudo ser leido");
+        }
+        return cont;
+    }
+    public static void votar(String rut){
+        System.out.println("ELIGE UNA VOTACION");
+        String votacion = elegirVotacion();
+        String rutaVotacion = "src/main/votaciones/" + votacion;
+        String rutaVotantes = "src/main/votantes/VOTANTES" + votacion.substring(8);
+        String rutaVotos = "src/main/votos/VOTOS" + votacion.substring(8);
 
         if(existeDatoEnArchivo(rutaVotacion, "TERMINADA") || existeDatoEnArchivo(rutaVotantes, rut)){
             System.out.println("No puedes votar ya que la votacion ya termino o ya votaste");
             return;
         }
         leerVotacion(rutaVotacion);
-        System.out.println("Elige una de las OPCIONES (si escribe mal se considera voto nulo)");
-        String voto = "[" + pedirString().toUpperCase() + "]";
-        escribirDatoEnArchivo(rutaVotacion, voto);
+        System.out.println("Elige una de las OPCIONES (escriba la letra de la opcion)");
+        String voto = pedirString().toUpperCase();
+        escribirDatoEnArchivo(rutaVotos, voto);
         escribirDatoEnArchivo(rutaVotantes, rut);
     }
     private static void verVotacion() {
@@ -149,7 +210,7 @@ public class ElectaPrototipo {
         System.out.print("Breve descripcion Votacion:");
         String descripcionVotacion = pedirString().toLowerCase();
 
-        System.out.print("Cantidad de opciones Votacion (cantidad positiva):");
+        System.out.print("Cantidad de opciones Votacion (Entre 2-5):");
         int cantidadOpciones = definirCantidad();
 
         String rutaVotacion = "src/main/votaciones/VOTACION_" + nombreVotacion.replace(" ", "_") + ".txt";
@@ -158,7 +219,6 @@ public class ElectaPrototipo {
 
         escribirDatoEnArchivo(rutaVotacion, "NOMBRE VOTACIÓN: " + '"' + nombreVotacion + '"');
         escribirDatoEnArchivo(rutaVotacion, "DESCRIPCIÓN: " + '"' + descripcionVotacion + '"');
-        escribirDatoEnArchivo(rutaVotacion, "OPCIONES:");
 
         ingresarOpciones(rutaVotacion, cantidadOpciones);
 
@@ -166,18 +226,18 @@ public class ElectaPrototipo {
         escribirDatoEnArchivo(rutaVotos, "VOTOS");
     }
     public static void ingresarOpciones(String rutaVotacion, int cantidadOpciones) {
+        String[] opciones = {"A", "B", "C", "D", "E"};
         for (int index = 0; index < cantidadOpciones; index++) {
             int posicion = index + 1;
-            char caracter = (char) (posicion + 64);
             System.out.print("Ingresa la opcion " + posicion + ":");
-            escribirDatoEnArchivo(rutaVotacion, "[" + caracter + "]" + pedirString());
+            escribirDatoEnArchivo(rutaVotacion, "[OPCION " + opciones[index] + "]" + pedirString());
         }
     }
     private static int definirCantidad() {
         int cantidadOpciones;
         do {
             cantidadOpciones = pedirOpcion();
-        }while(cantidadOpciones<=0);
+        }while(cantidadOpciones<2 || cantidadOpciones>5);
         return cantidadOpciones;
     }
     private static void leerVotacion(String ruta) {
