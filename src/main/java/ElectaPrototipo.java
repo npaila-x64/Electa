@@ -3,31 +3,49 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ElectaPrototipo {
-    public static void main(String[] args) {
-        menuInicio();
-    }
-    private static void menuInicio() {
+    public void iniciar() {
         mostrarOpcionesDeIngreso();
         elegirIngreso();
     }
-    private static void mostrarOpcionesDeIngreso() {
-        System.out.println("[1].Ingresar como Usuario");
-        System.out.println("[2].Ingresar como Admin");
-        System.out.println("[3].Salir");
+
+    private void mostrarOpcionesDeIngreso() {
+        System.out.print("""
+                [1] Ingresar como Votante
+                [2] Ingresar como Administrador
+                Si desea salir escriba [0]
+                """.concat("> "));
     }
-    private static void elegirIngreso() {
-        int opcion = pedirOpcion();
-        switch (opcion) {
-            case 1 -> ingresarComoUsuario();
-            case 2 -> ingresarComoAdmin();
-            case 3 -> System.out.println("Hasta pronto");
-            default -> {
-                System.out.println("Por favor, ingrese una de las opciones");
-                elegirIngreso();
+
+    private void elegirIngreso() {
+        int contador = 0;
+        do {
+            switch (pedirOpcion()) {
+                case 0 -> contador++;
+                case 1 -> ingresarComoUsuario();
+                case 2 -> ingresarComoAdmin();
+                default -> mostrarOpcionInvalida();
             }
+        } while (contador == 0);
+    }
+
+    private int pedirValorEntero() throws InputMismatchException {
+        return new Scanner(System.in).nextInt();
+    }
+
+    private int pedirOpcion() {
+        try {
+            return pedirValorEntero();
+        } catch (InputMismatchException e) {
+            mostrarOpcionInvalida();
+            return pedirOpcion();
         }
     }
-    private static void ingresarComoAdmin() {
+
+    private void mostrarOpcionInvalida() {
+        System.out.print("Por favor, escoja una opción válida\n> ");
+    }
+
+    private void ingresarComoAdmin() {
         System.out.println("INGRESA LA CLAVE DEL ADMINISTRADOR");
         String claveAdmin = pedirString();
         String rutaDatosAdmin = "src/main/datosRegistro/credencialesAdmin.txt";
@@ -37,19 +55,21 @@ public class ElectaPrototipo {
             System.out.println("Contraseña incorrecta");
         }
     }
-    private static void menuAdmin() {
+
+    private void menuAdmin() {
         System.out.println("BIENVENIDO AL MENU DEL ADMINISTRADOR");
         mostrarListaVotaciones();
         mostrarOpcionesAdmin();
         elegirOpcionAdmin();
     }
-    private static void mostrarOpcionesAdmin() {
+
+    private void mostrarOpcionesAdmin() {
         System.out.print("\n[1].Ver Votacion ");
         System.out.print("[2].Crear Votacion ");
         System.out.print("[3].Terminar Votacion ");
         System.out.print("[4].Cerrar Sesion\n");
     }
-    private static void elegirOpcionAdmin() {
+    private void elegirOpcionAdmin() {
         int opcion = pedirOpcion();
         switch (opcion) {
             case 1 -> verVotacion();
@@ -62,7 +82,8 @@ public class ElectaPrototipo {
             }
         }
     }
-    private static void ingresarComoUsuario() {
+
+    private void ingresarComoUsuario() {
         System.out.println("INGRESA TU RUT");
         String rutUsuario = pedirString();
         System.out.println("INGRESA TU CLAVE");
@@ -77,7 +98,7 @@ public class ElectaPrototipo {
             System.out.println("RUT o contraseña incorrectos");
         }
     }
-    private static void menuVotaciones(String rut) {
+    private void menuVotaciones(String rut) {
         if(noHayVotacionesCreadas()){
             mostrarListaVotaciones();
             return;
@@ -91,7 +112,7 @@ public class ElectaPrototipo {
         System.out.print("\n[1].Votar ");
         System.out.print("[2].Ver Resultados\n");
     }
-    private static void elegirOpcionUsuario(String rut) {
+    private void elegirOpcionUsuario(String rut) {
         int opcion = pedirOpcion();
         switch (opcion) {
             case 1 -> votar(rut);
@@ -102,7 +123,7 @@ public class ElectaPrototipo {
             }
         }
     }
-    public static void verResultados(){
+    private void verResultados(){
         System.out.println("ELIGE UNA VOTACION");
         String votacion = elegirVotacion();
         String rutaVotacion = "src/main/votaciones/"+votacion;
@@ -123,7 +144,7 @@ public class ElectaPrototipo {
         }
 
     }
-    private static int cantidadOcurrencias(String ruta, String opcion) {
+    private int cantidadOcurrencias(String ruta, String opcion) {
         FileReader leerFile;
         BufferedReader leerBuffer;
         String linea;
@@ -141,7 +162,8 @@ public class ElectaPrototipo {
         }
         return cont;
     }
-    public static void votar(String rut){
+
+    private void votar(String rut){
         System.out.println("ELIGE UNA VOTACION");
         String votacion = elegirVotacion();
         String rutaVotacion = "src/main/votaciones/" + votacion;
@@ -158,7 +180,8 @@ public class ElectaPrototipo {
         escribirDatoEnArchivo(rutaVotos, voto);
         escribirDatoEnArchivo(rutaVotantes, rut);
     }
-    private static void verVotacion() {
+
+    private void verVotacion() {
         if(noHayVotacionesCreadas()){
             System.out.println("No hay votaciones creadas");
             return;
@@ -168,7 +191,8 @@ public class ElectaPrototipo {
         String rutaVotacion = "src/main/votaciones/" + votacion;
         leerVotacion(rutaVotacion);
     }
-    private static void terminarVotacion() {
+
+    private void terminarVotacion() {
         if(noHayVotacionesCreadas()){
             System.out.println("No hay votaciones creadas");
             return;
@@ -184,7 +208,8 @@ public class ElectaPrototipo {
         }
         escribirDatoEnArchivo(rutaVotacion, "TERMINADA");
     }
-    private static String elegirVotacion() {
+
+    private String elegirVotacion() {
         String[] votaciones = crearListaVotaciones();
         String votacion = "";
         do{
@@ -197,7 +222,8 @@ public class ElectaPrototipo {
         }while(votacion.equals(""));
         return votacion;
     }
-    private static void crearVotacion() {
+
+    private void crearVotacion() {
         System.out.print("Nombre Votacion (nombre corto y descriptivo):");
         String nombreVotacion = pedirString().toLowerCase();
 
@@ -225,7 +251,8 @@ public class ElectaPrototipo {
         escribirDatoEnArchivo(rutaVotantes, "VOTANTES:");
         escribirDatoEnArchivo(rutaVotos, "VOTOS");
     }
-    public static void ingresarOpciones(String rutaVotacion, int cantidadOpciones) {
+
+    public void ingresarOpciones(String rutaVotacion, int cantidadOpciones) {
         String[] opciones = {"A", "B", "C", "D", "E"};
         for (int index = 0; index < cantidadOpciones; index++) {
             int posicion = index + 1;
@@ -233,14 +260,15 @@ public class ElectaPrototipo {
             escribirDatoEnArchivo(rutaVotacion, "[OPCION " + opciones[index] + "]" + pedirString());
         }
     }
-    private static int definirCantidad() {
+
+    private int definirCantidad() {
         int cantidadOpciones;
         do {
             cantidadOpciones = pedirOpcion();
         }while(cantidadOpciones<2 || cantidadOpciones>5);
         return cantidadOpciones;
     }
-    private static void leerVotacion(String ruta) {
+    private void leerVotacion(String ruta) {
         FileReader leerFile;
         BufferedReader leerBuffer;
         String linea;
@@ -254,7 +282,7 @@ public class ElectaPrototipo {
             System.out.println("El archivo no pudo ser leido");
         }
     }
-    public static void mostrarListaVotaciones() {
+    private void mostrarListaVotaciones() {
         if(noHayVotacionesCreadas()){
             System.out.println("No hay votaciones creadas");
             return;
@@ -274,16 +302,16 @@ public class ElectaPrototipo {
             }
         }
     }
-    private static String[] crearListaVotaciones() {
+    private String[] crearListaVotaciones() {
         String ruta = "src/main/votaciones";
         File f = new File(ruta);
         return f.list();
     }
-    public static boolean noHayVotacionesCreadas(){
+    private boolean noHayVotacionesCreadas(){
         String[] votaciones = crearListaVotaciones();
         return votaciones.length == 0;
     }
-    public static boolean existeVotacion(String nombreVotacion){
+    private boolean existeVotacion(String nombreVotacion){
         String[] listaVotaciones = crearListaVotaciones();
 
         for (String votacion : listaVotaciones) {
@@ -293,7 +321,7 @@ public class ElectaPrototipo {
         }
         return false;
     }
-    public static boolean existeDatoEnArchivo(String ruta, String datos) {
+    private boolean existeDatoEnArchivo(String ruta, String datos) {
         FileReader leerFile;
         BufferedReader leerBuffer;
         String linea;
@@ -310,7 +338,7 @@ public class ElectaPrototipo {
         }
         return false;
     }
-    public static void escribirDatoEnArchivo(String ruta, String datos){
+    private void escribirDatoEnArchivo(String ruta, String datos){
         FileWriter escribirFile;
         BufferedWriter escribirBuffer;
         try{
@@ -324,18 +352,7 @@ public class ElectaPrototipo {
             System.out.println("No se pudo escribir en el archivo");
         }
     }
-    private static String pedirString(){
+    private String pedirString(){
         return new Scanner(System.in).nextLine();
-    }
-    private static int pedirOpcion() {
-        try{
-            return pedirValor();
-        }catch (InputMismatchException e){
-            System.out.println("Error, ingresa un valor válido");
-            return pedirOpcion();
-        }
-    }
-    private static int pedirValor() throws InputMismatchException{
-        return new Scanner(System.in).nextInt();
     }
 }
