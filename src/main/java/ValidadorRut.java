@@ -1,49 +1,9 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class ValidadorRut {
-    public static void main(String[] args) {
-        pideRut();
-    }
 
-    public static void pideRut() {
-        Scanner scanner = new Scanner(System.in);
-        List<String> formatoRut = Arrays.asList(
-                "%s", "%s", "%s.", "%s", "%s", "%s.", "%s", "%s", "%s", "-%s"
-                );
-        List<String> entradas = new ArrayList<>();
-
-        while (true) {
-            String entrada = scanner.nextLine().split("")[0];
-            if (esCaracterValido(entrada.charAt(0))) {
-                entradas.add(entrada);
-                String rut = "";
-
-                int len = entradas.size();
-                for (int i = 0; i < len; i++) {
-                    rut = rut.concat(
-                            String.format(formatoRut.get(formatoRut.size() - len + i),entradas.get(i))
-                    );
-                }
-
-                System.out.println("\n\n\n\n\n\n\n\n");
-                System.out.print(rut);
-                if (esFormatoDeRutCorrecto(rut)) {
-                    String no = esRutValido(rut)? "" : "no ";
-                    System.out.println(" rut " + no + "es válido");
-                }
-            }
-        }
-
-    }
-
-    public static boolean esCaracterValido(char c) {
-        if (String.valueOf(c).isBlank()) {
-            return false;
-        }
-        return Character.isLetterOrDigit(c);
+    public static String pideRut() {
+        return new Scanner(System.in).nextLine();
     }
 
     public static boolean esFormatoDeRutCorrecto(String rut) {
@@ -51,7 +11,7 @@ public class ValidadorRut {
     }
 
     public static boolean esRutValido(String rut) {
-
+        if (!esFormatoDeRutCorrecto(rut)) return false;
         String[] componentes = rut.split("-");
         String rutSinDV = String.join("",  componentes[0].split("\\."));
         String DV = componentes[1];
@@ -60,28 +20,23 @@ public class ValidadorRut {
     }
 
     public static String calcularDV(String rutSinDV) {
-
         String rutSinDVInvertido = new StringBuilder(rutSinDV).reverse().toString();
         int DVNumerico = procesarRut(rutSinDVInvertido);
         String DV = convertirDVNumericoADVLiteral(DVNumerico);
-
         return DV;
     }
 
     public static int procesarRut(String s) {
 
         int suma = 0;
-        int index = 0;
+        int indice = 0;
 
-        while (index < s.length()) {
-            String c = s.split("")[index];
-
+        while (indice < s.length()) {
+            String c = s.split("")[indice];
             int digito = Integer.parseInt(c);
-            int i = (index % 6) + 2;
-
+            int i = (indice % 6) + 2;
             suma += i * digito;
-
-            index++;
+            indice++;
         }
 
         return calcularSumaDeDV(suma);
@@ -89,23 +44,23 @@ public class ValidadorRut {
 
     public static int calcularSumaDeDV(int suma) {
 
-        double a = suma / 11;
-        a = Math.floor(a);
-        a = a * 11;
-        a = Math.abs(suma - a);
-        a = 11 - a;
+        double variable = suma / 11;
+        variable = Math.floor(variable);
+        variable = variable * 11;
+        variable = Math.abs(suma - variable);
+        variable = 11 - variable;
 
-        return (int) a;
+        return (int) variable;
     }
 
-    public static String convertirDVNumericoADVLiteral(int s) {
-        switch (s) {
+    public static String convertirDVNumericoADVLiteral(int DVNumerico) {
+        switch (DVNumerico) {
             case 10:
                 return "k";
             case 11:
                 return "0";
             default:
-                return String.valueOf(s);
+                return String.valueOf(DVNumerico);
         }
     }
 }
