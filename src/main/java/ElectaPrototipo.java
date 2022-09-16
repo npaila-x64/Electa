@@ -4,9 +4,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
-import java.util.InputMismatchException;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 
 public class ElectaPrototipo {
     public void iniciar() {
@@ -109,16 +107,15 @@ public class ElectaPrototipo {
     }
 
     private void mostrarMenuVotaciones(String rut) {
-        if (noHayVotacionesCreadas()) return;
+        mostrarVotacionesEnCurso();
         salirBucle:
         while (true) {
-            mostrarListaVotaciones();
             mostrarOpcionesVotante();
             switch (pedirOpcion()) {
                 case -1 -> {/*filtra valores no numéricos*/}
                 case 0 -> {break salirBucle;}
                 case 1 -> votar(rut);
-                case 2 -> verResultados();
+                case 2 -> mostrarMenuResultados();
                 default -> mostrarOpcionInvalida();
             }
         }
@@ -127,12 +124,118 @@ public class ElectaPrototipo {
     private static void mostrarOpcionesVotante() {
         System.out.print("""
                 OPCIONES
-                [1].Votar
-                [2].Ver Resultados
+                [1] Votar
+                [2] Ver Resultados
                 Si desea cerrar su sesión escriba [0]
                 """.concat("> "));
     }
 
+    private void mostrarVotacionesEnCurso() {
+        List<String> titulosVotaciones = obtenerTituloVotaciones();
+        System.out.println("Votaciones En Curso");
+        for (String titulo : titulosVotaciones) {
+            System.out.println(String.format("\"%s\"", titulo));
+        }
+    }
+
+    private void mostrarMenuResultados() {
+        List<String> titulosVotaciones = obtenerTituloVotaciones();
+        salirBucle:
+        while (true) {
+            System.out.println("Votaciones disponibles para revisión");
+            System.out.println("Elija una opción");
+            for (int indice = 0; indice < titulosVotaciones.size(); indice++) {
+                int indiceAjustado = indice + 1;
+                System.out.println(String.format("[%s] %s", indiceAjustado, titulosVotaciones.get(indice)));
+            }
+            System.out.print("Si desea volver escriba [0]\n> ");
+            int opcionElegida = pedirOpcion();
+            switch (opcionElegida) {
+                case -1 -> {/*filtra valores no numéricos*/}
+                case 0 -> {break salirBucle;}
+                default -> {
+                    int indiceMaximoArrayVotaciones = titulosVotaciones.size();
+                    if (opcionElegida > indiceMaximoArrayVotaciones) {
+                        mostrarOpcionInvalida();
+                    } else {
+                        mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
+                    }
+                }
+            }
+        }
+    }
+
+    public static void mostrarResultadosVotacion(String tituloVotacion) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        Iterator<?> iterator = jsonArrayVotaciones.iterator();
+        while (iterator.hasNext()) {
+            JSONObject nextVotacion = (JSONObject) iterator.next();
+            if (String.valueOf(nextVotacion.get("titulo")).equals(tituloVotacion)) {
+                String titulo = String.valueOf(nextVotacion.get("titulo"));
+                int votoBlancos = Integer.valueOf(String.valueOf(nextVotacion.get("votos_blancos")));
+                int votoPreferenciales = Integer.valueOf(String.valueOf(nextVotacion.get("votos_preferenciales")));
+                int totalVotos = votoPreferenciales + votoBlancos;
+                String fechaInicio = String.valueOf(nextVotacion.get("fecha_inicio"));
+                String horaInicio = String.valueOf(nextVotacion.get("hora_inicio"));
+                String fechaTermino = String.valueOf(nextVotacion.get("fecha_termino"));
+                String horaTermino = String.valueOf(nextVotacion.get("hora_termino"));
+                System.out.println(String.format("""
+                        Resultados para la votacion "%s"
+                        Votos preferenciales   %s
+                        Votos blancos          %s
+                        Total votos            %s
+                        Fecha y hora de inicio   %s %s hrs
+                        Fecha y hora de término  %s %s hrs
+                        """, titulo, votoBlancos, votoPreferenciales, totalVotos,
+                        fechaInicio, horaInicio, fechaTermino, horaTermino));
+
+                JSONObject opciones = (JSONObject) nextVotacion.get("opciones");
+                List<String> opcionesList = new ArrayList<>(opciones.keySet());
+
+                System.out.print("""
+                        $$$$$$$$$$$$$$$$$$$$
+                        $Votos por opciones$
+                        $$$$$$$$$$$$$$$$$$$$
+                        """);
+                for (String opcion : opcionesList) {
+                    System.out.println(
+                            opcion.concat(" ")
+                                    .concat(String.valueOf(opciones.get(opcion))));
+                }
+
+                return;
+            }
+        }
+    }
+
+    public static List<String> obtenerTituloVotaciones() {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        List<String> arrayListVotaciones = new ArrayList<>();
+
+        Iterator<?> iterator = jsonArrayVotaciones.iterator();
+        while (iterator.hasNext()) {
+            JSONObject nextVotacion = (JSONObject) iterator.next();
+            arrayListVotaciones.add(String.valueOf(nextVotacion.get("titulo")));
+        }
+
+        return arrayListVotaciones;
+    }
+
+    public static JSONArray parsearVotaciones() {
+        String jsonVotaciones = leerContenidosJSON("src/main/datos/votaciones.json");
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(jsonVotaciones);
+            JSONArray arrayVotaciones = (JSONArray) obj;
+            return arrayVotaciones;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    /*
     private void verResultados(){
         System.out.println("ELIGE UNA VOTACION");
         String votacion = elegirVotacion();
@@ -152,9 +255,8 @@ public class ElectaPrototipo {
             cantidadVotosPorOpcion[i] = cantidadOcurrencias(rutaVotos, posiblesOpciones[i]);
             System.out.println("[OPCION "+posiblesOpciones[i] + "]" + " = " + cantidadVotosPorOpcion[i]);
         }
-
     }
-
+    */
     private int cantidadOcurrencias(String ruta, String opcion) {
         FileReader leerFile;
         BufferedReader leerBuffer;
