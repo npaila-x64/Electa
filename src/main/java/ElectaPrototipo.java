@@ -205,7 +205,7 @@ public class ElectaPrototipo {
 
     private boolean realizarVoto(String tituloVotacion, String opcionElegida) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
-        if (votarOpcion(jsonArrayVotaciones, tituloVotacion, opcionElegida)) {
+        if (votarOpcionPreferencial(jsonArrayVotaciones, tituloVotacion, opcionElegida)) {
             escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
             return true;
         } else {
@@ -224,7 +224,7 @@ public class ElectaPrototipo {
         }
     }
 
-    public static boolean votarOpcion(JSONArray jsonArrayVotaciones, String tituloVotacion, String opcionElegida) {
+    public static boolean votarOpcionPreferencial(JSONArray jsonArrayVotaciones, String tituloVotacion, String opcionElegida) {
         Iterator<?> iterator = jsonArrayVotaciones.iterator();
         while (iterator.hasNext()) {
             JSONObject nextVotacion = (JSONObject) iterator.next();
@@ -233,8 +233,10 @@ public class ElectaPrototipo {
                 List<String> opcionesArray = new ArrayList<>(opciones.keySet());
                 for (String opcion : opcionesArray) {
                     if (opcion.equals(opcionElegida)) {
-                        int votos = Integer.valueOf(String.valueOf(opciones.get(opcion)));
-                        opciones.put(opcion, votos + 1);
+                        int votosOpcion = Integer.valueOf(String.valueOf(opciones.get(opcion)));
+                        opciones.put(opcion, votosOpcion + 1);
+                        int votosPreferenciales = Integer.valueOf(String.valueOf(nextVotacion.get("votos.preferenciales")));
+                        nextVotacion.put("votos_preferenciales", votosPreferenciales + 1);
                         return true;
                     }
                 }
@@ -274,45 +276,47 @@ public class ElectaPrototipo {
         return  new ArrayList<>();
     }
 
-    public static void mostrarResultadosVotacion(String tituloVotacion) {
+    private void mostrarResultadosVotacion(String tituloVotacion) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         Iterator<?> iterator = jsonArrayVotaciones.iterator();
         while (iterator.hasNext()) {
-            JSONObject nextVotacion = (JSONObject) iterator.next();
-            if (String.valueOf(nextVotacion.get("titulo")).equals(tituloVotacion)) {
-                String titulo = String.valueOf(nextVotacion.get("titulo"));
-                int votoBlancos = Integer.valueOf(String.valueOf(nextVotacion.get("votos_blancos")));
-                int votoPreferenciales = Integer.valueOf(String.valueOf(nextVotacion.get("votos_preferenciales")));
-                int totalVotos = votoPreferenciales + votoBlancos;
-                String fechaInicio = String.valueOf(nextVotacion.get("fecha_inicio"));
-                String horaInicio = String.valueOf(nextVotacion.get("hora_inicio"));
-                String fechaTermino = String.valueOf(nextVotacion.get("fecha_termino"));
-                String horaTermino = String.valueOf(nextVotacion.get("hora_termino"));
-                System.out.println(String.format("""
+            JSONObject votacionSiguiente = (JSONObject) iterator.next();
+            if (String.valueOf(votacionSiguiente.get("titulo")).equals(tituloVotacion)) {
+                mostrarResultadosDatos(votacionSiguiente);
+                mostrarResultadosVotosPorOpciones(votacionSiguiente);
+                return;
+            }
+        }
+    }
+
+    private void mostrarResultadosDatos(JSONObject votacion) {
+        String titulo = String.valueOf(votacion.get("titulo"));
+        int votoBlancos = Integer.valueOf(String.valueOf(votacion.get("votos_blancos")));
+        int votoPreferenciales = Integer.valueOf(String.valueOf(votacion.get("votos_preferenciales")));
+        int totalVotos = votoPreferenciales + votoBlancos;
+        String fechaInicio = String.valueOf(votacion.get("fecha_inicio"));
+        String horaInicio = String.valueOf(votacion.get("hora_inicio"));
+        String fechaTermino = String.valueOf(votacion.get("fecha_termino"));
+        String horaTermino = String.valueOf(votacion.get("hora_termino"));
+        System.out.println(String.format("""
                         Resultados para la votacion "%s"
                         Votos preferenciales   %s
                         Votos blancos          %s
                         Total votos            %s
                         Fecha y hora de inicio   %s %s hrs
                         Fecha y hora de término  %s %s hrs
-                        """, titulo, votoBlancos, votoPreferenciales, totalVotos,
-                        fechaInicio, horaInicio, fechaTermino, horaTermino));
+                        """, titulo, votoPreferenciales, votoBlancos, totalVotos,
+                fechaInicio, horaInicio, fechaTermino, horaTermino));
+    }
 
-                JSONObject opciones = (JSONObject) nextVotacion.get("opciones");
-                List<String> opcionesList = new ArrayList<>(opciones.keySet());
-
-                System.out.print("""
-                        $$$$$$$$$$$$$$$$$$$$
-                        $Votos por opciones$
-                        $$$$$$$$$$$$$$$$$$$$
-                        """);
-                for (String opcion : opcionesList) {
-                    System.out.println(
-                            opcion.concat(" ")
-                                    .concat(String.valueOf(opciones.get(opcion))));
-                }
-                return;
-            }
+    private void mostrarResultadosVotosPorOpciones(JSONObject votacion) {
+        JSONObject opciones = (JSONObject) votacion.get("opciones");
+        List<String> opcionesList = new ArrayList<>(opciones.keySet());
+        System.out.println("Votos por opciones");
+        for (String opcion : opcionesList) {
+            System.out.println(
+                    opcion.concat(" ")
+                            .concat(String.valueOf(opciones.get(opcion))));
         }
     }
 
