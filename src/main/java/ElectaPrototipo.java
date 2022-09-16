@@ -80,7 +80,7 @@ public class ElectaPrototipo {
         System.out.println("BIENVENIDO AL MENU DEL ADMINISTRADOR");
         salirBucle:
         while (true) {
-            mostrarListaVotaciones();
+            mostrarVotacionesEnCurso();
             mostrarOpcionesAdmin();
             switch (pedirOpcion()) {
                 case -1 -> {/*filtra valores no numéricos*/}
@@ -100,13 +100,13 @@ public class ElectaPrototipo {
         String claveVotante = pedirString();
 
         if (esCredencialVotanteValida(rutVotante, claveVotante)) {
-            mostrarMenuVotaciones(rutVotante);
+            mostrarMenuVotacionesVotante(rutVotante);
         } else {
             System.out.println("RUT o contraseña incorrectos");
         }
     }
 
-    private void mostrarMenuVotaciones(String rut) {
+    private void mostrarMenuVotacionesVotante(String rut) {
         mostrarVotacionesEnCurso();
         salirBucle:
         while (true) {
@@ -114,7 +114,7 @@ public class ElectaPrototipo {
             switch (pedirOpcion()) {
                 case -1 -> {/*filtra valores no numéricos*/}
                 case 0 -> {break salirBucle;}
-                case 1 -> votar(rut);
+                case 1 -> mostrarMenuVoto();
                 case 2 -> mostrarMenuResultados();
                 default -> mostrarOpcionInvalida();
             }
@@ -143,19 +143,13 @@ public class ElectaPrototipo {
         salirBucle:
         while (true) {
             System.out.println("Votaciones disponibles para revisión");
-            System.out.println("Elija una opción");
-            for (int indice = 0; indice < titulosVotaciones.size(); indice++) {
-                int indiceAjustado = indice + 1;
-                System.out.println(String.format("[%s] %s", indiceAjustado, titulosVotaciones.get(indice)));
-            }
-            System.out.print("Si desea volver escriba [0]\n> ");
+            mostrarIndiceVotaciones(titulosVotaciones);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
                 case -1 -> {/*filtra valores no numéricos*/}
                 case 0 -> {break salirBucle;}
                 default -> {
-                    int indiceMaximoArrayVotaciones = titulosVotaciones.size();
-                    if (opcionElegida > indiceMaximoArrayVotaciones) {
+                    if (opcionElegida > titulosVotaciones.size()) {
                         mostrarOpcionInvalida();
                     } else {
                         mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
@@ -163,6 +157,79 @@ public class ElectaPrototipo {
                 }
             }
         }
+    }
+
+    private void mostrarMenuVoto() {
+        List<String> titulosVotaciones = obtenerTituloVotaciones();
+        salirBucle:
+        while (true) {
+            System.out.println("Votaciones disponibles para votación");
+            mostrarIndiceVotaciones(titulosVotaciones);
+            int opcionElegida = pedirOpcion();
+            switch (opcionElegida) {
+                case -1 -> {/*filtra valores no numéricos*/}
+                case 0 -> {break salirBucle;}
+                default -> {
+                    if (opcionElegida > titulosVotaciones.size()) {
+                        mostrarOpcionInvalida();
+                    } else {
+                        mostrarMenuOpciones(titulosVotaciones.get(opcionElegida - 1));
+                    }
+                }
+            }
+        }
+    }
+
+    private void mostrarMenuOpciones(String tituloVotacion) {
+        List<String> opciones = obtenerOpcionesDeVotacion(tituloVotacion);
+        salirBucle:
+        while (true) {
+            System.out.println("Opciones disponibles");
+            mostrarIndiceOpciones(opciones);
+            int opcionElegida = pedirOpcion();
+            switch (opcionElegida) {
+                case -1 -> {/*filtra valores no numéricos*/}
+                case 0 -> {break salirBucle;}
+                default -> {
+                    if (opcionElegida > opciones.size()) {
+                        mostrarOpcionInvalida();
+                    } else {
+                        // votar
+                    }
+                }
+            }
+        }
+    }
+
+    private void mostrarIndiceVotaciones(List<String> titulosVotaciones) {
+        System.out.println("Elija una opción");
+        for (int indice = 0; indice < titulosVotaciones.size(); indice++) {
+            int indiceAjustado = indice + 1;
+            System.out.println(String.format("[%s] %s", indiceAjustado, titulosVotaciones.get(indice)));
+        }
+        System.out.print("Si desea volver escriba [0]\n> ");
+    }
+
+    private void mostrarIndiceOpciones(List<String> opciones) {
+        System.out.println("Elija una opción");
+        for (int indice = 0; indice < opciones.size(); indice++) {
+            int indiceAjustado = indice + 1;
+            System.out.println(String.format("[%s] %s", indiceAjustado, opciones.get(indice)));
+        }
+        System.out.print("Si desea volver escriba [0]\n> ");
+    }
+
+    public static List<String> obtenerOpcionesDeVotacion(String tituloVotacion) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        Iterator<?> iterator = jsonArrayVotaciones.iterator();
+        while (iterator.hasNext()) {
+            JSONObject nextVotacion = (JSONObject) iterator.next();
+            if (String.valueOf(nextVotacion.get("titulo")).equals(tituloVotacion)) {
+                JSONObject opciones = (JSONObject) nextVotacion.get("opciones");
+                return new ArrayList<>(opciones.keySet());
+            }
+        }
+        return  new ArrayList<>();
     }
 
     public static void mostrarResultadosVotacion(String tituloVotacion) {
@@ -202,7 +269,6 @@ public class ElectaPrototipo {
                             opcion.concat(" ")
                                     .concat(String.valueOf(opciones.get(opcion))));
                 }
-
                 return;
             }
         }
@@ -211,13 +277,11 @@ public class ElectaPrototipo {
     public static List<String> obtenerTituloVotaciones() {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         List<String> arrayListVotaciones = new ArrayList<>();
-
         Iterator<?> iterator = jsonArrayVotaciones.iterator();
         while (iterator.hasNext()) {
             JSONObject nextVotacion = (JSONObject) iterator.next();
             arrayListVotaciones.add(String.valueOf(nextVotacion.get("titulo")));
         }
-
         return arrayListVotaciones;
     }
 
@@ -233,48 +297,6 @@ public class ElectaPrototipo {
         }
     }
 
-
-
-    /*
-    private void verResultados(){
-        System.out.println("ELIGE UNA VOTACION");
-        String votacion = elegirVotacion();
-        String rutaVotacion = "src/main/votaciones/"+votacion;
-
-        if(!existeDatoEnArchivo(rutaVotacion, "TERMINADA")){
-            System.out.println("La votacion todavia sigue en curso");
-            return;
-        }
-        System.out.println("RESULTADOS");
-
-        String rutaVotos = "src/main/votos/VOTOS_"+votacion.substring(9);
-        String[] posiblesOpciones = {"A", "B", "C", "D", "E"};
-        int numeroOpciones = cantidadOcurrencias(rutaVotacion, "[OPCION");
-        int[] cantidadVotosPorOpcion = new int[numeroOpciones];
-        for (int i = 0; i < numeroOpciones; i++) {
-            cantidadVotosPorOpcion[i] = cantidadOcurrencias(rutaVotos, posiblesOpciones[i]);
-            System.out.println("[OPCION "+posiblesOpciones[i] + "]" + " = " + cantidadVotosPorOpcion[i]);
-        }
-    }
-    */
-    private int cantidadOcurrencias(String ruta, String opcion) {
-        FileReader leerFile;
-        BufferedReader leerBuffer;
-        String linea;
-        int cont = 0;
-        try{
-            leerFile = new FileReader(ruta);
-            leerBuffer = new BufferedReader(leerFile);
-            while((linea = leerBuffer.readLine()) != null){
-                if(linea.contains(opcion)){
-                    cont++;
-                }
-            }
-        }catch (IOException e){
-            System.out.println("El archivo no pudo ser leido");
-        }
-        return cont;
-    }
 
     private void votar(String rut){
         System.out.println("ELIGE UNA VOTACION");
