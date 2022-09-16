@@ -11,7 +11,7 @@ public class ElectaPrototipo {
         mostrarMenuDeIngreso();
     }
 
-    private void mostrarOpcionesDeIngreso() {
+    public void mostrarOpcionesDeIngreso() {
         System.out.print("""
                 
                 ¡Bienvenido/a al sistema Electa!
@@ -21,7 +21,7 @@ public class ElectaPrototipo {
                 """.concat("> "));
     }
 
-    private void mostrarMenuDeIngreso() {
+    public void mostrarMenuDeIngreso() {
         salirBucle:
         while (true) {
             mostrarOpcionesDeIngreso();
@@ -35,11 +35,11 @@ public class ElectaPrototipo {
         }
     }
 
-    private int pedirValorEntero() throws InputMismatchException {
+    public int pedirValorEntero() throws InputMismatchException {
         return new Scanner(System.in).nextInt();
     }
 
-    private int pedirOpcion() {
+    public int pedirOpcion() {
         try {
             return pedirValorEntero();
         } catch (InputMismatchException e) {
@@ -48,15 +48,15 @@ public class ElectaPrototipo {
         }
     }
 
-    private String pedirString(){
+    public String pedirString(){
         return new Scanner(System.in).nextLine();
     }
 
-    private void mostrarOpcionInvalida() {
+    public void mostrarOpcionInvalida() {
         System.out.println("Por favor, escoja una opción válida");
     }
 
-    private void ingresarComoAdmin() {
+    public void ingresarComoAdmin() {
         System.out.print("Ingrese la contraseña del administrador \n> ");
         String claveAdmin = pedirString();
         String rutaDatosAdmin = "src/main/datosRegistro/credencialesAdmin.txt";
@@ -67,7 +67,7 @@ public class ElectaPrototipo {
         }
     }
 
-    private void mostrarOpcionesAdmin() {
+    public void mostrarOpcionesAdmin() {
         System.out.print("""
                 [1] Ver Votacion
                 [2] Crear Votacion
@@ -76,7 +76,7 @@ public class ElectaPrototipo {
                 """.concat("> "));
     }
 
-    private void mostrarMenuAdministador() {
+    public void mostrarMenuAdministador() {
         System.out.println("BIENVENIDO AL MENU DEL ADMINISTRADOR");
         salirBucle:
         while (true) {
@@ -93,7 +93,7 @@ public class ElectaPrototipo {
         }
     }
 
-    private void ingresarComoUsuario() {
+    public void ingresarComoUsuario() {
         System.out.print("Ingrese su rut\n> ");
         String rutVotante = pedirString();
         System.out.print("Ingrese su clave\n> ");
@@ -106,7 +106,7 @@ public class ElectaPrototipo {
         }
     }
 
-    private void mostrarMenuVotacionesVotante(String rut) {
+    public void mostrarMenuVotacionesVotante(String rut) {
         mostrarVotacionesEnCurso();
         salirBucle:
         while (true) {
@@ -121,7 +121,7 @@ public class ElectaPrototipo {
         }
     }
 
-    private static void mostrarOpcionesVotante() {
+    public void mostrarOpcionesVotante() {
         System.out.print("""
                 OPCIONES
                 [1] Votar
@@ -130,7 +130,7 @@ public class ElectaPrototipo {
                 """.concat("> "));
     }
 
-    private void mostrarVotacionesEnCurso() {
+    public void mostrarVotacionesEnCurso() {
         List<String> titulosVotaciones = obtenerTitulosVotaciones();
         System.out.println("Votaciones En Curso");
         for (String titulo : titulosVotaciones) {
@@ -138,7 +138,7 @@ public class ElectaPrototipo {
         }
     }
 
-    private void mostrarMenuResultados() {
+    public void mostrarMenuResultados() {
         List<String> titulosVotaciones = obtenerTitulosVotaciones();
         salirBucle:
         while (true) {
@@ -159,7 +159,7 @@ public class ElectaPrototipo {
         }
     }
 
-    private void mostrarMenuVoto() {
+    public void mostrarMenuVoto() {
         List<String> titulosVotaciones = obtenerTitulosVotaciones();
         salirBucle:
         while (true) {
@@ -180,7 +180,7 @@ public class ElectaPrototipo {
         }
     }
 
-    private void mostrarMenuOpciones(String tituloVotacion) {
+    public void mostrarMenuOpciones(String tituloVotacion) {
         List<String> opciones = obtenerOpcionesDeVotacion(tituloVotacion);
         salirBucle:
         while (true) {
@@ -203,7 +203,7 @@ public class ElectaPrototipo {
         }
     }
 
-    private boolean realizarVoto(String tituloVotacion, String opcionElegida) {
+    public boolean realizarVoto(String tituloVotacion, String opcionElegida) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         if (votarOpcionPreferencial(jsonArrayVotaciones, tituloVotacion, opcionElegida)) {
             escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
@@ -214,7 +214,7 @@ public class ElectaPrototipo {
         }
     }
 
-    public static void escribirArchivoJSON(String ruta, String contenido) {
+    public void escribirArchivoJSON(String ruta, String contenido) {
         try {
             FileWriter myWriter = new FileWriter(ruta);
             myWriter.write(contenido);
@@ -224,7 +224,7 @@ public class ElectaPrototipo {
         }
     }
 
-    public static boolean votarOpcionPreferencial(JSONArray jsonArrayVotaciones, String tituloVotacion, String opcionElegida) {
+    public boolean votarOpcionPreferencial(JSONArray jsonArrayVotaciones, String tituloVotacion, String opcionElegida) {
         Iterator<?> iterator = jsonArrayVotaciones.iterator();
         while (iterator.hasNext()) {
             JSONObject nextVotacion = (JSONObject) iterator.next();
@@ -235,7 +235,7 @@ public class ElectaPrototipo {
                     if (opcion.equals(opcionElegida)) {
                         int votosOpcion = Integer.valueOf(String.valueOf(opciones.get(opcion)));
                         opciones.put(opcion, votosOpcion + 1);
-                        int votosPreferenciales = Integer.valueOf(String.valueOf(nextVotacion.get("votos.preferenciales")));
+                        int votosPreferenciales = Integer.valueOf(String.valueOf(nextVotacion.get("votos_preferenciales")));
                         nextVotacion.put("votos_preferenciales", votosPreferenciales + 1);
                         return true;
                     }
@@ -245,7 +245,7 @@ public class ElectaPrototipo {
         return false;
     }
 
-    private void mostrarIndiceVotaciones(List<String> titulosVotaciones) {
+    public void mostrarIndiceVotaciones(List<String> titulosVotaciones) {
         System.out.println("Elija una opción");
         for (int indice = 0; indice < titulosVotaciones.size(); indice++) {
             int indiceAjustado = indice + 1;
@@ -254,7 +254,7 @@ public class ElectaPrototipo {
         System.out.print("Si desea volver escriba [0]\n> ");
     }
 
-    private void mostrarIndiceOpciones(List<String> opciones) {
+    public void mostrarIndiceOpciones(List<String> opciones) {
         System.out.println("Elija una opción");
         for (int indice = 0; indice < opciones.size(); indice++) {
             int indiceAjustado = indice + 1;
@@ -263,7 +263,7 @@ public class ElectaPrototipo {
         System.out.print("Si desea volver escriba [0]\n> ");
     }
 
-    public static List<String> obtenerOpcionesDeVotacion(String tituloVotacion) {
+    public List<String> obtenerOpcionesDeVotacion(String tituloVotacion) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         Iterator<?> iterator = jsonArrayVotaciones.iterator();
         while (iterator.hasNext()) {
@@ -276,7 +276,7 @@ public class ElectaPrototipo {
         return  new ArrayList<>();
     }
 
-    private void mostrarResultadosVotacion(String tituloVotacion) {
+    public void mostrarResultadosVotacion(String tituloVotacion) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         Iterator<?> iterator = jsonArrayVotaciones.iterator();
         while (iterator.hasNext()) {
@@ -289,7 +289,7 @@ public class ElectaPrototipo {
         }
     }
 
-    private void mostrarResultadosDatos(JSONObject votacion) {
+    public void mostrarResultadosDatos(JSONObject votacion) {
         String titulo = String.valueOf(votacion.get("titulo"));
         int votoBlancos = Integer.valueOf(String.valueOf(votacion.get("votos_blancos")));
         int votoPreferenciales = Integer.valueOf(String.valueOf(votacion.get("votos_preferenciales")));
@@ -309,7 +309,7 @@ public class ElectaPrototipo {
                 fechaInicio, horaInicio, fechaTermino, horaTermino));
     }
 
-    private void mostrarResultadosVotosPorOpciones(JSONObject votacion) {
+    public void mostrarResultadosVotosPorOpciones(JSONObject votacion) {
         JSONObject opciones = (JSONObject) votacion.get("opciones");
         List<String> opcionesList = new ArrayList<>(opciones.keySet());
         System.out.println("Votos por opciones");
@@ -320,7 +320,7 @@ public class ElectaPrototipo {
         }
     }
 
-    public static List<String> obtenerTitulosVotaciones() {
+    public List<String> obtenerTitulosVotaciones() {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         List<String> arrayListVotaciones = new ArrayList<>();
         Iterator<?> iterator = jsonArrayVotaciones.iterator();
@@ -331,7 +331,7 @@ public class ElectaPrototipo {
         return arrayListVotaciones;
     }
 
-    public static JSONArray parsearVotaciones() {
+    public JSONArray parsearVotaciones() {
         String jsonVotaciones = leerContenidosJSON("src/main/datos/votaciones.json");
         JSONParser parser = new JSONParser();
         try {
@@ -343,7 +343,7 @@ public class ElectaPrototipo {
         }
     }
 
-    private void verVotacion() {
+    public void verVotacion() {
         if(noHayVotacionesCreadas()){
             System.out.println("No hay votaciones creadas");
             return;
@@ -354,7 +354,7 @@ public class ElectaPrototipo {
         leerVotacion(rutaVotacion);
     }
 
-    private void eliminarVotacion() {
+    public void eliminarVotacion() {
         if(noHayVotacionesCreadas()){
             System.out.println("No hay votaciones creadas");
             return;
@@ -371,7 +371,7 @@ public class ElectaPrototipo {
         escribirDatoEnArchivo(rutaVotacion, "TERMINADA");
     }
 
-    private String elegirVotacion() {
+    public String elegirVotacion() {
         String[] votaciones = crearListaVotaciones();
         String votacion = "";
         do{
@@ -385,7 +385,7 @@ public class ElectaPrototipo {
         return votacion;
     }
 
-    private void crearVotacion() {
+    public void crearVotacion() {
         System.out.print("Nombre Votacion (nombre corto y descriptivo):");
         String nombreVotacion = pedirString().toLowerCase();
 
@@ -423,14 +423,15 @@ public class ElectaPrototipo {
         }
     }
 
-    private int definirCantidad() {
+    public int definirCantidad() {
         int cantidadOpciones;
         do {
             cantidadOpciones = pedirOpcion();
         }while(cantidadOpciones<2 || cantidadOpciones>5);
         return cantidadOpciones;
     }
-    private void leerVotacion(String ruta) {
+
+    public void leerVotacion(String ruta) {
         FileReader leerFile;
         BufferedReader leerBuffer;
         String linea;
@@ -445,7 +446,7 @@ public class ElectaPrototipo {
         }
     }
 
-    private void mostrarListaVotaciones() {
+    public void mostrarListaVotaciones() {
         if(noHayVotacionesCreadas()){
             System.out.println("No hay votaciones creadas");
             return;
@@ -466,18 +467,18 @@ public class ElectaPrototipo {
         }
     }
 
-    private String[] crearListaVotaciones() {
+    public String[] crearListaVotaciones() {
         String ruta = "src/main/votaciones";
         File f = new File(ruta);
         return f.list();
     }
 
-    private boolean noHayVotacionesCreadas(){
+    public boolean noHayVotacionesCreadas(){
         String[] votaciones = crearListaVotaciones();
         return votaciones.length == 0;
     }
 
-    private boolean existeVotacion(String nombreVotacion){
+    public boolean existeVotacion(String nombreVotacion){
         String[] listaVotaciones = crearListaVotaciones();
 
         for (String votacion : listaVotaciones) {
@@ -488,7 +489,7 @@ public class ElectaPrototipo {
         return false;
     }
 
-    private boolean existeDatoEnArchivo(String ruta, String datos) {
+    public boolean existeDatoEnArchivo(String ruta, String datos) {
         FileReader leerFile;
         BufferedReader leerBuffer;
         String linea;
@@ -506,7 +507,7 @@ public class ElectaPrototipo {
         return false;
     }
 
-    private void escribirDatoEnArchivo(String ruta, String datos){
+    public void escribirDatoEnArchivo(String ruta, String datos){
         FileWriter escribirFile;
         BufferedWriter escribirBuffer;
         try{
@@ -521,7 +522,7 @@ public class ElectaPrototipo {
         }
     }
 
-    public static String leerContenidosJSON(String ruta) {
+    public String leerContenidosJSON(String ruta) {
         StringBuilder st = new StringBuilder();
         try {
             File archivoJSON = new File(ruta);
@@ -537,7 +538,7 @@ public class ElectaPrototipo {
         return st.toString();
     }
 
-    public static JSONArray parsearVotantes() {
+    public JSONArray parsearVotantes() {
         String jsonVotantes = leerContenidosJSON("src/main/datos/votantes.json");
         JSONParser parser = new JSONParser();
         try {
@@ -549,7 +550,7 @@ public class ElectaPrototipo {
         }
     }
 
-    public static boolean esCredencialVotanteValida(String rut, String clave) {
+    public boolean esCredencialVotanteValida(String rut, String clave) {
         JSONArray arrayVotantes = parsearVotantes();
         Iterator<?> iterator = arrayVotantes.iterator();
         while (iterator.hasNext()) {
@@ -560,6 +561,4 @@ public class ElectaPrototipo {
         }
         return false;
     }
-
-
 }
