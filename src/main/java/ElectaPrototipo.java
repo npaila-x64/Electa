@@ -1,5 +1,11 @@
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.*;
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class ElectaPrototipo {
@@ -10,6 +16,7 @@ public class ElectaPrototipo {
     private void mostrarOpcionesDeIngreso() {
         System.out.print("""
                 
+                ¡Bienvenido/a al sistema Electa!
                 [1] Ingresar como Votante
                 [2] Ingresar como Administrador
                 Si desea salir escriba [0]
@@ -89,16 +96,13 @@ public class ElectaPrototipo {
     }
 
     private void ingresarComoUsuario() {
-        System.out.println("INGRESA TU RUT");
-        String rutUsuario = pedirString();
-        System.out.println("INGRESA TU CLAVE");
-        String claveUsuario = pedirString();
+        System.out.print("Ingrese su rut\n> ");
+        String rutVotante = pedirString();
+        System.out.print("Ingrese su clave\n> ");
+        String claveVotante = pedirString();
 
-        String rutaRegistro = "src/main/datosRegistro/registroUsuarios.txt";
-        String datosIngreso = rutUsuario + ";" + claveUsuario;
-
-        if (existeDatoEnArchivo(rutaRegistro, datosIngreso)) {
-            mostrarMenuVotaciones(rutUsuario);
+        if (esCredencialVotanteValida(rutVotante, claveVotante)) {
+            mostrarMenuVotaciones(rutVotante);
         } else {
             System.out.println("RUT o contraseña incorrectos");
         }
@@ -365,4 +369,46 @@ public class ElectaPrototipo {
             System.out.println("No se pudo escribir en el archivo");
         }
     }
+
+    public static String leerContenidosJSON(String ruta) {
+        StringBuilder st = new StringBuilder();
+        try {
+            File archivoJSON = new File(ruta);
+            Scanner scanner = new Scanner(archivoJSON);
+            while (scanner.hasNextLine()) {
+                st.append(scanner.nextLine()).append("\n");
+            }
+            scanner.close();
+            return st.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return st.toString();
+    }
+
+    public static JSONArray parsearVotantes() {
+        String jsonVotantes = leerContenidosJSON("src/main/datos/votantes.json");
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(jsonVotantes);
+            JSONArray arrayVotantes = (JSONArray) obj;
+            return arrayVotantes;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean esCredencialVotanteValida(String rut, String clave) {
+        JSONArray arrayVotantes = parsearVotantes();
+        Iterator<?> iterator = arrayVotantes.iterator();
+        while (iterator.hasNext()) {
+            JSONObject nextVotante = (JSONObject) iterator.next();
+            if (nextVotante.get("rut").equals(rut) && nextVotante.get("clave").equals(clave)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }
