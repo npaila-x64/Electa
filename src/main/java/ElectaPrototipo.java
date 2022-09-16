@@ -131,7 +131,7 @@ public class ElectaPrototipo {
     }
 
     private void mostrarVotacionesEnCurso() {
-        List<String> titulosVotaciones = obtenerTituloVotaciones();
+        List<String> titulosVotaciones = obtenerTitulosVotaciones();
         System.out.println("Votaciones En Curso");
         for (String titulo : titulosVotaciones) {
             System.out.println(String.format("\"%s\"", titulo));
@@ -139,7 +139,7 @@ public class ElectaPrototipo {
     }
 
     private void mostrarMenuResultados() {
-        List<String> titulosVotaciones = obtenerTituloVotaciones();
+        List<String> titulosVotaciones = obtenerTitulosVotaciones();
         salirBucle:
         while (true) {
             System.out.println("Votaciones disponibles para revisión");
@@ -160,7 +160,7 @@ public class ElectaPrototipo {
     }
 
     private void mostrarMenuVoto() {
-        List<String> titulosVotaciones = obtenerTituloVotaciones();
+        List<String> titulosVotaciones = obtenerTitulosVotaciones();
         salirBucle:
         while (true) {
             System.out.println("Votaciones disponibles para votación");
@@ -193,12 +193,54 @@ public class ElectaPrototipo {
                 default -> {
                     if (opcionElegida > opciones.size()) {
                         mostrarOpcionInvalida();
-                    } else {
-                        // votar
+                    }
+                    if (realizarVoto(tituloVotacion, opciones.get(opcionElegida - 1))) {
+                        System.out.println("¡Voto realizado con exito!");
+                        break salirBucle;
                     }
                 }
             }
         }
+    }
+
+    private boolean realizarVoto(String tituloVotacion, String opcionElegida) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        if (votarOpcion(jsonArrayVotaciones, tituloVotacion, opcionElegida)) {
+            escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
+            return true;
+        } else {
+            System.err.println("Error, no se pudo realizar el voto.");
+            return false;
+        }
+    }
+
+    public static void escribirArchivoJSON(String ruta, String contenido) {
+        try {
+            FileWriter myWriter = new FileWriter(ruta);
+            myWriter.write(contenido);
+            myWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean votarOpcion(JSONArray jsonArrayVotaciones, String tituloVotacion, String opcionElegida) {
+        Iterator<?> iterator = jsonArrayVotaciones.iterator();
+        while (iterator.hasNext()) {
+            JSONObject nextVotacion = (JSONObject) iterator.next();
+            if (String.valueOf(nextVotacion.get("titulo")).equals(tituloVotacion)) {
+                JSONObject opciones = (JSONObject) nextVotacion.get("opciones");
+                List<String> opcionesArray = new ArrayList<>(opciones.keySet());
+                for (String opcion : opcionesArray) {
+                    if (opcion.equals(opcionElegida)) {
+                        int votos = Integer.valueOf(String.valueOf(opciones.get(opcion)));
+                        opciones.put(opcion, votos + 1);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private void mostrarIndiceVotaciones(List<String> titulosVotaciones) {
@@ -274,7 +316,7 @@ public class ElectaPrototipo {
         }
     }
 
-    public static List<String> obtenerTituloVotaciones() {
+    public static List<String> obtenerTitulosVotaciones() {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         List<String> arrayListVotaciones = new ArrayList<>();
         Iterator<?> iterator = jsonArrayVotaciones.iterator();
@@ -295,25 +337,6 @@ public class ElectaPrototipo {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-    }
-
-
-    private void votar(String rut){
-        System.out.println("ELIGE UNA VOTACION");
-        String votacion = elegirVotacion();
-        String rutaVotacion = "src/main/votaciones/" + votacion;
-        String rutaVotantes = "src/main/votantes/VOTANTES" + votacion.substring(8);
-        String rutaVotos = "src/main/votos/VOTOS" + votacion.substring(8);
-
-        if(existeDatoEnArchivo(rutaVotacion, "TERMINADA") || existeDatoEnArchivo(rutaVotantes, rut)){
-            System.out.println("No puedes votar ya que la votacion ya termino o ya votaste");
-            return;
-        }
-        leerVotacion(rutaVotacion);
-        System.out.println("Elige una de las OPCIONES (escriba la letra de la opcion)");
-        String voto = pedirString().toUpperCase();
-        escribirDatoEnArchivo(rutaVotos, voto);
-        escribirDatoEnArchivo(rutaVotantes, rut);
     }
 
     private void verVotacion() {
