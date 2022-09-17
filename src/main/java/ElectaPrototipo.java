@@ -134,7 +134,7 @@ public class ElectaPrototipo {
         List<String> titulosVotaciones = obtenerTitulosVotaciones();
         System.out.println("Votaciones En Curso");
         for (String titulo : titulosVotaciones) {
-            System.out.println(String.format("\"%s\"", titulo));
+            System.out.printf("\"%s\"%n", titulo);
         }
     }
 
@@ -225,17 +225,16 @@ public class ElectaPrototipo {
     }
 
     public boolean votarOpcionPreferencial(JSONArray jsonArrayVotaciones, String tituloVotacion, String opcionElegida) {
-        Iterator<?> iterator = jsonArrayVotaciones.iterator();
-        while (iterator.hasNext()) {
-            JSONObject nextVotacion = (JSONObject) iterator.next();
+        for (Object jsonArrayVotacione : jsonArrayVotaciones) {
+            JSONObject nextVotacion = (JSONObject) jsonArrayVotacione;
             if (String.valueOf(nextVotacion.get("titulo")).equals(tituloVotacion)) {
                 JSONObject opciones = (JSONObject) nextVotacion.get("opciones");
                 List<String> opcionesArray = new ArrayList<>(opciones.keySet());
                 for (String opcion : opcionesArray) {
                     if (opcion.equals(opcionElegida)) {
-                        int votosOpcion = Integer.valueOf(String.valueOf(opciones.get(opcion)));
+                        int votosOpcion = Integer.parseInt(String.valueOf(opciones.get(opcion)));
                         opciones.put(opcion, votosOpcion + 1);
-                        int votosPreferenciales = Integer.valueOf(String.valueOf(nextVotacion.get("votos_preferenciales")));
+                        int votosPreferenciales = Integer.parseInt(String.valueOf(nextVotacion.get("votos_preferenciales")));
                         nextVotacion.put("votos_preferenciales", votosPreferenciales + 1);
                         return true;
                     }
@@ -249,7 +248,7 @@ public class ElectaPrototipo {
         System.out.println("Elija una opción");
         for (int indice = 0; indice < titulosVotaciones.size(); indice++) {
             int indiceAjustado = indice + 1;
-            System.out.println(String.format("[%s] %s", indiceAjustado, titulosVotaciones.get(indice)));
+            System.out.printf("[%s] %s%n", indiceAjustado, titulosVotaciones.get(indice));
         }
         System.out.print("Si desea volver escriba [0]\n> ");
     }
@@ -258,16 +257,15 @@ public class ElectaPrototipo {
         System.out.println("Elija una opción");
         for (int indice = 0; indice < opciones.size(); indice++) {
             int indiceAjustado = indice + 1;
-            System.out.println(String.format("[%s] %s", indiceAjustado, opciones.get(indice)));
+            System.out.printf("[%s] %s%n", indiceAjustado, opciones.get(indice));
         }
         System.out.print("Si desea volver escriba [0]\n> ");
     }
 
-    public List<String> obtenerOpcionesDeVotacion(String tituloVotacion) {
+    public ArrayList obtenerOpcionesDeVotacion(String tituloVotacion) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
-        Iterator<?> iterator = jsonArrayVotaciones.iterator();
-        while (iterator.hasNext()) {
-            JSONObject nextVotacion = (JSONObject) iterator.next();
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject nextVotacion = (JSONObject) jsonArrayVotacion;
             if (String.valueOf(nextVotacion.get("titulo")).equals(tituloVotacion)) {
                 JSONObject opciones = (JSONObject) nextVotacion.get("opciones");
                 return new ArrayList<>(opciones.keySet());
@@ -278,9 +276,8 @@ public class ElectaPrototipo {
 
     public void mostrarResultadosVotacion(String tituloVotacion) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
-        Iterator<?> iterator = jsonArrayVotaciones.iterator();
-        while (iterator.hasNext()) {
-            JSONObject votacionSiguiente = (JSONObject) iterator.next();
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
             if (String.valueOf(votacionSiguiente.get("titulo")).equals(tituloVotacion)) {
                 mostrarResultadosDatos(votacionSiguiente);
                 mostrarResultadosVotosPorOpciones(votacionSiguiente);
@@ -291,22 +288,22 @@ public class ElectaPrototipo {
 
     public void mostrarResultadosDatos(JSONObject votacion) {
         String titulo = String.valueOf(votacion.get("titulo"));
-        int votoBlancos = Integer.valueOf(String.valueOf(votacion.get("votos_blancos")));
-        int votoPreferenciales = Integer.valueOf(String.valueOf(votacion.get("votos_preferenciales")));
+        int votoBlancos = Integer.parseInt(String.valueOf(votacion.get("votos_blancos")));
+        int votoPreferenciales = Integer.parseInt(String.valueOf(votacion.get("votos_preferenciales")));
         int totalVotos = votoPreferenciales + votoBlancos;
         String fechaInicio = String.valueOf(votacion.get("fecha_inicio"));
         String horaInicio = String.valueOf(votacion.get("hora_inicio"));
         String fechaTermino = String.valueOf(votacion.get("fecha_termino"));
         String horaTermino = String.valueOf(votacion.get("hora_termino"));
-        System.out.println(String.format("""
+        System.out.printf("""
                         Resultados para la votacion "%s"
                         Votos preferenciales   %s
                         Votos blancos          %s
                         Total votos            %s
                         Fecha y hora de inicio   %s %s hrs
                         Fecha y hora de término  %s %s hrs
-                        """, titulo, votoPreferenciales, votoBlancos, totalVotos,
-                fechaInicio, horaInicio, fechaTermino, horaTermino));
+                        %n""", titulo, votoPreferenciales, votoBlancos, totalVotos,
+                fechaInicio, horaInicio, fechaTermino, horaTermino);
     }
 
     public void mostrarResultadosVotosPorOpciones(JSONObject votacion) {
@@ -323,9 +320,8 @@ public class ElectaPrototipo {
     public List<String> obtenerTitulosVotaciones() {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         List<String> arrayListVotaciones = new ArrayList<>();
-        Iterator<?> iterator = jsonArrayVotaciones.iterator();
-        while (iterator.hasNext()) {
-            JSONObject nextVotacion = (JSONObject) iterator.next();
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject nextVotacion = (JSONObject) jsonArrayVotacion;
             arrayListVotaciones.add(String.valueOf(nextVotacion.get("titulo")));
         }
         return arrayListVotaciones;
@@ -335,9 +331,8 @@ public class ElectaPrototipo {
         String jsonVotaciones = leerContenidosJSON("src/main/datos/votaciones.json");
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(jsonVotaciones);
-            JSONArray arrayVotaciones = (JSONArray) obj;
-            return arrayVotaciones;
+            Object arrayVotaciones = parser.parse(jsonVotaciones);
+            return (JSONArray) arrayVotaciones;
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -542,9 +537,8 @@ public class ElectaPrototipo {
         String jsonVotantes = leerContenidosJSON("src/main/datos/votantes.json");
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(jsonVotantes);
-            JSONArray arrayVotantes = (JSONArray) obj;
-            return arrayVotantes;
+            Object arrayVotantes = parser.parse(jsonVotantes);
+            return (JSONArray) arrayVotantes;
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -552,9 +546,8 @@ public class ElectaPrototipo {
 
     public boolean esCredencialVotanteValida(String rut, String clave) {
         JSONArray arrayVotantes = parsearVotantes();
-        Iterator<?> iterator = arrayVotantes.iterator();
-        while (iterator.hasNext()) {
-            JSONObject nextVotante = (JSONObject) iterator.next();
+        for (Object arrayVotante : arrayVotantes) {
+            JSONObject nextVotante = (JSONObject) arrayVotante;
             if (nextVotante.get("rut").equals(rut) && nextVotante.get("clave").equals(clave)) {
                 return true;
             }
