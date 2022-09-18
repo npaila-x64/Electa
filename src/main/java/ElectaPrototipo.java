@@ -356,10 +356,10 @@ public class ElectaPrototipo {
     }
 
     public void mostrarPanelDeControlDeVotaciones() {
-        List<String> IDsVotaciones = obtenerIDsVotaciones();
-        List<String> titulosVotaciones = obtenerTitulosVotaciones();
         salirBucle:
         while (true) {
+            List<String> IDsVotaciones = obtenerIDsVotaciones();
+            List<String> titulosVotaciones = obtenerTitulosVotaciones();
             System.out.print("""
                 Para modificar o eliminar una votación
                 escriba el número correspondiente a su índice
@@ -388,14 +388,16 @@ public class ElectaPrototipo {
                 [1] Modificar algún campo
                 [2] Para agregar una opción
                 [3] Para eliminar alguna opción
+                [4] Para eliminar la votación
                 Si desea volver escriba [0]
                 """.concat("> "));
             switch (pedirOpcion()) {
                 case -1 -> {/*filtra valores no numéricos*/}
                 case 0 -> {break salirBucle;}
                 case 1 -> mostrarMenuEditarCamposDeVotacion(IDVotacion);
-                case 2 -> mostrarMenuAgregarOpcionesDeVotacion(IDVotacion);
+                case 2 -> agregarOpcionDeVotacion(IDVotacion);
                 case 3 -> mostrarMenuEliminarOpcionesDeVotacion(IDVotacion);
+                case 4 -> {eliminarVotacion(IDVotacion); break salirBucle;}
                 default -> mostrarOpcionInvalida();
             }
         }
@@ -471,10 +473,23 @@ public class ElectaPrototipo {
         }
     }
 
-    public void mostrarMenuAgregarOpcionesDeVotacion(String IDVotacion) {
+    public boolean agregarOpcionDeVotacion(String IDVotacion) {
         System.out.print("Escriba la opción que desea agregar\n> ");
         String opcion = pedirString();
-        agregarOpcionAVotacion(IDVotacion, opcion);
+        return agregarOpcionAVotacion(IDVotacion, opcion);
+    }
+
+    public boolean eliminarVotacion(String IDVotacion) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+            if (String.valueOf(votacionSiguiente.get("id")).equals(IDVotacion)) {
+                jsonArrayVotaciones.remove(votacionSiguiente);
+                escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean eliminarOpcionDeVotacion(String IDVotacion, String opcionElegida) {
