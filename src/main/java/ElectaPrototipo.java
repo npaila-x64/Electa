@@ -174,15 +174,39 @@ public class ElectaPrototipo {
                     if (opcionElegida > IDsVotaciones.size()) {
                         mostrarOpcionInvalida();
                     } else {
-                        mostrarMenuOpciones(IDsVotaciones.get(opcionElegida - 1));
+                        mostrarMenuOpcionesParaVotar(IDsVotaciones.get(opcionElegida - 1));
                     }
                 }
             }
         }
     }
 
-    public void mostrarMenuOpciones(String IDsVotacion) {
-        List<String> opciones = obtenerOpcionesDeVotacion(IDsVotacion);
+    public boolean realizarVotoBlanco(String IDVotacion) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        if (votarOpcionBlanco(jsonArrayVotaciones, IDVotacion)) {
+            escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
+            return true;
+        } else {
+            System.err.println("Error, no se pudo realizar el voto.");
+            return false;
+        }
+    }
+
+    public boolean votarOpcionBlanco(JSONArray jsonArrayVotaciones, String IDVotacion) {
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+            if (String.valueOf(votacionSiguiente.get("id")).equals(IDVotacion)) {
+                int votosBlancosOpcion = Integer.parseInt(String.valueOf(votacionSiguiente.get("votos_blancos")));
+                votacionSiguiente.put("votos_blancos", votosBlancosOpcion + 1);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void mostrarMenuOpcionesParaVotar(String IDVotacion) {
+        List<String> opciones = obtenerOpcionesDeVotacion(IDVotacion);
+        opciones.add(0, "Abstenerse");
         salirBucle:
         while (true) {
             System.out.println("Opciones disponibles");
@@ -191,11 +215,17 @@ public class ElectaPrototipo {
             switch (opcionElegida) {
                 case -1 -> {/*filtra valores no numéricos*/}
                 case 0 -> {break salirBucle;}
+                case 1 -> {
+                    if (realizarVotoBlanco(IDVotacion)) {
+                        System.out.println("¡Voto realizado con exito!");
+                        break salirBucle;
+                    }
+                }
                 default -> {
                     if (opcionElegida > opciones.size()) {
                         mostrarOpcionInvalida();
                     }
-                    if (realizarVoto(IDsVotacion, opciones.get(opcionElegida - 1))) {
+                    if (realizarVoto(IDVotacion, opciones.get(opcionElegida))) {
                         System.out.println("¡Voto realizado con exito!");
                         break salirBucle;
                     }
@@ -204,9 +234,9 @@ public class ElectaPrototipo {
         }
     }
 
-    public boolean realizarVoto(String IDsVotacion, String opcionElegida) {
+    public boolean realizarVoto(String IDVotacion, String opcionElegida) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
-        if (votarOpcionPreferencial(jsonArrayVotaciones, IDsVotacion, opcionElegida)) {
+        if (votarOpcionPreferencial(jsonArrayVotaciones, IDVotacion, opcionElegida)) {
             escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
             return true;
         } else {
