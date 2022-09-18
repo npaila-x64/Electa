@@ -22,16 +22,16 @@ public class ElectaPrototipo {
     }
 
     public void mostrarMenuDeIngreso() {
-        salirBucle:
+        mostrarOpcionesDeIngreso();
+        salirMenu:
         while (true) {
-            mostrarOpcionesDeIngreso();
             switch (pedirOpcion()) {
-                case -1 -> {/*filtra valores no numéricos*/}
-                case 0 -> {break salirBucle;}
+                case 0 -> {break salirMenu;}
                 case 1 -> ingresarComoUsuario();
                 case 2 -> ingresarComoAdmin();
-                default -> mostrarOpcionInvalida();
+                default -> {mostrarOpcionInvalida();continue;}
             }
+            mostrarOpcionesDeIngreso();
         }
     }
 
@@ -44,7 +44,7 @@ public class ElectaPrototipo {
             return pedirValorEntero();
         } catch (InputMismatchException e) {
             mostrarOpcionInvalida();
-            return -1;
+            return pedirOpcion();
         }
     }
 
@@ -53,7 +53,7 @@ public class ElectaPrototipo {
     }
 
     public void mostrarOpcionInvalida() {
-        System.out.println("Por favor, escoja una opción válida");
+        System.out.print("Por favor, escoja una opción válida\n> ");
     }
 
     public void ingresarComoAdmin() {
@@ -64,11 +64,6 @@ public class ElectaPrototipo {
         } else {
             System.out.println("Contraseña incorrecta");
         }
-    }
-
-    public boolean esCredencialAdminValida(String clave) {
-        JSONObject credencialAdmin = parsearCredencialAdministrador();
-        return clave.equals(String.valueOf(credencialAdmin.get("clave")));
     }
 
     public void mostrarOpcionesAdmin() {
@@ -83,17 +78,17 @@ public class ElectaPrototipo {
 
     public void mostrarMenuAdministador() {
         System.out.println("Bienvenido al menú del administrador");
-        salirBucle:
+        mostrarOpcionesAdmin();
+        salirMenu:
         while (true) {
-            mostrarOpcionesAdmin();
             switch (pedirOpcion()) {
-                case -1 -> {/*filtra valores no numéricos*/}
-                case 0 -> {break salirBucle;}
+                case 0 -> {break salirMenu;}
                 case 1 -> mostrarPanelDeControlDeVotaciones();
                 case 2 -> crearVotacion();
                 case 3 -> mostrarMenuResultados();
-                default -> mostrarOpcionInvalida();
+                default -> {mostrarOpcionInvalida(); continue;}
             }
+            mostrarOpcionesAdmin();
         }
     }
 
@@ -112,16 +107,16 @@ public class ElectaPrototipo {
 
     public void mostrarMenuVotacionesVotante(String rut) {
         mostrarVotacionesEnCurso();
-        salirBucle:
+        mostrarOpcionesVotante();
+        salirMenu:
         while (true) {
-            mostrarOpcionesVotante();
             switch (pedirOpcion()) {
-                case -1 -> {/*filtra valores no numéricos*/}
-                case 0 -> {break salirBucle;}
+                case 0 -> {break salirMenu;}
                 case 1 -> mostrarMenuParaVotar();
                 case 2 -> mostrarMenuResultados();
-                default -> mostrarOpcionInvalida();
+                default -> {mostrarOpcionInvalida(); continue;}
             }
+            mostrarOpcionesVotante();
         }
     }
 
@@ -144,44 +139,50 @@ public class ElectaPrototipo {
 
     public void mostrarMenuResultados() {
         List<String> titulosVotaciones = obtenerTitulosVotaciones();
+        System.out.println("Votaciones disponibles para revisión");
+        mostrarListaOpciones(titulosVotaciones);
         salirBucle:
         while (true) {
-            System.out.println("Votaciones disponibles para revisión");
-            mostrarListaOpciones(titulosVotaciones);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
-                case -1 -> {/*filtra valores no numéricos*/}
                 case 0 -> {break salirBucle;}
                 default -> {
                     if (opcionElegida > titulosVotaciones.size()) {
                         mostrarOpcionInvalida();
-                    } else {
-                        mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
+                        continue;
                     }
+                    mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
                 }
             }
+            titulosVotaciones = obtenerTitulosVotaciones();
+            System.out.println("Votaciones disponibles para revisión");
+            mostrarListaOpciones(titulosVotaciones);
         }
     }
 
     public void mostrarMenuParaVotar() {
-        salirBucle:
+        List<String> IDsVotaciones = obtenerIDsVotaciones();
+        List<String> titulosVotaciones = obtenerTitulosVotaciones();
+        System.out.println("Votaciones disponibles para votación");
+        mostrarListaOpciones(titulosVotaciones);
+        salirMenu:
         while (true) {
-            List<String> IDsVotaciones = obtenerIDsVotaciones();
-            List<String> titulosVotaciones = obtenerTitulosVotaciones();
-            System.out.println("Votaciones disponibles para votación");
-            mostrarListaOpciones(titulosVotaciones);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
-                case -1 -> {/*filtra valores no numéricos*/}
-                case 0 -> {break salirBucle;}
+                case 0 -> {break salirMenu;}
                 default -> {
                     if (opcionElegida > IDsVotaciones.size()) {
                         mostrarOpcionInvalida();
+                        continue;
                     } else {
                         mostrarMenuOpcionesParaVotar(IDsVotaciones.get(opcionElegida - 1));
                     }
                 }
             }
+            IDsVotaciones = obtenerIDsVotaciones();
+            titulosVotaciones = obtenerTitulosVotaciones();
+            System.out.println("Votaciones disponibles para votación");
+            mostrarListaOpciones(titulosVotaciones);
         }
     }
 
@@ -211,13 +212,12 @@ public class ElectaPrototipo {
     public void mostrarMenuOpcionesParaVotar(String IDVotacion) {
         List<String> opciones = obtenerOpcionesDeVotacion(IDVotacion);
         opciones.add(0, "Abstenerse");
+        mostrarListaOpciones(opciones);
         salirBucle:
         while (true) {
             System.out.println("Opciones disponibles");
-            mostrarListaOpciones(opciones);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
-                case -1 -> {/*filtra valores no numéricos*/}
                 case 0 -> {break salirBucle;}
                 case 1 -> {
                     if (realizarVotoBlanco(IDVotacion)) {
@@ -228,6 +228,7 @@ public class ElectaPrototipo {
                 default -> {
                     if (opcionElegida > opciones.size()) {
                         mostrarOpcionInvalida();
+                        continue;
                     }
                     if (realizarVoto(IDVotacion, opciones.get(opcionElegida))) {
                         System.out.println("¡Voto realizado con exito!");
@@ -235,6 +236,7 @@ public class ElectaPrototipo {
                     }
                 }
             }
+            mostrarListaOpciones(opciones);
         }
     }
 
@@ -391,34 +393,42 @@ public class ElectaPrototipo {
     }
 
     public void mostrarPanelDeControlDeVotaciones() {
-        salirBucle:
-        while (true) {
-            List<String> IDsVotaciones = obtenerIDsVotaciones();
-            List<String> titulosVotaciones = obtenerTitulosVotaciones();
-            System.out.print("""
+        List<String> IDsVotaciones = obtenerIDsVotaciones();
+        List<String> titulosVotaciones = obtenerTitulosVotaciones();
+        System.out.print("""
                 Para modificar o eliminar una votación
                 escriba el número correspondiente a su índice
                 """);
-            mostrarListaOpciones(titulosVotaciones);
+        mostrarListaOpciones(titulosVotaciones);
+        salirMenu:
+        while (true) {
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
-                case -1 -> {/*filtra valores no numéricos*/}
-                case 0 -> {break salirBucle;}
+                case 0 -> {break salirMenu;}
                 default -> {
                     if (opcionElegida > IDsVotaciones.size()) {
                         mostrarOpcionInvalida();
+                        continue;
                     } else {
                         mostrarEditorDeVotacion(IDsVotaciones.get(opcionElegida - 1));
                     }
                 }
             }
+            IDsVotaciones = obtenerIDsVotaciones();
+            titulosVotaciones = obtenerTitulosVotaciones();
+            System.out.print("""
+                Para modificar o eliminar una votación
+                escriba el número correspondiente a su índice
+                """);
+            mostrarListaOpciones(titulosVotaciones);
+
         }
     }
 
     public void mostrarEditorDeVotacion(String IDVotacion) {
-        salirBucle:
+        mostrarDatosDeVotacion(IDVotacion);
+        salirMenu:
         while (true) {
-            mostrarDatosDeVotacion(IDVotacion);
             System.out.print("""
                 [1] Modificar algún campo
                 [2] Para agregar una opción
@@ -427,38 +437,39 @@ public class ElectaPrototipo {
                 Si desea volver escriba [0]
                 """.concat("> "));
             switch (pedirOpcion()) {
-                case -1 -> {/*filtra valores no numéricos*/}
-                case 0 -> {break salirBucle;}
+                case 0 -> {break salirMenu;}
                 case 1 -> mostrarMenuEditarCamposDeVotacion(IDVotacion);
                 case 2 -> agregarOpcionDeVotacion(IDVotacion);
                 case 3 -> mostrarMenuEliminarOpcionesDeVotacion(IDVotacion);
-                case 4 -> {eliminarVotacion(IDVotacion); break salirBucle;}
-                default -> mostrarOpcionInvalida();
+                case 4 -> {eliminarVotacion(IDVotacion); break salirMenu;}
+                default -> {mostrarOpcionInvalida(); continue;}
             }
+            mostrarDatosDeVotacion(IDVotacion);
         }
     }
 
     public void mostrarMenuEditarCamposDeVotacion(String IDVotacion) {
         List<String> campos = List.of("titulo", "descripcion","fecha_inicio",
                 "hora_inicio", "fecha_termino", "hora_termino");
-        salirBucle:
+        mostrarListaOpciones(campos);
+        salirMenu:
         while (true) {
             System.out.print("""
                 Escriba el índice del campo que desea modificar
                 """);
-            mostrarListaOpciones(campos);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
-                case -1 -> {/*filtra valores no numéricos*/}
-                case 0 -> {break salirBucle;}
+                case 0 -> {break salirMenu;}
                 default -> {
                     if (opcionElegida > campos.size()) {
                         mostrarOpcionInvalida();
+                        continue;
                     } else {
                         editarCampoDeVotacion(IDVotacion, campos.get(opcionElegida - 1));
                     }
                 }
             }
+            mostrarListaOpciones(campos);
         }
     }
 
@@ -488,21 +499,21 @@ public class ElectaPrototipo {
 
     public void mostrarMenuEliminarOpcionesDeVotacion(String IDVotacion) {
         List<String> opciones = obtenerOpcionesDeVotacion(IDVotacion);
-        salirBucle:
+        System.out.println("Escriba la opción que desea eliminar");
+        mostrarListaOpciones(opciones);
+        salirMenu:
         while (true) {
-            System.out.println("Escriba la opción que desea eliminar");
-            mostrarListaOpciones(opciones);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
-                case -1 -> {/*filtra valores no numéricos*/}
-                case 0 -> {break salirBucle;}
+                case 0 -> {break salirMenu;}
                 default -> {
                     if (opcionElegida > opciones.size()) {
                         mostrarOpcionInvalida();
                         continue;
                     }
                     eliminarOpcionDeVotacion(IDVotacion, opciones.get(opcionElegida - 1));
-                    break salirBucle;
+                    System.out.println("Opción eliminada con exito");
+                    break salirMenu;
                 }
             }
         }
@@ -623,19 +634,20 @@ public class ElectaPrototipo {
     }
 
     public void mostrarMenuAgregacionDeOpciones(String IDVotacion) {
-        salirBucle:
+        mostrarDatosDeVotacion(IDVotacion);
+        salirMenu:
         while (true) {
-            mostrarDatosDeVotacion(IDVotacion);
             System.out.print("""
                     Para agregar una opción escriba [1]
                     Para finalizar y volver escriba [0]
                     Elija una opción
                     """.concat("> "));
             switch (pedirOpcion()) {
-                case 0 -> {break salirBucle;}
+                case 0 -> {break salirMenu;}
                 case 1 -> agregarOpcionDeVotacion(IDVotacion);
-                default -> mostrarOpcionInvalida();
+                default -> {mostrarOpcionInvalida(); continue;}
             }
+            mostrarDatosDeVotacion(IDVotacion);
         }
     }
 
@@ -652,7 +664,6 @@ public class ElectaPrototipo {
         maxID++;
         return String.valueOf(maxID);
     }
-
 
     public String leerContenidosJSON(String ruta) {
         StringBuilder st = new StringBuilder();
@@ -679,6 +690,11 @@ public class ElectaPrototipo {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean esCredencialAdminValida(String clave) {
+        JSONObject credencialAdmin = parsearCredencialAdministrador();
+        return clave.equals(String.valueOf(credencialAdmin.get("clave")));
     }
 
     public JSONArray parsearVotantes() {
