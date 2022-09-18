@@ -550,66 +550,69 @@ public class ElectaPrototipo {
     }
 
     public void crearVotacion() {
-        System.out.print("Nombre Votacion (nombre corto y descriptivo):");
-        String nombreVotacion = pedirString().toLowerCase();
 
-        if(existeVotacion(nombreVotacion.replace(" ", "_") + ".txt")){
-            System.out.println("Ya existe una votacion con dicho nombre");
-            crearVotacion();
-            return;
-        }
+        System.out.print("Escriba el título de la votación que desea agregar\n> ");
+        String titulo = pedirString();
+        System.out.println("Rellene los siguientes campos");
+        System.out.print("Descripción\n> ");
+        String descripcion = pedirString();
+        System.out.print("Fecha de inicio (dd-MM-aaaa)\n> ");
+        String fechaInicio = pedirString();
+        System.out.print("Hora de inicio (hh:mm formato 24 horas)\n> ");
+        String horaInicio = pedirString();
+        System.out.print("Fecha de término (dd-MM-aaaa)\n> ");
+        String fechaTermino = pedirString();
+        System.out.print("Hora de término (hh:mm formato 24 horas)\n> ");
+        String horaTermino = pedirString();
 
-        System.out.print("Breve descripcion Votacion:");
-        String descripcionVotacion = pedirString().toLowerCase();
+        JSONObject votacion = new JSONObject();
+        votacion.put("titulo", titulo);
+        votacion.put("descripcion", descripcion);
+        votacion.put("fecha_inicio", fechaInicio);
+        votacion.put("hora_inicio", horaInicio);
+        votacion.put("fecha_termino", fechaTermino);
+        votacion.put("hora_termino", horaTermino);
+        votacion.put("estado", "BORRADOR");
+        votacion.put("votos_preferenciales", 0);
+        votacion.put("votos_blancos", 0);
+        String IDVotacion = obtenerNuevaIDVotacion();
+        votacion.put("id", IDVotacion);
+        JSONObject opciones = new JSONObject();
+        votacion.put("opciones", opciones);
 
-        System.out.print("Cantidad de opciones Votacion (Entre 2-5):");
-        int cantidadOpciones = definirCantidad();
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        jsonArrayVotaciones.add(votacion);
+        escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
 
-        String rutaVotacion = "src/main/votaciones/VOTACION_" + nombreVotacion.replace(" ", "_") + ".txt";
-        String rutaVotantes = "src/main/votantes/VOTANTES_" + nombreVotacion.replace(" ", "_") + ".txt";
-        String rutaVotos = "src/main/votos/VOTOS_" + nombreVotacion.replace(" ", "_") + ".txt";
-
-        escribirDatoEnArchivo(rutaVotacion, "NOMBRE VOTACIÓN: " + '"' + nombreVotacion + '"');
-        escribirDatoEnArchivo(rutaVotacion, "DESCRIPCIÓN: " + '"' + descripcionVotacion + '"');
-
-        ingresarOpciones(rutaVotacion, cantidadOpciones);
-
-        escribirDatoEnArchivo(rutaVotantes, "VOTANTES:");
-        escribirDatoEnArchivo(rutaVotos, "VOTOS");
-    }
-
-    public void ingresarOpciones(String rutaVotacion, int cantidadOpciones) {
-        String[] opciones = {"A", "B", "C", "D", "E"};
-        for (int index = 0; index < cantidadOpciones; index++) {
-            int posicion = index + 1;
-            System.out.print("Ingresa la opcion " + posicion + ":");
-            escribirDatoEnArchivo(rutaVotacion, "[OPCION " + opciones[index] + "]" + pedirString());
-        }
-    }
-
-    public int definirCantidad() {
-        int cantidadOpciones;
-        do {
-            cantidadOpciones = pedirOpcion();
-        }while(cantidadOpciones<2 || cantidadOpciones>5);
-        return cantidadOpciones;
-    }
-
-    public String[] crearListaVotaciones() {
-        String ruta = "src/main/votaciones";
-        File f = new File(ruta);
-        return f.list();
-    }
-
-    public boolean existeVotacion(String nombreVotacion){
-        String[] listaVotaciones = crearListaVotaciones();
-
-        for (String votacion : listaVotaciones) {
-            if (votacion.equals(nombreVotacion)) {
-                return true;
+        System.out.println("¡Votación creada!\n");
+        salirBucle:
+        while (true) {
+            mostrarDatosDeVotacion(IDVotacion);
+            System.out.print("""
+                    Para agregar una opción escriba [1]
+                    Para finalizar y volver escriba [0]
+                    Elija una opción
+                    """.concat("> "));
+            switch (pedirOpcion()) {
+                case 0 -> {break salirBucle;}
+                case 1 -> agregarOpcionDeVotacion(IDVotacion);
+                default -> mostrarOpcionInvalida();
             }
         }
-        return false;
+    }
+
+    public String obtenerNuevaIDVotacion() {
+        int maxID = 0;
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+            int id = Integer.parseInt(String.valueOf(votacionSiguiente.get("id")));
+            if (id > maxID) {
+                maxID = id;
+            }
+        }
+        maxID++;
+        return String.valueOf(maxID);
     }
 
     public boolean existeDatoEnArchivo(String ruta, String datos) {
@@ -628,21 +631,6 @@ public class ElectaPrototipo {
             System.out.println("El archivo no pudo ser leido");
         }
         return false;
-    }
-
-    public void escribirDatoEnArchivo(String ruta, String datos){
-        FileWriter escribirFile;
-        BufferedWriter escribirBuffer;
-        try{
-            escribirFile = new FileWriter(ruta, true);
-            escribirBuffer = new BufferedWriter(escribirFile);
-            escribirBuffer.write(datos);
-            escribirBuffer.newLine();
-            escribirBuffer.close();
-            escribirFile.close();
-        }catch (IOException e){
-            System.out.println("No se pudo escribir en el archivo");
-        }
     }
 
     public String leerContenidosJSON(String ruta) {
