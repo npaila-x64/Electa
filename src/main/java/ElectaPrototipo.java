@@ -69,25 +69,25 @@ public class ElectaPrototipo {
 
     public void mostrarOpcionesAdmin() {
         System.out.print("""
-                [1] Ver Votacion
-                [2] Crear Votacion
-                [3] Terminar Votacion
+                Elija una opción
+                [1] Ver, modificar, o eliminar votaciones
+                [2] Crear nueva votación
+                [3] Ver resultados de votaciones
                 Si desea cerrar su sesión escriba [0]
                 """.concat("> "));
     }
 
     public void mostrarMenuAdministador() {
-        System.out.println("BIENVENIDO AL MENU DEL ADMINISTRADOR");
+        System.out.println("Bienvenido al menú del administrador");
         salirBucle:
         while (true) {
-            mostrarVotacionesEnCurso();
             mostrarOpcionesAdmin();
             switch (pedirOpcion()) {
                 case -1 -> {/*filtra valores no numéricos*/}
                 case 0 -> {break salirBucle;}
-                case 1 -> verVotacion();
+                case 1 -> mostrarPanelDeControlDeVotaciones();
                 case 2 -> crearVotacion();
-                case 3 -> eliminarVotacion();
+                case 3 -> mostrarMenuResultados();
                 default -> mostrarOpcionInvalida();
             }
         }
@@ -114,7 +114,7 @@ public class ElectaPrototipo {
             switch (pedirOpcion()) {
                 case -1 -> {/*filtra valores no numéricos*/}
                 case 0 -> {break salirBucle;}
-                case 1 -> mostrarMenuVoto();
+                case 1 -> mostrarMenuParaVotar();
                 case 2 -> mostrarMenuResultados();
                 default -> mostrarOpcionInvalida();
             }
@@ -143,7 +143,7 @@ public class ElectaPrototipo {
         salirBucle:
         while (true) {
             System.out.println("Votaciones disponibles para revisión");
-            mostrarIndiceVotaciones(titulosVotaciones);
+            mostrarListaVotaciones(titulosVotaciones);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
                 case -1 -> {/*filtra valores no numéricos*/}
@@ -159,12 +159,12 @@ public class ElectaPrototipo {
         }
     }
 
-    public void mostrarMenuVoto() {
+    public void mostrarMenuParaVotar() {
         List<String> titulosVotaciones = obtenerTitulosVotaciones();
         salirBucle:
         while (true) {
             System.out.println("Votaciones disponibles para votación");
-            mostrarIndiceVotaciones(titulosVotaciones);
+            mostrarListaVotaciones(titulosVotaciones);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
                 case -1 -> {/*filtra valores no numéricos*/}
@@ -185,7 +185,7 @@ public class ElectaPrototipo {
         salirBucle:
         while (true) {
             System.out.println("Opciones disponibles");
-            mostrarIndiceOpciones(opciones);
+            mostrarListaOpciones(opciones);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
                 case -1 -> {/*filtra valores no numéricos*/}
@@ -244,7 +244,7 @@ public class ElectaPrototipo {
         return false;
     }
 
-    public void mostrarIndiceVotaciones(List<String> titulosVotaciones) {
+    public void mostrarListaVotaciones(List<String> titulosVotaciones) {
         System.out.println("Elija una opción");
         for (int indice = 0; indice < titulosVotaciones.size(); indice++) {
             int indiceAjustado = indice + 1;
@@ -253,7 +253,7 @@ public class ElectaPrototipo {
         System.out.print("Si desea volver escriba [0]\n> ");
     }
 
-    public void mostrarIndiceOpciones(List<String> opciones) {
+    public void mostrarListaOpciones(List<String> opciones) {
         System.out.println("Elija una opción");
         for (int indice = 0; indice < opciones.size(); indice++) {
             int indiceAjustado = indice + 1;
@@ -271,19 +271,24 @@ public class ElectaPrototipo {
                 return new ArrayList<>(opciones.keySet());
             }
         }
-        return  new ArrayList<>();
+        return new ArrayList<>();
     }
 
     public void mostrarResultadosVotacion(String tituloVotacion) {
+        JSONObject votacion = obtenerJSONObjectVotacionPorTitulo(tituloVotacion);
+        mostrarResultadosDatos(votacion);
+        mostrarResultadosVotosPorOpciones(votacion);
+    }
+
+    public JSONObject obtenerJSONObjectVotacionPorTitulo(String tituloVotacion) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         for (Object jsonArrayVotacion : jsonArrayVotaciones) {
             JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
             if (String.valueOf(votacionSiguiente.get("titulo")).equals(tituloVotacion)) {
-                mostrarResultadosDatos(votacionSiguiente);
-                mostrarResultadosVotosPorOpciones(votacionSiguiente);
-                return;
+                return votacionSiguiente;
             }
         }
+        return null;
     }
 
     public void mostrarResultadosDatos(JSONObject votacion) {
@@ -338,46 +343,84 @@ public class ElectaPrototipo {
         }
     }
 
-    public void verVotacion() {
-        if(noHayVotacionesCreadas()){
-            System.out.println("No hay votaciones creadas");
-            return;
-        }
-        System.out.println("ELIGE UNA VOTACION");
-        String votacion = elegirVotacion();
-        String rutaVotacion = "src/main/votaciones/" + votacion;
-        leerVotacion(rutaVotacion);
-    }
-
-    public void eliminarVotacion() {
-        if(noHayVotacionesCreadas()){
-            System.out.println("No hay votaciones creadas");
-            return;
-        }
-        mostrarListaVotaciones();
-        System.out.print("INGRESA LA VOTACION QUE QUIERAS TERMINAR: ");
-        String votacion = elegirVotacion();
-        String rutaVotacion = "src/main/votaciones/" + votacion;
-
-        if(existeDatoEnArchivo(rutaVotacion, "TERMINADA")){
-            System.out.println("La votación ya se encuentra terminada");
-            return;
-        }
-        escribirDatoEnArchivo(rutaVotacion, "TERMINADA");
-    }
-
-    public String elegirVotacion() {
-        String[] votaciones = crearListaVotaciones();
-        String votacion = "";
-        do{
-            try{
-                int opcion = pedirOpcion() - 1;
-                votacion = votaciones[opcion];
-            }catch (ArrayIndexOutOfBoundsException e){
-                System.out.println("Por favor elija una de las opciones");
+    public void mostrarPanelDeControlDeVotaciones() {
+        List<String> titulosVotaciones = obtenerTitulosVotaciones();
+        salirBucle:
+        while (true) {
+            System.out.print("""
+                Para modificar o eliminar una votación
+                escriba el número correspondiente a su índice
+                """);
+            mostrarListaVotaciones(titulosVotaciones);
+            int opcionElegida = pedirOpcion();
+            switch (opcionElegida) {
+                case -1 -> {/*filtra valores no numéricos*/}
+                case 0 -> {break salirBucle;}
+                default -> {
+                    if (opcionElegida > titulosVotaciones.size()) {
+                        mostrarOpcionInvalida();
+                    } else {
+                        mostrarEditorDeVotacion(titulosVotaciones.get(opcionElegida - 1));
+                    }
+                }
             }
-        }while(votacion.equals(""));
-        return votacion;
+        }
+    }
+
+    public void mostrarEditorDeVotacion(String tituloVotacion) {
+        mostrarDatosDeVotacion(tituloVotacion);
+        List<String> opciones = obtenerOpcionesDeVotacion(tituloVotacion);
+        salirBucle:
+        while (true) {
+            System.out.print("""
+                [1] Modificar algún campo
+                [2] Agregar o eliminar alguna opción
+                """);
+            int opcionElegida = pedirOpcion();
+            switch (opcionElegida) {
+                case -1 -> {/*filtra valores no numéricos*/}
+                case 0 -> {break salirBucle;}
+                case 1 -> {}
+                case 2 -> {mostrarListaOpciones(opciones);}
+                default -> mostrarOpcionInvalida();
+            }
+        }
+    }
+
+    public void mostrarMenuEditarCamposDeVotacion() {
+
+    }
+
+    public void mostrarMenuEditarOpcionesDeVotacion() {
+
+    }
+
+    public void mostrarDatosDeVotacion(String tituloVotacion) {
+        JSONObject votacion = obtenerJSONObjectVotacionPorTitulo(tituloVotacion);
+        String titulo = String.valueOf(votacion.get("titulo"));
+        String descripcion = String.valueOf(votacion.get("descripcion"));
+        String fechaInicio = String.valueOf(votacion.get("fecha_inicio"));
+        String horaInicio = String.valueOf(votacion.get("hora_inicio"));
+        String fechaTermino = String.valueOf(votacion.get("fecha_termino"));
+        String horaTermino = String.valueOf(votacion.get("hora_termino"));
+        String estado = String.valueOf(votacion.get("estado"));
+        System.out.printf("""
+                        Titulo.........................%s
+                        Descripcion....................%s
+                        Fecha de inicio................%s
+                        Hora de inicio.................%s hrs
+                        Fecha de término...............%s
+                        Hora de término................%s hrs
+                        Estado.........................%s
+                        %n""", titulo, descripcion, fechaInicio,
+                horaInicio, fechaTermino, horaTermino, estado);
+        JSONObject opciones = (JSONObject) votacion.get("opciones");
+        List<String> opcionesList =  new ArrayList<>(opciones.keySet());
+        System.out.println("Opciones");
+        for (String opcion : opcionesList) {
+            System.out.println(".......".concat(opcion));
+        }
+        System.out.println();
     }
 
     public void crearVotacion() {
@@ -424,42 +467,6 @@ public class ElectaPrototipo {
             cantidadOpciones = pedirOpcion();
         }while(cantidadOpciones<2 || cantidadOpciones>5);
         return cantidadOpciones;
-    }
-
-    public void leerVotacion(String ruta) {
-        FileReader leerFile;
-        BufferedReader leerBuffer;
-        String linea;
-        try{
-            leerFile = new FileReader(ruta);
-            leerBuffer = new BufferedReader(leerFile);
-            while((linea = leerBuffer.readLine()) != null){
-                System.out.println(linea);
-            }
-        }catch (IOException e){
-            System.out.println("El archivo no pudo ser leido");
-        }
-    }
-
-    public void mostrarListaVotaciones() {
-        if(noHayVotacionesCreadas()){
-            System.out.println("No hay votaciones creadas");
-            return;
-        }
-        String[] listaVotaciones = crearListaVotaciones();
-        String ruta = "src/main/votaciones/";
-
-        System.out.println("VOTACIONES");
-        for (int index = 0; index < listaVotaciones.length; index++) {
-            String votacion = listaVotaciones[index];
-            int posicion = index + 1;
-
-            if (existeDatoEnArchivo(ruta + votacion, "TERMINADA")) {
-                System.out.println("[" + posicion + "]" + votacion.split(".txt")[0] + " (TERMINADA)");
-            }else{
-                System.out.println("[" + posicion + "]" + votacion.split(".txt")[0] + " (EN CURSO)");
-            }
-        }
     }
 
     public String[] crearListaVotaciones() {
