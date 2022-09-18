@@ -143,7 +143,7 @@ public class ElectaPrototipo {
         salirBucle:
         while (true) {
             System.out.println("Votaciones disponibles para revisión");
-            mostrarListaVotaciones(titulosVotaciones);
+            mostrarListaOpciones(titulosVotaciones);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
                 case -1 -> {/*filtra valores no numéricos*/}
@@ -164,7 +164,7 @@ public class ElectaPrototipo {
         salirBucle:
         while (true) {
             System.out.println("Votaciones disponibles para votación");
-            mostrarListaVotaciones(titulosVotaciones);
+            mostrarListaOpciones(titulosVotaciones);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
                 case -1 -> {/*filtra valores no numéricos*/}
@@ -225,32 +225,23 @@ public class ElectaPrototipo {
     }
 
     public boolean votarOpcionPreferencial(JSONArray jsonArrayVotaciones, String tituloVotacion, String opcionElegida) {
-        for (Object jsonArrayVotacione : jsonArrayVotaciones) {
-            JSONObject nextVotacion = (JSONObject) jsonArrayVotacione;
-            if (String.valueOf(nextVotacion.get("titulo")).equals(tituloVotacion)) {
-                JSONObject opciones = (JSONObject) nextVotacion.get("opciones");
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+            if (String.valueOf(votacionSiguiente.get("titulo")).equals(tituloVotacion)) {
+                JSONObject opciones = (JSONObject) votacionSiguiente.get("opciones");
                 List<String> opcionesArray = new ArrayList<>(opciones.keySet());
                 for (String opcion : opcionesArray) {
                     if (opcion.equals(opcionElegida)) {
                         int votosOpcion = Integer.parseInt(String.valueOf(opciones.get(opcion)));
                         opciones.put(opcion, votosOpcion + 1);
-                        int votosPreferenciales = Integer.parseInt(String.valueOf(nextVotacion.get("votos_preferenciales")));
-                        nextVotacion.put("votos_preferenciales", votosPreferenciales + 1);
+                        int votosPreferenciales = Integer.parseInt(String.valueOf(votacionSiguiente.get("votos_preferenciales")));
+                        votacionSiguiente.put("votos_preferenciales", votosPreferenciales + 1);
                         return true;
                     }
                 }
             }
         }
         return false;
-    }
-
-    public void mostrarListaVotaciones(List<String> titulosVotaciones) {
-        System.out.println("Elija una opción");
-        for (int indice = 0; indice < titulosVotaciones.size(); indice++) {
-            int indiceAjustado = indice + 1;
-            System.out.printf("[%s] %s%n", indiceAjustado, titulosVotaciones.get(indice));
-        }
-        System.out.print("Si desea volver escriba [0]\n> ");
     }
 
     public void mostrarListaOpciones(List<String> opciones) {
@@ -262,11 +253,11 @@ public class ElectaPrototipo {
         System.out.print("Si desea volver escriba [0]\n> ");
     }
 
-    public ArrayList obtenerOpcionesDeVotacion(String tituloVotacion) {
+    public List<String> obtenerOpcionesDeVotacion(String IDVotacion) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         for (Object jsonArrayVotacion : jsonArrayVotaciones) {
             JSONObject nextVotacion = (JSONObject) jsonArrayVotacion;
-            if (String.valueOf(nextVotacion.get("titulo")).equals(tituloVotacion)) {
+            if (String.valueOf(nextVotacion.get("id")).equals(IDVotacion)) {
                 JSONObject opciones = (JSONObject) nextVotacion.get("opciones");
                 return new ArrayList<>(opciones.keySet());
             }
@@ -285,6 +276,17 @@ public class ElectaPrototipo {
         for (Object jsonArrayVotacion : jsonArrayVotaciones) {
             JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
             if (String.valueOf(votacionSiguiente.get("titulo")).equals(tituloVotacion)) {
+                return votacionSiguiente;
+            }
+        }
+        return null;
+    }
+
+    public JSONObject obtenerJSONObjectVotacionPorID(String IDVotacion) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+            if (String.valueOf(votacionSiguiente.get("id")).equals(IDVotacion)) {
                 return votacionSiguiente;
             }
         }
@@ -332,6 +334,16 @@ public class ElectaPrototipo {
         return arrayListVotaciones;
     }
 
+    public List<String> obtenerIDsVotaciones() {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        List<String> arrayListIDsVotaciones = new ArrayList<>();
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject nextVotacion = (JSONObject) jsonArrayVotacion;
+            arrayListIDsVotaciones.add(String.valueOf(nextVotacion.get("id")));
+        }
+        return arrayListIDsVotaciones;
+    }
+
     public JSONArray parsearVotaciones() {
         String jsonVotaciones = leerContenidosJSON("src/main/datos/votaciones.json");
         JSONParser parser = new JSONParser();
@@ -344,6 +356,7 @@ public class ElectaPrototipo {
     }
 
     public void mostrarPanelDeControlDeVotaciones() {
+        List<String> IDsVotaciones = obtenerIDsVotaciones();
         List<String> titulosVotaciones = obtenerTitulosVotaciones();
         salirBucle:
         while (true) {
@@ -351,52 +364,149 @@ public class ElectaPrototipo {
                 Para modificar o eliminar una votación
                 escriba el número correspondiente a su índice
                 """);
-            mostrarListaVotaciones(titulosVotaciones);
+            mostrarListaOpciones(titulosVotaciones);
             int opcionElegida = pedirOpcion();
             switch (opcionElegida) {
                 case -1 -> {/*filtra valores no numéricos*/}
                 case 0 -> {break salirBucle;}
                 default -> {
-                    if (opcionElegida > titulosVotaciones.size()) {
+                    if (opcionElegida > IDsVotaciones.size()) {
                         mostrarOpcionInvalida();
                     } else {
-                        mostrarEditorDeVotacion(titulosVotaciones.get(opcionElegida - 1));
+                        mostrarEditorDeVotacion(IDsVotaciones.get(opcionElegida - 1));
                     }
                 }
             }
         }
     }
 
-    public void mostrarEditorDeVotacion(String tituloVotacion) {
-        mostrarDatosDeVotacion(tituloVotacion);
-        List<String> opciones = obtenerOpcionesDeVotacion(tituloVotacion);
+    public void mostrarEditorDeVotacion(String IDVotacion) {
         salirBucle:
         while (true) {
+            mostrarDatosDeVotacion(IDVotacion);
             System.out.print("""
                 [1] Modificar algún campo
-                [2] Agregar o eliminar alguna opción
-                """);
-            int opcionElegida = pedirOpcion();
-            switch (opcionElegida) {
+                [2] Para agregar una opción
+                [3] Para eliminar alguna opción
+                Si desea volver escriba [0]
+                """.concat("> "));
+            switch (pedirOpcion()) {
                 case -1 -> {/*filtra valores no numéricos*/}
                 case 0 -> {break salirBucle;}
-                case 1 -> {}
-                case 2 -> {mostrarListaOpciones(opciones);}
+                case 1 -> mostrarMenuEditarCamposDeVotacion(IDVotacion);
+                case 2 -> mostrarMenuAgregarOpcionesDeVotacion(IDVotacion);
+                case 3 -> mostrarMenuEliminarOpcionesDeVotacion(IDVotacion);
                 default -> mostrarOpcionInvalida();
             }
         }
     }
 
-    public void mostrarMenuEditarCamposDeVotacion() {
-
+    public void mostrarMenuEditarCamposDeVotacion(String IDVotacion) {
+        List<String> campos = List.of("titulo", "descripcion","fecha_inicio",
+                "hora_inicio", "fecha_termino", "hora_termino");
+        salirBucle:
+        while (true) {
+            System.out.print("""
+                Escriba el índice del campo que desea modificar
+                """);
+            mostrarListaOpciones(campos);
+            int opcionElegida = pedirOpcion();
+            switch (opcionElegida) {
+                case -1 -> {/*filtra valores no numéricos*/}
+                case 0 -> {break salirBucle;}
+                default -> {
+                    if (opcionElegida > campos.size()) {
+                        mostrarOpcionInvalida();
+                    } else {
+                        editarCampoDeVotacion(IDVotacion, campos.get(opcionElegida - 1));
+                    }
+                }
+            }
+        }
     }
 
-    public void mostrarMenuEditarOpcionesDeVotacion() {
-
+    public boolean editarCampoDeVotacion(String IDVotacion, String campo) {
+        System.out.print(campo.concat("> "));
+        String texto = pedirString();
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        if (actualizarCampoDeVotacion(jsonArrayVotaciones, IDVotacion, campo, texto)) {
+            escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
+            return true;
+        } else {
+            System.err.println("Error, no se pudo realizar el voto.");
+            return false;
+        }
     }
 
-    public void mostrarDatosDeVotacion(String tituloVotacion) {
-        JSONObject votacion = obtenerJSONObjectVotacionPorTitulo(tituloVotacion);
+    public boolean actualizarCampoDeVotacion(JSONArray jsonArrayVotaciones, String IDVotacion, String campo, String texto) {
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject nextVotacion = (JSONObject) jsonArrayVotacion;
+            if (String.valueOf(nextVotacion.get("id")).equals(IDVotacion)) {
+                nextVotacion.put(campo, texto);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void mostrarMenuEliminarOpcionesDeVotacion(String IDVotacion) {
+        List<String> opciones = obtenerOpcionesDeVotacion(IDVotacion);
+        salirBucle:
+        while (true) {
+            System.out.println("Escriba la opción que desea eliminar");
+            mostrarListaOpciones(opciones);
+            int opcionElegida = pedirOpcion();
+            switch (opcionElegida) {
+                case -1 -> {/*filtra valores no numéricos*/}
+                case 0 -> {break salirBucle;}
+                default -> {
+                    if (opcionElegida > opciones.size()) {
+                        mostrarOpcionInvalida();
+                        continue;
+                    }
+                    eliminarOpcionDeVotacion(IDVotacion, opciones.get(opcionElegida - 1));
+                    break salirBucle;
+                }
+            }
+        }
+    }
+
+    public void mostrarMenuAgregarOpcionesDeVotacion(String IDVotacion) {
+        System.out.print("Escriba la opción que desea agregar\n> ");
+        String opcion = pedirString();
+        agregarOpcionAVotacion(IDVotacion, opcion);
+    }
+
+    public boolean eliminarOpcionDeVotacion(String IDVotacion, String opcionElegida) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+            if (String.valueOf(votacionSiguiente.get("id")).equals(IDVotacion)) {
+                JSONObject opciones = (JSONObject) votacionSiguiente.get("opciones");
+                opciones.remove(opcionElegida);
+                escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean agregarOpcionAVotacion(String IDVotacion, String opcionElegida) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+            if (String.valueOf(votacionSiguiente.get("id")).equals(IDVotacion)) {
+                JSONObject opciones = (JSONObject) votacionSiguiente.get("opciones");
+                opciones.put(opcionElegida, 0);
+                escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void mostrarDatosDeVotacion(String IDVotacion) {
+        JSONObject votacion = obtenerJSONObjectVotacionPorID(IDVotacion);
         String titulo = String.valueOf(votacion.get("titulo"));
         String descripcion = String.valueOf(votacion.get("descripcion"));
         String fechaInicio = String.valueOf(votacion.get("fecha_inicio"));
@@ -473,11 +583,6 @@ public class ElectaPrototipo {
         String ruta = "src/main/votaciones";
         File f = new File(ruta);
         return f.list();
-    }
-
-    public boolean noHayVotacionesCreadas(){
-        String[] votaciones = crearListaVotaciones();
-        return votaciones.length == 0;
     }
 
     public boolean existeVotacion(String nombreVotacion){
