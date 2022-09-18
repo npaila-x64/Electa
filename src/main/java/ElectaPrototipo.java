@@ -58,13 +58,17 @@ public class ElectaPrototipo {
 
     public void ingresarComoAdmin() {
         System.out.print("Ingrese la contraseña del administrador \n> ");
-        String claveAdmin = pedirString();
-        String rutaDatosAdmin = "src/main/datosRegistro/credencialesAdmin.txt";
-        if (existeDatoEnArchivo(rutaDatosAdmin, claveAdmin)) {
+        String clave = pedirString();
+        if (esCredencialAdminValida(clave)) {
             mostrarMenuAdministador();
         } else {
             System.out.println("Contraseña incorrecta");
         }
+    }
+
+    public boolean esCredencialAdminValida(String clave) {
+        JSONObject credencialAdmin = parsearCredencialAdministrador();
+        return clave.equals(String.valueOf(credencialAdmin.get("clave")));
     }
 
     public void mostrarOpcionesAdmin() {
@@ -615,6 +619,10 @@ public class ElectaPrototipo {
         escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
 
         System.out.println("¡Votación creada!\n");
+        mostrarMenuAgregacionDeOpciones(IDVotacion);
+    }
+
+    public void mostrarMenuAgregacionDeOpciones(String IDVotacion) {
         salirBucle:
         while (true) {
             mostrarDatosDeVotacion(IDVotacion);
@@ -645,23 +653,6 @@ public class ElectaPrototipo {
         return String.valueOf(maxID);
     }
 
-    public boolean existeDatoEnArchivo(String ruta, String datos) {
-        FileReader leerFile;
-        BufferedReader leerBuffer;
-        String linea;
-        try{
-            leerFile = new FileReader(ruta);
-            leerBuffer = new BufferedReader(leerFile);
-            while((linea = leerBuffer.readLine()) != null){
-                if(linea.equals(datos)){
-                    return true;
-                }
-            }
-        }catch (IOException e){
-            System.out.println("El archivo no pudo ser leido");
-        }
-        return false;
-    }
 
     public String leerContenidosJSON(String ruta) {
         StringBuilder st = new StringBuilder();
@@ -677,6 +668,17 @@ public class ElectaPrototipo {
             e.printStackTrace();
         }
         return st.toString();
+    }
+
+    public JSONObject parsearCredencialAdministrador() {
+        String jsonAdmin = leerContenidosJSON("src/main/datos/credencialesAdmin.json");
+        JSONParser parser = new JSONParser();
+        try {
+            Object credencialAdmin = parser.parse(jsonAdmin);
+            return (JSONObject) credencialAdmin;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public JSONArray parsearVotantes() {
