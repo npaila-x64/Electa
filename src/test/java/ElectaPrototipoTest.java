@@ -27,15 +27,9 @@ class ElectaPrototipoTest {
     }
 
     @Test
-    void mostrarIndiceVotacionesTest(){
-        assertThrows(NullPointerException.class, () ->
-                app.mostrarIndiceVotaciones(null)
-                , "Se ha ingresado una entrada nula");
-    }
-    @Test
     void mostrarIndiceOpcionesTest(){
         assertThrows(NullPointerException.class, () ->
-                        app.mostrarIndiceOpciones(null)
+                        app.mostrarListaOpciones(null)
                 , "Se ha ingresado una entrada nula");
     }
     @Test
