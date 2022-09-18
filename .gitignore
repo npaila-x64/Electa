@@ -13,7 +13,6 @@ target/
 *.iws
 *.iml
 *.ipr
-.idea/workspace.xml
 Project_Default.xml
 
 ### Eclipse ###
