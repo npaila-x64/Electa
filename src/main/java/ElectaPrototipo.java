@@ -49,19 +49,9 @@ public class ElectaPrototipo {
         }
     }
 
-    public void mostrarOpcionesAdmin() {
-        System.out.print("""
-                Elija una opción
-                [1] Ver, modificar, o eliminar votaciones
-                [2] Crear nueva votación
-                [3] Ver resultados de votaciones
-                Si desea cerrar su sesión escriba [0]
-                """.concat("> "));
-    }
-
     public void mostrarMenuAdministador() {
         System.out.println("Bienvenido al menú del administrador");
-        mostrarOpcionesAdmin();
+        mostrarOpcionesMenuAdministador();
         salirMenu:
         while (true) {
             switch (pedirOpcion()) {
@@ -71,8 +61,18 @@ public class ElectaPrototipo {
                 case 3 -> mostrarMenuResultados();
                 default -> {mostrarOpcionInvalida(); continue;}
             }
-            mostrarOpcionesAdmin();
+            mostrarOpcionesMenuAdministador();
         }
+    }
+
+    public void mostrarOpcionesMenuAdministador() {
+        System.out.print("""
+                Elija una opción
+                [1] Ver, modificar, o eliminar votaciones
+                [2] Crear nueva votación
+                [3] Ver resultados de votaciones
+                Si desea cerrar su sesión escriba [0]
+                """.concat("> "));
     }
 
     public void ingresarComoUsuario() {
@@ -90,7 +90,7 @@ public class ElectaPrototipo {
 
     public void mostrarMenuVotacionesVotante(String rut) {
         mostrarVotacionesEnCurso();
-        mostrarOpcionesVotante();
+        mostrarOpcionesMenuVotacionesVotante();
         salirMenu:
         while (true) {
             switch (pedirOpcion()) {
@@ -99,11 +99,11 @@ public class ElectaPrototipo {
                 case 2 -> mostrarMenuResultados();
                 default -> {mostrarOpcionInvalida(); continue;}
             }
-            mostrarOpcionesVotante();
+            mostrarOpcionesMenuVotacionesVotante();
         }
     }
 
-    public void mostrarOpcionesVotante() {
+    public void mostrarOpcionesMenuVotacionesVotante() {
         System.out.print("""
                 OPCIONES
                 [1] Votar
@@ -219,7 +219,7 @@ public class ElectaPrototipo {
         }
     }
 
-    public boolean votarOpcionPreferencial(JSONArray jsonArrayVotaciones, String IDVotacion, String opcionElegida) {
+    public void votarOpcionPreferencial(JSONArray jsonArrayVotaciones, String IDVotacion, String opcionElegida) {
         JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
         JSONObject opciones = (JSONObject) votacion.get("opciones");
         List<String> opcionesArray = new ArrayList<>(opciones.keySet());
@@ -229,10 +229,8 @@ public class ElectaPrototipo {
                 opciones.put(opcion, votosOpcion + 1);
                 int votosPreferenciales = parsearObjectAInt(votacion.get("votos_preferenciales"));
                 votacion.put("votos_preferenciales", votosPreferenciales + 1);
-                return true;
             }
         }
-        return false;
     }
 
     public void mostrarListaOpciones(List<String> opciones) {
