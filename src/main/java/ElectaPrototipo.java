@@ -50,7 +50,7 @@ public class ElectaPrototipo {
     }
 
     public void mostrarMenuAdministador() {
-        System.out.println("Bienvenido al menú del administrador");
+        System.out.println("Bienvenido/a al menú de administración");
         mostrarOpcionesMenuAdministador();
         salirMenu:
         while (true) {
@@ -122,54 +122,73 @@ public class ElectaPrototipo {
 
     public void mostrarVotacionesEnCurso() {
         System.out.println("Votaciones En Curso");
-        mostrarTitulosVotacionesConEstado("EN CURSO");
+        mostrarTitulosVotaciones(obtenerTitulosVotacionesConEstado("EN CURSO"));
     }
 
     public void mostrarVotacionesFinalizadas() {
         System.out.println("Votaciones Finalizadas");
-        mostrarTitulosVotacionesConEstado("FINALIZADO");
+        mostrarTitulosVotaciones(obtenerTitulosVotacionesConEstado("FINALIZADO"));
     }
 
     public void mostrarVotacionesBorrador() {
         System.out.println("Votaciones Borrador");
-        mostrarTitulosVotacionesConEstado("BORRADOR");
+        mostrarTitulosVotaciones(obtenerTitulosVotacionesConEstado("BORRADOR"));
     }
 
     public void mostrarVotacionesPendientes() {
         System.out.println("Votaciones Pendientes");
-        mostrarTitulosVotacionesConEstado("PENDIENTE");
+        mostrarTitulosVotaciones(obtenerTitulosVotacionesConEstado("PENDIENTE"));
     }
 
-    public void mostrarTitulosVotacionesConEstado(String estado) {
-        JSONArray jsonArrayVotaciones = parsearVotaciones();
-        List<String> IDsVotaciones = obtenerIDsVotaciones();
-        List<String> titulosVotaciones = new ArrayList<>();
-        for (String IDvotacion : IDsVotaciones) {
-            JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDvotacion);
-            if (votacion.get("estado").equals(estado)) {
-                titulosVotaciones.add(String.valueOf(votacion.get("titulo")));
-            }
-        }
+    public void mostrarTitulosVotaciones(List<String> titulosVotaciones) {
         for (String titulo : titulosVotaciones) {
             System.out.printf("\"%s\"%n", titulo);
         }
     }
 
+    public List<String> obtenerIDsVotacionesConEstado(String estado) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        List<String> IDsVotaciones = obtenerIDsVotaciones();
+        List<String> nuevaIDsVotaciones = new ArrayList<>();
+        for (String IDvotacion : IDsVotaciones) {
+            JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDvotacion);
+            if (votacion.get("estado").equals(estado)) {
+                nuevaIDsVotaciones.add(String.valueOf(votacion.get("id")));
+            }
+        }
+        return nuevaIDsVotaciones;
+    }
+
+    public List<String> obtenerTitulosVotacionesConEstado(String estado) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        List<String> IDsVotaciones = obtenerIDsVotaciones();
+        List<String> nuevaIDsVotaciones = new ArrayList<>();
+        for (String IDvotacion : IDsVotaciones) {
+            JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDvotacion);
+            if (votacion.get("estado").equals(estado)) {
+                nuevaIDsVotaciones.add(String.valueOf(votacion.get("titulo")));
+            }
+        }
+        return nuevaIDsVotaciones;
+    }
+
     public void mostrarMenuResultados() {
-        List<String> titulosVotaciones = obtenerTitulosVotaciones();
-        mostrarVotacionesDisponiblesParaRevision(titulosVotaciones);
+        List<String> IDsVotaciones = obtenerIDsVotacionesConEstado("FINALIZADO");
+        List<String> titulosVotaciones = obtenerTitulosVotaciones(IDsVotaciones);
+        mostrarOpcionesMenuResultados(titulosVotaciones);
         while (true) {
             int opcionElegida = pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, titulosVotaciones.size())) continue;
             mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
-            titulosVotaciones = obtenerTitulosVotaciones();
-            mostrarVotacionesDisponiblesParaRevision(titulosVotaciones);
+            IDsVotaciones = obtenerIDsVotacionesConEstado("FINALIZADO");
+            titulosVotaciones = obtenerTitulosVotaciones(IDsVotaciones);
+            mostrarOpcionesMenuResultados(titulosVotaciones);
         }
     }
 
-    public void mostrarVotacionesDisponiblesParaRevision(List<String> titulosVotaciones) {
-        System.out.println("Votaciones disponibles para revisión");
+    public void mostrarOpcionesMenuResultados(List<String> titulosVotaciones) {
+        System.out.println("Votaciones finalizadas disponibles para su revisión");
         mostrarListaOpciones(titulosVotaciones);
     }
 
