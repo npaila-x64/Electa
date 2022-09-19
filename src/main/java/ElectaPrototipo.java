@@ -694,35 +694,26 @@ public class ElectaPrototipo {
         return st.toString();
     }
 
-    public JSONObject parsearCredencialAdministrador() {
-        String jsonAdmin = leerContenidosJSON("src/main/datos/credencialesAdmin.json");
-        JSONParser parser = new JSONParser();
-        try {
-            Object credencialAdmin = parser.parse(jsonAdmin);
-            return (JSONObject) credencialAdmin;
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public boolean esCredencialAdminValida(String clave) {
-        JSONObject credencialAdmin = parsearCredencialAdministrador();
-        return clave.equals(String.valueOf(credencialAdmin.get("clave")));
+        JSONArray credencialArray = parsearArchivoJSON("src/main/datos/credencialesAdmin.json");
+        JSONObject credencialObject = (JSONObject) credencialArray.get(0);
+        String claveObtenida = String.valueOf(credencialObject.get("clave"));
+        return clave.equals(claveObtenida);
     }
 
-    public JSONArray parsearVotantes() {
-        String jsonVotantes = leerContenidosJSON("src/main/datos/votantes.json");
+    public JSONArray parsearArchivoJSON(String ruta) {
+        String contenidosJSON = leerContenidosJSON(ruta);
         JSONParser parser = new JSONParser();
         try {
-            Object arrayVotantes = parser.parse(jsonVotantes);
-            return (JSONArray) arrayVotantes;
+            JSONArray contenidosArray = (JSONArray) parser.parse(contenidosJSON);
+            return contenidosArray;
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
     public boolean esCredencialVotanteValida(String rut, String clave) {
-        JSONArray arrayVotantes = parsearVotantes();
+        JSONArray arrayVotantes = parsearArchivoJSON("src/main/datos/votantes.json");
         for (Object arrayVotante : arrayVotantes) {
             JSONObject nextVotante = (JSONObject) arrayVotante;
             if (nextVotante.get("rut").equals(rut) && nextVotante.get("clave").equals(clave)) {
