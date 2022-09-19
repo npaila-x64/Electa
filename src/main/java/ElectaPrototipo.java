@@ -88,7 +88,7 @@ public class ElectaPrototipo {
         }
     }
 
-    public void mostrarMenuVotacionesVotante(int IDVotante) {
+    public void mostrarMenuVotacionesVotante(String IDVotante) {
         mostrarVotacionesEnCurso();
         mostrarOpcionesMenuVotacionesVotante();
         salirMenu:
@@ -173,7 +173,7 @@ public class ElectaPrototipo {
         mostrarListaOpciones(titulosVotaciones);
     }
 
-    public void mostrarMenuParaVotar(int IDVotante) {
+    public void mostrarMenuParaVotar(String IDVotante) {
         List<String> IDsVotaciones = obtenerIDsVotacionesEnElQuePuedeVotarElVotante(IDVotante);
         List<String> titulosVotaciones = obtenerTitulosVotaciones(IDsVotaciones);
         mostrarVotacionesDisponiblesParaVotacion(titulosVotaciones);
@@ -193,7 +193,7 @@ public class ElectaPrototipo {
         mostrarListaOpciones(titulosVotaciones);
     }
 
-    public void mostrarMenuOpcionesParaVotar(String IDVotacion, int IDVotante) {
+    public void mostrarMenuOpcionesParaVotar(String IDVotacion, String IDVotante) {
         List<String> opciones = obtenerOpcionesDeVotacion(IDVotacion);
         opciones.add(0, "Abstenerse");
         mostrarOpcionesMenuOpcionesParaVotar(opciones);
@@ -224,27 +224,24 @@ public class ElectaPrototipo {
         System.out.println("¡Voto realizado con exito!\n");
     }
 
-    public void realizarVotoBlanco(String IDVotacion, int IDVotante) {
+    public void realizarVotoBlanco(String IDVotacion, String IDVotante) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
-
         JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
         int votosBlancosOpcion = parsearObjectAInt(votacion.get("votos_blancos"));
         votacion.put("votos_blancos", votosBlancosOpcion + 1);
-        JSONArray votantes = (JSONArray) votacion.get("votantes");
-        votantes.add(IDVotante);
-
-        escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
-        mostrarVotoRealizadoConExito();
+        realizarVoto(jsonArrayVotaciones, votacion, IDVotante);
     }
 
-    public void realizarVotoPreferencial(String IDVotacion, int IDVotante, String opcionElegida) {
+    public void realizarVotoPreferencial(String IDVotacion, String IDVotante, String opcionElegida) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
-
         JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
         votarOpcionPreferencial(jsonArrayVotaciones, IDVotacion, opcionElegida);
-        JSONArray votantes = (JSONArray) votacion.get("votantes");
-        votantes.add(IDVotante);
+        realizarVoto(jsonArrayVotaciones, votacion, IDVotante);
+    }
 
+    public void realizarVoto(JSONArray jsonArrayVotaciones, JSONObject votacion, String IDVotante) {
+        JSONArray votantes = (JSONArray) votacion.get("votantes");
+        votantes.add(Integer.parseInt(IDVotante));
         escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
         mostrarVotoRealizadoConExito();
     }
@@ -365,7 +362,7 @@ public class ElectaPrototipo {
         return arrayListIDsVotaciones;
     }
 
-    public List<String> obtenerIDsVotacionesEnElQuePuedeVotarElVotante(int IDVotante) {
+    public List<String> obtenerIDsVotacionesEnElQuePuedeVotarElVotante(String IDVotante) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         List<String> arrayListIDsVotaciones = new ArrayList<>();
         for (Object jsonArrayVotacion : jsonArrayVotaciones) {
@@ -374,7 +371,7 @@ public class ElectaPrototipo {
             continuaBucle:
             {
                 for (Object IDVotanteQueVoto : arrayVotantes) {
-                    if (parsearObjectAInt(IDVotanteQueVoto) == IDVotante) {
+                    if (IDVotante.equals(String.valueOf(IDVotanteQueVoto))) {
                         break continuaBucle;
                     }
                 }
@@ -710,15 +707,15 @@ public class ElectaPrototipo {
         return false;
     }
 
-    public int obtenerIDDeRut(String rut) {
+    public String obtenerIDDeRut(String rut) {
         JSONArray arrayVotantes = parsearVotantes();
         for (Object arrayVotante : arrayVotantes) {
             JSONObject votanteSiguiente = (JSONObject) arrayVotante;
             if (votanteSiguiente.get("rut").equals(rut)) {
-                return parsearObjectAInt(votanteSiguiente.get("id"));
+                return String.valueOf(votanteSiguiente.get("id"));
             }
         }
-        return 0;
+        throw new RuntimeException();
     }
 
     public int pedirValorEntero() throws InputMismatchException {
