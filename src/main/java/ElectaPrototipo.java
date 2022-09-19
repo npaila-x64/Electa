@@ -547,6 +547,7 @@ public class ElectaPrototipo {
         votacion.put("estado", "BORRADOR");
         votacion.put("votos_preferenciales", 0);
         votacion.put("votos_blancos", 0);
+        votacion.put("votantes", new JSONArray());
         JSONObject opciones = new JSONObject();
         votacion.put("opciones", opciones);
         return votacion;
