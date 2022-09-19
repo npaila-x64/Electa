@@ -35,23 +35,6 @@ public class ElectaPrototipo {
         }
     }
 
-    public int pedirValorEntero() throws InputMismatchException {
-        return new Scanner(System.in).nextInt();
-    }
-
-    public int pedirOpcion() {
-        try {
-            return pedirValorEntero();
-        } catch (InputMismatchException e) {
-            mostrarOpcionInvalida();
-            return pedirOpcion();
-        }
-    }
-
-    public String pedirString(){
-        return new Scanner(System.in).nextLine();
-    }
-
     public void mostrarOpcionInvalida() {
         System.out.print("Por favor, escoja una opción válida\n> ");
     }
@@ -84,7 +67,7 @@ public class ElectaPrototipo {
             switch (pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> mostrarPanelDeControlDeVotaciones();
-                case 2 -> crearVotacion();
+                case 2 -> mostrarMenuCreacionDeVotacion();
                 case 3 -> mostrarMenuResultados();
                 default -> {mostrarOpcionInvalida(); continue;}
             }
@@ -139,51 +122,40 @@ public class ElectaPrototipo {
 
     public void mostrarMenuResultados() {
         List<String> titulosVotaciones = obtenerTitulosVotaciones();
-        System.out.println("Votaciones disponibles para revisión");
-        mostrarListaOpciones(titulosVotaciones);
-        salirBucle:
+        mostrarVotacionesDisponiblesParaRevision(titulosVotaciones);
         while (true) {
             int opcionElegida = pedirOpcion();
-            switch (opcionElegida) {
-                case 0 -> {break salirBucle;}
-                default -> {
-                    if (opcionElegida > titulosVotaciones.size()) {
-                        mostrarOpcionInvalida();
-                        continue;
-                    }
-                    mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
-                }
-            }
+            if (opcionElegida == 0) break;
+            if (esOpcionElegidaFueraDeRango(opcionElegida, titulosVotaciones.size())) continue;
+            mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
             titulosVotaciones = obtenerTitulosVotaciones();
-            System.out.println("Votaciones disponibles para revisión");
-            mostrarListaOpciones(titulosVotaciones);
+            mostrarVotacionesDisponiblesParaRevision(titulosVotaciones);
         }
+    }
+
+    public void mostrarVotacionesDisponiblesParaRevision(List<String> titulosVotaciones) {
+        System.out.println("Votaciones disponibles para revisión");
+        mostrarListaOpciones(titulosVotaciones);
     }
 
     public void mostrarMenuParaVotar() {
         List<String> IDsVotaciones = obtenerIDsVotaciones();
         List<String> titulosVotaciones = obtenerTitulosVotaciones();
-        System.out.println("Votaciones disponibles para votación");
-        mostrarListaOpciones(titulosVotaciones);
-        salirMenu:
+        mostrarVotacionesDisponiblesParaVotacion(titulosVotaciones);
         while (true) {
             int opcionElegida = pedirOpcion();
-            switch (opcionElegida) {
-                case 0 -> {break salirMenu;}
-                default -> {
-                    if (opcionElegida > IDsVotaciones.size()) {
-                        mostrarOpcionInvalida();
-                        continue;
-                    } else {
-                        mostrarMenuOpcionesParaVotar(IDsVotaciones.get(opcionElegida - 1));
-                    }
-                }
-            }
+            if (opcionElegida == 0) break;
+            if (esOpcionElegidaFueraDeRango(opcionElegida, IDsVotaciones.size())) continue;
+            mostrarMenuOpcionesParaVotar(IDsVotaciones.get(opcionElegida - 1));
             IDsVotaciones = obtenerIDsVotaciones();
             titulosVotaciones = obtenerTitulosVotaciones();
-            System.out.println("Votaciones disponibles para votación");
-            mostrarListaOpciones(titulosVotaciones);
+            mostrarVotacionesDisponiblesParaVotacion(titulosVotaciones);
         }
+    }
+
+    public void mostrarVotacionesDisponiblesParaVotacion(List<String> titulosVotaciones) {
+        System.out.println("Votaciones disponibles para votación");
+        mostrarListaOpciones(titulosVotaciones);
     }
 
     public boolean realizarVotoBlanco(String IDVotacion) {
@@ -221,23 +193,60 @@ public class ElectaPrototipo {
                 case 0 -> {break salirBucle;}
                 case 1 -> {
                     if (realizarVotoBlanco(IDVotacion)) {
-                        System.out.println("¡Voto realizado con exito!");
+                        mostrarVotoRealizadoConExito();
                         break salirBucle;
                     }
                 }
                 default -> {
-                    if (opcionElegida > opciones.size()) {
-                        mostrarOpcionInvalida();
-                        continue;
-                    }
+                    if (esOpcionElegidaFueraDeRango(opcionElegida, opciones.size())) continue;
                     if (realizarVoto(IDVotacion, opciones.get(opcionElegida))) {
-                        System.out.println("¡Voto realizado con exito!");
+                        mostrarVotoRealizadoConExito();
                         break salirBucle;
                     }
                 }
             }
             mostrarListaOpciones(opciones);
         }
+    }
+
+    public void mostrarMenuOpcionesParaVotarTest(String IDVotacion) {
+        List<String> opciones = obtenerOpcionesDeVotacion(IDVotacion);
+        opciones.add(0, "Abstenerse");
+        mostrarListaOpciones(opciones);
+        salirBucle:
+        while (true) {
+            System.out.println("Opciones disponibles");
+            int opcionElegida = pedirOpcion();
+            switch (opcionElegida) {
+                case 0 -> {break salirBucle;}
+                case 1 -> {
+                    if (realizarVotoBlanco(IDVotacion)) {
+                        mostrarVotoRealizadoConExito();
+                        break salirBucle;
+                    }
+                }
+                default -> {
+                    if (esOpcionElegidaFueraDeRango(opcionElegida, opciones.size())) continue;
+                    if (realizarVoto(IDVotacion, opciones.get(opcionElegida))) {
+                        mostrarVotoRealizadoConExito();
+                        break salirBucle;
+                    }
+                }
+            }
+            mostrarListaOpciones(opciones);
+        }
+    }
+
+    public boolean esOpcionElegidaFueraDeRango(int opcionElegida, int cantidadOpciones) {
+        if (opcionElegida > cantidadOpciones) {
+            mostrarOpcionInvalida();
+            return true;
+        }
+        return false;
+    }
+
+    public void mostrarVotoRealizadoConExito() {
+        System.out.println("¡Voto realizado con exito!");
     }
 
     public boolean realizarVoto(String IDVotacion, String opcionElegida) {
@@ -406,12 +415,8 @@ public class ElectaPrototipo {
             switch (opcionElegida) {
                 case 0 -> {break salirMenu;}
                 default -> {
-                    if (opcionElegida > IDsVotaciones.size()) {
-                        mostrarOpcionInvalida();
-                        continue;
-                    } else {
-                        mostrarEditorDeVotacion(IDsVotaciones.get(opcionElegida - 1));
-                    }
+                    if (esOpcionElegidaFueraDeRango(opcionElegida, IDsVotaciones.size())) continue;
+                    mostrarEditorDeVotacion(IDsVotaciones.get(opcionElegida - 1));
                 }
             }
             IDsVotaciones = obtenerIDsVotaciones();
@@ -461,12 +466,8 @@ public class ElectaPrototipo {
             switch (opcionElegida) {
                 case 0 -> {break salirMenu;}
                 default -> {
-                    if (opcionElegida > campos.size()) {
-                        mostrarOpcionInvalida();
-                        continue;
-                    } else {
-                        editarCampoDeVotacion(IDVotacion, campos.get(opcionElegida - 1));
-                    }
+                    if (esOpcionElegidaFueraDeRango(opcionElegida, campos.size())) continue;
+                    editarCampoDeVotacion(IDVotacion, campos.get(opcionElegida - 1));
                 }
             }
             mostrarListaOpciones(campos);
@@ -507,10 +508,7 @@ public class ElectaPrototipo {
             switch (opcionElegida) {
                 case 0 -> {break salirMenu;}
                 default -> {
-                    if (opcionElegida > opciones.size()) {
-                        mostrarOpcionInvalida();
-                        continue;
-                    }
+                    if (esOpcionElegidaFueraDeRango(opcionElegida, opciones.size())) continue;
                     eliminarOpcionDeVotacion(IDVotacion, opciones.get(opcionElegida - 1));
                     System.out.println("Opción eliminada con exito");
                     break salirMenu;
@@ -594,8 +592,21 @@ public class ElectaPrototipo {
         System.out.println();
     }
 
-    public void crearVotacion() {
+    public void mostrarMenuCreacionDeVotacion() {
+        String IDVotacion = obtenerNuevaIDVotacion();
+        HashMap<String, String> mapaConCampos = pedirCamposDeVotacion();
+        JSONObject votacion = generarNuevaVotacionJSONObject(mapaConCampos, IDVotacion);
 
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        jsonArrayVotaciones.add(votacion);
+        escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
+
+        System.out.println("¡Votación creada!\n");
+        mostrarMenuAgregacionDeOpciones(IDVotacion);
+    }
+
+    public HashMap<String, String> pedirCamposDeVotacion() {
+        HashMap<String, String> mapaConCampos = new HashMap<>();
         System.out.print("Escriba el título de la votación que desea agregar\n> ");
         String titulo = pedirString();
         System.out.println("Rellene los siguientes campos");
@@ -609,28 +620,30 @@ public class ElectaPrototipo {
         String fechaTermino = pedirString();
         System.out.print("Hora de término (hh:mm formato 24 horas)\n> ");
         String horaTermino = pedirString();
+        mapaConCampos.put("titulo", titulo);
+        mapaConCampos.put("descripcion", descripcion);
+        mapaConCampos.put("fecha_inicio", fechaInicio);
+        mapaConCampos.put("hora_inicio", horaInicio);
+        mapaConCampos.put("fecha_termino", fechaTermino);
+        mapaConCampos.put("hora_termino", horaTermino);
+        return mapaConCampos;
+    }
 
+    public JSONObject generarNuevaVotacionJSONObject(HashMap<String, String> mapaConCampos, String IDVotacion) {
         JSONObject votacion = new JSONObject();
-        votacion.put("titulo", titulo);
-        votacion.put("descripcion", descripcion);
-        votacion.put("fecha_inicio", fechaInicio);
-        votacion.put("hora_inicio", horaInicio);
-        votacion.put("fecha_termino", fechaTermino);
-        votacion.put("hora_termino", horaTermino);
+        votacion.put("id", IDVotacion);
+        votacion.put("titulo", mapaConCampos.get("titulo"));
+        votacion.put("descripcion", mapaConCampos.get("descripcion"));
+        votacion.put("fecha_inicio", mapaConCampos.get("fecha_inicio"));
+        votacion.put("hora_inicio", mapaConCampos.get("hora_inicio"));
+        votacion.put("fecha_termino", mapaConCampos.get("fecha_termino"));
+        votacion.put("hora_termino", mapaConCampos.get("hora_termino"));
         votacion.put("estado", "BORRADOR");
         votacion.put("votos_preferenciales", 0);
         votacion.put("votos_blancos", 0);
-        String IDVotacion = obtenerNuevaIDVotacion();
-        votacion.put("id", IDVotacion);
         JSONObject opciones = new JSONObject();
         votacion.put("opciones", opciones);
-
-        JSONArray jsonArrayVotaciones = parsearVotaciones();
-        jsonArrayVotaciones.add(votacion);
-        escribirArchivoJSON("src/main/datos/votaciones.json", jsonArrayVotaciones.toJSONString());
-
-        System.out.println("¡Votación creada!\n");
-        mostrarMenuAgregacionDeOpciones(IDVotacion);
+        return votacion;
     }
 
     public void mostrarMenuAgregacionDeOpciones(String IDVotacion) {
@@ -717,5 +730,22 @@ public class ElectaPrototipo {
             }
         }
         return false;
+    }
+
+    public int pedirValorEntero() throws InputMismatchException {
+        return new Scanner(System.in).nextInt();
+    }
+
+    public int pedirOpcion() {
+        try {
+            return pedirValorEntero();
+        } catch (InputMismatchException e) {
+            mostrarOpcionInvalida();
+            return pedirOpcion();
+        }
+    }
+
+    public String pedirString(){
+        return new Scanner(System.in).nextLine();
     }
 }
