@@ -35,14 +35,10 @@ public class ElectaPrototipo {
         }
     }
 
-    public void mostrarOpcionInvalida() {
-        System.out.print("Por favor, escoja una opción válida\n> ");
-    }
-
     public void ingresarComoAdmin() {
         System.out.print("Ingrese la contraseña del administrador \n> ");
         String clave = pedirString();
-        if (esCredencialAdminValida(clave)) {
+        if (esCredencialAdministradorValida(clave)) {
             mostrarMenuAdministador();
         } else {
             System.out.println("Contraseña incorrecta");
@@ -147,29 +143,24 @@ public class ElectaPrototipo {
     }
 
     public List<String> obtenerIDsVotacionesConEstado(String estado) {
-        JSONArray jsonArrayVotaciones = parsearVotaciones();
-        List<String> IDsVotaciones = obtenerIDsVotaciones();
-        List<String> nuevaIDsVotaciones = new ArrayList<>();
-        for (String IDvotacion : IDsVotaciones) {
-            JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDvotacion);
-            if (votacion.get("estado").equals(estado)) {
-                nuevaIDsVotaciones.add(String.valueOf(votacion.get("id")));
-            }
-        }
-        return nuevaIDsVotaciones;
+        return obtenerCamposVotacionesConEstado(estado, "id");
     }
 
     public List<String> obtenerTitulosVotacionesConEstado(String estado) {
+        return obtenerCamposVotacionesConEstado(estado, "titulo");
+    }
+
+    public List<String> obtenerCamposVotacionesConEstado(String estado, String campo) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         List<String> IDsVotaciones = obtenerIDsVotaciones();
-        List<String> nuevaIDsVotaciones = new ArrayList<>();
+        List<String> nuevoCamposVotaciones = new ArrayList<>();
         for (String IDvotacion : IDsVotaciones) {
             JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDvotacion);
             if (votacion.get("estado").equals(estado)) {
-                nuevaIDsVotaciones.add(String.valueOf(votacion.get("titulo")));
+                nuevoCamposVotaciones.add(String.valueOf(votacion.get(campo)));
             }
         }
-        return nuevaIDsVotaciones;
+        return nuevoCamposVotaciones;
     }
 
     public void mostrarMenuResultados() {
@@ -326,13 +317,17 @@ public class ElectaPrototipo {
         String horaTermino = String.valueOf(votacion.get("hora_termino"));
         System.out.printf("""
                         Resultados para la votacion "%s"
-                        Votos preferenciales   %s
-                        Votos blancos          %s
-                        Total votos            %s
-                        Fecha y hora de inicio   %s %s hrs
-                        Fecha y hora de término  %s %s hrs
-                        %n""", titulo, votoPreferenciales, votoBlancos, totalVotos,
-                fechaInicio, horaInicio, fechaTermino, horaTermino);
+                        Votos preferenciales %s %s
+                        Votos blancos %s %s
+                        Total votos %s %s
+                        Fecha y hora de inicio %s %s %s hrs
+                        Fecha y hora de término %s %s %s hrs
+                        %n""", titulo,
+                padTexto("", ".", 30 - 20), votoPreferenciales,
+                padTexto("", ".", 30 - 13), votoBlancos,
+                padTexto("", ".", 30 - 11), totalVotos,
+                padTexto("", ".", 30 - 22), fechaInicio, horaInicio,
+                padTexto("", ".", 30 - 23), fechaTermino, horaTermino);
     }
 
     public void mostrarResultadosVotosPorOpciones(JSONObject votacion) {
@@ -340,9 +335,8 @@ public class ElectaPrototipo {
         List<String> opcionesList = new ArrayList<>(opciones.keySet());
         System.out.println("Votos por opciones");
         for (String opcion : opcionesList) {
-            System.out.println(
-                    opcion.concat(" ")
-                            .concat(String.valueOf(opciones.get(opcion))));
+            System.out.println(padTexto(opcion, ".", 30)
+                    .concat(String.valueOf(opciones.get(opcion))));
         }
     }
 
@@ -413,25 +407,58 @@ public class ElectaPrototipo {
 
     public void mostrarPanelDeControlDeVotaciones() {
         List<String> IDsVotaciones = obtenerIDsVotaciones();
-        List<String> titulosVotaciones = obtenerTitulosVotaciones();
-        mostrarOpcionesPanelDeControlDeVotaciones(titulosVotaciones);
+        mostrarOpcionesPanelDeControlDeVotaciones(IDsVotaciones);
         while (true) {
             int opcionElegida = pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, IDsVotaciones.size())) continue;
             mostrarEditorDeVotacion(IDsVotaciones.get(opcionElegida - 1));
             IDsVotaciones = obtenerIDsVotaciones();
-            titulosVotaciones = obtenerTitulosVotaciones();
-            mostrarOpcionesPanelDeControlDeVotaciones(titulosVotaciones);
+            mostrarOpcionesPanelDeControlDeVotaciones(IDsVotaciones);
         }
     }
 
-    public void mostrarOpcionesPanelDeControlDeVotaciones(List<String> titulosVotaciones) {
+    public void mostrarOpcionesPanelDeControlDeVotaciones(List<String> IDsVotaciones) {
         System.out.print("""
                 Para modificar o eliminar una votación
                 escriba el número correspondiente a su índice
                 """);
-        mostrarListaOpciones(titulosVotaciones);
+        mostrarListaOpcionesDetallada(IDsVotaciones);
+    }
+
+    public void mostrarListaOpcionesDetallada(List<String> IDsVotaciones) {
+        System.out.println("Elija una opción");
+        for (int indice = 0; indice < IDsVotaciones.size(); indice++) {
+            mostrarOpcionDetallada(IDsVotaciones.get(indice));
+        }
+        System.out.print("Si desea volver escriba [0]\n> ");
+    }
+
+    public void mostrarOpcionDetallada(String IDVotacion) {
+        int indiceAjustado = Integer.parseInt(IDVotacion);
+        HashMap<String, Object> mapaConCampos = obtenerCamposDeVotacion(IDVotacion);
+        String titulo = String.valueOf(mapaConCampos.get("titulo"));
+        String estado = String.valueOf(mapaConCampos.get("estado"));
+        String fechaTermino = String.valueOf(mapaConCampos.get("fecha_termino"));
+        String horaTermino = String.valueOf(mapaConCampos.get("hora_termino"));
+        System.out.printf("[%s] %s %s ", indiceAjustado,
+                padTexto(titulo, ".", 60), estado);
+        switch (estado) {
+            case "EN CURSO" -> System.out.printf("%s Terminará el %s a las %s hrs%n",
+                    padTexto("", ".", 15 - estado.length()),
+                    fechaTermino, horaTermino);
+            case "FINALIZADO" -> System.out.printf("%s Finalizo el %s a las %s hrs%n",
+                    padTexto("", ".", 15 - estado.length()),
+                    fechaTermino, horaTermino);
+            default -> System.out.printf("%n");
+        }
+    }
+
+    public String padTexto(String texto, String patronRelleno, int largo) {
+        String relleno = patronRelleno.repeat(largo);
+        int largoDeTexto = texto.length();
+        String corte = relleno.substring(largoDeTexto);
+        return texto.concat(corte);
     }
 
     public void mostrarEditorDeVotacion(String IDVotacion) {
@@ -510,7 +537,7 @@ public class ElectaPrototipo {
 
     public void agregarOpcionDeVotacion(String IDVotacion) {
         System.out.print("Escriba la opción que desea agregar\n> ");
-        String opcion = pedirString();
+        String opcion = pedirString(35);
         agregarOpcionAVotacion(IDVotacion, opcion);
     }
 
@@ -582,7 +609,7 @@ public class ElectaPrototipo {
         List<String> opcionesList =  new ArrayList<>(opciones.keySet());
         System.out.println("Opciones");
         for (String opcion : opcionesList) {
-            System.out.println(".......".concat(opcion));
+            System.out.println(padTexto("", ".", 8).concat(opcion));
         }
         System.out.println();
     }
@@ -603,7 +630,7 @@ public class ElectaPrototipo {
     public HashMap<String, String> pedirCamposDeVotacion() {
         HashMap<String, String> mapaConCampos = new HashMap<>();
         System.out.print("Escriba el título de la votación que desea agregar\n> ");
-        String titulo = pedirString();
+        String titulo = pedirString(50);
         System.out.println("Rellene los siguientes campos");
         System.out.print("Descripción\n> ");
         String descripcion = pedirString();
@@ -621,6 +648,23 @@ public class ElectaPrototipo {
         mapaConCampos.put("hora_inicio", horaInicio);
         mapaConCampos.put("fecha_termino", fechaTermino);
         mapaConCampos.put("hora_termino", horaTermino);
+        return mapaConCampos;
+    }
+
+    public HashMap<String, Object> obtenerCamposDeVotacion(String IDVotacion) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
+        HashMap<String, Object> mapaConCampos = new HashMap<>();
+        mapaConCampos.put("id", votacion.get("id"));
+        mapaConCampos.put("titulo", votacion.get("titulo"));
+        mapaConCampos.put("descripcion", votacion.get("descripcion"));
+        mapaConCampos.put("fecha_inicio", votacion.get("fecha_inicio"));
+        mapaConCampos.put("hora_inicio", votacion.get("hora_inicio"));
+        mapaConCampos.put("fecha_termino", votacion.get("fecha_termino"));
+        mapaConCampos.put("hora_termino", votacion.get("hora_termino"));
+        mapaConCampos.put("estado", votacion.get("estado"));
+        mapaConCampos.put("votantes", (JSONArray) votacion.get("votantes"));
+        mapaConCampos.put("opciones", (JSONObject) votacion.get("opciones"));
         return mapaConCampos;
     }
 
@@ -690,7 +734,7 @@ public class ElectaPrototipo {
         return st.toString();
     }
 
-    public boolean esCredencialAdminValida(String clave) {
+    public boolean esCredencialAdministradorValida(String clave) {
         JSONArray credencialArray = parsearCredencialAdmin();
         JSONObject credencialObject = (JSONObject) credencialArray.get(0);
         String claveObtenida = String.valueOf(credencialObject.get("clave"));
@@ -750,8 +794,25 @@ public class ElectaPrototipo {
         }
     }
 
-    public String pedirString(){
+    public String pedirString() {
         return new Scanner(System.in).nextLine();
+    }
+
+    public String pedirString(int limite) {
+        String entrada = new Scanner(System.in).nextLine();
+        if (entrada.length() > limite) {
+            mostrarTextoInvalido();
+            return pedirString();
+        }
+        return entrada;
+    }
+
+    public void mostrarTextoInvalido() {
+        System.out.print("El tamaño del texto escrito es muy largo\n> ");
+    }
+
+    public void mostrarOpcionInvalida() {
+        System.out.print("Por favor, escoja una opción válida\n> ");
     }
 
     public int parsearObjectAInt(Object obj) {

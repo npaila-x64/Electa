@@ -44,4 +44,10 @@ class ElectaPrototipoTest {
                         app.mostrarResultadosVotosPorOpciones(null)
                 , "Se ha ingresado una entrada nula");
     }
+
+    @Test
+    void padTextoTest() {
+        assertEquals("test..........................",
+                app.padTexto("test", ".", 30));
+    }
 }
