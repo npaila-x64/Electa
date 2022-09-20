@@ -32,12 +32,14 @@ class ElectaPrototipoTest {
                         app.mostrarListaOpciones(null)
                 , "Se ha ingresado una entrada nula");
     }
+
     @Test
     void mostrarResultadosDatosTest(){
         assertThrows(NullPointerException.class, () ->
                         app.mostrarResultadosDatos(null)
                 , "Se ha ingresado una entrada nula");
     }
+
     @Test
     void mostrarResultadosVotosPorOpcionesTest(){
         assertThrows(NullPointerException.class, () ->

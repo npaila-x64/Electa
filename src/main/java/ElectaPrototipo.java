@@ -429,13 +429,12 @@ public class ElectaPrototipo {
     public void mostrarListaOpcionesDetallada(List<String> IDsVotaciones) {
         System.out.println("Elija una opción");
         for (int indice = 0; indice < IDsVotaciones.size(); indice++) {
-            mostrarOpcionDetallada(IDsVotaciones.get(indice));
+            mostrarOpcionDetallada(IDsVotaciones.get(indice), indice + 1);
         }
         System.out.print("Si desea volver escriba [0]\n> ");
     }
 
-    public void mostrarOpcionDetallada(String IDVotacion) {
-        int indiceAjustado = Integer.parseInt(IDVotacion);
+    public void mostrarOpcionDetallada(String IDVotacion, int indiceAjustado) {
         HashMap<String, Object> mapaConCampos = obtenerCamposDeVotacion(IDVotacion);
         String titulo = String.valueOf(mapaConCampos.get("titulo"));
         String estado = String.valueOf(mapaConCampos.get("estado"));
