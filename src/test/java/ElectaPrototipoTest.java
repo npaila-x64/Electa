@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ElectaPrototipoTest {
@@ -49,5 +51,16 @@ class ElectaPrototipoTest {
     void padTextoTest() {
         assertEquals("test..........................",
                 app.padTexto("test", ".", 30));
+    }
+
+    @Test
+    void verificaQueCargarArchivoJSONNoExistenteTiraExcepcion() {
+        assertThrows(AccesoADatosInterrumpidoException.class,
+                () -> app.parsearArchivoJSON("ruta/que/no/existe"));
+    }
+
+    @Test
+    void verificaQueIntentarObtenerRutNoExistenteTiraExcepcion() {
+        assertThrows(NoSuchElementException.class, () -> app.obtenerIDDeRut("123"));
     }
 }

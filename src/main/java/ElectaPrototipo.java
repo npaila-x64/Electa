@@ -36,11 +36,15 @@ public class ElectaPrototipo {
     }
 
     public void ingresarComoAdmin() {
-        String clave = pedirString("Ingrese la contraseña del administrador \n> ");
-        if (esCredencialAdministradorValida(clave)) {
-            mostrarMenuAdministador();
-        } else {
-            System.out.println("Contraseña incorrecta");
+        try {
+            String clave = pedirString("Ingrese la contraseña del administrador \n> ");
+            if (esCredencialAdministradorValida(clave)) {
+                mostrarMenuAdministador();
+            } else {
+                System.out.println("Contraseña incorrecta");
+            }
+        } catch (AccesoADatosInterrumpidoException e) {
+            mostrarSistemaNoDisponible(e.getMessage());
         }
     }
 
@@ -71,17 +75,16 @@ public class ElectaPrototipo {
     }
 
     public void ingresarComoUsuario() {
-        String rutVotante = pedirString("Ingrese su rut\n> ");
-        String claveVotante = pedirString("Ingrese su clave\n> ");
-
         try {
+            String rutVotante = pedirString("Ingrese su rut\n> ");
+            String claveVotante = pedirString("Ingrese su clave\n> ");
             if (esCredencialVotanteValida(rutVotante, claveVotante)) {
                 mostrarMenuVotacionesVotante(obtenerIDDeRut(rutVotante));
             } else {
                 System.out.println("RUT o contraseña incorrectos");
             }
-        } catch (RuntimeException e) {
-            System.out.println("El sistema no se encuentra disponible, intente más tarde");
+        } catch (AccesoADatosInterrumpidoException e) {
+            mostrarSistemaNoDisponible(e.getMessage());
         }
     }
 
@@ -393,17 +396,6 @@ public class ElectaPrototipo {
             }
         }
         return arrayListIDsVotaciones;
-    }
-
-    public JSONArray parsearVotaciones() {
-        try {
-            String jsonVotaciones = leerContenidosJSON("src/main/datos/votaciones.json");
-            JSONParser parser = new JSONParser();
-            Object arrayVotaciones = parser.parse(jsonVotaciones);
-            return (JSONArray) arrayVotaciones;
-        } catch (ParseException | FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void mostrarPanelDeControlDeVotaciones() {
@@ -725,32 +717,38 @@ public class ElectaPrototipo {
         }
     }
 
-    public boolean esCredencialAdministradorValida(String clave) {
+    public boolean esCredencialAdministradorValida(String clave) throws AccesoADatosInterrumpidoException {
         JSONArray credencialArray = parsearCredencialAdmin();
         JSONObject credencialObject = (JSONObject) credencialArray.get(0);
         String claveObtenida = String.valueOf(credencialObject.get("clave"));
         return clave.equals(claveObtenida);
     }
 
-    public JSONArray parsearVotantes() throws RuntimeException {
+    public JSONArray parsearVotantes() throws AccesoADatosInterrumpidoException {
         return parsearArchivoJSON("src/main/datos/votantes.json");
     }
 
-    public JSONArray parsearCredencialAdmin() throws RuntimeException {
+    public JSONArray parsearCredencialAdmin() throws AccesoADatosInterrumpidoException {
         return parsearArchivoJSON("src/main/datos/credencialesAdmin.json");
     }
 
-    public JSONArray parsearArchivoJSON(String ruta) throws RuntimeException {
+    public JSONArray parsearVotaciones() throws AccesoADatosInterrumpidoException {
+        return parsearArchivoJSON("src/main/datos/votaciones.json");
+    }
+
+    public JSONArray parsearArchivoJSON(String ruta) throws AccesoADatosInterrumpidoException {
         try {
             String contenidosJSON = leerContenidosJSON(ruta);
             JSONParser parser = new JSONParser();
             return (JSONArray) parser.parse(contenidosJSON);
-        } catch (ParseException | FileNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw AccesoADatosInterrumpidoException.noSePudoParsearArchivo(ruta);
+        } catch (FileNotFoundException e) {
+            throw AccesoADatosInterrumpidoException.noSePudoCargarArchivo(ruta);
         }
     }
 
-    public boolean esCredencialVotanteValida(String rut, String clave) throws RuntimeException {
+    public boolean esCredencialVotanteValida(String rut, String clave) throws AccesoADatosInterrumpidoException {
         JSONArray arrayVotantes = parsearVotantes();
         for (Object arrayVotante : arrayVotantes) {
             JSONObject votanteSiguiente = (JSONObject) arrayVotante;
@@ -761,7 +759,7 @@ public class ElectaPrototipo {
         return false;
     }
 
-    public String obtenerIDDeRut(String rut) {
+    public String obtenerIDDeRut(String rut) throws AccesoADatosInterrumpidoException, NoSuchElementException {
         JSONArray arrayVotantes = parsearVotantes();
         for (Object arrayVotante : arrayVotantes) {
             JSONObject votanteSiguiente = (JSONObject) arrayVotante;
@@ -769,7 +767,7 @@ public class ElectaPrototipo {
                 return String.valueOf(votanteSiguiente.get("id"));
             }
         }
-        throw new RuntimeException();
+        throw new NoSuchElementException("No existe tal elemento en los datos");
     }
 
     public int pedirValorEntero() throws InputMismatchException {
@@ -810,6 +808,11 @@ public class ElectaPrototipo {
 
     public void mostrarTextoInvalido() {
         System.out.print("El tamaño del texto escrito es muy largo\n> ");
+    }
+
+    public void mostrarSistemaNoDisponible(String mensaje) {
+        System.err.println("El sistema no se encuentra disponible por ahora, disculpe las molestias\n" +
+                "Mensaje de error: " + mensaje);
     }
 
     public void mostrarOpcionInvalida() {
@@ -860,7 +863,7 @@ public class ElectaPrototipo {
                         if (diaInicio <= diaActual && diaTermino >= diaActual) {
                             if (horasInicio <= horasActual && horasTermino >= horasActual) {
                                 if (minutosInicio <= minutosActual && minutosTermino >= minutosActual) {
-                                    continue;
+                                    break continua;
                                 }
                             }
                         }
@@ -879,7 +882,7 @@ public class ElectaPrototipo {
                         if (diaInicio >= diaActual) {
                             if (horasInicio >= horasActual) {
                                 if (minutosInicio >= minutosActual) {
-                                    continue;
+                                    break continua;
                                 }
                             }
                         }
@@ -898,7 +901,7 @@ public class ElectaPrototipo {
                         if (diaTermino <= diaActual) {
                             if (horasTermino <= horasActual) {
                                 if (minutosTermino <= minutosActual) {
-                                    continue;
+                                    break continua;
                                 }
                             }
                         }
