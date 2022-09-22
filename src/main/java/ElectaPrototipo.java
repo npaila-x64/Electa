@@ -36,8 +36,7 @@ public class ElectaPrototipo {
     }
 
     public void ingresarComoAdmin() {
-        System.out.print("Ingrese la contraseña del administrador \n> ");
-        String clave = pedirString();
+        String clave = pedirString("Ingrese la contraseña del administrador \n> ");
         if (esCredencialAdministradorValida(clave)) {
             mostrarMenuAdministador();
         } else {
@@ -72,10 +71,8 @@ public class ElectaPrototipo {
     }
 
     public void ingresarComoUsuario() {
-        System.out.print("Ingrese su rut\n> ");
-        String rutVotante = pedirString();
-        System.out.print("Ingrese su clave\n> ");
-        String claveVotante = pedirString();
+        String rutVotante = pedirString("Ingrese su rut\n> ");
+        String claveVotante = pedirString("Ingrese su clave\n> ");
 
         try {
             if (esCredencialVotanteValida(rutVotante, claveVotante)) {
@@ -512,8 +509,7 @@ public class ElectaPrototipo {
     }
 
     public void editarCampoDeVotacion(String IDVotacion, String campo) {
-        System.out.print(campo.concat("> "));
-        String texto = pedirString();
+        String texto = pedirString(campo.concat("> "));
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         actualizarCampoDeVotacion(jsonArrayVotaciones, IDVotacion, campo, texto);
     }
@@ -539,8 +535,7 @@ public class ElectaPrototipo {
     }
 
     public void agregarOpcionDeVotacion(String IDVotacion) {
-        System.out.print("Escriba la opción que desea agregar\n> ");
-        String opcion = pedirString(35);
+        String opcion = pedirString("Escriba la opción que desea agregar\n> ", 35);
         agregarOpcionAVotacion(IDVotacion, opcion);
     }
 
@@ -632,19 +627,13 @@ public class ElectaPrototipo {
 
     public HashMap<String, String> pedirCamposDeVotacion() {
         HashMap<String, String> mapaConCampos = new HashMap<>();
-        System.out.print("Escriba el título de la votación que desea agregar\n> ");
-        String titulo = pedirString(50);
+        String titulo = pedirString("Escriba el título de la votación que desea agregar\n> ", 50);
         System.out.println("Rellene los siguientes campos");
-        System.out.print("Descripción\n> ");
-        String descripcion = pedirString();
-        System.out.print("Fecha de inicio (dd-MM-aaaa)\n> ");
-        String fechaInicio = pedirString();
-        System.out.print("Hora de inicio (hh:mm formato 24 horas)\n> ");
-        String horaInicio = pedirString();
-        System.out.print("Fecha de término (dd-MM-aaaa)\n> ");
-        String fechaTermino = pedirString();
-        System.out.print("Hora de término (hh:mm formato 24 horas)\n> ");
-        String horaTermino = pedirString();
+        String descripcion = pedirString("Descripción\n> ");
+        String fechaInicio = pedirString("Fecha de inicio (dd-MM-aaaa)\n> ");
+        String horaInicio = pedirString("Hora de inicio (hh:mm formato 24 horas)\n> ");
+        String fechaTermino = pedirString("Fecha de término (dd-MM-aaaa)\n> ");
+        String horaTermino = pedirString("Hora de término (hh:mm formato 24 horas)\n> ");
         mapaConCampos.put("titulo", titulo);
         mapaConCampos.put("descripcion", descripcion);
         mapaConCampos.put("fecha_inicio", fechaInicio);
@@ -796,8 +785,18 @@ public class ElectaPrototipo {
         }
     }
 
+    public String pedirString(String texto) {
+        System.out.print(texto);
+        return pedirString();
+    }
+
     public String pedirString() {
         return new Scanner(System.in).nextLine();
+    }
+
+    public String pedirString(String texto, int limite) {
+        System.out.print(texto);
+        return pedirString(limite);
     }
 
     public String pedirString(int limite) {
