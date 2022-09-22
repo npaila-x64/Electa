@@ -77,10 +77,14 @@ public class ElectaPrototipo {
         System.out.print("Ingrese su clave\n> ");
         String claveVotante = pedirString();
 
-        if (esCredencialVotanteValida(rutVotante, claveVotante)) {
-            mostrarMenuVotacionesVotante(obtenerIDDeRut(rutVotante));
-        } else {
-            System.out.println("RUT o contraseña incorrectos");
+        try {
+            if (esCredencialVotanteValida(rutVotante, claveVotante)) {
+                mostrarMenuVotacionesVotante(obtenerIDDeRut(rutVotante));
+            } else {
+                System.out.println("RUT o contraseña incorrectos");
+            }
+        } catch (RuntimeException e) {
+            System.out.println("El sistema no se encuentra disponible, intente más tarde");
         }
     }
 
@@ -395,12 +399,12 @@ public class ElectaPrototipo {
     }
 
     public JSONArray parsearVotaciones() {
-        String jsonVotaciones = leerContenidosJSON("src/main/datos/votaciones.json");
-        JSONParser parser = new JSONParser();
         try {
+            String jsonVotaciones = leerContenidosJSON("src/main/datos/votaciones.json");
+            JSONParser parser = new JSONParser();
             Object arrayVotaciones = parser.parse(jsonVotaciones);
             return (JSONArray) arrayVotaciones;
-        } catch (ParseException e) {
+        } catch (ParseException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -429,13 +433,12 @@ public class ElectaPrototipo {
     public void mostrarListaOpcionesDetallada(List<String> IDsVotaciones) {
         System.out.println("Elija una opción");
         for (int indice = 0; indice < IDsVotaciones.size(); indice++) {
-            mostrarOpcionDetallada(IDsVotaciones.get(indice));
+            mostrarOpcionDetallada(IDsVotaciones.get(indice), indice + 1);
         }
         System.out.print("Si desea volver escriba [0]\n> ");
     }
 
-    public void mostrarOpcionDetallada(String IDVotacion) {
-        int indiceAjustado = Integer.parseInt(IDVotacion);
+    public void mostrarOpcionDetallada(String IDVotacion, int indiceAjustado) {
         HashMap<String, Object> mapaConCampos = obtenerCamposDeVotacion(IDVotacion);
         String titulo = String.valueOf(mapaConCampos.get("titulo"));
         String estado = String.valueOf(mapaConCampos.get("estado"));
@@ -718,7 +721,7 @@ public class ElectaPrototipo {
         return String.valueOf(maxID);
     }
 
-    public String leerContenidosJSON(String ruta) {
+    public String leerContenidosJSON(String ruta) throws FileNotFoundException {
         StringBuilder st = new StringBuilder();
         try {
             File archivoJSON = new File(ruta);
@@ -728,10 +731,9 @@ public class ElectaPrototipo {
             }
             scanner.close();
             return st.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException exception) {
+            throw exception;
         }
-        return st.toString();
     }
 
     public boolean esCredencialAdministradorValida(String clave) {
@@ -741,25 +743,25 @@ public class ElectaPrototipo {
         return clave.equals(claveObtenida);
     }
 
-    public JSONArray parsearVotantes() {
+    public JSONArray parsearVotantes() throws RuntimeException {
         return parsearArchivoJSON("src/main/datos/votantes.json");
     }
 
-    public JSONArray parsearCredencialAdmin() {
+    public JSONArray parsearCredencialAdmin() throws RuntimeException {
         return parsearArchivoJSON("src/main/datos/credencialesAdmin.json");
     }
 
-    public JSONArray parsearArchivoJSON(String ruta) {
-        String contenidosJSON = leerContenidosJSON(ruta);
-        JSONParser parser = new JSONParser();
+    public JSONArray parsearArchivoJSON(String ruta) throws RuntimeException {
         try {
+            String contenidosJSON = leerContenidosJSON(ruta);
+            JSONParser parser = new JSONParser();
             return (JSONArray) parser.parse(contenidosJSON);
-        } catch (ParseException e) {
+        } catch (ParseException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public boolean esCredencialVotanteValida(String rut, String clave) {
+    public boolean esCredencialVotanteValida(String rut, String clave) throws RuntimeException {
         JSONArray arrayVotantes = parsearVotantes();
         for (Object arrayVotante : arrayVotantes) {
             JSONObject votanteSiguiente = (JSONObject) arrayVotante;
