@@ -12,8 +12,8 @@ public class AccesoADatosInterrumpidoException extends RuntimeException {
         return new AccesoADatosInterrumpidoException("No se pudo parsear el archivo " + ruta);
     }
 
-    public static AccesoADatosInterrumpidoException talElementoNoExiste(String elemento) {
+    public static AccesoADatosInterrumpidoException talElementoNoExiste(String dato) {
         return new AccesoADatosInterrumpidoException(
-                "El elemento buscado con el dato " + elemento + " no existe");
+                "El elemento asociado con el dato " + dato + " no existe");
     }
 }

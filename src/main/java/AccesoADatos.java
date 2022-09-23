@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /*
-    Clase con los métodos que interactúan
+    Clase que contiene los métodos que interactúan
     directamente con los archivos de datos JSON
  */
 
