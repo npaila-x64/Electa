@@ -5,27 +5,19 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ElectaPrototipoTest {
+class MenuPrincipalTest {
 
-    ElectaPrototipo app;
+    MenuPrincipal app;
 
     @BeforeEach
     void init() {
-        app = new ElectaPrototipo();
+        app = new MenuPrincipal();
     }
 
     @Test
     void esCredencialVotanteValidaTest() {
         /* La tupla rut/clave 111111111 / 1111 es parte de las pruebas del sistema */
         assertTrue(app.esCredencialVotanteValida("111111111", "1111"));
-    }
-
-    @Test
-    void votarOpcionPreferencialTest(){
-        assertThrows(NullPointerException.class, () ->
-                app.votarOpcionPreferencial(null, null, null)
-                , "Se ha ingresado una entrada nula");
-
     }
 
     @Test
@@ -51,16 +43,5 @@ class ElectaPrototipoTest {
     void padTextoTest() {
         assertEquals("test..........................",
                 app.padTexto("test", ".", 30));
-    }
-
-    @Test
-    void verificaQueCargarArchivoJSONNoExistenteTiraExcepcion() {
-        assertThrows(AccesoADatosInterrumpidoException.class,
-                () -> app.parsearArchivoJSON("ruta/que/no/existe"));
-    }
-
-    @Test
-    void verificaQueIntentarObtenerRutNoExistenteTiraExcepcion() {
-        assertThrows(NoSuchElementException.class, () -> app.obtenerIDDeRut("123"));
     }
 }
