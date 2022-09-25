@@ -1,29 +1,17 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-class ElectaPrototipoTest {
+class MenuPrincipalTest {
 
-    ElectaPrototipo app;
+    MenuPrincipal app;
 
     @BeforeEach
     void init() {
-        app = new ElectaPrototipo();
-    }
-
-    @Test
-    void esCredencialVotanteValidaTest() {
-        /* La tupla rut/clave 111111111 / 1111 es parte de las pruebas del sistema */
-        assertTrue(app.esCredencialVotanteValida("111111111", "1111"));
-    }
-
-    @Test
-    void votarOpcionPreferencialTest(){
-        assertThrows(NullPointerException.class, () ->
-                app.votarOpcionPreferencial(null, null, null)
-                , "Se ha ingresado una entrada nula");
-
+        app = new MenuPrincipal();
     }
 
     @Test
