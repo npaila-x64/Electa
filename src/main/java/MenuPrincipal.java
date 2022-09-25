@@ -22,11 +22,11 @@ public class MenuPrincipal {
         mostrarOpcionesDeIngreso();
         salirMenu:
         while (true) {
-            switch (pedirOpcion()) {
+            switch (ValidadorDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> ingresarComoUsuario();
                 case 2 -> ingresarComoAdmin();
-                default -> {mostrarOpcionInvalida();continue;}
+                default -> {ValidadorDatos.mostrarOpcionInvalida();continue;}
             }
             mostrarOpcionesDeIngreso();
         }
@@ -34,7 +34,7 @@ public class MenuPrincipal {
 
     public void ingresarComoAdmin() {
         try {
-            String clave = pedirString("Ingrese la contraseña del administrador \n> ");
+            String clave = ValidadorDatos.pedirString("Ingrese la contraseña del administrador \n> ");
             if (esCredencialAdministradorValida(clave)) {
                 mostrarMenuAdministador();
             } else {
@@ -50,12 +50,12 @@ public class MenuPrincipal {
         mostrarOpcionesMenuAdministador();
         salirMenu:
         while (true) {
-            switch (pedirOpcion()) {
+            switch (ValidadorDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> mostrarPanelDeControlDeVotaciones();
                 case 2 -> mostrarMenuCreacionDeVotacion();
                 case 3 -> mostrarMenuResultados();
-                default -> {mostrarOpcionInvalida(); continue;}
+                default -> {ValidadorDatos.mostrarOpcionInvalida(); continue;}
             }
             mostrarOpcionesMenuAdministador();
         }
@@ -73,8 +73,8 @@ public class MenuPrincipal {
 
     public void ingresarComoUsuario() {
         try {
-            String rutVotante = pedirString("Ingrese su rut\n> ");
-            String claveVotante = pedirString("Ingrese su clave\n> ");
+            String rutVotante = ValidadorDatos.pedirString("Ingrese su rut\n> ");
+            String claveVotante = ValidadorDatos.pedirString("Ingrese su clave\n> ");
             if (esCredencialVotanteValida(rutVotante, claveVotante)) {
                 mostrarMenuVotacionesVotante(AccesoADatos.obtenerIDDeRut(rutVotante));
             } else {
@@ -90,7 +90,7 @@ public class MenuPrincipal {
         mostrarOpcionesMenuVotacionesVotante();
         salirMenu:
         while (true) {
-            switch (pedirOpcion()) {
+            switch (ValidadorDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> mostrarMenuParaVotar(IDVotante);
                 case 2 -> mostrarMenuResultados();
@@ -148,7 +148,7 @@ public class MenuPrincipal {
         List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
         mostrarOpcionesMenuResultados(titulosVotaciones);
         while (true) {
-            int opcionElegida = pedirOpcion();
+            int opcionElegida = ValidadorDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, titulosVotaciones.size())) continue;
             mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
@@ -168,7 +168,7 @@ public class MenuPrincipal {
         List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
         mostrarVotacionesDisponiblesParaVotacion(titulosVotaciones);
         while (true) {
-            int opcionElegida = pedirOpcion();
+            int opcionElegida = ValidadorDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, IDsVotaciones.size())) continue;
             mostrarMenuOpcionesParaVotar(IDsVotaciones.get(opcionElegida - 1), IDVotante);
@@ -188,7 +188,7 @@ public class MenuPrincipal {
         opciones.add(0, "Abstenerse");
         mostrarOpcionesMenuOpcionesParaVotar(opciones);
         while (true) {
-            int opcionElegida = pedirOpcion();
+            int opcionElegida = ValidadorDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (opcionElegida == 1) {
                 AccesoADatos.realizarVotoBlanco(IDVotacion, IDVotante);
@@ -228,7 +228,8 @@ public class MenuPrincipal {
     }
 
     public void mostrarResultadosVotacion(String tituloVotacion) {
-        JSONObject votacion = AccesoADatos.obtenerVotacionPorTitulo(tituloVotacion);
+        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
+        JSONObject votacion = AccesoADatos.obtenerVotacionPorTitulo(jsonArrayVotaciones, tituloVotacion);
         mostrarResultadosDatos(votacion);
         mostrarResultadosVotosPorOpciones(votacion);
     }
@@ -261,7 +262,7 @@ public class MenuPrincipal {
         List<String> IDsVotaciones = AccesoADatos.obtenerIDsVotaciones();
         mostrarOpcionesPanelDeControlDeVotaciones(IDsVotaciones);
         while (true) {
-            int opcionElegida = pedirOpcion();
+            int opcionElegida = ValidadorDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, IDsVotaciones.size())) continue;
             mostrarEditorDeVotacion(IDsVotaciones.get(opcionElegida - 1));
@@ -316,7 +317,7 @@ public class MenuPrincipal {
         mostrarOpcionesEditorDeVotacion(IDVotacion);
         salirMenu:
         while (true) {
-            switch (pedirOpcion()) {
+            switch (ValidadorDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> mostrarMenuEditarCamposDeVotacion(IDVotacion);
                 case 2 -> agregarOpcionDeVotacion(IDVotacion);
@@ -344,7 +345,7 @@ public class MenuPrincipal {
                 "hora_inicio", "fecha_termino", "hora_termino");
         mostrarOpcionesMenuEditarCamposDeVotacion(campos);
         while (true) {
-            int opcionElegida = pedirOpcion();
+            int opcionElegida = ValidadorDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, campos.size())) continue;
             editarCampoDeVotacion(IDVotacion, campos.get(opcionElegida - 1));
@@ -360,15 +361,8 @@ public class MenuPrincipal {
     }
 
     public void editarCampoDeVotacion(String IDVotacion, String campo) {
-        String texto = pedirString(campo.concat("> "));
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        actualizarCampoDeVotacion(jsonArrayVotaciones, IDVotacion, campo, texto);
-    }
-
-    public void actualizarCampoDeVotacion(JSONArray jsonArrayVotaciones, String IDVotacion, String campo, String texto) {
-        JSONObject votacion = AccesoADatos.obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
-        votacion.put(campo, texto);
-        AccesoADatos.escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
+        String texto = ValidadorDatos.pedirString(campo.concat("> "));
+        actualizarCampoDeVotacion(IDVotacion, campo, texto);
     }
 
     public void mostrarMenuEliminarOpcionesDeVotacion(String IDVotacion) {
@@ -376,7 +370,7 @@ public class MenuPrincipal {
         System.out.println("Escriba la opción que desea eliminar");
         mostrarListaOpciones(opciones);
         while (true) {
-            int opcionElegida = pedirOpcion();
+            int opcionElegida = ValidadorDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, opciones.size())) continue;
             eliminarOpcionDeVotacion(IDVotacion, opciones.get(opcionElegida - 1));
@@ -386,7 +380,7 @@ public class MenuPrincipal {
     }
 
     public void agregarOpcionDeVotacion(String IDVotacion) {
-        String opcion = pedirString("Escriba la opción que desea agregar\n> ", 35);
+        String opcion = ValidadorDatos.pedirString("Escriba la opción que desea agregar\n> ", 35);
         agregarOpcionAVotacion(IDVotacion, opcion);
     }
 
@@ -402,6 +396,13 @@ public class MenuPrincipal {
         JSONObject votacion = AccesoADatos.obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
         JSONObject opciones = (JSONObject) votacion.get("opciones");
         opciones.remove(opcionElegida);
+        AccesoADatos.escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
+    }
+
+    public void actualizarCampoDeVotacion(String IDVotacion, String campo, String texto) {
+        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
+        JSONObject votacion = AccesoADatos.obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
+        votacion.put(campo, texto);
         AccesoADatos.escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
     }
 
@@ -444,7 +445,7 @@ public class MenuPrincipal {
 
     public void mostrarMenuCreacionDeVotacion() {
         String IDVotacion = AccesoADatos.obtenerNuevaIDVotacion();
-        HashMap<String, String> mapaConCampos = pedirCamposDeVotacion();
+        HashMap<String, String> mapaConCampos = ValidadorDatos.pedirCamposDeVotacion();
         JSONObject votacion = generarNuevaVotacionJSONObject(mapaConCampos, IDVotacion);
 
         JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
@@ -453,24 +454,6 @@ public class MenuPrincipal {
 
         System.out.println("¡Votación creada!\n");
         mostrarMenuAgregacionDeOpciones(IDVotacion);
-    }
-
-    public HashMap<String, String> pedirCamposDeVotacion() {
-        HashMap<String, String> mapaConCampos = new HashMap<>();
-        String titulo = pedirString("Escriba el título de la votación que desea agregar\n> ", 50);
-        System.out.println("Rellene los siguientes campos");
-        String descripcion = pedirString("Descripción\n> ");
-        String fechaInicio = pedirString("Fecha de inicio (dd-MM-aaaa)\n> ");
-        String horaInicio = pedirString("Hora de inicio (hh:mm formato 24 horas)\n> ");
-        String fechaTermino = pedirString("Fecha de término (dd-MM-aaaa)\n> ");
-        String horaTermino = pedirString("Hora de término (hh:mm formato 24 horas)\n> ");
-        mapaConCampos.put("titulo", titulo);
-        mapaConCampos.put("descripcion", descripcion);
-        mapaConCampos.put("fecha_inicio", fechaInicio);
-        mapaConCampos.put("hora_inicio", horaInicio);
-        mapaConCampos.put("fecha_termino", fechaTermino);
-        mapaConCampos.put("hora_termino", horaTermino);
-        return mapaConCampos;
     }
 
     public HashMap<String, Object> obtenerCamposDeVotacion(String IDVotacion) {
@@ -517,7 +500,7 @@ public class MenuPrincipal {
                     Para finalizar y volver escriba [0]
                     Elija una opción
                     """.concat("> "));
-            switch (pedirOpcion()) {
+            switch (ValidadorDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> agregarOpcionDeVotacion(IDVotacion);
                 default -> {mostrarOpcionInvalida(); continue;}
@@ -554,161 +537,16 @@ public class MenuPrincipal {
         return false;
     }
 
-    public int pedirValorEntero() throws InputMismatchException {
-        return new Scanner(System.in).nextInt();
-    }
-
-    public int pedirOpcion() {
-        try {
-            return pedirValorEntero();
-        } catch (InputMismatchException e) {
-            mostrarOpcionInvalida();
-            return pedirOpcion();
-        }
-    }
-
-    public String pedirString(String texto) {
-        System.out.print(texto);
-        return pedirString();
-    }
-
-    public String pedirString() {
-        return new Scanner(System.in).nextLine();
-    }
-
-    public String pedirString(String texto, int limite) {
-        System.out.print(texto);
-        return pedirString(limite);
-    }
-
-    public String pedirString(int limite) {
-        String entrada = new Scanner(System.in).nextLine();
-        if (entrada.length() > limite) {
-            mostrarTextoInvalido();
-            return pedirString();
-        }
-        return entrada;
-    }
-
-    public void mostrarTextoInvalido() {
-        System.out.print("El tamaño del texto escrito es muy largo\n> ");
-    }
-
     public void mostrarSistemaNoDisponible(String mensaje) {
         System.err.println("El sistema no se encuentra disponible por ahora, disculpe las molestias\n" +
                 "Mensaje de error: " + mensaje);
     }
 
-    public void mostrarOpcionInvalida() {
+    public static void mostrarOpcionInvalida() {
         System.out.print("Por favor, escoja una opción válida\n> ");
     }
 
     public int parsearObjectAInt(Object obj) {
         return Integer.parseInt(String.valueOf(obj));
-    }
-
-    public String queFechaEsHoy() {
-        return "19-09-2022";
-    }
-
-    public String queHoraEs() {
-        return "21:00";
-    }
-
-    public void refrescarEstadosDeVotaciones() {
-        var fechaActual = queFechaEsHoy();
-        var horaActual = queHoraEs();
-        var diaActual = Integer.parseInt(fechaActual.split("-")[0]);
-        var mesActual = Integer.parseInt(fechaActual.split("-")[1]);
-        var aniosActual = Integer.parseInt(fechaActual.split("-")[2]);
-        var horasActual = Integer.parseInt(horaActual.split(":")[0]);
-        var minutosActual = Integer.parseInt(horaActual.split(":")[1]);
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
-            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-            String fechaInicio = String.valueOf(votacionSiguiente.get("fecha_inicio"));
-            String horaInicio = String.valueOf(votacionSiguiente.get("hora_inicio"));
-            String fechaTermino = String.valueOf(votacionSiguiente.get("fecha_termino"));
-            String horaTermino = String.valueOf(votacionSiguiente.get("hora_termino"));
-            var diaInicio = Integer.parseInt(fechaInicio.split("-")[0]);
-            var mesInicio = Integer.parseInt(fechaInicio.split("-")[1]);
-            var anioInicio = Integer.parseInt(fechaInicio.split("-")[2]);
-            var horasInicio = Integer.parseInt(horaInicio.split(":")[0]);
-            var minutosInicio = Integer.parseInt(horaInicio.split(":")[1]);
-            var diaTermino = Integer.parseInt(fechaTermino.split("-")[0]);
-            var mesTermino = Integer.parseInt(fechaTermino.split("-")[1]);
-            var anioTermino = Integer.parseInt(fechaTermino.split("-")[2]);
-            var horasTermino = Integer.parseInt(horaTermino.split(":")[0]);
-            var minutosTermino = Integer.parseInt(horaTermino.split(":")[1]);
-            boolean esFechaYHoraDentroDeRango = true;
-            continua: {
-                if (anioInicio <= aniosActual && anioTermino >= aniosActual) {
-                    if (mesInicio <= mesActual && mesTermino >= mesActual) {
-                        if (diaInicio <= diaActual && diaTermino >= diaActual) {
-                            if (horasInicio <= horasActual && horasTermino >= horasActual) {
-                                if (minutosInicio <= minutosActual && minutosTermino >= minutosActual) {
-                                    break continua;
-                                }
-                            }
-                        }
-                    }
-                }
-                esFechaYHoraDentroDeRango = false;
-            }
-            if (esFechaYHoraDentroDeRango) {
-
-            }
-
-            boolean esFechaYHoraMenorQueRango = true;
-            continua: {
-                if (anioInicio >= aniosActual) {
-                    if (mesInicio >= mesActual) {
-                        if (diaInicio >= diaActual) {
-                            if (horasInicio >= horasActual) {
-                                if (minutosInicio >= minutosActual) {
-                                    break continua;
-                                }
-                            }
-                        }
-                    }
-                }
-                esFechaYHoraMenorQueRango = false;
-            }
-            if (esFechaYHoraMenorQueRango) {
-
-            }
-
-            boolean esFechaYHoraMayorQueRango = true;
-            continua: {
-                if (anioTermino <= aniosActual) {
-                    if (mesTermino <= mesActual) {
-                        if (diaTermino <= diaActual) {
-                            if (horasTermino <= horasActual) {
-                                if (minutosTermino <= minutosActual) {
-                                    break continua;
-                                }
-                            }
-                        }
-                    }
-                }
-                esFechaYHoraMayorQueRango = false;
-            }
-            if (esFechaYHoraMayorQueRango) {
-
-            }
-        }
-        throw new RuntimeException();
-    }
-
-    public boolean esFechaDentroDeRango() {
-        return false;
-    }
-
-    public boolean esFechaMayorQueRango() {
-        return false;
-    }
-
-    public boolean esFechaMenorQueRango() {
-        return false;
     }
 }

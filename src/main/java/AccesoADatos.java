@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /*
@@ -19,15 +18,15 @@ import java.util.Scanner;
 
 public class AccesoADatos {
 
-    public static JSONArray parsearVotantes() {
+    public static JSONArray parsearVotantes() throws AccesoADatosInterrumpidoException {
         return parsearArchivoJSON("src/main/datos/votantes.json");
     }
 
-    public static JSONArray parsearCredencialAdmin() {
+    public static JSONArray parsearCredencialAdmin() throws AccesoADatosInterrumpidoException {
         return parsearArchivoJSON("src/main/datos/credencialesAdmin.json");
     }
 
-    public static JSONArray parsearVotaciones() {
+    public static JSONArray parsearVotaciones() throws AccesoADatosInterrumpidoException {
         return parsearArchivoJSON("src/main/datos/votaciones.json");
     }
 
@@ -64,57 +63,11 @@ public class AccesoADatos {
         return nuevoCamposVotaciones;
     }
 
-    public static JSONObject obtenerVotacionPorTitulo(String tituloVotacion) {
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
-            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-            if (String.valueOf(votacionSiguiente.get("titulo")).equals(tituloVotacion)) {
-                return votacionSiguiente;
-            }
-        }
-        throw AccesoADatosInterrumpidoException.talElementoNoExiste(tituloVotacion);
-    }
-
-    public static String obtenerIDDeRut(String rut) {
-        JSONArray arrayVotantes = AccesoADatos.parsearVotantes();
-        for (Object arrayVotante : arrayVotantes) {
-            JSONObject votanteSiguiente = (JSONObject) arrayVotante;
-            if (votanteSiguiente.get("rut").equals(rut)) {
-                return String.valueOf(votanteSiguiente.get("id"));
-            }
-        }
-        throw AccesoADatosInterrumpidoException.talElementoNoExiste(rut);
-    }
-
     public static List<String> obtenerOpcionesDeVotacion(String IDVotacion) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
         JSONObject opciones = (JSONObject) votacion.get("opciones");
         return new ArrayList<>(opciones.keySet());
-    }
-
-    public static String obtenerNuevaIDVotacion() {
-        int maxID = 0;
-        JSONArray jsonArrayVotaciones = parsearVotaciones();
-        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
-            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-            int id = parsearObjectAInt(votacionSiguiente.get("id"));
-            if (id > maxID) {
-                maxID = id;
-            }
-        }
-        maxID++;
-        return String.valueOf(maxID);
-    }
-
-    public static List<String> obtenerTitulosVotaciones() {
-        JSONArray jsonArrayVotaciones = parsearVotaciones();
-        List<String> arrayListVotaciones = new ArrayList<>();
-        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
-            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-            arrayListVotaciones.add(String.valueOf(votacionSiguiente.get("titulo")));
-        }
-        return arrayListVotaciones;
     }
 
     public static List<String> obtenerTitulosVotaciones(List<String> IDsVotaciones) {
@@ -132,12 +85,20 @@ public class AccesoADatos {
         return arrayListVotaciones;
     }
 
+    public static List<String> obtenerTitulosVotaciones() {
+        return obtenerKeysDeCampoDeVotaciones("titulo");
+    }
+
     public static List<String> obtenerIDsVotaciones() {
+        return obtenerKeysDeCampoDeVotaciones("id");
+    }
+
+    public static List<String> obtenerKeysDeCampoDeVotaciones(String campo) {
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         List<String> arrayListIDsVotaciones = new ArrayList<>();
         for (Object jsonArrayVotacion : jsonArrayVotaciones) {
             JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-            arrayListIDsVotaciones.add(String.valueOf(votacionSiguiente.get("id")));
+            arrayListIDsVotaciones.add(String.valueOf(votacionSiguiente.get(campo)));
         }
         return arrayListIDsVotaciones;
     }
@@ -148,11 +109,13 @@ public class AccesoADatos {
         for (Object jsonArrayVotacion : jsonArrayVotaciones) {
             JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
             JSONArray arrayVotantes = (JSONArray) votacionSiguiente.get("votantes");
-            continuaBucle:
+            salirBucle:
             {
-                for (Object IDVotanteQueVoto : arrayVotantes) {
-                    if (IDVotante.equals(String.valueOf(IDVotanteQueVoto))) {
-                        break continuaBucle;
+                for (Object IDVotanteQueYaVotoEnEstaVotacion : arrayVotantes) {
+                    if (IDVotante.equals(String.valueOf(IDVotanteQueYaVotoEnEstaVotacion))) {
+                        // Se da a entender que el votante ya está en la
+                        // lista de personas quienes votaron en esta votación
+                        break salirBucle;
                     }
                 }
                 arrayListIDsVotaciones.add(String.valueOf(votacionSiguiente.get("id")));
@@ -162,13 +125,46 @@ public class AccesoADatos {
     }
 
     public static JSONObject obtenerVotacionPorID(JSONArray jsonArrayVotaciones, String IDVotacion) {
+        return obtenerVotacionPorCampo(jsonArrayVotaciones, "id", IDVotacion);
+    }
+
+    public static JSONObject obtenerVotacionPorTitulo(JSONArray jsonArrayVotaciones, String tituloVotacion) {
+        return obtenerVotacionPorCampo(jsonArrayVotaciones, "titulo", tituloVotacion);
+    }
+
+    public static JSONObject obtenerVotacionPorCampo(JSONArray jsonArrayVotaciones, String campo, String valor) {
         for (Object jsonArrayVotacion : jsonArrayVotaciones) {
             JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-            if (String.valueOf(votacionSiguiente.get("id")).equals(IDVotacion)) {
+            if (String.valueOf(votacionSiguiente.get(campo)).equals(valor)) {
                 return votacionSiguiente;
             }
         }
-        throw AccesoADatosInterrumpidoException.talElementoNoExiste(IDVotacion);
+        throw AccesoADatosInterrumpidoException.talElementoNoExiste(campo);
+    }
+
+    public static String obtenerIDDeRut(String rut) {
+        JSONArray arrayVotantes = AccesoADatos.parsearVotantes();
+        for (Object arrayVotante : arrayVotantes) {
+            JSONObject votanteSiguiente = (JSONObject) arrayVotante;
+            if (votanteSiguiente.get("rut").equals(rut)) {
+                return String.valueOf(votanteSiguiente.get("id"));
+            }
+        }
+        throw AccesoADatosInterrumpidoException.talElementoNoExiste(rut);
+    }
+
+    public static String obtenerNuevaIDVotacion() {
+        int maxID = 0;
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+            int id = parsearObjectAInt(votacionSiguiente.get("id"));
+            if (id > maxID) {
+                maxID = id;
+            }
+        }
+        maxID++;
+        return String.valueOf(maxID);
     }
 
     public static String leerContenidosJSON(String ruta) throws FileNotFoundException {
