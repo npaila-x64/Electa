@@ -51,12 +51,12 @@ public class AccesoADatos {
     }
 
     public static List<String> obtenerCamposVotacionesConEstado(String estado, String campo) {
-        JSONArray jsonArrayVotaciones = parsearVotaciones();
         List<String> IDsVotaciones = obtenerIDsVotaciones();
         List<String> nuevoCamposVotaciones = new ArrayList<>();
         for (String IDvotacion : IDsVotaciones) {
-            JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDvotacion);
+            JSONObject votacion = obtenerVotacionPorID(IDvotacion);
             if (votacion.get("estado").equals(estado)) {
+                if (votacion.get(campo) == null) throw new NullPointerException();
                 nuevoCamposVotaciones.add(String.valueOf(votacion.get(campo)));
             }
         }
@@ -64,8 +64,7 @@ public class AccesoADatos {
     }
 
     public static List<String> obtenerOpcionesDeVotacion(String IDVotacion) {
-        JSONArray jsonArrayVotaciones = parsearVotaciones();
-        JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
+        JSONObject votacion = obtenerVotacionPorID(IDVotacion);
         JSONObject opciones = (JSONObject) votacion.get("opciones");
         return new ArrayList<>(opciones.keySet());
     }
@@ -128,8 +127,12 @@ public class AccesoADatos {
         return obtenerVotacionPorCampo(jsonArrayVotaciones, "id", IDVotacion);
     }
 
-    public static JSONObject obtenerVotacionPorTitulo(JSONArray jsonArrayVotaciones, String tituloVotacion) {
-        return obtenerVotacionPorCampo(jsonArrayVotaciones, "titulo", tituloVotacion);
+    public static JSONObject obtenerVotacionPorID(String IDVotacion) {
+        return obtenerVotacionPorCampo("id", IDVotacion);
+    }
+
+    public static JSONObject obtenerVotacionPorTitulo(String tituloVotacion) {
+        return obtenerVotacionPorCampo("titulo", tituloVotacion);
     }
 
     public static JSONObject obtenerVotacionPorCampo(JSONArray jsonArrayVotaciones, String campo, String valor) {
@@ -142,9 +145,20 @@ public class AccesoADatos {
         throw AccesoADatosInterrumpidoException.talElementoNoExiste(campo);
     }
 
+    public static JSONObject obtenerVotacionPorCampo(String campo, String valor) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+            if (String.valueOf(votacionSiguiente.get(campo)).equals(valor)) {
+                return votacionSiguiente;
+            }
+        }
+        throw AccesoADatosInterrumpidoException.talElementoNoExiste(campo);
+    }
+
     public static String obtenerIDDeRut(String rut) {
-        JSONArray arrayVotantes = AccesoADatos.parsearVotantes();
-        for (Object arrayVotante : arrayVotantes) {
+        JSONArray jsonArrayVotaciones = parsearVotantes();
+        for (Object arrayVotante : jsonArrayVotaciones) {
             JSONObject votanteSiguiente = (JSONObject) arrayVotante;
             if (votanteSiguiente.get("rut").equals(rut)) {
                 return String.valueOf(votanteSiguiente.get("id"));
@@ -225,6 +239,36 @@ public class AccesoADatos {
                 votacion.put("votos_preferenciales", votosPreferenciales + 1);
             }
         }
+    }
+
+    public static void eliminarVotacion(String IDVotacion) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
+        jsonArrayVotaciones.remove(votacion);
+        escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
+    }
+
+    public static void eliminarOpcionDeVotacion(String IDVotacion, String opcionElegida) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
+        JSONObject opciones = (JSONObject) votacion.get("opciones");
+        opciones.remove(opcionElegida);
+        escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
+    }
+
+    public static void actualizarCampoDeVotacion(String IDVotacion, String campo, String texto) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
+        votacion.put(campo, texto);
+        escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
+    }
+
+    public static void agregarOpcionAVotacion(String IDVotacion, String opcionElegida) {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        JSONObject votacion = obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
+        JSONObject opciones = (JSONObject) votacion.get("opciones");
+        opciones.put(opcionElegida, 0);
+        escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
     }
 
     public static int parsearObjectAInt(Object obj) {

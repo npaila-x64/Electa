@@ -15,12 +15,6 @@ class MenuPrincipalTest {
     }
 
     @Test
-    void esCredencialVotanteValidaTest() {
-        /* La tupla rut/clave 111111111 / 1111 es parte de las pruebas del sistema */
-        assertTrue(app.esCredencialVotanteValida("111111111", "1111"));
-    }
-
-    @Test
     void mostrarIndiceOpcionesTest(){
         assertThrows(NullPointerException.class, () ->
                         app.mostrarListaOpciones(null)

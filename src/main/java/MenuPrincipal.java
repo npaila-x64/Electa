@@ -36,7 +36,7 @@ public class MenuPrincipal {
     public void ingresarComoAdmin() {
         try {
             String clave = ValidadorDeDatos.pedirString("Ingrese la contraseña del administrador \n> ");
-            if (esCredencialAdministradorValida(clave)) {
+            if (ValidadorDeDatos.esCredencialAdministradorValida(clave)) {
                 mostrarMenuAdministador();
             } else {
                 System.out.println("Contraseña incorrecta");
@@ -77,7 +77,7 @@ public class MenuPrincipal {
         try {
             String rutVotante = ValidadorDeDatos.pedirString("Ingrese su rut\n> ");
             String claveVotante = ValidadorDeDatos.pedirString("Ingrese su clave\n> ");
-            if (esCredencialVotanteValida(rutVotante, claveVotante)) {
+            if (ValidadorDeDatos.esCredencialVotanteValida(rutVotante, claveVotante)) {
                 mostrarMenuVotacionesVotante(AccesoADatos.obtenerIDDeRut(rutVotante));
             } else {
                 System.out.println("RUT o contraseña incorrectos");
@@ -230,8 +230,7 @@ public class MenuPrincipal {
     }
 
     public void mostrarResultadosVotacion(String tituloVotacion) {
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        JSONObject votacion = AccesoADatos.obtenerVotacionPorTitulo(jsonArrayVotaciones, tituloVotacion);
+        JSONObject votacion = AccesoADatos.obtenerVotacionPorTitulo(tituloVotacion);
         mostrarResultadosDatos(votacion);
         mostrarResultadosVotosPorOpciones(votacion);
     }
@@ -324,7 +323,7 @@ public class MenuPrincipal {
                 case 1 -> mostrarMenuEditarCamposDeVotacion(IDVotacion);
                 case 2 -> agregarOpcionDeVotacion(IDVotacion);
                 case 3 -> mostrarMenuEliminarOpcionesDeVotacion(IDVotacion);
-                case 4 -> {eliminarVotacion(IDVotacion); break salirMenu;}
+                case 4 -> {AccesoADatos.eliminarVotacion(IDVotacion); break salirMenu;}
                 default -> {mostrarOpcionInvalida(); continue;}
             }
             mostrarOpcionesEditorDeVotacion(IDVotacion);
@@ -364,7 +363,7 @@ public class MenuPrincipal {
 
     public void editarCampoDeVotacion(String IDVotacion, String campo) {
         String texto = ValidadorDeDatos.pedirString(campo.concat("> "));
-        actualizarCampoDeVotacion(IDVotacion, campo, texto);
+        AccesoADatos.actualizarCampoDeVotacion(IDVotacion, campo, texto);
     }
 
     public void mostrarMenuEliminarOpcionesDeVotacion(String IDVotacion) {
@@ -375,7 +374,7 @@ public class MenuPrincipal {
             int opcionElegida = ValidadorDeDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, opciones.size())) continue;
-            eliminarOpcionDeVotacion(IDVotacion, opciones.get(opcionElegida - 1));
+            AccesoADatos.eliminarOpcionDeVotacion(IDVotacion, opciones.get(opcionElegida - 1));
             System.out.println("Opción eliminada con exito");
             break;
         }
@@ -383,42 +382,11 @@ public class MenuPrincipal {
 
     public void agregarOpcionDeVotacion(String IDVotacion) {
         String opcion = ValidadorDeDatos.pedirString("Escriba la opción que desea agregar\n> ", 35);
-        agregarOpcionAVotacion(IDVotacion, opcion);
-    }
-
-    public void eliminarVotacion(String IDVotacion) {
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        JSONObject votacion = AccesoADatos.obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
-        jsonArrayVotaciones.remove(votacion);
-        AccesoADatos.escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
-    }
-
-    public void eliminarOpcionDeVotacion(String IDVotacion, String opcionElegida) {
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        JSONObject votacion = AccesoADatos.obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
-        JSONObject opciones = (JSONObject) votacion.get("opciones");
-        opciones.remove(opcionElegida);
-        AccesoADatos.escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
-    }
-
-    public void actualizarCampoDeVotacion(String IDVotacion, String campo, String texto) {
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        JSONObject votacion = AccesoADatos.obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
-        votacion.put(campo, texto);
-        AccesoADatos.escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
-    }
-
-    public void agregarOpcionAVotacion(String IDVotacion, String opcionElegida) {
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        JSONObject votacion = AccesoADatos.obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
-        JSONObject opciones = (JSONObject) votacion.get("opciones");
-        opciones.put(opcionElegida, 0);
-        AccesoADatos.escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
+        AccesoADatos.agregarOpcionAVotacion(IDVotacion, opcion);
     }
 
     public void mostrarCamposDeVotacion(String IDVotacion) {
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        JSONObject votacion = AccesoADatos.obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
+        JSONObject votacion = AccesoADatos.obtenerVotacionPorID(IDVotacion);
         String titulo = String.valueOf(votacion.get("titulo"));
         String descripcion = String.valueOf(votacion.get("descripcion"));
         String fechaInicio = String.valueOf(votacion.get("fecha_inicio"));
@@ -459,8 +427,7 @@ public class MenuPrincipal {
     }
 
     public HashMap<String, Object> obtenerCamposDeVotacion(String IDVotacion) {
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        JSONObject votacion = AccesoADatos.obtenerVotacionPorID(jsonArrayVotaciones, IDVotacion);
+        JSONObject votacion = AccesoADatos.obtenerVotacionPorID(IDVotacion);
         HashMap<String, Object> mapaConCampos = new HashMap<>();
         mapaConCampos.put("id", votacion.get("id"));
         mapaConCampos.put("titulo", votacion.get("titulo"));
@@ -519,24 +486,6 @@ public class MenuPrincipal {
             System.out.println(padTexto(opcion, ".", 30)
                     .concat(String.valueOf(opciones.get(opcion))));
         }
-    }
-
-    public boolean esCredencialAdministradorValida(String clave) throws AccesoADatosInterrumpidoException {
-        JSONArray credencialArray = AccesoADatos.parsearCredencialAdmin();
-        JSONObject credencialObject = (JSONObject) credencialArray.get(0);
-        String claveObtenida = String.valueOf(credencialObject.get("clave"));
-        return clave.equals(claveObtenida);
-    }
-
-    public boolean esCredencialVotanteValida(String rut, String clave) throws AccesoADatosInterrumpidoException {
-        JSONArray arrayVotantes = AccesoADatos.parsearVotantes();
-        for (Object arrayVotante : arrayVotantes) {
-            JSONObject votanteSiguiente = (JSONObject) arrayVotante;
-            if (votanteSiguiente.get("rut").equals(rut) && votanteSiguiente.get("clave").equals(clave)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void mostrarSistemaNoDisponible(String mensaje) {

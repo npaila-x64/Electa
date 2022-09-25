@@ -1,3 +1,6 @@
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -16,7 +19,23 @@ public class ValidadorDeDatos {
         return hora.matches("\\d{2}:\\d{2}");
     }
 
+    public static boolean esCredencialAdministradorValida(String clave) throws AccesoADatosInterrumpidoException {
+        JSONArray credencialArray = AccesoADatos.parsearCredencialAdmin();
+        JSONObject credencialObject = (JSONObject) credencialArray.get(0);
+        String claveObtenida = String.valueOf(credencialObject.get("clave"));
+        return clave.equals(claveObtenida);
+    }
 
+    public static boolean esCredencialVotanteValida(String rut, String clave) throws AccesoADatosInterrumpidoException {
+        JSONArray arrayVotantes = AccesoADatos.parsearVotantes();
+        for (Object arrayVotante : arrayVotantes) {
+            JSONObject votanteSiguiente = (JSONObject) arrayVotante;
+            if (votanteSiguiente.get("rut").equals(rut) && votanteSiguiente.get("clave").equals(clave)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static HashMap<String, String> pedirCamposDeVotacion() {
         HashMap<String, String> mapaConCampos = new HashMap<>();
