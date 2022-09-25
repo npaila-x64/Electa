@@ -9,11 +9,11 @@ import java.util.Scanner;
 public class ValidadorDeDatos {
 
     public static boolean esFormatoFechaValido(String fecha) {
-        return false;
+        return fecha.matches("\\d{2}-\\d{2}-\\d{4}");
     }
 
     public static boolean esFormatoHoraValido(String hora) {
-        return false;
+        return hora.matches("\\d{2}:\\d{2}");
     }
 
 
