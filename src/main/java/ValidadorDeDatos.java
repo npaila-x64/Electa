@@ -6,7 +6,7 @@ import java.util.Scanner;
     Clase que contiene los métodos dedicados a validar datos
  */
 
-public class ValidadorDatos {
+public class ValidadorDeDatos {
 
     public static boolean esFormatoFechaValido(String fecha) {
         return false;

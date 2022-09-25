@@ -22,11 +22,12 @@ public class MenuPrincipal {
         mostrarOpcionesDeIngreso();
         salirMenu:
         while (true) {
-            switch (ValidadorDatos.pedirOpcion()) {
+            switch (ValidadorDeDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> ingresarComoUsuario();
                 case 2 -> ingresarComoAdmin();
-                default -> {ValidadorDatos.mostrarOpcionInvalida();continue;}
+                default -> {
+                    ValidadorDeDatos.mostrarOpcionInvalida();continue;}
             }
             mostrarOpcionesDeIngreso();
         }
@@ -34,7 +35,7 @@ public class MenuPrincipal {
 
     public void ingresarComoAdmin() {
         try {
-            String clave = ValidadorDatos.pedirString("Ingrese la contraseña del administrador \n> ");
+            String clave = ValidadorDeDatos.pedirString("Ingrese la contraseña del administrador \n> ");
             if (esCredencialAdministradorValida(clave)) {
                 mostrarMenuAdministador();
             } else {
@@ -50,12 +51,13 @@ public class MenuPrincipal {
         mostrarOpcionesMenuAdministador();
         salirMenu:
         while (true) {
-            switch (ValidadorDatos.pedirOpcion()) {
+            switch (ValidadorDeDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> mostrarPanelDeControlDeVotaciones();
                 case 2 -> mostrarMenuCreacionDeVotacion();
                 case 3 -> mostrarMenuResultados();
-                default -> {ValidadorDatos.mostrarOpcionInvalida(); continue;}
+                default -> {
+                    ValidadorDeDatos.mostrarOpcionInvalida(); continue;}
             }
             mostrarOpcionesMenuAdministador();
         }
@@ -73,8 +75,8 @@ public class MenuPrincipal {
 
     public void ingresarComoUsuario() {
         try {
-            String rutVotante = ValidadorDatos.pedirString("Ingrese su rut\n> ");
-            String claveVotante = ValidadorDatos.pedirString("Ingrese su clave\n> ");
+            String rutVotante = ValidadorDeDatos.pedirString("Ingrese su rut\n> ");
+            String claveVotante = ValidadorDeDatos.pedirString("Ingrese su clave\n> ");
             if (esCredencialVotanteValida(rutVotante, claveVotante)) {
                 mostrarMenuVotacionesVotante(AccesoADatos.obtenerIDDeRut(rutVotante));
             } else {
@@ -90,7 +92,7 @@ public class MenuPrincipal {
         mostrarOpcionesMenuVotacionesVotante();
         salirMenu:
         while (true) {
-            switch (ValidadorDatos.pedirOpcion()) {
+            switch (ValidadorDeDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> mostrarMenuParaVotar(IDVotante);
                 case 2 -> mostrarMenuResultados();
@@ -148,7 +150,7 @@ public class MenuPrincipal {
         List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
         mostrarOpcionesMenuResultados(titulosVotaciones);
         while (true) {
-            int opcionElegida = ValidadorDatos.pedirOpcion();
+            int opcionElegida = ValidadorDeDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, titulosVotaciones.size())) continue;
             mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
@@ -168,7 +170,7 @@ public class MenuPrincipal {
         List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
         mostrarVotacionesDisponiblesParaVotacion(titulosVotaciones);
         while (true) {
-            int opcionElegida = ValidadorDatos.pedirOpcion();
+            int opcionElegida = ValidadorDeDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, IDsVotaciones.size())) continue;
             mostrarMenuOpcionesParaVotar(IDsVotaciones.get(opcionElegida - 1), IDVotante);
@@ -188,7 +190,7 @@ public class MenuPrincipal {
         opciones.add(0, "Abstenerse");
         mostrarOpcionesMenuOpcionesParaVotar(opciones);
         while (true) {
-            int opcionElegida = ValidadorDatos.pedirOpcion();
+            int opcionElegida = ValidadorDeDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (opcionElegida == 1) {
                 AccesoADatos.realizarVotoBlanco(IDVotacion, IDVotante);
@@ -262,7 +264,7 @@ public class MenuPrincipal {
         List<String> IDsVotaciones = AccesoADatos.obtenerIDsVotaciones();
         mostrarOpcionesPanelDeControlDeVotaciones(IDsVotaciones);
         while (true) {
-            int opcionElegida = ValidadorDatos.pedirOpcion();
+            int opcionElegida = ValidadorDeDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, IDsVotaciones.size())) continue;
             mostrarEditorDeVotacion(IDsVotaciones.get(opcionElegida - 1));
@@ -317,7 +319,7 @@ public class MenuPrincipal {
         mostrarOpcionesEditorDeVotacion(IDVotacion);
         salirMenu:
         while (true) {
-            switch (ValidadorDatos.pedirOpcion()) {
+            switch (ValidadorDeDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> mostrarMenuEditarCamposDeVotacion(IDVotacion);
                 case 2 -> agregarOpcionDeVotacion(IDVotacion);
@@ -345,7 +347,7 @@ public class MenuPrincipal {
                 "hora_inicio", "fecha_termino", "hora_termino");
         mostrarOpcionesMenuEditarCamposDeVotacion(campos);
         while (true) {
-            int opcionElegida = ValidadorDatos.pedirOpcion();
+            int opcionElegida = ValidadorDeDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, campos.size())) continue;
             editarCampoDeVotacion(IDVotacion, campos.get(opcionElegida - 1));
@@ -361,7 +363,7 @@ public class MenuPrincipal {
     }
 
     public void editarCampoDeVotacion(String IDVotacion, String campo) {
-        String texto = ValidadorDatos.pedirString(campo.concat("> "));
+        String texto = ValidadorDeDatos.pedirString(campo.concat("> "));
         actualizarCampoDeVotacion(IDVotacion, campo, texto);
     }
 
@@ -370,7 +372,7 @@ public class MenuPrincipal {
         System.out.println("Escriba la opción que desea eliminar");
         mostrarListaOpciones(opciones);
         while (true) {
-            int opcionElegida = ValidadorDatos.pedirOpcion();
+            int opcionElegida = ValidadorDeDatos.pedirOpcion();
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, opciones.size())) continue;
             eliminarOpcionDeVotacion(IDVotacion, opciones.get(opcionElegida - 1));
@@ -380,7 +382,7 @@ public class MenuPrincipal {
     }
 
     public void agregarOpcionDeVotacion(String IDVotacion) {
-        String opcion = ValidadorDatos.pedirString("Escriba la opción que desea agregar\n> ", 35);
+        String opcion = ValidadorDeDatos.pedirString("Escriba la opción que desea agregar\n> ", 35);
         agregarOpcionAVotacion(IDVotacion, opcion);
     }
 
@@ -445,7 +447,7 @@ public class MenuPrincipal {
 
     public void mostrarMenuCreacionDeVotacion() {
         String IDVotacion = AccesoADatos.obtenerNuevaIDVotacion();
-        HashMap<String, String> mapaConCampos = ValidadorDatos.pedirCamposDeVotacion();
+        HashMap<String, String> mapaConCampos = ValidadorDeDatos.pedirCamposDeVotacion();
         JSONObject votacion = generarNuevaVotacionJSONObject(mapaConCampos, IDVotacion);
 
         JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
@@ -500,7 +502,7 @@ public class MenuPrincipal {
                     Para finalizar y volver escriba [0]
                     Elija una opción
                     """.concat("> "));
-            switch (ValidadorDatos.pedirOpcion()) {
+            switch (ValidadorDeDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> agregarOpcionDeVotacion(IDVotacion);
                 default -> {mostrarOpcionInvalida(); continue;}
