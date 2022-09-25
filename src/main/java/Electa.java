@@ -1,7 +1,7 @@
 public class Electa {
 
     public static void main(String[] args) {
-        ElectaPrototipo app = new ElectaPrototipo();
+        MenuPrincipal app = new MenuPrincipal();
         app.iniciar();
     }
 
