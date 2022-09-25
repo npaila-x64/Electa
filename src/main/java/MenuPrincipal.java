@@ -24,8 +24,8 @@ public class MenuPrincipal {
         while (true) {
             switch (ValidadorDeDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
-                case 1 -> ingresarComoUsuario();
-                case 2 -> ingresarComoAdmin();
+                case 1 -> ingresarComoVotante();
+                case 2 -> ingresarComoAdministrador();
                 default -> {
                     ValidadorDeDatos.mostrarOpcionInvalida();continue;}
             }
@@ -33,7 +33,7 @@ public class MenuPrincipal {
         }
     }
 
-    public void ingresarComoAdmin() {
+    public void ingresarComoAdministrador() {
         try {
             String clave = ValidadorDeDatos.pedirString("Ingrese la contraseña del administrador \n> ");
             if (ValidadorDeDatos.esCredencialAdministradorValida(clave)) {
@@ -73,7 +73,7 @@ public class MenuPrincipal {
                 """.concat("> "));
     }
 
-    public void ingresarComoUsuario() {
+    public void ingresarComoVotante() {
         try {
             String rutVotante = ValidadorDeDatos.pedirString("Ingrese su rut\n> ");
             String claveVotante = ValidadorDeDatos.pedirString("Ingrese su clave\n> ");
