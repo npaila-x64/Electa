@@ -39,20 +39,24 @@ public class RefrescadorVotaciones {
     public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, JSONObject votacion) {
         String estado = votacion.get("estado").toString();
         if (estado.equals("BORRADOR")) return;
-        var fechaTiempoInicio = obtenerFechaTiempo(
-                votacion.get("fecha_inicio"),
-                votacion.get("hora_inicio"));
-        var fechaTiempoTermino = obtenerFechaTiempo(
-                votacion.get("fecha_termino"),
-                votacion.get("hora_termino"));
+        var fechaTiempoInicio = obtenerFechaTiempoInicio(votacion);
+        var fechaTiempoTermino = obtenerFechaTiempoTermino(votacion);
         if (fechaTiempoAhora.isAfter(fechaTiempoTermino)) {
-            estado = "FINALIZADO";
+            estado = Estados.FINALIZADO.mostrarNombre();
         } else if (fechaTiempoAhora.isBefore(fechaTiempoInicio)) {
-            estado = "PENDIENTE";
+            estado = Estados.PENDIENTE.mostrarNombre();
         } else {
-            estado = "EN CURSO";
+            estado = Estados.EN_CURSO.mostrarNombre();
         }
         votacion.put("estado", estado);
+    }
+
+    public static LocalDateTime obtenerFechaTiempoInicio(JSONObject votacion) {
+        return obtenerFechaTiempo(votacion.get("fecha_inicio"), votacion.get("hora_inicio"));
+    }
+
+    public static LocalDateTime obtenerFechaTiempoTermino(JSONObject votacion) {
+        return obtenerFechaTiempo(votacion.get("fecha_termino"), votacion.get("hora_termino"));
     }
 
     public static LocalDateTime obtenerFechaTiempo(Object fecha, Object tiempo) {
