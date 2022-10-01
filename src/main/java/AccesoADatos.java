@@ -107,20 +107,24 @@ public class AccesoADatos {
         List<String> arrayListIDsVotaciones = new ArrayList<>();
         for (Object jsonArrayVotacion : jsonArrayVotaciones) {
             JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-            JSONArray arrayVotantes = (JSONArray) votacionSiguiente.get("votantes");
-            salirBucle:
-            {
-                for (Object IDVotanteQueYaVotoEnEstaVotacion : arrayVotantes) {
-                    if (IDVotante.equals(String.valueOf(IDVotanteQueYaVotoEnEstaVotacion))) {
-                        // Se da a entender que el votante ya está en la
-                        // lista de personas quienes votaron en esta votación
-                        break salirBucle;
-                    }
-                }
-                arrayListIDsVotaciones.add(String.valueOf(votacionSiguiente.get("id")));
-            }
+            verificarYAgregarVotante(arrayListIDsVotaciones, votacionSiguiente, IDVotante);
         }
         return arrayListIDsVotaciones;
+    }
+
+    public static void verificarYAgregarVotante(List<String> IDsVotaciones, JSONObject votacion, String IDVotante) {
+        JSONArray arrayVotantes = (JSONArray) votacion.get("votantes");
+        salirBucle:
+        {
+            for (Object IDVotanteQueYaVotoEnEstaVotacion : arrayVotantes) {
+                if (IDVotante.equals(String.valueOf(IDVotanteQueYaVotoEnEstaVotacion))) {
+                    // Se da a entender que el votante ya está en la
+                    // lista de personas quienes votaron en esta votación
+                    break salirBucle;
+                }
+            }
+            IDsVotaciones.add(String.valueOf(votacion.get("id")));
+        }
     }
 
     public static JSONObject obtenerVotacionPorID(JSONArray jsonArrayVotaciones, String IDVotacion) {

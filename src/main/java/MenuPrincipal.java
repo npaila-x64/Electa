@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 import java.util.*;
 
 public class MenuPrincipal {
+
     public void iniciar() {
         mostrarMenuDeIngreso();
     }
@@ -26,8 +27,7 @@ public class MenuPrincipal {
                 case 0 -> {break salirMenu;}
                 case 1 -> ingresarComoVotante();
                 case 2 -> ingresarComoAdministrador();
-                default -> {
-                    ValidadorDeDatos.mostrarOpcionInvalida();continue;}
+                default -> {ValidadorDeDatos.mostrarOpcionInvalida();continue;}
             }
             mostrarOpcionesDeIngreso();
         }
