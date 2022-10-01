@@ -1,6 +1,8 @@
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.time.LocalDateTime;
+
 /*
     Clase con métodos dedicados a refrescar
     contínuamente los estados de las votaciones,
@@ -9,108 +11,67 @@ import org.json.simple.JSONObject;
 
 public class RefrescadorVotaciones {
 
-    public String queFechaEsHoy() {
-        return "19-09-2022";
-    }
-
-    public String queHoraEs() {
-        return "21:00";
-    }
-
-    public void refrescarEstadosDeVotaciones() {
-        var fechaActual = queFechaEsHoy();
-        var horaActual = queHoraEs();
-        var diaActual = Integer.parseInt(fechaActual.split("-")[0]);
-        var mesActual = Integer.parseInt(fechaActual.split("-")[1]);
-        var aniosActual = Integer.parseInt(fechaActual.split("-")[2]);
-        var horasActual = Integer.parseInt(horaActual.split(":")[0]);
-        var minutosActual = Integer.parseInt(horaActual.split(":")[1]);
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
-            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-            String fechaInicio = String.valueOf(votacionSiguiente.get("fecha_inicio"));
-            String horaInicio = String.valueOf(votacionSiguiente.get("hora_inicio"));
-            String fechaTermino = String.valueOf(votacionSiguiente.get("fecha_termino"));
-            String horaTermino = String.valueOf(votacionSiguiente.get("hora_termino"));
-            var diaInicio = Integer.parseInt(fechaInicio.split("-")[0]);
-            var mesInicio = Integer.parseInt(fechaInicio.split("-")[1]);
-            var anioInicio = Integer.parseInt(fechaInicio.split("-")[2]);
-            var horasInicio = Integer.parseInt(horaInicio.split(":")[0]);
-            var minutosInicio = Integer.parseInt(horaInicio.split(":")[1]);
-            var diaTermino = Integer.parseInt(fechaTermino.split("-")[0]);
-            var mesTermino = Integer.parseInt(fechaTermino.split("-")[1]);
-            var anioTermino = Integer.parseInt(fechaTermino.split("-")[2]);
-            var horasTermino = Integer.parseInt(horaTermino.split(":")[0]);
-            var minutosTermino = Integer.parseInt(horaTermino.split(":")[1]);
-            boolean esFechaYHoraDentroDeRango = true;
-            continua: {
-                if (anioInicio <= aniosActual && anioTermino >= aniosActual) {
-                    if (mesInicio <= mesActual && mesTermino >= mesActual) {
-                        if (diaInicio <= diaActual && diaTermino >= diaActual) {
-                            if (horasInicio <= horasActual && horasTermino >= horasActual) {
-                                if (minutosInicio <= minutosActual && minutosTermino >= minutosActual) {
-                                    break continua;
-                                }
-                            }
-                        }
-                    }
-                }
-                esFechaYHoraDentroDeRango = false;
-            }
-            if (esFechaYHoraDentroDeRango) {
-
-            }
-
-            boolean esFechaYHoraMenorQueRango = true;
-            continua: {
-                if (anioInicio >= aniosActual) {
-                    if (mesInicio >= mesActual) {
-                        if (diaInicio >= diaActual) {
-                            if (horasInicio >= horasActual) {
-                                if (minutosInicio >= minutosActual) {
-                                    break continua;
-                                }
-                            }
-                        }
-                    }
-                }
-                esFechaYHoraMenorQueRango = false;
-            }
-            if (esFechaYHoraMenorQueRango) {
-
-            }
-
-            boolean esFechaYHoraMayorQueRango = true;
-            continua: {
-                if (anioTermino <= aniosActual) {
-                    if (mesTermino <= mesActual) {
-                        if (diaTermino <= diaActual) {
-                            if (horasTermino <= horasActual) {
-                                if (minutosTermino <= minutosActual) {
-                                    break continua;
-                                }
-                            }
-                        }
-                    }
-                }
-                esFechaYHoraMayorQueRango = false;
-            }
-            if (esFechaYHoraMayorQueRango) {
-
-            }
+    public static void main(String[] args) {
+        try {
+            refrescarEstadosDeVotaciones();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        throw new RuntimeException();
     }
 
-    public boolean esFechaDentroDeRango() {
-        return false;
+    public static LocalDateTime obtenerFechaTiempoAhora() {
+        return LocalDateTime.now();
     }
 
-    public boolean esFechaMayorQueRango() {
-        return false;
+    public static void refrescarEstadosDeVotaciones() throws InterruptedException {
+        while (true) {
+            JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
+            for (Object jsonArrayVotacion : jsonArrayVotaciones) {
+                JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+                asignarEstadoAVotacion(obtenerFechaTiempoAhora(), votacionSiguiente);
+            }
+            AccesoADatos.escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
+            System.out.println("Estados actualizados: " + obtenerFechaTiempoAhora());
+            Thread.sleep(1000);
+        }
     }
 
-    public boolean esFechaMenorQueRango() {
+    public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, JSONObject votacion) {
+        String estado = votacion.get("estado").toString();
+        if (estado.equals("BORRADOR")) return;
+        var fechaTiempoInicio = obtenerFechaTiempo(
+                votacion.get("fecha_inicio"),
+                votacion.get("hora_inicio"));
+        var fechaTiempoTermino = obtenerFechaTiempo(
+                votacion.get("fecha_termino"),
+                votacion.get("hora_termino"));
+        if (fechaTiempoAhora.isAfter(fechaTiempoTermino)) {
+            estado = "FINALIZADO";
+        } else if (fechaTiempoAhora.isBefore(fechaTiempoInicio)) {
+            estado = "PENDIENTE";
+        } else {
+            estado = "EN CURSO";
+        }
+        votacion.put("estado", estado);
+    }
+
+    public static LocalDateTime obtenerFechaTiempo(Object fecha, Object tiempo) {
+        var fechaArr = fecha.toString().split("-");
+        var dia = Integer.parseInt(fechaArr[0]);
+        var mes = Integer.parseInt(fechaArr[1]);
+        var anio = Integer.parseInt(fechaArr[2]);
+        var tiempoArr = tiempo.toString().split(":");
+        var hora = Integer.parseInt(tiempoArr[0]);
+        var minutos = Integer.parseInt(tiempoArr[1]);
+        return LocalDateTime.of(anio, mes, dia, hora, minutos);
+    }
+
+    public static boolean esMayor(int[] fechaActual, int[] fechaTermino, int indice) {
+        if (fechaTermino[indice] < fechaActual[indice]) return true;
+        if (fechaTermino[indice] == fechaActual[indice]) {
+            if (fechaActual.length - 1 == indice) return true;
+            return esMayor(fechaActual, fechaTermino, indice + 1);
+        }
         return false;
     }
 }
