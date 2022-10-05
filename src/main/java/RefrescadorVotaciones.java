@@ -33,18 +33,18 @@ public class RefrescadorVotaciones {
     }
 
     public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, JSONObject votacion) {
-        String estado = votacion.get("estado").toString();
-        if (estado.equals("BORRADOR")) return;
+        String estado = votacion.get(CampoDeVotacion.ESTADO.getTexto()).toString();
+        if (estado.equals(Estado.BORRADOR.getTexto())) return;
         var fechaTiempoInicio = obtenerFechaTiempoInicio(votacion);
         var fechaTiempoTermino = obtenerFechaTiempoTermino(votacion);
         if (fechaTiempoAhora.isAfter(fechaTiempoTermino)) {
-            estado = Estados.FINALIZADO.obtenerNombre();
+            estado = Estado.FINALIZADO.getTexto();
         } else if (fechaTiempoAhora.isBefore(fechaTiempoInicio)) {
-            estado = Estados.PENDIENTE.obtenerNombre();
+            estado = Estado.PENDIENTE.getTexto();
         } else {
-            estado = Estados.EN_CURSO.obtenerNombre();
+            estado = Estado.EN_CURSO.getTexto();
         }
-        votacion.put("estado", estado);
+        votacion.put(CampoDeVotacion.ESTADO.getTexto(), estado);
     }
 
     public static LocalDateTime obtenerFechaTiempoAhora() {
@@ -52,11 +52,15 @@ public class RefrescadorVotaciones {
     }
 
     public static LocalDateTime obtenerFechaTiempoInicio(JSONObject votacion) {
-        return obtenerFechaTiempoVotacion(votacion.get("fecha_inicio"), votacion.get("hora_inicio"));
+        return obtenerFechaTiempoVotacion(
+                votacion.get(CampoDeVotacion.FECHA_INICIO.getTexto()),
+                votacion.get(CampoDeVotacion.HORA_INICIO.getTexto()));
     }
 
     public static LocalDateTime obtenerFechaTiempoTermino(JSONObject votacion) {
-        return obtenerFechaTiempoVotacion(votacion.get("fecha_termino"), votacion.get("hora_termino"));
+        return obtenerFechaTiempoVotacion(
+                votacion.get(CampoDeVotacion.FECHA_TERMINO.getTexto()),
+                votacion.get(CampoDeVotacion.HORA_TERMINO.getTexto()));
     }
 
     public static LocalDateTime obtenerFechaTiempoVotacion(Object fecha, Object tiempo) {

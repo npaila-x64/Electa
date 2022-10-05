@@ -22,7 +22,7 @@ public class ValidadorDeDatos {
     public static boolean esCredencialAdministradorValida(String clave) throws AccesoADatosInterrumpidoException {
         JSONArray credencialArray = AccesoADatos.parsearCredencialAdmin();
         JSONObject credencialObject = (JSONObject) credencialArray.get(0);
-        String claveObtenida = String.valueOf(credencialObject.get("clave"));
+        String claveObtenida = String.valueOf(credencialObject.get(CampoDeVotante.CLAVE.getNombre()));
         return clave.equals(claveObtenida);
     }
 
@@ -30,7 +30,8 @@ public class ValidadorDeDatos {
         JSONArray arrayVotantes = AccesoADatos.parsearVotantes();
         for (Object arrayVotante : arrayVotantes) {
             JSONObject votanteSiguiente = (JSONObject) arrayVotante;
-            if (votanteSiguiente.get("rut").equals(rut) && votanteSiguiente.get("clave").equals(clave)) {
+            if (votanteSiguiente.get(CampoDeVotante.RUT.getNombre()).equals(rut)
+                    && votanteSiguiente.get(CampoDeVotante.CLAVE.getNombre()).equals(clave)) {
                 return true;
             }
         }
@@ -46,12 +47,12 @@ public class ValidadorDeDatos {
         String horaInicio = pedirString("Hora de inicio (hh:mm formato 24 horas)\n> ");
         String fechaTermino = pedirString("Fecha de término (dd-MM-aaaa)\n> ");
         String horaTermino = pedirString("Hora de término (hh:mm formato 24 horas)\n> ");
-        mapaConCampos.put("titulo", titulo);
-        mapaConCampos.put("descripcion", descripcion);
-        mapaConCampos.put("fecha_inicio", fechaInicio);
-        mapaConCampos.put("hora_inicio", horaInicio);
-        mapaConCampos.put("fecha_termino", fechaTermino);
-        mapaConCampos.put("hora_termino", horaTermino);
+        mapaConCampos.put(CampoDeVotacion.TITULO.getTexto(), titulo);
+        mapaConCampos.put(CampoDeVotacion.DESCRIPCION.getTexto(), descripcion);
+        mapaConCampos.put(CampoDeVotacion.FECHA_INICIO.getTexto(), fechaInicio);
+        mapaConCampos.put(CampoDeVotacion.HORA_INICIO.getTexto(), horaInicio);
+        mapaConCampos.put(CampoDeVotacion.FECHA_TERMINO.getTexto(), fechaTermino);
+        mapaConCampos.put(CampoDeVotacion.HORA_TERMINO.getTexto(), horaTermino);
         return mapaConCampos;
     }
 

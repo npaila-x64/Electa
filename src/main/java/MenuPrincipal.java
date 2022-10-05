@@ -124,25 +124,25 @@ public class MenuPrincipal {
     public void mostrarVotacionesEnCurso() {
         System.out.println("Votaciones En Curso");
         mostrarTitulosVotaciones(AccesoADatos
-                .obtenerTitulosVotacionesConEstado(Estados.EN_CURSO.obtenerNombre()));
+                .obtenerTitulosVotacionesConEstado(Estado.EN_CURSO.getTexto()));
     }
 
     public void mostrarVotacionesFinalizadas() {
         System.out.println("Votaciones Finalizadas");
         mostrarTitulosVotaciones(AccesoADatos
-                .obtenerTitulosVotacionesConEstado(Estados.FINALIZADO.obtenerNombre()));
+                .obtenerTitulosVotacionesConEstado(Estado.FINALIZADO.getTexto()));
     }
 
     public void mostrarVotacionesBorrador() {
         System.out.println("Votaciones Borrador");
         mostrarTitulosVotaciones(AccesoADatos
-                .obtenerTitulosVotacionesConEstado(Estados.BORRADOR.obtenerNombre()));
+                .obtenerTitulosVotacionesConEstado(Estado.BORRADOR.getTexto()));
     }
 
     public void mostrarVotacionesPendientes() {
         System.out.println("Votaciones Pendientes");
         mostrarTitulosVotaciones(AccesoADatos
-                .obtenerTitulosVotacionesConEstado(Estados.PENDIENTE.obtenerNombre()));
+                .obtenerTitulosVotacionesConEstado(Estado.PENDIENTE.getTexto()));
     }
 
     public void mostrarTitulosVotaciones(List<String> titulosVotaciones) {
@@ -153,7 +153,7 @@ public class MenuPrincipal {
 
     public void mostrarMenuResultados() {
         List<String> IDsVotaciones = AccesoADatos
-                .obtenerIDsVotacionesConEstado(Estados.FINALIZADO.obtenerNombre());
+                .obtenerIDsVotacionesConEstado(Estado.FINALIZADO.getTexto());
         List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
         mostrarOpcionesMenuResultados(titulosVotaciones);
         while (true) {
@@ -162,7 +162,7 @@ public class MenuPrincipal {
             if (esOpcionElegidaFueraDeRango(opcionElegida, titulosVotaciones.size())) continue;
             mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
             IDsVotaciones = AccesoADatos
-                    .obtenerIDsVotacionesConEstado(Estados.FINALIZADO.obtenerNombre());
+                    .obtenerIDsVotacionesConEstado(Estado.FINALIZADO.getTexto());
             titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
             mostrarOpcionesMenuResultados(titulosVotaciones);
         }
@@ -244,14 +244,14 @@ public class MenuPrincipal {
     }
 
     public void mostrarResultadosDatos(JSONObject votacion) {
-        String titulo = String.valueOf(votacion.get("titulo"));
-        int votoBlancos = parsearObjectAInt(votacion.get("votos_blancos"));
-        int votoPreferenciales = parsearObjectAInt(votacion.get("votos_preferenciales"));
+        String titulo = String.valueOf(votacion.get(CampoDeVotacion.TITULO.getTexto()));
+        int votoBlancos = parsearObjectAInt(votacion.get(CampoDeVotacion.VOTOS_BLANCOS.getTexto()));
+        int votoPreferenciales = parsearObjectAInt(votacion.get(CampoDeVotacion.VOTOS_PREFERENCIALES.getTexto()));
         int totalVotos = votoPreferenciales + votoBlancos;
-        String fechaInicio = String.valueOf(votacion.get("fecha_inicio"));
-        String horaInicio = String.valueOf(votacion.get("hora_inicio"));
-        String fechaTermino = String.valueOf(votacion.get("fecha_termino"));
-        String horaTermino = String.valueOf(votacion.get("hora_termino"));
+        String fechaInicio = String.valueOf(votacion.get(CampoDeVotacion.FECHA_INICIO.getTexto()));
+        String horaInicio = String.valueOf(votacion.get(CampoDeVotacion.HORA_INICIO.getTexto()));
+        String fechaTermino = String.valueOf(votacion.get(CampoDeVotacion.FECHA_TERMINO.getTexto()));
+        String horaTermino = String.valueOf(votacion.get(CampoDeVotacion.HORA_TERMINO.getTexto()));
         System.out.printf("""
                         Resultados para la votacion "%s"
                         Votos preferenciales %s %s
@@ -298,10 +298,12 @@ public class MenuPrincipal {
 
     public void mostrarOpcionDetallada(String IDVotacion, int indiceAjustado) {
         HashMap<String, Object> mapaConCampos = obtenerCamposDeVotacion(IDVotacion);
-        String titulo = String.valueOf(mapaConCampos.get("titulo"));
-        Estados estado = Estados.valueOf(String.valueOf(mapaConCampos.get("estado")));
-        String fechaTermino = String.valueOf(mapaConCampos.get("fecha_termino"));
-        String horaTermino = String.valueOf(mapaConCampos.get("hora_termino"));
+        String titulo = mapaConCampos.get(CampoDeVotacion.TITULO.getTexto()).toString();
+        Estado estado = Estado.fromString(mapaConCampos.get(CampoDeVotacion.ESTADO.getTexto()).toString());
+        String fechaTermino = mapaConCampos.get(CampoDeVotacion.FECHA_TERMINO.getTexto()).toString();
+        String horaTermino = mapaConCampos.get(CampoDeVotacion.HORA_TERMINO.getTexto()).toString();
+        String fechaInicio = mapaConCampos.get(CampoDeVotacion.FECHA_INICIO.getTexto()).toString();
+        String horaInicio = mapaConCampos.get(CampoDeVotacion.HORA_INICIO.getTexto()).toString();
         System.out.printf("[%s] %s %s ", indiceAjustado,
                 padTexto(titulo, ".", 60), estado);
         switch (estado) {
@@ -311,6 +313,9 @@ public class MenuPrincipal {
             case FINALIZADO -> System.out.printf("%s Finalizó el %s a las %s hrs%n",
                     padTexto("", ".", 15 - estado.toString().length()),
                     fechaTermino, horaTermino);
+            case PENDIENTE -> System.out.printf("%s Iniciará el %s a las %s hrs%n",
+                    padTexto("", ".", 15 - estado.toString().length()),
+                    fechaInicio, horaInicio);
             default -> System.out.printf("%n");
         }
     }
@@ -396,13 +401,13 @@ public class MenuPrincipal {
 
     public void mostrarCamposDeVotacion(String IDVotacion) {
         JSONObject votacion = AccesoADatos.obtenerVotacionPorID(IDVotacion);
-        String titulo = String.valueOf(votacion.get("titulo"));
-        String descripcion = String.valueOf(votacion.get("descripcion"));
-        String fechaInicio = String.valueOf(votacion.get("fecha_inicio"));
-        String horaInicio = String.valueOf(votacion.get("hora_inicio"));
-        String fechaTermino = String.valueOf(votacion.get("fecha_termino"));
-        String horaTermino = String.valueOf(votacion.get("hora_termino"));
-        String estado = String.valueOf(votacion.get("estado"));
+        String titulo = String.valueOf(votacion.get(CampoDeVotacion.TITULO.getTexto()));
+        String descripcion = String.valueOf(votacion.get(CampoDeVotacion.DESCRIPCION.getTexto()));
+        String fechaInicio = String.valueOf(votacion.get(CampoDeVotacion.FECHA_INICIO.getTexto()));
+        String horaInicio = String.valueOf(votacion.get(CampoDeVotacion.HORA_INICIO.getTexto()));
+        String fechaTermino = String.valueOf(votacion.get(CampoDeVotacion.FECHA_TERMINO.getTexto()));
+        String horaTermino = String.valueOf(votacion.get(CampoDeVotacion.HORA_TERMINO.getTexto()));
+        String estado = String.valueOf(votacion.get(CampoDeVotacion.ESTADO.getTexto()));
         System.out.printf("""
                         Titulo.........................%s
                         Descripcion....................%s
@@ -413,7 +418,7 @@ public class MenuPrincipal {
                         Estado.........................%s
                         %n""", titulo, descripcion, fechaInicio,
                 horaInicio, fechaTermino, horaTermino, estado);
-        JSONObject opciones = (JSONObject) votacion.get("opciones");
+        JSONObject opciones = (JSONObject) votacion.get(CampoDeVotacion.OPCIONES.getTexto());
         List<String> opcionesList =  new ArrayList<>(opciones.keySet());
         System.out.println("Opciones");
         for (String opcion : opcionesList) {
@@ -438,29 +443,19 @@ public class MenuPrincipal {
     public HashMap<String, Object> obtenerCamposDeVotacion(String IDVotacion) {
         JSONObject votacion = AccesoADatos.obtenerVotacionPorID(IDVotacion);
         HashMap<String, Object> mapaConCampos = new HashMap<>();
-        mapaConCampos.put("id", votacion.get("id"));
-        mapaConCampos.put("titulo", votacion.get("titulo"));
-        mapaConCampos.put("descripcion", votacion.get("descripcion"));
-        mapaConCampos.put("fecha_inicio", votacion.get("fecha_inicio"));
-        mapaConCampos.put("hora_inicio", votacion.get("hora_inicio"));
-        mapaConCampos.put("fecha_termino", votacion.get("fecha_termino"));
-        mapaConCampos.put("hora_termino", votacion.get("hora_termino"));
-        mapaConCampos.put("estado", votacion.get("estado"));
-        mapaConCampos.put("votantes", votacion.get("votantes"));
-        mapaConCampos.put("opciones", votacion.get("opciones"));
+        for (var CAMPO : CampoDeVotacion.getCamposDeVotacion()) {
+            mapaConCampos.put(CAMPO.getTexto(), votacion.get(CAMPO.getTexto()));
+        }
         return mapaConCampos;
     }
 
     public JSONObject generarNuevaVotacionJSONObject(HashMap<String, String> mapaConCampos, String IDVotacion) {
         JSONObject votacion = new JSONObject();
+        for (var CAMPO : CampoDeVotacion.getCamposDeVotacion()) {
+            votacion.put(CAMPO.getTexto(), mapaConCampos.get(CAMPO.getTexto()));
+        }
         votacion.put("id", IDVotacion);
-        votacion.put("titulo", mapaConCampos.get("titulo"));
-        votacion.put("descripcion", mapaConCampos.get("descripcion"));
-        votacion.put("fecha_inicio", mapaConCampos.get("fecha_inicio"));
-        votacion.put("hora_inicio", mapaConCampos.get("hora_inicio"));
-        votacion.put("fecha_termino", mapaConCampos.get("fecha_termino"));
-        votacion.put("hora_termino", mapaConCampos.get("hora_termino"));
-        votacion.put("estado", Estados.PENDIENTE.obtenerNombre());
+        votacion.put("estado", Estado.PENDIENTE.getTexto());
         votacion.put("votos_preferenciales", 0);
         votacion.put("votos_blancos", 0);
         votacion.put("votantes", new JSONArray());
@@ -488,7 +483,7 @@ public class MenuPrincipal {
     }
 
     public void mostrarResultadosVotosPorOpciones(JSONObject votacion) {
-        JSONObject opciones = (JSONObject) votacion.get("opciones");
+        JSONObject opciones = (JSONObject) votacion.get(CampoDeVotacion.OPCIONES.getTexto());
         List<String> opcionesList = new ArrayList<>(opciones.keySet());
         System.out.println("Votos por opciones");
         for (String opcion : opcionesList) {
