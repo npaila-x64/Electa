@@ -21,9 +21,9 @@ public enum Estado {
         return texto;
     }
 
-    public static Estado fromString(String texto) {
+    public static Estado fromObject(Object texto) {
         for (Estado estado : Estado.values()) {
-            if (estado.getTexto().equalsIgnoreCase(texto)) {
+            if (estado.getTexto().equalsIgnoreCase(texto.toString())) {
                 return estado;
             }
         }

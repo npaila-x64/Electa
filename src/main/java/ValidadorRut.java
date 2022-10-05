@@ -44,23 +44,19 @@ public class ValidadorRut {
 
     public static int calcularSumaDeDV(int suma) {
 
-        double variable = suma / 11;
-        variable = Math.floor(variable);
+        var variable = suma / 11;
         variable = variable * 11;
         variable = Math.abs(suma - variable);
         variable = 11 - variable;
 
-        return (int) variable;
+        return variable;
     }
 
     public static String convertirDVNumericoADVLiteral(int DVNumerico) {
-        switch (DVNumerico) {
-            case 10:
-                return "k";
-            case 11:
-                return "0";
-            default:
-                return String.valueOf(DVNumerico);
-        }
+        return switch (DVNumerico) {
+            case 10 -> "k";
+            case 11 -> "0";
+            default -> String.valueOf(DVNumerico);
+        };
     }
 }
