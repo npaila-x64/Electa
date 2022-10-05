@@ -35,7 +35,8 @@ public class MenuPrincipal {
 
     public void ingresarComoAdministrador() {
         try {
-            String clave = ValidadorDeDatos.pedirString("Ingrese la contraseña del administrador \n> ");
+            String clave = ValidadorDeDatos
+                    .pedirString("Ingrese la contraseña del administrador \n> ");
             if (ValidadorDeDatos.esCredencialAdministradorValida(clave)) {
                 mostrarMenuAdministador();
             } else {
@@ -98,6 +99,7 @@ public class MenuPrincipal {
                 case 2 -> mostrarMenuResultados();
                 default -> {mostrarOpcionInvalida(); continue;}
             }
+            mostrarVotacionesEnCurso();
             mostrarOpcionesMenuVotacionesVotante();
         }
     }
@@ -121,22 +123,26 @@ public class MenuPrincipal {
 
     public void mostrarVotacionesEnCurso() {
         System.out.println("Votaciones En Curso");
-        mostrarTitulosVotaciones(AccesoADatos.obtenerTitulosVotacionesConEstado("EN CURSO"));
+        mostrarTitulosVotaciones(AccesoADatos
+                .obtenerTitulosVotacionesConEstado(Estados.EN_CURSO.obtenerNombre()));
     }
 
     public void mostrarVotacionesFinalizadas() {
         System.out.println("Votaciones Finalizadas");
-        mostrarTitulosVotaciones(AccesoADatos.obtenerTitulosVotacionesConEstado("FINALIZADO"));
+        mostrarTitulosVotaciones(AccesoADatos
+                .obtenerTitulosVotacionesConEstado(Estados.FINALIZADO.obtenerNombre()));
     }
 
     public void mostrarVotacionesBorrador() {
         System.out.println("Votaciones Borrador");
-        mostrarTitulosVotaciones(AccesoADatos.obtenerTitulosVotacionesConEstado("BORRADOR"));
+        mostrarTitulosVotaciones(AccesoADatos
+                .obtenerTitulosVotacionesConEstado(Estados.BORRADOR.obtenerNombre()));
     }
 
     public void mostrarVotacionesPendientes() {
         System.out.println("Votaciones Pendientes");
-        mostrarTitulosVotaciones(AccesoADatos.obtenerTitulosVotacionesConEstado("PENDIENTE"));
+        mostrarTitulosVotaciones(AccesoADatos
+                .obtenerTitulosVotacionesConEstado(Estados.PENDIENTE.obtenerNombre()));
     }
 
     public void mostrarTitulosVotaciones(List<String> titulosVotaciones) {
@@ -146,7 +152,8 @@ public class MenuPrincipal {
     }
 
     public void mostrarMenuResultados() {
-        List<String> IDsVotaciones = AccesoADatos.obtenerIDsVotacionesConEstado("FINALIZADO");
+        List<String> IDsVotaciones = AccesoADatos
+                .obtenerIDsVotacionesConEstado(Estados.FINALIZADO.obtenerNombre());
         List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
         mostrarOpcionesMenuResultados(titulosVotaciones);
         while (true) {
@@ -154,7 +161,8 @@ public class MenuPrincipal {
             if (opcionElegida == 0) break;
             if (esOpcionElegidaFueraDeRango(opcionElegida, titulosVotaciones.size())) continue;
             mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
-            IDsVotaciones = AccesoADatos.obtenerIDsVotacionesConEstado("FINALIZADO");
+            IDsVotaciones = AccesoADatos
+                    .obtenerIDsVotacionesConEstado(Estados.FINALIZADO.obtenerNombre());
             titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
             mostrarOpcionesMenuResultados(titulosVotaciones);
         }
@@ -291,17 +299,17 @@ public class MenuPrincipal {
     public void mostrarOpcionDetallada(String IDVotacion, int indiceAjustado) {
         HashMap<String, Object> mapaConCampos = obtenerCamposDeVotacion(IDVotacion);
         String titulo = String.valueOf(mapaConCampos.get("titulo"));
-        String estado = String.valueOf(mapaConCampos.get("estado"));
+        Estados estado = Estados.valueOf(String.valueOf(mapaConCampos.get("estado")));
         String fechaTermino = String.valueOf(mapaConCampos.get("fecha_termino"));
         String horaTermino = String.valueOf(mapaConCampos.get("hora_termino"));
         System.out.printf("[%s] %s %s ", indiceAjustado,
                 padTexto(titulo, ".", 60), estado);
         switch (estado) {
-            case "EN CURSO" -> System.out.printf("%s Terminará el %s a las %s hrs%n",
-                    padTexto("", ".", 15 - estado.length()),
+            case EN_CURSO -> System.out.printf("%s Terminará el %s a las %s hrs%n",
+                    padTexto("", ".", 15 - estado.toString().length()),
                     fechaTermino, horaTermino);
-            case "FINALIZADO" -> System.out.printf("%s Finalizo el %s a las %s hrs%n",
-                    padTexto("", ".", 15 - estado.length()),
+            case FINALIZADO -> System.out.printf("%s Finalizó el %s a las %s hrs%n",
+                    padTexto("", ".", 15 - estado.toString().length()),
                     fechaTermino, horaTermino);
             default -> System.out.printf("%n");
         }
@@ -381,7 +389,8 @@ public class MenuPrincipal {
     }
 
     public void agregarOpcionDeVotacion(String IDVotacion) {
-        String opcion = ValidadorDeDatos.pedirString("Escriba la opción que desea agregar\n> ", 35);
+        String opcion = ValidadorDeDatos
+                .pedirString("Escriba la opción que desea agregar\n> ", 35);
         AccesoADatos.agregarOpcionAVotacion(IDVotacion, opcion);
     }
 
@@ -422,7 +431,7 @@ public class MenuPrincipal {
         jsonArrayVotaciones.add(votacion);
         AccesoADatos.escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
 
-        System.out.println("¡Votación creada!\n");
+        System.out.println("¡Votación creada con exito!\n");
         mostrarMenuAgregacionDeOpciones(IDVotacion);
     }
 
@@ -437,8 +446,8 @@ public class MenuPrincipal {
         mapaConCampos.put("fecha_termino", votacion.get("fecha_termino"));
         mapaConCampos.put("hora_termino", votacion.get("hora_termino"));
         mapaConCampos.put("estado", votacion.get("estado"));
-        mapaConCampos.put("votantes", (JSONArray) votacion.get("votantes"));
-        mapaConCampos.put("opciones", (JSONObject) votacion.get("opciones"));
+        mapaConCampos.put("votantes", votacion.get("votantes"));
+        mapaConCampos.put("opciones", votacion.get("opciones"));
         return mapaConCampos;
     }
 
@@ -451,7 +460,7 @@ public class MenuPrincipal {
         votacion.put("hora_inicio", mapaConCampos.get("hora_inicio"));
         votacion.put("fecha_termino", mapaConCampos.get("fecha_termino"));
         votacion.put("hora_termino", mapaConCampos.get("hora_termino"));
-        votacion.put("estado", "BORRADOR");
+        votacion.put("estado", Estados.PENDIENTE.obtenerNombre());
         votacion.put("votos_preferenciales", 0);
         votacion.put("votos_blancos", 0);
         votacion.put("votantes", new JSONArray());

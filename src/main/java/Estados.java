@@ -11,7 +11,7 @@ public enum Estados {
         this.nombre = nombre;
     }
 
-    public String mostrarNombre() {
+    public String obtenerNombre() {
         return nombre;
     }
 

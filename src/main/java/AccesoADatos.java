@@ -103,16 +103,28 @@ public class AccesoADatos {
     }
 
     public static List<String> obtenerIDsVotacionesEnElQuePuedeVotarElVotante(String IDVotante) {
-        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        JSONArray jsonArrayVotaciones = filtrarVotacionesEnCurso();
         List<String> arrayListIDsVotaciones = new ArrayList<>();
         for (Object jsonArrayVotacion : jsonArrayVotaciones) {
             JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-            verificarYAgregarVotante(arrayListIDsVotaciones, votacionSiguiente, IDVotante);
+            filtrarVotacionVotadaAVotante(arrayListIDsVotaciones, votacionSiguiente, IDVotante);
         }
         return arrayListIDsVotaciones;
     }
 
-    public static void verificarYAgregarVotante(List<String> IDsVotaciones, JSONObject votacion, String IDVotante) {
+    public static JSONArray filtrarVotacionesEnCurso() {
+        JSONArray jsonArrayVotaciones = parsearVotaciones();
+        JSONArray jsonArrayVotacionesEnCurso = new JSONArray();
+        for (var jsonArrayVotacion : jsonArrayVotaciones) {
+            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+            if (votacionSiguiente.get("estado").equals(Estados.EN_CURSO.obtenerNombre())) {
+                jsonArrayVotacionesEnCurso.add(votacionSiguiente);
+            }
+        }
+        return jsonArrayVotacionesEnCurso;
+    }
+
+    public static void filtrarVotacionVotadaAVotante(List<String> IDsVotaciones, JSONObject votacion, String IDVotante) {
         JSONArray arrayVotantes = (JSONArray) votacion.get("votantes");
         salirBucle:
         {

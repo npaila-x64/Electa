@@ -19,10 +19,6 @@ public class RefrescadorVotaciones {
         }
     }
 
-    public static LocalDateTime obtenerFechaTiempoAhora() {
-        return LocalDateTime.now();
-    }
-
     public static void refrescarEstadosDeVotaciones() throws InterruptedException {
         while (true) {
             JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
@@ -42,24 +38,28 @@ public class RefrescadorVotaciones {
         var fechaTiempoInicio = obtenerFechaTiempoInicio(votacion);
         var fechaTiempoTermino = obtenerFechaTiempoTermino(votacion);
         if (fechaTiempoAhora.isAfter(fechaTiempoTermino)) {
-            estado = Estados.FINALIZADO.mostrarNombre();
+            estado = Estados.FINALIZADO.obtenerNombre();
         } else if (fechaTiempoAhora.isBefore(fechaTiempoInicio)) {
-            estado = Estados.PENDIENTE.mostrarNombre();
+            estado = Estados.PENDIENTE.obtenerNombre();
         } else {
-            estado = Estados.EN_CURSO.mostrarNombre();
+            estado = Estados.EN_CURSO.obtenerNombre();
         }
         votacion.put("estado", estado);
     }
 
+    public static LocalDateTime obtenerFechaTiempoAhora() {
+        return LocalDateTime.now();
+    }
+
     public static LocalDateTime obtenerFechaTiempoInicio(JSONObject votacion) {
-        return obtenerFechaTiempo(votacion.get("fecha_inicio"), votacion.get("hora_inicio"));
+        return obtenerFechaTiempoVotacion(votacion.get("fecha_inicio"), votacion.get("hora_inicio"));
     }
 
     public static LocalDateTime obtenerFechaTiempoTermino(JSONObject votacion) {
-        return obtenerFechaTiempo(votacion.get("fecha_termino"), votacion.get("hora_termino"));
+        return obtenerFechaTiempoVotacion(votacion.get("fecha_termino"), votacion.get("hora_termino"));
     }
 
-    public static LocalDateTime obtenerFechaTiempo(Object fecha, Object tiempo) {
+    public static LocalDateTime obtenerFechaTiempoVotacion(Object fecha, Object tiempo) {
         var fechaArr = fecha.toString().split("-");
         var dia = Integer.parseInt(fechaArr[0]);
         var mes = Integer.parseInt(fechaArr[1]);
