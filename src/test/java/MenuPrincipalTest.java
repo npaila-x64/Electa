@@ -36,6 +36,6 @@ class MenuPrincipalTest {
     @Test
     void padTextoTest() {
         assertEquals("test..........................",
-                app.padTexto("test", ".", 30));
+                Utilidades.padTexto("test", ".", 30));
     }
 }

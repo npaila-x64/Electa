@@ -245,8 +245,10 @@ public class MenuPrincipal {
 
     public void mostrarResultadosDatos(JSONObject votacion) {
         var titulo = votacion.get(CampoDeVotacion.TITULO.getTexto());
-        int votoBlancos = parsearObjectAInt(votacion.get(CampoDeVotacion.VOTOS_BLANCOS.getTexto()));
-        int votoPreferenciales = parsearObjectAInt(votacion.get(CampoDeVotacion.VOTOS_PREFERENCIALES.getTexto()));
+        int votoBlancos = Utilidades.parsearObjectAInt(
+                votacion.get(CampoDeVotacion.VOTOS_BLANCOS.getTexto()));
+        int votoPreferenciales = Utilidades.parsearObjectAInt(
+                votacion.get(CampoDeVotacion.VOTOS_PREFERENCIALES.getTexto()));
         int totalVotos = votoPreferenciales + votoBlancos;
         var fechaInicio = votacion.get(CampoDeVotacion.FECHA_INICIO.getTexto());
         var horaInicio = votacion.get(CampoDeVotacion.HORA_INICIO.getTexto());
@@ -260,11 +262,11 @@ public class MenuPrincipal {
                         Fecha y hora de inicio %s %s %s hrs
                         Fecha y hora de término %s %s %s hrs
                         %n""", titulo,
-                padTexto("", ".", 30 - 20), votoPreferenciales,
-                padTexto("", ".", 30 - 13), votoBlancos,
-                padTexto("", ".", 30 - 11), totalVotos,
-                padTexto("", ".", 30 - 22), fechaInicio, horaInicio,
-                padTexto("", ".", 30 - 23), fechaTermino, horaTermino);
+                Utilidades.padTexto("", ".", 30 - 20), votoPreferenciales,
+                Utilidades.padTexto("", ".", 30 - 13), votoBlancos,
+                Utilidades.padTexto("", ".", 30 - 11), totalVotos,
+                Utilidades.padTexto("", ".", 30 - 22), fechaInicio, horaInicio,
+                Utilidades.padTexto("", ".", 30 - 23), fechaTermino, horaTermino);
     }
 
     private void mostrarPanelDeControlDeVotaciones() {
@@ -305,26 +307,19 @@ public class MenuPrincipal {
         var fechaInicio = mapaConCampos.get(CampoDeVotacion.FECHA_INICIO.getTexto());
         var horaInicio = mapaConCampos.get(CampoDeVotacion.HORA_INICIO.getTexto());
         System.out.printf("[%s] %s %s ", indiceAjustado,
-                padTexto(titulo.toString(), ".", 60), estado);
+                Utilidades.padTexto(titulo.toString(), ".", 60), estado);
         switch (estado) {
             case EN_CURSO -> System.out.printf("%s Terminará el %s a las %s hrs%n",
-                    padTexto("", ".", 15 - estado.toString().length()),
+                    Utilidades.padTexto("", ".", 15 - estado.toString().length()),
                     fechaTermino, horaTermino);
             case FINALIZADO -> System.out.printf("%s Finalizó el %s a las %s hrs%n",
-                    padTexto("", ".", 15 - estado.toString().length()),
+                    Utilidades.padTexto("", ".", 15 - estado.toString().length()),
                     fechaTermino, horaTermino);
             case PENDIENTE -> System.out.printf("%s Iniciará el %s a las %s hrs%n",
-                    padTexto("", ".", 15 - estado.toString().length()),
+                    Utilidades.padTexto("", ".", 15 - estado.toString().length()),
                     fechaInicio, horaInicio);
             default -> System.out.printf("%n");
         }
-    }
-
-    public String padTexto(String texto, String patronRelleno, int largo) {
-        String relleno = patronRelleno.repeat(largo);
-        int largoDeTexto = texto.length();
-        String corte = relleno.substring(largoDeTexto);
-        return texto.concat(corte);
     }
 
     private void mostrarEditorDeVotacion(String IDVotacion) {
@@ -428,7 +423,7 @@ public class MenuPrincipal {
         List<String> opcionesList =  new ArrayList<>(opciones.keySet());
         System.out.println("\nOpciones");
         for (String opcion : opcionesList) {
-            System.out.println(padTexto("", ".", 8).concat(opcion));
+            System.out.println(Utilidades.padTexto("", ".", 8).concat(opcion));
         }
     }
 
@@ -497,7 +492,7 @@ public class MenuPrincipal {
         List<String> opcionesList = new ArrayList<>(opciones.keySet());
         System.out.println("Votos por opciones");
         for (String opcion : opcionesList) {
-            System.out.println(padTexto(opcion, ".", 30)
+            System.out.println(Utilidades.padTexto(opcion, ".", 30)
                     .concat(String.valueOf(opciones.get(opcion))));
         }
     }
@@ -509,9 +504,5 @@ public class MenuPrincipal {
 
     private static void mostrarOpcionInvalida() {
         System.out.print("Por favor, escoja una opción válida\n> ");
-    }
-
-    private int parsearObjectAInt(Object obj) {
-        return Integer.parseInt(String.valueOf(obj));
     }
 }
