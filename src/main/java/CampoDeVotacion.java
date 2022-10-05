@@ -31,4 +31,11 @@ public enum CampoDeVotacion {
                 VOTANTES, VOTOS_BLANCOS, VOTOS_PREFERENCIALES,
                 FECHA_INICIO, HORA_INICIO, FECHA_TERMINO, HORA_TERMINO);
     }
+
+    /*  Conjunto de Enums que representan los campos de una votación
+        que son directamente editables por un Administrador */
+    public static List<CampoDeVotacion> getCamposDeVotacionEditablesPorAdministrador() {
+        return List.of(
+                TITULO, DESCRIPCION, FECHA_INICIO, HORA_INICIO, FECHA_TERMINO, HORA_TERMINO);
+    }
 }

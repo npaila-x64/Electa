@@ -344,8 +344,9 @@ public class MenuPrincipal {
     }
 
     private void mostrarOpcionesEditorDeVotacion(String IDVotacion) {
-        mostrarCamposDeVotacion(IDVotacion);
+        mostrarDatosDeVotacion(IDVotacion);
         System.out.print("""
+                
                 [1] Modificar algún campo
                 [2] Para agregar una opción
                 [3] Para eliminar alguna opción
@@ -355,8 +356,10 @@ public class MenuPrincipal {
     }
 
     private void mostrarMenuEditarCamposDeVotacion(String IDVotacion) {
-        List<String> campos = List.of("titulo", "descripcion","fecha_inicio",
-                "hora_inicio", "fecha_termino", "hora_termino");
+        List<String> campos = new ArrayList<>();
+        for (var campo : CampoDeVotacion.getCamposDeVotacionEditablesPorAdministrador()) {
+            campos.add(campo.getTexto());
+        }
         mostrarOpcionesMenuEditarCamposDeVotacion(campos);
         while (true) {
             int opcionElegida = ValidadorDeDatos.pedirOpcion();
@@ -369,6 +372,7 @@ public class MenuPrincipal {
 
     private void mostrarOpcionesMenuEditarCamposDeVotacion(List<String> campos) {
         System.out.print("""
+                
                 Escriba el índice del campo que desea modificar
                 """);
         mostrarListaOpciones(campos);
@@ -399,32 +403,33 @@ public class MenuPrincipal {
         AccesoADatos.agregarOpcionAVotacion(IDVotacion, opcion);
     }
 
-    private void mostrarCamposDeVotacion(String IDVotacion) {
+    private void mostrarDatosDeVotacion(String IDVotacion) {
         JSONObject votacion = AccesoADatos.obtenerVotacionPorID(IDVotacion);
-        var titulo = votacion.get(CampoDeVotacion.TITULO.getTexto());
-        var descripcion = votacion.get(CampoDeVotacion.DESCRIPCION.getTexto());
-        var fechaInicio = votacion.get(CampoDeVotacion.FECHA_INICIO.getTexto());
-        var horaInicio = votacion.get(CampoDeVotacion.HORA_INICIO.getTexto());
-        var fechaTermino = votacion.get(CampoDeVotacion.FECHA_TERMINO.getTexto());
-        var horaTermino = votacion.get(CampoDeVotacion.HORA_TERMINO.getTexto());
-        var estado = votacion.get(CampoDeVotacion.ESTADO.getTexto());
-        System.out.printf("""
-                        Titulo.........................%s
-                        Descripcion....................%s
-                        Fecha de inicio................%s
-                        Hora de inicio.................%s hrs
-                        Fecha de término...............%s
-                        Hora de término................%s hrs
-                        Estado.........................%s
-                        %n""", titulo, descripcion, fechaInicio,
-                horaInicio, fechaTermino, horaTermino, estado);
-        JSONObject opciones = (JSONObject) votacion.get(CampoDeVotacion.OPCIONES.getTexto());
+        mostrarCamposDeVotacion(votacion);
+        mostrarOpcionesDeVotacion(votacion);
+    }
+
+    private void mostrarCamposDeVotacion(JSONObject votacion) {
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        map.put("Titulo ..................... %s", votacion.get(CampoDeVotacion.TITULO.getTexto()));
+        map.put("Descripcion ................ %s", votacion.get(CampoDeVotacion.DESCRIPCION.getTexto()));
+        map.put("Fecha de inicio ............ %s", votacion.get(CampoDeVotacion.FECHA_INICIO.getTexto()));
+        map.put("Hora de inicio ............. %s hrs", votacion.get(CampoDeVotacion.HORA_INICIO.getTexto()));
+        map.put("Fecha de término ........... %s", votacion.get(CampoDeVotacion.FECHA_TERMINO.getTexto()));
+        map.put("Hora de término ............ %s hrs", votacion.get(CampoDeVotacion.HORA_TERMINO.getTexto()));
+        map.put("Estado ..................... %s", votacion.get(CampoDeVotacion.ESTADO.getTexto()));
+        for (var key : map.keySet()) {
+            System.out.printf(key.concat("%n"), map.get(key));
+        }
+    }
+
+    private void mostrarOpcionesDeVotacion(JSONObject votacion) {
+        var opciones = (JSONObject) votacion.get(CampoDeVotacion.OPCIONES.getTexto());
         List<String> opcionesList =  new ArrayList<>(opciones.keySet());
-        System.out.println("Opciones");
+        System.out.println("\nOpciones");
         for (String opcion : opcionesList) {
             System.out.println(padTexto("", ".", 8).concat(opcion));
         }
-        System.out.println();
     }
 
     private void mostrarMenuCreacionDeVotacion() {
@@ -443,8 +448,8 @@ public class MenuPrincipal {
     private HashMap<String, Object> obtenerCamposDeVotacion(String IDVotacion) {
         JSONObject votacion = AccesoADatos.obtenerVotacionPorID(IDVotacion);
         HashMap<String, Object> mapaConCampos = new HashMap<>();
-        for (var CAMPO : CampoDeVotacion.getCamposDeVotacion()) {
-            mapaConCampos.put(CAMPO.getTexto(), votacion.get(CAMPO.getTexto()));
+        for (var campo : CampoDeVotacion.getCamposDeVotacion()) {
+            mapaConCampos.put(campo.getTexto(), votacion.get(campo.getTexto()));
         }
         return mapaConCampos;
     }
@@ -464,21 +469,27 @@ public class MenuPrincipal {
     }
 
     private void mostrarMenuAgregacionDeOpciones(String IDVotacion) {
-        mostrarCamposDeVotacion(IDVotacion);
+        mostrarDatosDeVotacion(IDVotacion);
+        mostrarMenuMenuAgregacionDeOpciones();
         salirMenu:
         while (true) {
-            System.out.print("""
-                    Para agregar una opción escriba [1]
-                    Para finalizar y volver escriba [0]
-                    Elija una opción
-                    """.concat("> "));
             switch (ValidadorDeDatos.pedirOpcion()) {
                 case 0 -> {break salirMenu;}
                 case 1 -> agregarOpcionDeVotacion(IDVotacion);
                 default -> {mostrarOpcionInvalida(); continue;}
             }
-            mostrarCamposDeVotacion(IDVotacion);
+            mostrarDatosDeVotacion(IDVotacion);
+            mostrarMenuMenuAgregacionDeOpciones();
         }
+    }
+
+    private void mostrarMenuMenuAgregacionDeOpciones() {
+        System.out.print("""
+                    
+                    Para agregar una opción escriba [1]
+                    Para finalizar y volver escriba [0]
+                    Elija una opción
+                    """.concat("> "));
     }
 
     public void mostrarResultadosVotosPorOpciones(JSONObject votacion) {
