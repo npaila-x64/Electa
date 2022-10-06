@@ -20,16 +20,13 @@ public class MenuPrincipal {
     }
 
     private void mostrarMenuDeIngreso() {
-        mostrarOpcionesDeIngreso();
-        salirMenu:
         while (true) {
-            switch (ValidadorDeDatos.pedirOpcion()) {
-                case 0 -> {break salirMenu;}
+            mostrarOpcionesDeIngreso();
+            switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
+                case 0 -> {return;}
                 case 1 -> ingresarComoVotante();
                 case 2 -> ingresarComoAdministrador();
-                default -> {ValidadorDeDatos.mostrarOpcionInvalida();continue;}
             }
-            mostrarOpcionesDeIngreso();
         }
     }
 
@@ -48,24 +45,21 @@ public class MenuPrincipal {
     }
 
     private void mostrarMenuAdministador() {
-        System.out.println("Bienvenido/a al menú de administración");
-        mostrarOpcionesMenuAdministador();
-        salirMenu:
+        System.out.println("\nBienvenido/a al menú de administración");
         while (true) {
-            switch (ValidadorDeDatos.pedirOpcion()) {
-                case 0 -> {break salirMenu;}
+            mostrarOpcionesMenuAdministador();
+            switch (ValidadorDeDatos.pedirOpcionHasta(3)) {
+                case 0 -> {return;}
                 case 1 -> mostrarPanelDeControlDeVotaciones();
                 case 2 -> mostrarMenuCreacionDeVotacion();
                 case 3 -> mostrarMenuResultados();
-                default -> {
-                    ValidadorDeDatos.mostrarOpcionInvalida(); continue;}
             }
-            mostrarOpcionesMenuAdministador();
         }
     }
 
     private void mostrarOpcionesMenuAdministador() {
         System.out.print("""
+                
                 Elija una opción
                 [1] Ver, modificar, o eliminar votaciones
                 [2] Crear nueva votación
@@ -89,23 +83,20 @@ public class MenuPrincipal {
     }
 
     private void mostrarMenuVotacionesVotante(String IDVotante) {
-        mostrarVotacionesEnCurso();
-        mostrarOpcionesMenuVotacionesVotante();
-        salirMenu:
         while (true) {
-            switch (ValidadorDeDatos.pedirOpcion()) {
-                case 0 -> {break salirMenu;}
-                case 1 -> mostrarMenuParaVotar(IDVotante);
-                case 2 -> mostrarMenuResultados();
-                default -> {mostrarOpcionInvalida(); continue;}
-            }
             mostrarVotacionesEnCurso();
             mostrarOpcionesMenuVotacionesVotante();
+            switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
+                case 0 -> {return;}
+                case 1 -> mostrarMenuParaVotar(IDVotante);
+                case 2 -> mostrarMenuResultados();
+            }
         }
     }
 
     private void mostrarOpcionesMenuVotacionesVotante() {
         System.out.print("""
+                
                 OPCIONES
                 [1] Votar
                 [2] Ver Resultados
@@ -152,19 +143,14 @@ public class MenuPrincipal {
     }
 
     private void mostrarMenuResultados() {
-        List<String> IDsVotaciones = AccesoADatos
-                .obtenerIDsVotacionesConEstado(Estado.FINALIZADO.getTexto());
-        List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
-        mostrarOpcionesMenuResultados(titulosVotaciones);
         while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (esOpcionElegidaFueraDeRango(opcionElegida, titulosVotaciones.size())) continue;
-            mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
-            IDsVotaciones = AccesoADatos
+            List<String> IDsVotaciones = AccesoADatos
                     .obtenerIDsVotacionesConEstado(Estado.FINALIZADO.getTexto());
-            titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
+            List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
             mostrarOpcionesMenuResultados(titulosVotaciones);
+            int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(titulosVotaciones.size());
+            if (opcionElegida == 0) break;
+            mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
         }
     }
 
@@ -174,17 +160,14 @@ public class MenuPrincipal {
     }
 
     private void mostrarMenuParaVotar(String IDVotante) {
-        List<String> IDsVotaciones = AccesoADatos.obtenerIDsVotacionesEnElQuePuedeVotarElVotante(IDVotante);
-        List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
-        mostrarVotacionesDisponiblesParaVotacion(titulosVotaciones);
         while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (esOpcionElegidaFueraDeRango(opcionElegida, IDsVotaciones.size())) continue;
-            mostrarMenuOpcionesParaVotar(IDsVotaciones.get(opcionElegida - 1), IDVotante);
-            IDsVotaciones = AccesoADatos.obtenerIDsVotacionesEnElQuePuedeVotarElVotante(IDVotante);
-            titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
+            List<String> IDsVotaciones = AccesoADatos
+                    .obtenerIDsVotacionesEnElQuePuedeVotarElVotante(IDVotante);
+            List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
             mostrarVotacionesDisponiblesParaVotacion(titulosVotaciones);
+            int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(IDsVotaciones.size());
+            if (opcionElegida == 0) break;
+            mostrarMenuOpcionesParaVotar(IDsVotaciones.get(opcionElegida - 1), IDVotante);
         }
     }
 
@@ -197,31 +180,20 @@ public class MenuPrincipal {
         List<String> opciones = AccesoADatos.obtenerOpcionesDeVotacion(IDVotacion);
         opciones.add(0, "Abstenerse");
         mostrarOpcionesMenuOpcionesParaVotar(opciones);
-        while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (opcionElegida == 1) {
-                AccesoADatos.realizarVotoBlanco(IDVotacion, IDVotante);
-                mostrarVotoRealizadoConExito();
-                break;}
-            if (esOpcionElegidaFueraDeRango(opcionElegida, opciones.size())) continue;
-            AccesoADatos.realizarVotoPreferencial(IDVotacion, IDVotante, opciones.get(opcionElegida - 1));
+        int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
+        if (opcionElegida == 0) return;
+        if (opcionElegida == 1) {
+            AccesoADatos.realizarVotoBlanco(IDVotacion, IDVotante);
             mostrarVotoRealizadoConExito();
-            break;
+            return;
         }
+        AccesoADatos.realizarVotoPreferencial(IDVotacion, IDVotante, opciones.get(opcionElegida - 1));
+        mostrarVotoRealizadoConExito();
     }
 
     private void mostrarOpcionesMenuOpcionesParaVotar(List<String> opciones) {
         System.out.println("Opciones disponibles");
         mostrarListaOpciones(opciones);
-    }
-
-    private boolean esOpcionElegidaFueraDeRango(int opcionElegida, int cantidadOpciones) {
-        if (opcionElegida > cantidadOpciones) {
-            mostrarOpcionInvalida();
-            return true;
-        }
-        return false;
     }
 
     private void mostrarVotoRealizadoConExito() {
@@ -270,15 +242,12 @@ public class MenuPrincipal {
     }
 
     private void mostrarPanelDeControlDeVotaciones() {
-        List<String> IDsVotaciones = AccesoADatos.obtenerIDsVotaciones();
-        mostrarOpcionesPanelDeControlDeVotaciones(IDsVotaciones);
         while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (esOpcionElegidaFueraDeRango(opcionElegida, IDsVotaciones.size())) continue;
-            mostrarEditorDeVotacion(IDsVotaciones.get(opcionElegida - 1));
-            IDsVotaciones = AccesoADatos.obtenerIDsVotaciones();
+            List<String> IDsVotaciones = AccesoADatos.obtenerIDsVotaciones();
             mostrarOpcionesPanelDeControlDeVotaciones(IDsVotaciones);
+            int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(IDsVotaciones.size());
+            if (opcionElegida == 0) break;
+            mostrarEditorDeVotacion(IDsVotaciones.get(opcionElegida - 1));
         }
     }
 
@@ -323,18 +292,23 @@ public class MenuPrincipal {
     }
 
     private void mostrarEditorDeVotacion(String IDVotacion) {
-        mostrarOpcionesEditorDeVotacion(IDVotacion);
-        salirMenu:
+//  FIXME A futuro se podría usar el siguiente formato para las opciones / menús
+//        LinkedHashMap<String, Runnable> opciones = new LinkedHashMap<>();
+//        opciones.put("Modificar algún campo",       () -> mostrarMenuEditarCamposDeVotacion(IDVotacion));
+//        opciones.put("Para agregar una opción",     () -> agregarOpcionDeVotacion(IDVotacion));
+//        opciones.put("Para eliminar alguna opción", () -> mostrarMenuEliminarOpcionesDeVotacion(IDVotacion));
+//        opciones.put("Para eliminar la votación",   () -> AccesoADatos.eliminarVotacion(IDVotacion));
+//        LinkedHashSet<String> set = new LinkedHashSet(opciones.values());
+//        int opcion = ValidadorDeDatos.pedirOpcionHasta(set.size());
         while (true) {
-            switch (ValidadorDeDatos.pedirOpcion()) {
-                case 0 -> {break salirMenu;}
+            mostrarOpcionesEditorDeVotacion(IDVotacion);
+            switch (ValidadorDeDatos.pedirOpcionHasta(4)) {
+                case 0 -> {return;}
                 case 1 -> mostrarMenuEditarCamposDeVotacion(IDVotacion);
                 case 2 -> agregarOpcionDeVotacion(IDVotacion);
                 case 3 -> mostrarMenuEliminarOpcionesDeVotacion(IDVotacion);
-                case 4 -> {AccesoADatos.eliminarVotacion(IDVotacion); break salirMenu;}
-                default -> {mostrarOpcionInvalida(); continue;}
+                case 4 -> {AccesoADatos.eliminarVotacion(IDVotacion); return;}
             }
-            mostrarOpcionesEditorDeVotacion(IDVotacion);
         }
     }
 
@@ -355,13 +329,11 @@ public class MenuPrincipal {
         for (var campo : CampoDeVotacion.getCamposDeVotacionEditablesPorAdministrador()) {
             campos.add(campo.getTexto());
         }
-        mostrarOpcionesMenuEditarCamposDeVotacion(campos);
         while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (esOpcionElegidaFueraDeRango(opcionElegida, campos.size())) continue;
-            editarCampoDeVotacion(IDVotacion, campos.get(opcionElegida - 1));
             mostrarOpcionesMenuEditarCamposDeVotacion(campos);
+            int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(campos.size());
+            if (opcionElegida == 0) break;
+            editarCampoDeVotacion(IDVotacion, campos.get(opcionElegida - 1));
         }
     }
 
@@ -382,14 +354,10 @@ public class MenuPrincipal {
         List<String> opciones = AccesoADatos.obtenerOpcionesDeVotacion(IDVotacion);
         System.out.println("Escriba la opción que desea eliminar");
         mostrarListaOpciones(opciones);
-        while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (esOpcionElegidaFueraDeRango(opcionElegida, opciones.size())) continue;
-            AccesoADatos.eliminarOpcionDeVotacion(IDVotacion, opciones.get(opcionElegida - 1));
-            System.out.println("Opción eliminada con exito");
-            break;
-        }
+        int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
+        if (opcionElegida == 0) return;
+        AccesoADatos.eliminarOpcionDeVotacion(IDVotacion, opciones.get(opcionElegida - 1));
+        System.out.println("Opción eliminada con exito");
     }
 
     private void agregarOpcionDeVotacion(String IDVotacion) {
@@ -464,17 +432,13 @@ public class MenuPrincipal {
     }
 
     private void mostrarMenuAgregacionDeOpciones(String IDVotacion) {
-        mostrarDatosDeVotacion(IDVotacion);
-        mostrarMenuMenuAgregacionDeOpciones();
-        salirMenu:
         while (true) {
-            switch (ValidadorDeDatos.pedirOpcion()) {
-                case 0 -> {break salirMenu;}
-                case 1 -> agregarOpcionDeVotacion(IDVotacion);
-                default -> {mostrarOpcionInvalida(); continue;}
-            }
             mostrarDatosDeVotacion(IDVotacion);
             mostrarMenuMenuAgregacionDeOpciones();
+            switch (ValidadorDeDatos.pedirOpcionHasta(1)) {
+                case 0 -> {return;}
+                case 1 -> agregarOpcionDeVotacion(IDVotacion);
+            }
         }
     }
 
@@ -500,9 +464,5 @@ public class MenuPrincipal {
     private void mostrarSistemaNoDisponible(String mensaje) {
         System.err.println("El sistema no se encuentra disponible por ahora, disculpe las molestias\n" +
                 "Mensaje de error: " + mensaje);
-    }
-
-    private static void mostrarOpcionInvalida() {
-        System.out.print("Por favor, escoja una opción válida\n> ");
     }
 }

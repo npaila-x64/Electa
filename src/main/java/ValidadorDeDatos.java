@@ -6,17 +6,20 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /*
-    Clase que contiene los métodos dedicados a validar datos
+    Clase que contiene métodos dedicados a validar datos
  */
 
 public class ValidadorDeDatos {
 
+    private static final String PATRON_DE_FECHA = "\\d{2}-\\d{2}-\\d{4}";
+    private static final String PATRON_DE_HORA = "\\d{2}:\\d{2}";
+
     public static boolean esFormatoFechaValido(String fecha) {
-        return fecha.matches("\\d{2}-\\d{2}-\\d{4}");
+        return fecha.matches(PATRON_DE_FECHA);
     }
 
     public static boolean esFormatoHoraValido(String hora) {
-        return hora.matches("\\d{2}:\\d{2}");
+        return hora.matches(PATRON_DE_HORA);
     }
 
     public static boolean esCredencialAdministradorValida(String clave) throws AccesoADatosInterrumpidoException {
@@ -56,16 +59,20 @@ public class ValidadorDeDatos {
         return mapaConCampos;
     }
 
-    public static int pedirValorEntero() throws InputMismatchException {
-        return new Scanner(System.in).nextInt();
+    public static int pedirValorEnteroEnIntervalo(int limite) throws InputMismatchException {
+        int valor = new Scanner(System.in).nextInt();
+        if (valor < 0 || valor > limite) {
+            throw new InputMismatchException("El parámetro dado sobrepasa el límite");
+        }
+        return valor;
     }
 
-    public static int pedirOpcion() {
+    public static int pedirOpcionHasta(int limite) {
         try {
-            return pedirValorEntero();
+            return pedirValorEnteroEnIntervalo(limite);
         } catch (InputMismatchException e) {
             mostrarOpcionInvalida();
-            return pedirOpcion();
+            return pedirOpcionHasta(limite);
         }
     }
 
