@@ -4,13 +4,13 @@ public enum CampoDeVotante {
     RUT("rut"),
     CLAVE("clave");
 
-    private String nombre;
+    private String texto;
 
-    CampoDeVotante(String nombre) {
-        this.nombre = nombre;
+    CampoDeVotante(String texto) {
+        this.texto = texto;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getTexto() {
+        return texto;
     }
 }

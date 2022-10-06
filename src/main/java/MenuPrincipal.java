@@ -292,7 +292,7 @@ public class MenuPrincipal {
     }
 
     private void mostrarEditorDeVotacion(String IDVotacion) {
-//  FIXME A futuro se podría usar el siguiente formato para las opciones / menús
+//      FIXME A futuro se podría usar el siguiente formato para las opciones / menús
 //        LinkedHashMap<String, Runnable> opciones = new LinkedHashMap<>();
 //        opciones.put("Modificar algún campo",       () -> mostrarMenuEditarCamposDeVotacion(IDVotacion));
 //        opciones.put("Para agregar una opción",     () -> agregarOpcionDeVotacion(IDVotacion));

@@ -25,7 +25,7 @@ public class ValidadorDeDatos {
     public static boolean esCredencialAdministradorValida(String clave) throws AccesoADatosInterrumpidoException {
         JSONArray credencialArray = AccesoADatos.parsearCredencialAdmin();
         JSONObject credencialObject = (JSONObject) credencialArray.get(0);
-        String claveObtenida = String.valueOf(credencialObject.get(CampoDeVotante.CLAVE.getNombre()));
+        String claveObtenida = String.valueOf(credencialObject.get(CampoDeVotante.CLAVE.getTexto()));
         return clave.equals(claveObtenida);
     }
 
@@ -33,8 +33,8 @@ public class ValidadorDeDatos {
         JSONArray arrayVotantes = AccesoADatos.parsearVotantes();
         for (Object arrayVotante : arrayVotantes) {
             JSONObject votanteSiguiente = (JSONObject) arrayVotante;
-            if (votanteSiguiente.get(CampoDeVotante.RUT.getNombre()).equals(rut)
-                    && votanteSiguiente.get(CampoDeVotante.CLAVE.getNombre()).equals(clave)) {
+            if (votanteSiguiente.get(CampoDeVotante.RUT.getTexto()).equals(rut)
+                    && votanteSiguiente.get(CampoDeVotante.CLAVE.getTexto()).equals(clave)) {
                 return true;
             }
         }

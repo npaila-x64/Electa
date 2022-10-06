@@ -183,8 +183,8 @@ public class AccesoADatos {
         JSONArray jsonArrayVotaciones = parsearVotantes();
         for (Object arrayVotante : jsonArrayVotaciones) {
             JSONObject votanteSiguiente = (JSONObject) arrayVotante;
-            if (votanteSiguiente.get(CampoDeVotante.RUT.getNombre()).equals(rut)) {
-                return String.valueOf(votanteSiguiente.get(CampoDeVotante.ID.getNombre()));
+            if (votanteSiguiente.get(CampoDeVotante.RUT.getTexto()).equals(rut)) {
+                return String.valueOf(votanteSiguiente.get(CampoDeVotante.ID.getTexto()));
             }
         }
         throw AccesoADatosInterrumpidoException.talElementoNoExiste(rut);
