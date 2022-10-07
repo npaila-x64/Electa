@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -90,22 +91,69 @@ public class AccesoADatos {
         return arrayListVotaciones;
     }
 
+    public static void main(String[] args) {
+        System.out.println(obtenerTitulosVotaciones());
+    }
+
     public static List<String> obtenerTitulosVotaciones() {
-        return obtenerKeysDeCampoDeVotaciones(CampoDeVotacion.TITULO.getTexto());
+        List<Votacion> votaciones = obtenerVotaciones();
+        List<String> tituloVotaciones = new ArrayList<>();
+        for (var votacion : votaciones) {
+            tituloVotaciones.add(votacion.getTitulo());
+        }
+        return tituloVotaciones;
     }
 
     public static List<String> obtenerIDsVotaciones() {
-        return obtenerKeysDeCampoDeVotaciones(CampoDeVotacion.ID.getTexto());
+        List<Votacion> votaciones = obtenerVotaciones();
+        List<String> IDsVotaciones = new ArrayList<>();
+        for (var votacion : votaciones) {
+            IDsVotaciones.add(votacion.getId().toString());
+        }
+        return IDsVotaciones;
     }
 
-    public static List<String> obtenerKeysDeCampoDeVotaciones(String campo) {
+    public static List<Votacion> obtenerVotaciones() {
+        List<Votacion> votaciones = new ArrayList<>();
         JSONArray jsonArrayVotaciones = parsearVotaciones();
-        List<String> arrayListIDsVotaciones = new ArrayList<>();
         for (Object jsonArrayVotacion : jsonArrayVotaciones) {
             JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-            arrayListIDsVotaciones.add(String.valueOf(votacionSiguiente.get(campo)));
+            Votacion votacion = new Votacion();
+            obtenerAtributosDeVotacionJSON(votacion, votacionSiguiente);
+            votaciones.add(votacion);
         }
-        return arrayListIDsVotaciones;
+        return votaciones;
+    }
+
+    private static void obtenerAtributosDeVotacionJSON(Votacion votacion, JSONObject votacionJSON) {
+        votacion.setId(votacionJSON.get(CampoDeVotacion.ID.getTexto()));
+        votacion.setTitulo(votacionJSON.get(CampoDeVotacion.TITULO.getTexto()));
+        votacion.setDescripcion(votacionJSON.get(CampoDeVotacion.DESCRIPCION.getTexto()));
+        votacion.setEstado(votacionJSON.get(CampoDeVotacion.ESTADO.getTexto()));
+        votacion.setFechaTiempoInicio(obtenerFechaTiempoInicio(votacionJSON));
+        votacion.setFechaTiempoTermino(obtenerFechaTiempoTermino(votacionJSON));
+        votacion.setOpciones(obtenerOpcionesDeVotacion(votacion, votacionJSON));
+        votacion.setVotosPreferenciales(
+                votacionJSON.get(CampoDeVotacion.VOTOS_PREFERENCIALES.getTexto()));
+        votacion.setVotosBlancos(votacionJSON.get(CampoDeVotacion.VOTOS_BLANCOS.getTexto()));
+    }
+
+    public static List<Opcion> obtenerOpcionesDeVotacion(Votacion votacion, JSONObject votacionSiguiente) {
+        var opciones = obtenerOpcionesDeVotacion(votacionSiguiente);
+        for (var opcion : opciones) opcion.setVotacion(votacion);
+        return opciones;
+    }
+
+    public static List<Opcion> obtenerOpcionesDeVotacion(JSONObject votacionSiguiente) {
+        JSONObject opciones = (JSONObject) votacionSiguiente.get(CampoDeVotacion.OPCIONES.getTexto());
+        List<Opcion> listaOpciones = new ArrayList<>();
+        for (Object opcionStr : opciones.keySet()) {
+            Opcion opcion = new Opcion();
+            opcion.setNombre(opcionStr);
+            opcion.setCantidadDeVotos(opciones.get(opcionStr));
+            listaOpciones.add(opcion);
+        }
+        return listaOpciones;
     }
 
     public static List<String> obtenerIDsVotacionesEnElQuePuedeVotarElVotante(String IDVotante) {
@@ -293,6 +341,29 @@ public class AccesoADatos {
         JSONObject opciones = (JSONObject) votacion.get(CampoDeVotacion.OPCIONES.getTexto());
         opciones.put(opcionElegida, 0);
         escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
+    }
+
+    public static LocalDateTime obtenerFechaTiempoInicio(JSONObject votacion) {
+        return obtenerFechaTiempoVotacion(
+                votacion.get(CampoDeVotacion.FECHA_INICIO.getTexto()),
+                votacion.get(CampoDeVotacion.HORA_INICIO.getTexto()));
+    }
+
+    public static LocalDateTime obtenerFechaTiempoTermino(JSONObject votacion) {
+        return obtenerFechaTiempoVotacion(
+                votacion.get(CampoDeVotacion.FECHA_TERMINO.getTexto()),
+                votacion.get(CampoDeVotacion.HORA_TERMINO.getTexto()));
+    }
+
+    public static LocalDateTime obtenerFechaTiempoVotacion(Object fecha, Object tiempo) {
+        var fechaArr = fecha.toString().split("-");
+        var dia = Integer.parseInt(fechaArr[0]);
+        var mes = Integer.parseInt(fechaArr[1]);
+        var anio = Integer.parseInt(fechaArr[2]);
+        var tiempoArr = tiempo.toString().split(":");
+        var hora = Integer.parseInt(tiempoArr[0]);
+        var minutos = Integer.parseInt(tiempoArr[1]);
+        return LocalDateTime.of(anio, mes, dia, hora, minutos);
     }
 
     public static int parsearObjectAInt(Object obj) {
