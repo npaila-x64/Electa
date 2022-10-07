@@ -4,11 +4,12 @@ import org.json.simple.JSONObject;
 import java.util.*;
 
 public class MenuPrincipal {
+
     public void iniciar() {
         mostrarMenuDeIngreso();
     }
 
-    public void mostrarOpcionesDeIngreso() {
+    private void mostrarOpcionesDeIngreso() {
         System.out.print("""
                 
                 ¡Bienvenido/a al sistema Electa!
@@ -18,24 +19,21 @@ public class MenuPrincipal {
                 """.concat("> "));
     }
 
-    public void mostrarMenuDeIngreso() {
-        mostrarOpcionesDeIngreso();
-        salirMenu:
+    private void mostrarMenuDeIngreso() {
         while (true) {
-            switch (ValidadorDeDatos.pedirOpcion()) {
-                case 0 -> {break salirMenu;}
+            mostrarOpcionesDeIngreso();
+            switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
+                case 0 -> {return;}
                 case 1 -> ingresarComoVotante();
                 case 2 -> ingresarComoAdministrador();
-                default -> {
-                    ValidadorDeDatos.mostrarOpcionInvalida();continue;}
             }
-            mostrarOpcionesDeIngreso();
         }
     }
 
-    public void ingresarComoAdministrador() {
+    private void ingresarComoAdministrador() {
         try {
-            String clave = ValidadorDeDatos.pedirString("Ingrese la contraseña del administrador \n> ");
+            String clave = ValidadorDeDatos
+                    .pedirString("Ingrese la contraseña del administrador \n> ");
             if (ValidadorDeDatos.esCredencialAdministradorValida(clave)) {
                 mostrarMenuAdministador();
             } else {
@@ -46,25 +44,22 @@ public class MenuPrincipal {
         }
     }
 
-    public void mostrarMenuAdministador() {
-        System.out.println("Bienvenido/a al menú de administración");
-        mostrarOpcionesMenuAdministador();
-        salirMenu:
+    private void mostrarMenuAdministador() {
+        System.out.println("\nBienvenido/a al menú de administración");
         while (true) {
-            switch (ValidadorDeDatos.pedirOpcion()) {
-                case 0 -> {break salirMenu;}
+            mostrarOpcionesMenuAdministador();
+            switch (ValidadorDeDatos.pedirOpcionHasta(3)) {
+                case 0 -> {return;}
                 case 1 -> mostrarPanelDeControlDeVotaciones();
                 case 2 -> mostrarMenuCreacionDeVotacion();
                 case 3 -> mostrarMenuResultados();
-                default -> {
-                    ValidadorDeDatos.mostrarOpcionInvalida(); continue;}
             }
-            mostrarOpcionesMenuAdministador();
         }
     }
 
-    public void mostrarOpcionesMenuAdministador() {
+    private void mostrarOpcionesMenuAdministador() {
         System.out.print("""
+                
                 Elija una opción
                 [1] Ver, modificar, o eliminar votaciones
                 [2] Crear nueva votación
@@ -73,7 +68,7 @@ public class MenuPrincipal {
                 """.concat("> "));
     }
 
-    public void ingresarComoVotante() {
+    private void ingresarComoVotante() {
         try {
             String rutVotante = ValidadorDeDatos.pedirString("Ingrese su rut\n> ");
             String claveVotante = ValidadorDeDatos.pedirString("Ingrese su clave\n> ");
@@ -87,23 +82,21 @@ public class MenuPrincipal {
         }
     }
 
-    public void mostrarMenuVotacionesVotante(String IDVotante) {
-        mostrarVotacionesEnCurso();
-        mostrarOpcionesMenuVotacionesVotante();
-        salirMenu:
+    private void mostrarMenuVotacionesVotante(String IDVotante) {
         while (true) {
-            switch (ValidadorDeDatos.pedirOpcion()) {
-                case 0 -> {break salirMenu;}
+            mostrarVotacionesEnCurso();
+            mostrarOpcionesMenuVotacionesVotante();
+            switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
+                case 0 -> {return;}
                 case 1 -> mostrarMenuParaVotar(IDVotante);
                 case 2 -> mostrarMenuResultados();
-                default -> {mostrarOpcionInvalida(); continue;}
             }
-            mostrarOpcionesMenuVotacionesVotante();
         }
     }
 
-    public void mostrarOpcionesMenuVotacionesVotante() {
+    private void mostrarOpcionesMenuVotacionesVotante() {
         System.out.print("""
+                
                 OPCIONES
                 [1] Votar
                 [2] Ver Resultados
@@ -111,7 +104,7 @@ public class MenuPrincipal {
                 """.concat("> "));
     }
 
-    public void mostrarTotalVotaciones() {
+    private void mostrarTotalVotaciones() {
         List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones();
         System.out.println("Votaciones");
         for (String titulo : titulosVotaciones) {
@@ -119,104 +112,91 @@ public class MenuPrincipal {
         }
     }
 
-    public void mostrarVotacionesEnCurso() {
+    private void mostrarVotacionesEnCurso() {
         System.out.println("Votaciones En Curso");
-        mostrarTitulosVotaciones(AccesoADatos.obtenerTitulosVotacionesConEstado("EN CURSO"));
+        mostrarTitulosVotaciones(AccesoADatos
+                .obtenerTitulosVotacionesConEstado(Estado.EN_CURSO.getTexto()));
     }
 
-    public void mostrarVotacionesFinalizadas() {
+    private void mostrarVotacionesFinalizadas() {
         System.out.println("Votaciones Finalizadas");
-        mostrarTitulosVotaciones(AccesoADatos.obtenerTitulosVotacionesConEstado("FINALIZADO"));
+        mostrarTitulosVotaciones(AccesoADatos
+                .obtenerTitulosVotacionesConEstado(Estado.FINALIZADO.getTexto()));
     }
 
-    public void mostrarVotacionesBorrador() {
+    private void mostrarVotacionesBorrador() {
         System.out.println("Votaciones Borrador");
-        mostrarTitulosVotaciones(AccesoADatos.obtenerTitulosVotacionesConEstado("BORRADOR"));
+        mostrarTitulosVotaciones(AccesoADatos
+                .obtenerTitulosVotacionesConEstado(Estado.BORRADOR.getTexto()));
     }
 
-    public void mostrarVotacionesPendientes() {
+    private void mostrarVotacionesPendientes() {
         System.out.println("Votaciones Pendientes");
-        mostrarTitulosVotaciones(AccesoADatos.obtenerTitulosVotacionesConEstado("PENDIENTE"));
+        mostrarTitulosVotaciones(AccesoADatos
+                .obtenerTitulosVotacionesConEstado(Estado.PENDIENTE.getTexto()));
     }
 
-    public void mostrarTitulosVotaciones(List<String> titulosVotaciones) {
+    private void mostrarTitulosVotaciones(List<String> titulosVotaciones) {
         for (String titulo : titulosVotaciones) {
             System.out.printf("\"%s\"%n", titulo);
         }
     }
 
-    public void mostrarMenuResultados() {
-        List<String> IDsVotaciones = AccesoADatos.obtenerIDsVotacionesConEstado("FINALIZADO");
-        List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
-        mostrarOpcionesMenuResultados(titulosVotaciones);
+    private void mostrarMenuResultados() {
         while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (esOpcionElegidaFueraDeRango(opcionElegida, titulosVotaciones.size())) continue;
-            mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
-            IDsVotaciones = AccesoADatos.obtenerIDsVotacionesConEstado("FINALIZADO");
-            titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
+            List<String> IDsVotaciones = AccesoADatos
+                    .obtenerIDsVotacionesConEstado(Estado.FINALIZADO.getTexto());
+            List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
             mostrarOpcionesMenuResultados(titulosVotaciones);
+            int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(titulosVotaciones.size());
+            if (opcionElegida == 0) break;
+            mostrarResultadosVotacion(titulosVotaciones.get(opcionElegida - 1));
         }
     }
 
-    public void mostrarOpcionesMenuResultados(List<String> titulosVotaciones) {
+    private void mostrarOpcionesMenuResultados(List<String> titulosVotaciones) {
         System.out.println("Votaciones finalizadas disponibles para su revisión");
         mostrarListaOpciones(titulosVotaciones);
     }
 
-    public void mostrarMenuParaVotar(String IDVotante) {
-        List<String> IDsVotaciones = AccesoADatos.obtenerIDsVotacionesEnElQuePuedeVotarElVotante(IDVotante);
-        List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
-        mostrarVotacionesDisponiblesParaVotacion(titulosVotaciones);
+    private void mostrarMenuParaVotar(String IDVotante) {
         while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (esOpcionElegidaFueraDeRango(opcionElegida, IDsVotaciones.size())) continue;
-            mostrarMenuOpcionesParaVotar(IDsVotaciones.get(opcionElegida - 1), IDVotante);
-            IDsVotaciones = AccesoADatos.obtenerIDsVotacionesEnElQuePuedeVotarElVotante(IDVotante);
-            titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
+            List<String> IDsVotaciones = AccesoADatos
+                    .obtenerIDsVotacionesEnElQuePuedeVotarElVotante(IDVotante);
+            List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones(IDsVotaciones);
             mostrarVotacionesDisponiblesParaVotacion(titulosVotaciones);
+            int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(IDsVotaciones.size());
+            if (opcionElegida == 0) break;
+            mostrarMenuOpcionesParaVotar(IDsVotaciones.get(opcionElegida - 1), IDVotante);
         }
     }
 
-    public void mostrarVotacionesDisponiblesParaVotacion(List<String> titulosVotaciones) {
+    private void mostrarVotacionesDisponiblesParaVotacion(List<String> titulosVotaciones) {
         System.out.println("Votaciones disponibles para votación");
         mostrarListaOpciones(titulosVotaciones);
     }
 
-    public void mostrarMenuOpcionesParaVotar(String IDVotacion, String IDVotante) {
+    private void mostrarMenuOpcionesParaVotar(String IDVotacion, String IDVotante) {
         List<String> opciones = AccesoADatos.obtenerOpcionesDeVotacion(IDVotacion);
         opciones.add(0, "Abstenerse");
         mostrarOpcionesMenuOpcionesParaVotar(opciones);
-        while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (opcionElegida == 1) {
-                AccesoADatos.realizarVotoBlanco(IDVotacion, IDVotante);
-                mostrarVotoRealizadoConExito();
-                break;}
-            if (esOpcionElegidaFueraDeRango(opcionElegida, opciones.size())) continue;
-            AccesoADatos.realizarVotoPreferencial(IDVotacion, IDVotante, opciones.get(opcionElegida - 1));
+        int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
+        if (opcionElegida == 0) return;
+        if (opcionElegida == 1) {
+            AccesoADatos.realizarVotoBlanco(IDVotacion, IDVotante);
             mostrarVotoRealizadoConExito();
-            break;
+            return;
         }
+        AccesoADatos.realizarVotoPreferencial(IDVotacion, IDVotante, opciones.get(opcionElegida - 1));
+        mostrarVotoRealizadoConExito();
     }
 
-    public void mostrarOpcionesMenuOpcionesParaVotar(List<String> opciones) {
+    private void mostrarOpcionesMenuOpcionesParaVotar(List<String> opciones) {
         System.out.println("Opciones disponibles");
         mostrarListaOpciones(opciones);
     }
 
-    public boolean esOpcionElegidaFueraDeRango(int opcionElegida, int cantidadOpciones) {
-        if (opcionElegida > cantidadOpciones) {
-            mostrarOpcionInvalida();
-            return true;
-        }
-        return false;
-    }
-
-    public void mostrarVotoRealizadoConExito() {
+    private void mostrarVotoRealizadoConExito() {
         System.out.println("¡Voto realizado con exito!\n");
     }
 
@@ -229,21 +209,23 @@ public class MenuPrincipal {
         System.out.print("Si desea volver escriba [0]\n> ");
     }
 
-    public void mostrarResultadosVotacion(String tituloVotacion) {
+    private void mostrarResultadosVotacion(String tituloVotacion) {
         JSONObject votacion = AccesoADatos.obtenerVotacionPorTitulo(tituloVotacion);
         mostrarResultadosDatos(votacion);
         mostrarResultadosVotosPorOpciones(votacion);
     }
 
     public void mostrarResultadosDatos(JSONObject votacion) {
-        String titulo = String.valueOf(votacion.get("titulo"));
-        int votoBlancos = parsearObjectAInt(votacion.get("votos_blancos"));
-        int votoPreferenciales = parsearObjectAInt(votacion.get("votos_preferenciales"));
+        var titulo = votacion.get(CampoDeVotacion.TITULO.getTexto());
+        int votoBlancos = Utilidades.parsearObjectAInt(
+                votacion.get(CampoDeVotacion.VOTOS_BLANCOS.getTexto()));
+        int votoPreferenciales = Utilidades.parsearObjectAInt(
+                votacion.get(CampoDeVotacion.VOTOS_PREFERENCIALES.getTexto()));
         int totalVotos = votoPreferenciales + votoBlancos;
-        String fechaInicio = String.valueOf(votacion.get("fecha_inicio"));
-        String horaInicio = String.valueOf(votacion.get("hora_inicio"));
-        String fechaTermino = String.valueOf(votacion.get("fecha_termino"));
-        String horaTermino = String.valueOf(votacion.get("hora_termino"));
+        var fechaInicio = votacion.get(CampoDeVotacion.FECHA_INICIO.getTexto());
+        var horaInicio = votacion.get(CampoDeVotacion.HORA_INICIO.getTexto());
+        var fechaTermino = votacion.get(CampoDeVotacion.FECHA_TERMINO.getTexto());
+        var horaTermino = votacion.get(CampoDeVotacion.HORA_TERMINO.getTexto());
         System.out.printf("""
                         Resultados para la votacion "%s"
                         Votos preferenciales %s %s
@@ -252,27 +234,24 @@ public class MenuPrincipal {
                         Fecha y hora de inicio %s %s %s hrs
                         Fecha y hora de término %s %s %s hrs
                         %n""", titulo,
-                padTexto("", ".", 30 - 20), votoPreferenciales,
-                padTexto("", ".", 30 - 13), votoBlancos,
-                padTexto("", ".", 30 - 11), totalVotos,
-                padTexto("", ".", 30 - 22), fechaInicio, horaInicio,
-                padTexto("", ".", 30 - 23), fechaTermino, horaTermino);
+                Utilidades.padTexto("", ".", 30 - 20), votoPreferenciales,
+                Utilidades.padTexto("", ".", 30 - 13), votoBlancos,
+                Utilidades.padTexto("", ".", 30 - 11), totalVotos,
+                Utilidades.padTexto("", ".", 30 - 22), fechaInicio, horaInicio,
+                Utilidades.padTexto("", ".", 30 - 23), fechaTermino, horaTermino);
     }
 
-    public void mostrarPanelDeControlDeVotaciones() {
-        List<String> IDsVotaciones = AccesoADatos.obtenerIDsVotaciones();
-        mostrarOpcionesPanelDeControlDeVotaciones(IDsVotaciones);
+    private void mostrarPanelDeControlDeVotaciones() {
         while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (esOpcionElegidaFueraDeRango(opcionElegida, IDsVotaciones.size())) continue;
-            mostrarEditorDeVotacion(IDsVotaciones.get(opcionElegida - 1));
-            IDsVotaciones = AccesoADatos.obtenerIDsVotaciones();
+            List<String> IDsVotaciones = AccesoADatos.obtenerIDsVotaciones();
             mostrarOpcionesPanelDeControlDeVotaciones(IDsVotaciones);
+            int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(IDsVotaciones.size());
+            if (opcionElegida == 0) break;
+            mostrarEditorDeVotacion(IDsVotaciones.get(opcionElegida - 1));
         }
     }
 
-    public void mostrarOpcionesPanelDeControlDeVotaciones(List<String> IDsVotaciones) {
+    private void mostrarOpcionesPanelDeControlDeVotaciones(List<String> IDsVotaciones) {
         System.out.print("""
                 Para modificar o eliminar una votación
                 escriba el número correspondiente a su índice
@@ -280,7 +259,7 @@ public class MenuPrincipal {
         mostrarListaOpcionesDetallada(IDsVotaciones);
     }
 
-    public void mostrarListaOpcionesDetallada(List<String> IDsVotaciones) {
+    private void mostrarListaOpcionesDetallada(List<String> IDsVotaciones) {
         System.out.println("Elija una opción");
         for (int indice = 0; indice < IDsVotaciones.size(); indice++) {
             mostrarOpcionDetallada(IDsVotaciones.get(indice), indice + 1);
@@ -288,51 +267,55 @@ public class MenuPrincipal {
         System.out.print("Si desea volver escriba [0]\n> ");
     }
 
-    public void mostrarOpcionDetallada(String IDVotacion, int indiceAjustado) {
+    private void mostrarOpcionDetallada(String IDVotacion, int indiceAjustado) {
         HashMap<String, Object> mapaConCampos = obtenerCamposDeVotacion(IDVotacion);
-        String titulo = String.valueOf(mapaConCampos.get("titulo"));
-        String estado = String.valueOf(mapaConCampos.get("estado"));
-        String fechaTermino = String.valueOf(mapaConCampos.get("fecha_termino"));
-        String horaTermino = String.valueOf(mapaConCampos.get("hora_termino"));
+        var titulo = mapaConCampos.get(CampoDeVotacion.TITULO.getTexto());
+        Estado estado = Estado.fromObject(mapaConCampos.get(CampoDeVotacion.ESTADO.getTexto()));
+        var fechaTermino = mapaConCampos.get(CampoDeVotacion.FECHA_TERMINO.getTexto());
+        var horaTermino = mapaConCampos.get(CampoDeVotacion.HORA_TERMINO.getTexto());
+        var fechaInicio = mapaConCampos.get(CampoDeVotacion.FECHA_INICIO.getTexto());
+        var horaInicio = mapaConCampos.get(CampoDeVotacion.HORA_INICIO.getTexto());
         System.out.printf("[%s] %s %s ", indiceAjustado,
-                padTexto(titulo, ".", 60), estado);
+                Utilidades.padTexto(titulo.toString(), ".", 60), estado);
         switch (estado) {
-            case "EN CURSO" -> System.out.printf("%s Terminará el %s a las %s hrs%n",
-                    padTexto("", ".", 15 - estado.length()),
+            case EN_CURSO -> System.out.printf("%s Terminará el %s a las %s hrs%n",
+                    Utilidades.padTexto("", ".", 15 - estado.toString().length()),
                     fechaTermino, horaTermino);
-            case "FINALIZADO" -> System.out.printf("%s Finalizo el %s a las %s hrs%n",
-                    padTexto("", ".", 15 - estado.length()),
+            case FINALIZADO -> System.out.printf("%s Finalizó el %s a las %s hrs%n",
+                    Utilidades.padTexto("", ".", 15 - estado.toString().length()),
                     fechaTermino, horaTermino);
+            case PENDIENTE -> System.out.printf("%s Iniciará el %s a las %s hrs%n",
+                    Utilidades.padTexto("", ".", 15 - estado.toString().length()),
+                    fechaInicio, horaInicio);
             default -> System.out.printf("%n");
         }
     }
 
-    public String padTexto(String texto, String patronRelleno, int largo) {
-        String relleno = patronRelleno.repeat(largo);
-        int largoDeTexto = texto.length();
-        String corte = relleno.substring(largoDeTexto);
-        return texto.concat(corte);
-    }
-
-    public void mostrarEditorDeVotacion(String IDVotacion) {
-        mostrarOpcionesEditorDeVotacion(IDVotacion);
-        salirMenu:
+    private void mostrarEditorDeVotacion(String IDVotacion) {
+//      FIXME A futuro se podría usar el siguiente formato para las opciones / menús
+//        LinkedHashMap<String, Runnable> opciones = new LinkedHashMap<>();
+//        opciones.put("Modificar algún campo",       () -> mostrarMenuEditarCamposDeVotacion(IDVotacion));
+//        opciones.put("Para agregar una opción",     () -> agregarOpcionDeVotacion(IDVotacion));
+//        opciones.put("Para eliminar alguna opción", () -> mostrarMenuEliminarOpcionesDeVotacion(IDVotacion));
+//        opciones.put("Para eliminar la votación",   () -> AccesoADatos.eliminarVotacion(IDVotacion));
+//        LinkedHashSet<String> set = new LinkedHashSet(opciones.values());
+//        int opcion = ValidadorDeDatos.pedirOpcionHasta(set.size());
         while (true) {
-            switch (ValidadorDeDatos.pedirOpcion()) {
-                case 0 -> {break salirMenu;}
+            mostrarOpcionesEditorDeVotacion(IDVotacion);
+            switch (ValidadorDeDatos.pedirOpcionHasta(4)) {
+                case 0 -> {return;}
                 case 1 -> mostrarMenuEditarCamposDeVotacion(IDVotacion);
                 case 2 -> agregarOpcionDeVotacion(IDVotacion);
                 case 3 -> mostrarMenuEliminarOpcionesDeVotacion(IDVotacion);
-                case 4 -> {AccesoADatos.eliminarVotacion(IDVotacion); break salirMenu;}
-                default -> {mostrarOpcionInvalida(); continue;}
+                case 4 -> {AccesoADatos.eliminarVotacion(IDVotacion); return;}
             }
-            mostrarOpcionesEditorDeVotacion(IDVotacion);
         }
     }
 
-    public void mostrarOpcionesEditorDeVotacion(String IDVotacion) {
-        mostrarCamposDeVotacion(IDVotacion);
+    private void mostrarOpcionesEditorDeVotacion(String IDVotacion) {
+        mostrarDatosDeVotacion(IDVotacion);
         System.out.print("""
+                
                 [1] Modificar algún campo
                 [2] Para agregar una opción
                 [3] Para eliminar alguna opción
@@ -341,79 +324,78 @@ public class MenuPrincipal {
                 """.concat("> "));
     }
 
-    public void mostrarMenuEditarCamposDeVotacion(String IDVotacion) {
-        List<String> campos = List.of("titulo", "descripcion","fecha_inicio",
-                "hora_inicio", "fecha_termino", "hora_termino");
-        mostrarOpcionesMenuEditarCamposDeVotacion(campos);
+    private void mostrarMenuEditarCamposDeVotacion(String IDVotacion) {
+        List<String> campos = new ArrayList<>();
+        for (var campo : CampoDeVotacion.getCamposDeVotacionEditablesPorAdministrador()) {
+            campos.add(campo.getTexto());
+        }
         while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (esOpcionElegidaFueraDeRango(opcionElegida, campos.size())) continue;
-            editarCampoDeVotacion(IDVotacion, campos.get(opcionElegida - 1));
             mostrarOpcionesMenuEditarCamposDeVotacion(campos);
+            int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(campos.size());
+            if (opcionElegida == 0) break;
+            editarCampoDeVotacion(IDVotacion, campos.get(opcionElegida - 1));
         }
     }
 
-    public void mostrarOpcionesMenuEditarCamposDeVotacion(List<String> campos) {
+    private void mostrarOpcionesMenuEditarCamposDeVotacion(List<String> campos) {
         System.out.print("""
+                
                 Escriba el índice del campo que desea modificar
                 """);
         mostrarListaOpciones(campos);
     }
 
-    public void editarCampoDeVotacion(String IDVotacion, String campo) {
+    private void editarCampoDeVotacion(String IDVotacion, String campo) {
         String texto = ValidadorDeDatos.pedirString(campo.concat("> "));
         AccesoADatos.actualizarCampoDeVotacion(IDVotacion, campo, texto);
     }
 
-    public void mostrarMenuEliminarOpcionesDeVotacion(String IDVotacion) {
+    private void mostrarMenuEliminarOpcionesDeVotacion(String IDVotacion) {
         List<String> opciones = AccesoADatos.obtenerOpcionesDeVotacion(IDVotacion);
         System.out.println("Escriba la opción que desea eliminar");
         mostrarListaOpciones(opciones);
-        while (true) {
-            int opcionElegida = ValidadorDeDatos.pedirOpcion();
-            if (opcionElegida == 0) break;
-            if (esOpcionElegidaFueraDeRango(opcionElegida, opciones.size())) continue;
-            AccesoADatos.eliminarOpcionDeVotacion(IDVotacion, opciones.get(opcionElegida - 1));
-            System.out.println("Opción eliminada con exito");
-            break;
-        }
+        int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
+        if (opcionElegida == 0) return;
+        AccesoADatos.eliminarOpcionDeVotacion(IDVotacion, opciones.get(opcionElegida - 1));
+        System.out.println("Opción eliminada con exito");
     }
 
-    public void agregarOpcionDeVotacion(String IDVotacion) {
-        String opcion = ValidadorDeDatos.pedirString("Escriba la opción que desea agregar\n> ", 35);
+    private void agregarOpcionDeVotacion(String IDVotacion) {
+        String opcion = ValidadorDeDatos
+                .pedirString("Escriba la opción que desea agregar\n> ", 35);
         AccesoADatos.agregarOpcionAVotacion(IDVotacion, opcion);
     }
 
-    public void mostrarCamposDeVotacion(String IDVotacion) {
+    private void mostrarDatosDeVotacion(String IDVotacion) {
         JSONObject votacion = AccesoADatos.obtenerVotacionPorID(IDVotacion);
-        String titulo = String.valueOf(votacion.get("titulo"));
-        String descripcion = String.valueOf(votacion.get("descripcion"));
-        String fechaInicio = String.valueOf(votacion.get("fecha_inicio"));
-        String horaInicio = String.valueOf(votacion.get("hora_inicio"));
-        String fechaTermino = String.valueOf(votacion.get("fecha_termino"));
-        String horaTermino = String.valueOf(votacion.get("hora_termino"));
-        String estado = String.valueOf(votacion.get("estado"));
-        System.out.printf("""
-                        Titulo.........................%s
-                        Descripcion....................%s
-                        Fecha de inicio................%s
-                        Hora de inicio.................%s hrs
-                        Fecha de término...............%s
-                        Hora de término................%s hrs
-                        Estado.........................%s
-                        %n""", titulo, descripcion, fechaInicio,
-                horaInicio, fechaTermino, horaTermino, estado);
-        JSONObject opciones = (JSONObject) votacion.get("opciones");
-        List<String> opcionesList =  new ArrayList<>(opciones.keySet());
-        System.out.println("Opciones");
-        for (String opcion : opcionesList) {
-            System.out.println(padTexto("", ".", 8).concat(opcion));
-        }
-        System.out.println();
+        mostrarCamposDeVotacion(votacion);
+        mostrarOpcionesDeVotacion(votacion);
     }
 
-    public void mostrarMenuCreacionDeVotacion() {
+    private void mostrarCamposDeVotacion(JSONObject votacion) {
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        map.put("Titulo ..................... %s", votacion.get(CampoDeVotacion.TITULO.getTexto()));
+        map.put("Descripcion ................ %s", votacion.get(CampoDeVotacion.DESCRIPCION.getTexto()));
+        map.put("Fecha de inicio ............ %s", votacion.get(CampoDeVotacion.FECHA_INICIO.getTexto()));
+        map.put("Hora de inicio ............. %s hrs", votacion.get(CampoDeVotacion.HORA_INICIO.getTexto()));
+        map.put("Fecha de término ........... %s", votacion.get(CampoDeVotacion.FECHA_TERMINO.getTexto()));
+        map.put("Hora de término ............ %s hrs", votacion.get(CampoDeVotacion.HORA_TERMINO.getTexto()));
+        map.put("Estado ..................... %s", votacion.get(CampoDeVotacion.ESTADO.getTexto()));
+        for (var key : map.keySet()) {
+            System.out.printf(key.concat("%n"), map.get(key));
+        }
+    }
+
+    private void mostrarOpcionesDeVotacion(JSONObject votacion) {
+        var opciones = (JSONObject) votacion.get(CampoDeVotacion.OPCIONES.getTexto());
+        List<String> opcionesList =  new ArrayList<>(opciones.keySet());
+        System.out.println("\nOpciones");
+        for (String opcion : opcionesList) {
+            System.out.println(Utilidades.padTexto("", ".", 8).concat(opcion));
+        }
+    }
+
+    private void mostrarMenuCreacionDeVotacion() {
         String IDVotacion = AccesoADatos.obtenerNuevaIDVotacion();
         HashMap<String, String> mapaConCampos = ValidadorDeDatos.pedirCamposDeVotacion();
         JSONObject votacion = generarNuevaVotacionJSONObject(mapaConCampos, IDVotacion);
@@ -422,82 +404,65 @@ public class MenuPrincipal {
         jsonArrayVotaciones.add(votacion);
         AccesoADatos.escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
 
-        System.out.println("¡Votación creada!\n");
+        System.out.println("¡Votación creada con exito!\n");
         mostrarMenuAgregacionDeOpciones(IDVotacion);
     }
 
-    public HashMap<String, Object> obtenerCamposDeVotacion(String IDVotacion) {
+    private HashMap<String, Object> obtenerCamposDeVotacion(String IDVotacion) {
         JSONObject votacion = AccesoADatos.obtenerVotacionPorID(IDVotacion);
         HashMap<String, Object> mapaConCampos = new HashMap<>();
-        mapaConCampos.put("id", votacion.get("id"));
-        mapaConCampos.put("titulo", votacion.get("titulo"));
-        mapaConCampos.put("descripcion", votacion.get("descripcion"));
-        mapaConCampos.put("fecha_inicio", votacion.get("fecha_inicio"));
-        mapaConCampos.put("hora_inicio", votacion.get("hora_inicio"));
-        mapaConCampos.put("fecha_termino", votacion.get("fecha_termino"));
-        mapaConCampos.put("hora_termino", votacion.get("hora_termino"));
-        mapaConCampos.put("estado", votacion.get("estado"));
-        mapaConCampos.put("votantes", (JSONArray) votacion.get("votantes"));
-        mapaConCampos.put("opciones", (JSONObject) votacion.get("opciones"));
+        for (var campo : CampoDeVotacion.getCamposDeVotacion()) {
+            mapaConCampos.put(campo.getTexto(), votacion.get(campo.getTexto()));
+        }
         return mapaConCampos;
     }
 
-    public JSONObject generarNuevaVotacionJSONObject(HashMap<String, String> mapaConCampos, String IDVotacion) {
+    private JSONObject generarNuevaVotacionJSONObject(HashMap<String, String> mapaConCampos, String IDVotacion) {
         JSONObject votacion = new JSONObject();
-        votacion.put("id", IDVotacion);
-        votacion.put("titulo", mapaConCampos.get("titulo"));
-        votacion.put("descripcion", mapaConCampos.get("descripcion"));
-        votacion.put("fecha_inicio", mapaConCampos.get("fecha_inicio"));
-        votacion.put("hora_inicio", mapaConCampos.get("hora_inicio"));
-        votacion.put("fecha_termino", mapaConCampos.get("fecha_termino"));
-        votacion.put("hora_termino", mapaConCampos.get("hora_termino"));
-        votacion.put("estado", "BORRADOR");
-        votacion.put("votos_preferenciales", 0);
-        votacion.put("votos_blancos", 0);
-        votacion.put("votantes", new JSONArray());
-        JSONObject opciones = new JSONObject();
-        votacion.put("opciones", opciones);
+        for (var CAMPO : CampoDeVotacion.getCamposDeVotacion()) {
+            votacion.put(CAMPO.getTexto(), mapaConCampos.get(CAMPO.getTexto()));
+        }
+        votacion.put(CampoDeVotacion.ID.getTexto(), IDVotacion);
+        votacion.put(CampoDeVotacion.ESTADO.getTexto(), Estado.PENDIENTE.getTexto());
+        votacion.put(CampoDeVotacion.VOTOS_PREFERENCIALES.getTexto(), 0);
+        votacion.put(CampoDeVotacion.VOTOS_BLANCOS.getTexto(), 0);
+        votacion.put(CampoDeVotacion.VOTANTES.getTexto(), new JSONArray());
+        votacion.put(CampoDeVotacion.OPCIONES.getTexto(), new JSONObject());
         return votacion;
     }
 
-    public void mostrarMenuAgregacionDeOpciones(String IDVotacion) {
-        mostrarCamposDeVotacion(IDVotacion);
-        salirMenu:
+    private void mostrarMenuAgregacionDeOpciones(String IDVotacion) {
         while (true) {
-            System.out.print("""
+            mostrarDatosDeVotacion(IDVotacion);
+            mostrarMenuMenuAgregacionDeOpciones();
+            switch (ValidadorDeDatos.pedirOpcionHasta(1)) {
+                case 0 -> {return;}
+                case 1 -> agregarOpcionDeVotacion(IDVotacion);
+            }
+        }
+    }
+
+    private void mostrarMenuMenuAgregacionDeOpciones() {
+        System.out.print("""
+                    
                     Para agregar una opción escriba [1]
                     Para finalizar y volver escriba [0]
                     Elija una opción
                     """.concat("> "));
-            switch (ValidadorDeDatos.pedirOpcion()) {
-                case 0 -> {break salirMenu;}
-                case 1 -> agregarOpcionDeVotacion(IDVotacion);
-                default -> {mostrarOpcionInvalida(); continue;}
-            }
-            mostrarCamposDeVotacion(IDVotacion);
-        }
     }
 
     public void mostrarResultadosVotosPorOpciones(JSONObject votacion) {
-        JSONObject opciones = (JSONObject) votacion.get("opciones");
+        JSONObject opciones = (JSONObject) votacion.get(CampoDeVotacion.OPCIONES.getTexto());
         List<String> opcionesList = new ArrayList<>(opciones.keySet());
         System.out.println("Votos por opciones");
         for (String opcion : opcionesList) {
-            System.out.println(padTexto(opcion, ".", 30)
+            System.out.println(Utilidades.padTexto(opcion, ".", 30)
                     .concat(String.valueOf(opciones.get(opcion))));
         }
     }
 
-    public void mostrarSistemaNoDisponible(String mensaje) {
+    private void mostrarSistemaNoDisponible(String mensaje) {
         System.err.println("El sistema no se encuentra disponible por ahora, disculpe las molestias\n" +
                 "Mensaje de error: " + mensaje);
-    }
-
-    public static void mostrarOpcionInvalida() {
-        System.out.print("Por favor, escoja una opción válida\n> ");
-    }
-
-    public int parsearObjectAInt(Object obj) {
-        return Integer.parseInt(String.valueOf(obj));
     }
 }

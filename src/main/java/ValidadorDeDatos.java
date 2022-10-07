@@ -6,23 +6,26 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /*
-    Clase que contiene los métodos dedicados a validar datos
+    Clase que contiene métodos dedicados a validar datos
  */
 
 public class ValidadorDeDatos {
 
+    private static final String PATRON_DE_FECHA = "\\d{2}-\\d{2}-\\d{4}";
+    private static final String PATRON_DE_HORA = "\\d{2}:\\d{2}";
+
     public static boolean esFormatoFechaValido(String fecha) {
-        return fecha.matches("\\d{2}-\\d{2}-\\d{4}");
+        return fecha.matches(PATRON_DE_FECHA);
     }
 
     public static boolean esFormatoHoraValido(String hora) {
-        return hora.matches("\\d{2}:\\d{2}");
+        return hora.matches(PATRON_DE_HORA);
     }
 
     public static boolean esCredencialAdministradorValida(String clave) throws AccesoADatosInterrumpidoException {
         JSONArray credencialArray = AccesoADatos.parsearCredencialAdmin();
         JSONObject credencialObject = (JSONObject) credencialArray.get(0);
-        String claveObtenida = String.valueOf(credencialObject.get("clave"));
+        String claveObtenida = String.valueOf(credencialObject.get(CampoDeVotante.CLAVE.getTexto()));
         return clave.equals(claveObtenida);
     }
 
@@ -30,7 +33,8 @@ public class ValidadorDeDatos {
         JSONArray arrayVotantes = AccesoADatos.parsearVotantes();
         for (Object arrayVotante : arrayVotantes) {
             JSONObject votanteSiguiente = (JSONObject) arrayVotante;
-            if (votanteSiguiente.get("rut").equals(rut) && votanteSiguiente.get("clave").equals(clave)) {
+            if (votanteSiguiente.get(CampoDeVotante.RUT.getTexto()).equals(rut)
+                    && votanteSiguiente.get(CampoDeVotante.CLAVE.getTexto()).equals(clave)) {
                 return true;
             }
         }
@@ -46,25 +50,29 @@ public class ValidadorDeDatos {
         String horaInicio = pedirString("Hora de inicio (hh:mm formato 24 horas)\n> ");
         String fechaTermino = pedirString("Fecha de término (dd-MM-aaaa)\n> ");
         String horaTermino = pedirString("Hora de término (hh:mm formato 24 horas)\n> ");
-        mapaConCampos.put("titulo", titulo);
-        mapaConCampos.put("descripcion", descripcion);
-        mapaConCampos.put("fecha_inicio", fechaInicio);
-        mapaConCampos.put("hora_inicio", horaInicio);
-        mapaConCampos.put("fecha_termino", fechaTermino);
-        mapaConCampos.put("hora_termino", horaTermino);
+        mapaConCampos.put(CampoDeVotacion.TITULO.getTexto(), titulo);
+        mapaConCampos.put(CampoDeVotacion.DESCRIPCION.getTexto(), descripcion);
+        mapaConCampos.put(CampoDeVotacion.FECHA_INICIO.getTexto(), fechaInicio);
+        mapaConCampos.put(CampoDeVotacion.HORA_INICIO.getTexto(), horaInicio);
+        mapaConCampos.put(CampoDeVotacion.FECHA_TERMINO.getTexto(), fechaTermino);
+        mapaConCampos.put(CampoDeVotacion.HORA_TERMINO.getTexto(), horaTermino);
         return mapaConCampos;
     }
 
-    public static int pedirValorEntero() throws InputMismatchException {
-        return new Scanner(System.in).nextInt();
+    public static int pedirValorEnteroEnIntervalo(int limite) throws InputMismatchException {
+        int valor = new Scanner(System.in).nextInt();
+        if (valor < 0 || valor > limite) {
+            throw new InputMismatchException("El parámetro dado sobrepasa el límite");
+        }
+        return valor;
     }
 
-    public static int pedirOpcion() {
+    public static int pedirOpcionHasta(int limite) {
         try {
-            return pedirValorEntero();
+            return pedirValorEnteroEnIntervalo(limite);
         } catch (InputMismatchException e) {
             mostrarOpcionInvalida();
-            return pedirOpcion();
+            return pedirOpcionHasta(limite);
         }
     }
 
