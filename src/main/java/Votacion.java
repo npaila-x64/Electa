@@ -1,4 +1,6 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class Votacion {
@@ -8,7 +10,11 @@ public class Votacion {
     private String descripcion;
     private Estado estado;
     private LocalDateTime fechaTiempoInicio;
+    private LocalDate fechaInicio;
+    private LocalTime tiempoInicio;
     private LocalDateTime fechaTiempoTermino;
+    private LocalDate fechaTermino;
+    private LocalTime tiempoTermino;
     private List<Opcion> opciones;
     private List<Votante> votantes;
     private Integer votosPreferenciales;
@@ -52,6 +58,24 @@ public class Votacion {
 
     public void setFechaTiempoInicio(LocalDateTime fechaTiempoInicio) {
         this.fechaTiempoInicio = fechaTiempoInicio;
+        setFechaInicio(fechaTiempoInicio.toLocalDate());
+        setTiempoInicio(fechaTiempoInicio.toLocalTime());
+    }
+
+    private void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public LocalDate getFechaInicio() {
+        return this.fechaInicio;
+    }
+
+    private void setTiempoInicio(LocalTime tiempoInicio) {
+        this.tiempoInicio = tiempoInicio;
+    }
+
+    public LocalTime getTiempoInicio() {
+        return this.tiempoInicio;
     }
 
     public LocalDateTime getFechaTiempoTermino() {
@@ -60,6 +84,24 @@ public class Votacion {
 
     public void setFechaTiempoTermino(LocalDateTime fechaTiempoTermino) {
         this.fechaTiempoTermino = fechaTiempoTermino;
+        setFechaTermino(fechaTiempoTermino.toLocalDate());
+        setTiempoTermino(fechaTiempoTermino.toLocalTime());
+    }
+
+    private void setFechaTermino(LocalDate fechaTermino) {
+        this.fechaTermino = fechaTermino;
+    }
+
+    public LocalDate getFechaTermino() {
+        return this.fechaTermino;
+    }
+
+    private void setTiempoTermino(LocalTime tiempoTermino) {
+        this.tiempoTermino = tiempoTermino;
+    }
+
+    public LocalTime getTiempoTermino() {
+        return this.tiempoTermino;
     }
 
     public List<Opcion> getOpciones() {
