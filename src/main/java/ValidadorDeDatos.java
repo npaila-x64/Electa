@@ -2,7 +2,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -45,28 +44,41 @@ public class ValidadorDeDatos {
 
     public static Votacion pedirCamposDeVotacion() {
         Votacion votacion = new Votacion();
-        String titulo = pedirEntrada("Escriba el título de la votación que desea agregar\n> ", 50);
-        System.out.println("Rellene los siguientes campos");
-        String descripcion = pedirEntrada("Descripción\n> ");
-        String fechaInicio = pedirEntrada("Fecha de inicio (dd-MM-aaaa)\n> ");
-        String horaInicio = pedirEntrada("Hora de inicio (hh:mm formato 24 horas)\n> ");
-        String fechaTermino = pedirEntrada("Fecha de término (dd-MM-aaaa)\n> ");
-        String horaTermino = pedirEntrada("Hora de término (hh:mm formato 24 horas)\n> ");
-        votacion.setTitulo(titulo);
-        votacion.setDescripcion(descripcion);
-        LocalDate fechaInicioDate = LocalDate.parse(fechaInicio, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        LocalTime horaInicioTime = LocalTime.parse(horaInicio, DateTimeFormatter.ofPattern("HH:mm"));
-        votacion.setFechaTiempoInicio(fechaInicioDate.atTime(horaInicioTime));
-        LocalDate fechaTerminoDate = LocalDate.parse(fechaTermino, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        LocalTime horaTerminoTime = LocalTime.parse(horaTermino, DateTimeFormatter.ofPattern("HH:mm"));
-        votacion.setFechaTiempoTermino(fechaTerminoDate.atTime(horaTerminoTime));
         List<Opcion> opciones = new ArrayList<>();
         List<Votante> votantes = new ArrayList<>();
+        situarDatosCampo(votacion, ingresarDatosCampo());
+        situarDatosVotacion(votacion, opciones, votantes);
+        return votacion;
+    }
+
+    public static void situarDatosVotacion(Votacion votacion, List<Opcion> opciones, List<Votante> votantes) {
         votacion.setOpciones(opciones);
         votacion.setVotantes(votantes);
         votacion.setVotosBlancos(0);
         votacion.setVotosPreferenciales(0);
-        return votacion;
+    }
+
+    public static void situarDatosCampo(Votacion votacion, HashMap<String, String> datos){
+        votacion.setTitulo(datos.get("titulo"));
+        votacion.setDescripcion(datos.get("descripción"));
+        LocalDate fechaInicioDate = LocalDate.parse(datos.get("fechaInicio"), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalTime horaInicioTime = LocalTime.parse(datos.get("horaInicio"), DateTimeFormatter.ofPattern("HH:mm"));
+        votacion.setFechaTiempoInicio(fechaInicioDate.atTime(horaInicioTime));
+        LocalDate fechaTerminoDate = LocalDate.parse(datos.get("fechaTermino"), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalTime horaTerminoTime = LocalTime.parse(datos.get("horaTermino"), DateTimeFormatter.ofPattern("HH:mm"));
+        votacion.setFechaTiempoTermino(fechaTerminoDate.atTime(horaTerminoTime));
+    }
+
+    public static HashMap<String, String> ingresarDatosCampo(){
+        HashMap<String, String> datosCampo = new HashMap<>();
+        datosCampo.put("titulo", pedirEntrada("Escriba el título de la votación que desea agregar\n> ", 50));
+        System.out.println("Rellene los siguientes campos");
+        datosCampo.put("descripción", pedirEntrada("Descripción\n> "));
+        datosCampo.put("fechaInicio", pedirEntrada("Fecha de inicio (dd-MM-aaaa)\n> "));
+        datosCampo.put("horaInicio", pedirEntrada("Hora de inicio (hh:mm formato 24 horas)\n> "));
+        datosCampo.put("fechaTermino", pedirEntrada("Fecha de término (dd-MM-aaaa)\n> "));
+        datosCampo.put("horaTermino", pedirEntrada("Hora de término (hh:mm formato 24 horas)\n> "));
+        return datosCampo;
     }
 
     public static int pedirValorEnteroEnIntervalo(int limite) throws InputMismatchException {
