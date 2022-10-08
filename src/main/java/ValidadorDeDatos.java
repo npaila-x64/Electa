@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 /*
@@ -58,7 +59,7 @@ public class ValidadorDeDatos {
         votacion.setVotosPreferenciales(0);
     }
 
-    public static void situarDatosCampo(Votacion votacion, HashMap<String, String> datos){
+    public static void situarDatosCampo(Votacion votacion, HashMap<String, String> datos) {
         votacion.setTitulo(datos.get("titulo"));
         votacion.setDescripcion(datos.get("descripción"));
         LocalDate fechaInicioDate = LocalDate.parse(datos.get("fechaInicio"), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
@@ -74,10 +75,10 @@ public class ValidadorDeDatos {
         datosCampo.put("titulo", pedirEntrada("Escriba el título de la votación que desea agregar\n> ", 50));
         System.out.println("Rellene los siguientes campos");
         datosCampo.put("descripción", pedirEntrada("Descripción\n> "));
-        datosCampo.put("fechaInicio", pedirEntrada("Fecha de inicio (dd-MM-aaaa)\n> "));
-        datosCampo.put("horaInicio", pedirEntrada("Hora de inicio (hh:mm formato 24 horas)\n> "));
-        datosCampo.put("fechaTermino", pedirEntrada("Fecha de término (dd-MM-aaaa)\n> "));
-        datosCampo.put("horaTermino", pedirEntrada("Hora de término (hh:mm formato 24 horas)\n> "));
+        datosCampo.put("fechaInicio", pedirEntradaFormatoFecha("Fecha de inicio (dd-MM-aaaa)\n> "));
+        datosCampo.put("horaInicio", pedirEntradaFormatoHora("Hora de inicio (hh:mm formato 24 horas)\n> "));
+        datosCampo.put("fechaTermino", pedirEntradaFormatoFecha("Fecha de término (dd-MM-aaaa)\n> "));
+        datosCampo.put("horaTermino", pedirEntradaFormatoHora("Hora de término (hh:mm formato 24 horas)\n> "));
         return datosCampo;
     }
 
@@ -96,6 +97,26 @@ public class ValidadorDeDatos {
             mostrarOpcionInvalida();
             return pedirOpcionHasta(limite);
         }
+    }
+
+    public static String pedirEntradaFormatoFecha(String texto){
+        System.out.print(texto);
+        String entrada = new Scanner(System.in).nextLine();
+        if (!esFormatoFechaValido(entrada)) {
+            mostrarFormatoInvalido();
+            return pedirEntradaFormatoFecha(texto);
+        }
+        return entrada;
+    }
+
+    public static String pedirEntradaFormatoHora(String texto){
+        System.out.print(texto);
+        String entrada = new Scanner(System.in).nextLine();
+        if (!esFormatoHoraValido(entrada)) {
+            mostrarFormatoInvalido();
+            return pedirEntradaFormatoHora(texto);
+        }
+        return entrada;
     }
 
     public static String pedirEntrada(String texto) {
@@ -127,5 +148,9 @@ public class ValidadorDeDatos {
 
     public static void mostrarOpcionInvalida() {
         System.out.print("Por favor, escoja una opción válida\n> ");
+    }
+
+    public static void mostrarFormatoInvalido(){
+        System.out.println("Por favor, ingrese el texto en el formato indicado");
     }
 }
