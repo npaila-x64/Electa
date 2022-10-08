@@ -267,13 +267,13 @@ public class AccesoADatos {
         escribirArchivoJSON(RUTA_VOTACIONES, contenido);
     }
 
-    public static void escribirArchivoJSON(String ruta, String contenido) {
+    public static void escribirArchivoJSON(String ruta, String contenido) throws AccesoADatosInterrumpidoException{
         try {
             FileWriter myWriter = new FileWriter(ruta);
             myWriter.write(contenido);
             myWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw AccesoADatosInterrumpidoException.noSePudoEscribirArchivo(ruta);
         }
     }
 
