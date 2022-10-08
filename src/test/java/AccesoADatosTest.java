@@ -84,4 +84,21 @@ class AccesoADatosTest {
         logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
                 "que campo de votaciones dado no existe. " + exception.getMessage());
     }
+
+    @Test
+    void verificaQueMetodoTiraExcepcionSiSeLeEntregaRutaNoExistente() {
+        var exception = assertThrows(AccesoADatosInterrumpidoException.class,
+                () -> AccesoADatos.escribirArchivoJSON("ruta/que/no/existe", "123"));
+        logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
+                "que la ruta entregada no existe. " + exception.getMessage());
+    }
+
+    @Test
+    void verificaQueMetodoTiraExcepcionSiSeLeEntregaContenidoNulo() {
+        var exception = assertThrows(AccesoADatosInterrumpidoException.class,
+                () -> AccesoADatos.escribirArchivoJSON
+                        ("src/main/datos-de-prueba/votaciones_test.json", null));
+        logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
+                "que el contenido entregado es nulo. " + exception.getMessage());
+    }
 }
