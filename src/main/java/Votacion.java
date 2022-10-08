@@ -1,7 +1,9 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Votacion {
 
@@ -134,5 +136,25 @@ public class Votacion {
 
     public void setVotosBlancos(Object votosBlancos) {
         this.votosBlancos = Integer.parseInt(votosBlancos.toString());
+    }
+
+    public void setAttributo(CampoDeVotacion campo, Object valor) {
+        Map<CampoDeVotacion, Runnable> a = new HashMap<>();
+        a.put(CampoDeVotacion.ID, () -> setId(valor));
+        a.put(CampoDeVotacion.TITULO, () -> setTitulo(valor));
+        a.put(CampoDeVotacion.DESCRIPCION, () -> setDescripcion(valor));
+        a.put(CampoDeVotacion.ESTADO, () -> setEstado(valor));
+        a.put(CampoDeVotacion.FECHA_INICIO, () -> setFechaInicio((LocalDate) valor));
+        a.put(CampoDeVotacion.HORA_INICIO, () -> setTiempoInicio((LocalTime) valor));
+        a.put(CampoDeVotacion.FECHA_TERMINO, () -> setFechaTermino((LocalDate) valor));
+        a.put(CampoDeVotacion.HORA_TERMINO, () -> setTiempoTermino((LocalTime) valor));
+
+        a.get(campo).run();
+//        switch (campo) {
+//            case ID -> setId(valor);
+//            case TITULO -> setTitulo(valor);
+//            case DESCRIPCION -> setDescripcion(valor);
+//            case ESTADO -> setEstado(valor);
+//        }
     }
 }

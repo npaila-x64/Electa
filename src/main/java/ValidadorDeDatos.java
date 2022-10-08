@@ -43,13 +43,13 @@ public class ValidadorDeDatos {
 
     public static HashMap<String, String> pedirCamposDeVotacion() {
         HashMap<String, String> mapaConCampos = new HashMap<>();
-        String titulo = pedirString("Escriba el título de la votación que desea agregar\n> ", 50);
+        String titulo = pedirEntrada("Escriba el título de la votación que desea agregar\n> ", 50);
         System.out.println("Rellene los siguientes campos");
-        String descripcion = pedirString("Descripción\n> ");
-        String fechaInicio = pedirString("Fecha de inicio (dd-MM-aaaa)\n> ");
-        String horaInicio = pedirString("Hora de inicio (hh:mm formato 24 horas)\n> ");
-        String fechaTermino = pedirString("Fecha de término (dd-MM-aaaa)\n> ");
-        String horaTermino = pedirString("Hora de término (hh:mm formato 24 horas)\n> ");
+        String descripcion = pedirEntrada("Descripción\n> ");
+        String fechaInicio = pedirEntrada("Fecha de inicio (dd-MM-aaaa)\n> ");
+        String horaInicio = pedirEntrada("Hora de inicio (hh:mm formato 24 horas)\n> ");
+        String fechaTermino = pedirEntrada("Fecha de término (dd-MM-aaaa)\n> ");
+        String horaTermino = pedirEntrada("Hora de término (hh:mm formato 24 horas)\n> ");
         mapaConCampos.put(CampoDeVotacion.TITULO.getTexto(), titulo);
         mapaConCampos.put(CampoDeVotacion.DESCRIPCION.getTexto(), descripcion);
         mapaConCampos.put(CampoDeVotacion.FECHA_INICIO.getTexto(), fechaInicio);
@@ -76,25 +76,25 @@ public class ValidadorDeDatos {
         }
     }
 
-    public static String pedirString(String texto) {
+    public static String pedirEntrada(String texto) {
         System.out.print(texto);
-        return pedirString();
+        return pedirEntrada();
     }
 
-    public static String pedirString() {
+    public static String pedirEntrada() {
         return new Scanner(System.in).nextLine();
     }
 
-    public static String pedirString(String texto, int limite) {
+    public static String pedirEntrada(String texto, int limite) {
         System.out.print(texto);
-        return pedirString(limite);
+        return pedirEntrada(limite);
     }
 
-    public static String pedirString(int limite) {
+    public static String pedirEntrada(int limite) {
         String entrada = new Scanner(System.in).nextLine();
         if (entrada.length() > limite) {
             mostrarTextoInvalido();
-            return pedirString();
+            return pedirEntrada();
         }
         return entrada;
     }

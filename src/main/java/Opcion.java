@@ -6,6 +6,15 @@ public class Opcion {
     private Votacion votacion;
     private List<Voto> listaDeVotos;
     private Integer cantidadDeVotos;
+    private final String textoVotoBlanco = "Abstenerse";
+
+    public Opcion() {}
+
+    public Opcion(TipoDeVoto tipoDeVoto) {
+        if (tipoDeVoto.equals(TipoDeVoto.VOTO_BLANCO)) {
+            this.nombre = textoVotoBlanco;
+        }
+    }
 
     public String getNombre() {
         return nombre;
@@ -38,4 +47,7 @@ public class Opcion {
     public void setCantidadDeVotos(Object cantidadDeVotos) {
         this.cantidadDeVotos = Integer.parseInt(cantidadDeVotos.toString());
     }
+}
+enum TipoDeVoto {
+    VOTO_BLANCO, VOTO_PREFERENCIAL
 }
