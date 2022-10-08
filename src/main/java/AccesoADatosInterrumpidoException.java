@@ -16,4 +16,8 @@ public class AccesoADatosInterrumpidoException extends RuntimeException {
         return new AccesoADatosInterrumpidoException(
                 "El elemento asociado con el dato " + dato + " no existe");
     }
+
+    public static AccesoADatosInterrumpidoException noSePudoEscribirArchivo(String ruta) {
+        return new AccesoADatosInterrumpidoException("No se pudo escribir el archivo " + ruta);
+    }
 }
