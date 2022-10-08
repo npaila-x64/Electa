@@ -97,7 +97,7 @@ class AccesoADatosTest {
     void verificaQueMetodoTiraExcepcionSiSeLeEntregaContenidoNulo() {
         var exception = assertThrows(AccesoADatosInterrumpidoException.class,
                 () -> AccesoADatos.escribirArchivoJSON
-                        ("src/main/datos-de-prueba/votaciones_test.json", null));
+                        ("src/main/datos-de-prueba/votaciones_test.json", (String) null));
         logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
                 "que el contenido entregado es nulo. " + exception.getMessage());
     }
