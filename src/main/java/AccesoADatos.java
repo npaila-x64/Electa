@@ -274,6 +274,8 @@ public class AccesoADatos {
             myWriter.close();
         } catch (IOException e) {
             throw AccesoADatosInterrumpidoException.noSePudoEscribirArchivo(ruta);
+        } catch (NullPointerException e){
+            throw AccesoADatosInterrumpidoException.noSePudoEscribirArchivo(ruta);
         }
     }
 
