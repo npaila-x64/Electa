@@ -35,8 +35,8 @@ public class RefrescadorVotaciones {
     public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, JSONObject votacion) {
         String estado = votacion.get(CampoDeVotacion.ESTADO.getTexto()).toString();
         if (estado.equals(Estado.BORRADOR.getTexto())) return;
-        var fechaTiempoInicio = AccesoADatos.obtenerFechaTiempoInicio(votacion);
-        var fechaTiempoTermino = AccesoADatos.obtenerFechaTiempoTermino(votacion);
+        var fechaTiempoInicio = AccesoADatos.parsearFechaTiempoInicio(votacion);
+        var fechaTiempoTermino = AccesoADatos.parsearFechaTiempoTermino(votacion);
         if (fechaTiempoAhora.isAfter(fechaTiempoTermino)) {
             estado = Estado.FINALIZADO.getTexto();
         } else if (fechaTiempoAhora.isBefore(fechaTiempoInicio)) {

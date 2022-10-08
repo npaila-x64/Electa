@@ -74,7 +74,7 @@ public class MenuPrincipal {
             String rutVotante = ValidadorDeDatos.pedirEntrada("Ingrese su rut\n> ");
             String claveVotante = ValidadorDeDatos.pedirEntrada("Ingrese su clave\n> ");
             if (ValidadorDeDatos.esCredencialVotanteValida(rutVotante, claveVotante)) {
-                mostrarMenuVotacionesVotante(AccesoADatos.obtenerIDDeRut(rutVotante));
+                mostrarMenuVotacionesVotante(AccesoADatos.obtenerVotantePorRut(rutVotante));
             } else {
                 System.out.println("RUT o contraseña incorrectos");
             }
@@ -83,13 +83,13 @@ public class MenuPrincipal {
         }
     }
 
-    private void mostrarMenuVotacionesVotante(String IDVotante) {
+    private void mostrarMenuVotacionesVotante(Votante votante) {
         while (true) {
             mostrarVotacionesEnCurso();
             mostrarOpcionesMenuVotacionesVotante();
             switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
                 case 0 -> {return;}
-                case 1 -> mostrarMenuParaVotar(IDVotante);
+                case 1 -> mostrarMenuParaVotar(votante);
                 case 2 -> mostrarMenuResultados();
             }
         }
@@ -163,17 +163,17 @@ public class MenuPrincipal {
         mostrarListaDeCampos(titulos);
     }
 
-    private void mostrarMenuParaVotar(String IDVotante) {
+    private void mostrarMenuParaVotar(Votante votante) {
         while (true) {
             List<Votacion> votacionesDisponibles = AccesoADatos
-                    .obtenerVotacionesEnElQuePuedeVotarElVotante(IDVotante);
+                    .obtenerVotacionesEnElQuePuedeVotarElVotante(votante);
             mostrarVotacionesDisponiblesParaVotacion(votacionesDisponibles);
             int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(votacionesDisponibles.size());
             if (opcionElegida == 0) break;
 //  FIXME
 //      Arreglar el tema del traspaso de la instancia de la clase Votacion
             mostrarMenuOpcionesParaVotar(
-                    votacionesDisponibles.get(opcionElegida - 1).getId().toString(), IDVotante);
+                    votacionesDisponibles.get(opcionElegida - 1).getId().toString(), votante);
         }
     }
 
@@ -186,7 +186,7 @@ public class MenuPrincipal {
         mostrarListaDeCampos(titulos);
     }
 
-    private void mostrarMenuOpcionesParaVotar(String IDVotacion, String IDVotante) {
+    private void mostrarMenuOpcionesParaVotar(String IDVotacion, Votante votante) {
         Votacion votacion = AccesoADatos.obtenerVotacionPorID(IDVotacion);
         List<Opcion> opciones = votacion.getOpciones();
         agregarVotoBlanco(opciones);
@@ -194,9 +194,9 @@ public class MenuPrincipal {
         int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
         if (opcionElegida == 0) return;
         if (opcionElegida == 1) {
-            AccesoADatos.realizarVotoBlanco(IDVotacion, IDVotante);
+            AccesoADatos.realizarVotoBlanco(IDVotacion, votante);
         } else {
-            AccesoADatos.realizarVotoPreferencial(IDVotacion, IDVotante, opciones.get(opcionElegida - 1));
+            AccesoADatos.realizarVotoPreferencial(IDVotacion, votante, opciones.get(opcionElegida - 1));
         }
         mostrarVotoRealizadoConExito();
     }

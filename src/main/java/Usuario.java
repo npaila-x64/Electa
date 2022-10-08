@@ -7,15 +7,15 @@ public class Usuario {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Object id) {
+        this.id = Integer.parseInt(id.toString());
     }
 
     public String getClave() {
         return clave;
     }
 
-    public void setClave(String clave) {
-        this.clave = clave;
+    public void setClave(Object clave) {
+        this.clave = clave.toString();
     }
 }
