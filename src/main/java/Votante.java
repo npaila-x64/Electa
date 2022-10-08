@@ -6,7 +6,7 @@ public class Votante extends Usuario {
         return rut;
     }
 
-    public void setRut(String rut) {
-        this.rut = rut;
+    public void setRut(Object rut) {
+        this.rut = rut.toString();
     }
 }

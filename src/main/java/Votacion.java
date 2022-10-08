@@ -139,22 +139,19 @@ public class Votacion {
     }
 
     public void setAttributo(CampoDeVotacion campo, Object valor) {
-        Map<CampoDeVotacion, Runnable> a = new HashMap<>();
-        a.put(CampoDeVotacion.ID, () -> setId(valor));
-        a.put(CampoDeVotacion.TITULO, () -> setTitulo(valor));
-        a.put(CampoDeVotacion.DESCRIPCION, () -> setDescripcion(valor));
-        a.put(CampoDeVotacion.ESTADO, () -> setEstado(valor));
-        a.put(CampoDeVotacion.FECHA_INICIO, () -> setFechaInicio((LocalDate) valor));
-        a.put(CampoDeVotacion.HORA_INICIO, () -> setTiempoInicio((LocalTime) valor));
-        a.put(CampoDeVotacion.FECHA_TERMINO, () -> setFechaTermino((LocalDate) valor));
-        a.put(CampoDeVotacion.HORA_TERMINO, () -> setTiempoTermino((LocalTime) valor));
-
-        a.get(campo).run();
-//        switch (campo) {
-//            case ID -> setId(valor);
-//            case TITULO -> setTitulo(valor);
-//            case DESCRIPCION -> setDescripcion(valor);
-//            case ESTADO -> setEstado(valor);
-//        }
+        Map<CampoDeVotacion, Runnable> mapaDeSetters = new HashMap<>();
+        mapaDeSetters.put(CampoDeVotacion.ID, () -> setId(valor));
+        mapaDeSetters.put(CampoDeVotacion.TITULO, () -> setTitulo(valor));
+        mapaDeSetters.put(CampoDeVotacion.DESCRIPCION, () -> setDescripcion(valor));
+        mapaDeSetters.put(CampoDeVotacion.ESTADO, () -> setEstado(valor));
+        mapaDeSetters.put(CampoDeVotacion.FECHA_INICIO, () -> setFechaInicio((LocalDate) valor));
+        mapaDeSetters.put(CampoDeVotacion.HORA_INICIO, () -> setTiempoInicio((LocalTime) valor));
+        mapaDeSetters.put(CampoDeVotacion.FECHA_TERMINO, () -> setFechaTermino((LocalDate) valor));
+        mapaDeSetters.put(CampoDeVotacion.HORA_TERMINO, () -> setTiempoTermino((LocalTime) valor));
+        mapaDeSetters.put(CampoDeVotacion.OPCIONES, () -> setOpciones((List<Opcion>) valor));
+        mapaDeSetters.put(CampoDeVotacion.VOTANTES, () -> setVotantes((List<Votante>) valor));
+        mapaDeSetters.put(CampoDeVotacion.VOTOS_BLANCOS, () -> setVotosBlancos(valor));
+        mapaDeSetters.put(CampoDeVotacion.VOTOS_PREFERENCIALES, () -> setVotosPreferenciales(valor));
+        mapaDeSetters.get(campo).run();
     }
 }
