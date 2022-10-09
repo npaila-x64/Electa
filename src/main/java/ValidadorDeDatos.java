@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.time.format.ResolverStyle;
 
 /*
     Clase que contiene métodos dedicados a validar datos
@@ -106,7 +107,29 @@ public class ValidadorDeDatos {
             mostrarFormatoInvalido();
             return pedirEntradaFormatoFecha(texto);
         }
+
+        if(!esFechaValida(entrada)){
+            mostrarFechaInvalida();
+            return pedirEntradaFormatoFecha(texto);
+        }
+
         return entrada;
+    }
+
+    public static boolean esFechaValida(String fecha) {
+        boolean fechaValida;
+        String s1 = fecha.substring(0,2), s2 = fecha.substring(3,5), s3 = fecha.substring(6,10);
+        String fechaGringa = s3 + "-" + s2 + "-" + s1;
+
+        try {
+            LocalDate.parse(fechaGringa, DateTimeFormatter.ofPattern("uuuu-M-d")
+                    .withResolverStyle(ResolverStyle.STRICT));
+            fechaValida = true;
+        } catch (DateTimeParseException e) {
+            fechaValida = false;
+        }
+
+        return fechaValida;
     }
 
     public static String pedirEntradaFormatoHora(String texto){
@@ -116,7 +139,15 @@ public class ValidadorDeDatos {
             mostrarFormatoInvalido();
             return pedirEntradaFormatoHora(texto);
         }
+        if(!esHoraValida(entrada)){
+            mostrarHoraInvalida();
+            return pedirEntradaFormatoHora(texto);
+        }
+
         return entrada;
+    }
+    public static boolean esHoraValida(String hora) {
+        return hora.matches("([01]\\d|2[0-3]):[0-5]\\d");
     }
 
     public static String pedirEntrada(String texto) {
@@ -152,5 +183,13 @@ public class ValidadorDeDatos {
 
     public static void mostrarFormatoInvalido(){
         System.out.println("Por favor, ingrese el texto en el formato indicado");
+    }
+
+    public static void mostrarFechaInvalida(){
+        System.out.println("Por favor, ingrese una fecha existente");
+    }
+
+    public static void mostrarHoraInvalida(){
+        System.out.println("Por favor, ingrese una hora valida");
     }
 }
