@@ -30,6 +30,10 @@ public enum Estado {
         return null;
     }
 
+    public int length() {
+        return this.texto.length();
+    }
+
     @Override
     public String toString() {
         return texto;

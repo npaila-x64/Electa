@@ -271,38 +271,34 @@ public class MenuPrincipal {
                 Para modificar o eliminar una votación
                 escriba el número correspondiente a su índice
                 """);
-        mostrarListaOpcionesDetallada(votaciones);
+        mostrarListaVotacionesDetallada(votaciones);
     }
 
-    private void mostrarListaOpcionesDetallada(List<Votacion> votaciones) {
+    private void mostrarListaVotacionesDetallada(List<Votacion> votaciones) {
         System.out.println("Elija una opción");
         for (int indice = 0; indice < votaciones.size(); indice++) {
-            mostrarOpcionDetallada(votaciones.get(indice), indice + 1);
+            mostrarDetalleVotacion(votaciones.get(indice), indice + 1);
         }
         System.out.print("Si desea volver escriba [0]\n> ");
     }
 
-    private void mostrarOpcionDetallada(Votacion votacion, int indiceAjustado) {
-        var titulo = votacion.getTitulo();
+    private void mostrarDetalleVotacion(Votacion votacion, int indiceAjustado) {
+        String titulo = votacion.getTitulo();
         Estado estado = votacion.getEstado();
-        var fechaTermino = votacion.getFechaTermino();
-        var tiempoTermino = votacion.getTiempoTermino();
-        var fechaInicio = votacion.getFechaInicio();
-        var tiempoInicio = votacion.getTiempoInicio();
         System.out.printf("[%s] %s %s ", indiceAjustado,
-                Utilidades.padTexto(titulo.toString(), ".", 60), estado);
-        switch (estado) {
-            case EN_CURSO -> System.out.printf("%s Terminará el %s a las %s hrs%n",
-                    Utilidades.padTexto("", ".", 15 - estado.toString().length()),
-                    fechaTermino, tiempoTermino);
-            case FINALIZADO -> System.out.printf("%s Finalizó el %s a las %s hrs%n",
-                    Utilidades.padTexto("", ".", 15 - estado.toString().length()),
-                    fechaTermino, tiempoTermino);
-            case PENDIENTE -> System.out.printf("%s Iniciará el %s a las %s hrs%n",
-                    Utilidades.padTexto("", ".", 15 - estado.toString().length()),
-                    fechaInicio, tiempoInicio);
-            default -> System.out.printf("%n");
-        }
+                Utilidades.padTexto(titulo, ".", 60), estado);
+        Map<Estado, Runnable> estadosImpresion = new HashMap<>();
+        estadosImpresion.put(Estado.EN_CURSO,  () -> System.out.printf("%s Terminará el %s a las %s hrs%n",
+                Utilidades.padTexto("", 15 - estado.length()),
+                votacion.getFechaTermino(), votacion.getTiempoTermino()));
+        estadosImpresion.put(Estado.FINALIZADO,() -> System.out.printf("%s Finalizó el %s a las %s hrs%n",
+                Utilidades.padTexto("", 15 - estado.length()),
+                votacion.getFechaTermino(), votacion.getTiempoTermino()));
+        estadosImpresion.put(Estado.PENDIENTE, () -> System.out.printf("%s Iniciará el %s a las %s hrs%n",
+                Utilidades.padTexto("", 15 - estado.length()),
+                votacion.getFechaInicio(), votacion.getTiempoInicio()));
+        estadosImpresion.put(Estado.BORRADOR,  () -> System.out.printf("%n"));
+        estadosImpresion.get(estado).run();
     }
 
     private void mostrarEditorDeVotacion(Votacion votacion) {
