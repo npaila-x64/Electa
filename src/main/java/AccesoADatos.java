@@ -299,42 +299,66 @@ public class AccesoADatos {
         JSONArray array = new JSONArray();
         for (Votacion votacion : votaciones) {
             JSONObject votacionObj = new JSONObject();
-            votacionObj.put(CampoDeVotacion.ID.getTexto(), votacion.getId());
-            votacionObj.put(CampoDeVotacion.TITULO.getTexto(), votacion.getTitulo());
-            votacionObj.put(CampoDeVotacion.DESCRIPCION.getTexto(), votacion.getDescripcion());
-            votacionObj.put(CampoDeVotacion.ESTADO.getTexto(), votacion.getEstado().getTexto());
-            votacionObj.put(CampoDeVotacion.FECHA_INICIO.getTexto(),
-                    Optional.ofNullable(votacion.getFechaInicio())
-                            .orElse(LocalDate.of(1900,1,1))
-                            .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-            votacionObj.put(CampoDeVotacion.HORA_INICIO.getTexto(),
-                    Optional.ofNullable(votacion.getTiempoInicio())
-                            .orElse(LocalTime.of(0,0))
-                            .format(DateTimeFormatter.ofPattern("HH:mm")));
-            votacionObj.put(CampoDeVotacion.FECHA_TERMINO.getTexto(),
-                    Optional.ofNullable(votacion.getFechaTermino())
-                            .orElse(LocalDate.of(2099,1,1))
-                            .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-            votacionObj.put(CampoDeVotacion.HORA_TERMINO.getTexto(),
-                    Optional.ofNullable(votacion.getTiempoTermino())
-                            .orElse(LocalTime.of(0,0))
-                            .format(DateTimeFormatter.ofPattern("HH:mm")));
-            JSONArray votantesArray = new JSONArray();
-            for (Votante votante : votacion.getVotantes()) {
-                votantesArray.add(votante.getId());
-            }
-            votacionObj.put(CampoDeVotacion.VOTANTES.getTexto(), votantesArray);
-            JSONObject opcionesObj = new JSONObject();
-            for (Opcion opcion : votacion.getOpciones()) {
-                opcionesObj.put(opcion.getNombre(), opcion.getCantidadDeVotos());
-            }
-            votacionObj.put(CampoDeVotacion.OPCIONES.getTexto(), opcionesObj);
-            votacionObj.put(CampoDeVotacion.VOTOS_BLANCOS.getTexto(), votacion.getVotosBlancos());
-            votacionObj.put(CampoDeVotacion
-                    .VOTOS_PREFERENCIALES.getTexto(), votacion.getVotosPreferenciales());
+            convertirJSONCampoInfoVotacion(votacion, votacionObj);
+            convertirJSONCampoFechaYHora(votacion, votacionObj);
+            convertirJSONCampoVotantes(votacion, votacionObj);
+            convertirJSONCampoOpciones(votacion, votacionObj);
+            convertirJSONCampoVotos(votacion, votacionObj);
             array.add(votacionObj);
         }
         return array;
+    }
+
+    private static void convertirJSONCampoInfoVotacion(Votacion votacion, JSONObject votacionObj) {
+        votacionObj.put(CampoDeVotacion.ID.getTexto(), votacion.getId());
+        votacionObj.put(CampoDeVotacion.TITULO.getTexto(), votacion.getTitulo());
+        votacionObj.put(CampoDeVotacion.DESCRIPCION.getTexto(), votacion.getDescripcion());
+        votacionObj.put(CampoDeVotacion.ESTADO.getTexto(), votacion.getEstado().getTexto());
+    }
+
+    private static void convertirJSONCampoFechaYHora(Votacion votacion, JSONObject votacionObj){
+        votacionObj.put(CampoDeVotacion.FECHA_INICIO.getTexto(),
+                Optional.ofNullable(votacion.getFechaInicio())
+                        .orElse(LocalDate.of(1900,1,1))
+                        .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        votacionObj.put(CampoDeVotacion.HORA_INICIO.getTexto(),
+                Optional.ofNullable(votacion.getTiempoInicio())
+                        .orElse(LocalTime.of(0,0))
+                        .format(DateTimeFormatter.ofPattern("HH:mm")));
+        votacionObj.put(CampoDeVotacion.FECHA_TERMINO.getTexto(),
+                Optional.ofNullable(votacion.getFechaTermino())
+                        .orElse(LocalDate.of(2099,1,1))
+                        .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        votacionObj.put(CampoDeVotacion.HORA_TERMINO.getTexto(),
+                Optional.ofNullable(votacion.getTiempoTermino())
+                        .orElse(LocalTime.of(0,0))
+                        .format(DateTimeFormatter.ofPattern("HH:mm")));
+    }
+
+    private static void convertirJSONCampoVotantes(Votacion votacion, JSONObject votacionObj) {
+        JSONArray votantesArray = obtenerArrayIdVotantes(votacion);
+        votacionObj.put(CampoDeVotacion.VOTANTES.getTexto(), votantesArray);
+    }
+
+    private static JSONArray obtenerArrayIdVotantes(Votacion votacion) {
+        JSONArray votantesArray = new JSONArray();
+        for (Votante votante : votacion.getVotantes()) {
+            votantesArray.add(votante.getId());
+        }
+        return votantesArray;
+    }
+
+    private static void convertirJSONCampoOpciones(Votacion votacion, JSONObject votacionObj) {
+        JSONObject opcionesObj = new JSONObject();
+        for (Opcion opcion : votacion.getOpciones()) {
+            opcionesObj.put(opcion.getNombre(), opcion.getCantidadDeVotos());
+        }
+        votacionObj.put(CampoDeVotacion.OPCIONES.getTexto(), opcionesObj);
+    }
+
+    private static void convertirJSONCampoVotos(Votacion votacion, JSONObject votacionObj) {
+        votacionObj.put(CampoDeVotacion.VOTOS_BLANCOS.getTexto(), votacion.getVotosBlancos());
+        votacionObj.put(CampoDeVotacion.VOTOS_PREFERENCIALES.getTexto(), votacion.getVotosPreferenciales());
     }
 
     public static void crearVotacion(Votacion votacion) {
