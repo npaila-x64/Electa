@@ -249,11 +249,11 @@ public class MenuPrincipal {
                         Fecha y hora de inicio %s %s hrs
                         Fecha y hora de término %s %s hrs
                         %n""", titulo,
-                Utilidades.padTexto("", ".", 30 - 20), votosPreferenciales,
-                Utilidades.padTexto("", ".", 30 - 13), votosBlancos,
-                Utilidades.padTexto("", ".", 30 - 11), totalVotos,
-                Utilidades.padTexto("", ".", 30 - 22), fechaTiempoInicio,
-                Utilidades.padTexto("", ".", 30 - 23), fechaTiempoTermino);
+                Utilidades.padTexto("", 30 - 20), votosPreferenciales,
+                Utilidades.padTexto("", 30 - 13), votosBlancos,
+                Utilidades.padTexto("", 30 - 11), totalVotos,
+                Utilidades.padTexto("", 30 - 22), fechaTiempoInicio,
+                Utilidades.padTexto("", 30 - 23), fechaTiempoTermino);
     }
 
     private void mostrarPanelDeControlDeVotaciones() {
@@ -399,7 +399,7 @@ public class MenuPrincipal {
         var opciones = votacion.getOpciones();
         System.out.println("\nOpciones");
         for (var opcion : opciones) {
-            System.out.println(Utilidades.padTexto("", ".", 8).concat(opcion.getNombre()));
+            System.out.println(Utilidades.padTexto("", 8).concat(opcion.getNombre()));
         }
     }
 
