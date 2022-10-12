@@ -33,12 +33,11 @@ public class ValidadorDeDatos {
     }
 
     public static boolean esCredencialVotanteValida(String rut, String clave) throws AccesoADatosInterrumpidoException {
-        JSONArray arrayVotantes = AccesoADatos.parsearVotantes();
-        for (Object arrayVotante : arrayVotantes) {
-            JSONObject votanteSiguiente = (JSONObject) arrayVotante;
-            if (votanteSiguiente.get(CampoDeVotante.RUT.getTexto()).equals(rut)
-                    && votanteSiguiente.get(CampoDeVotante.CLAVE.getTexto()).equals(clave)) {
-                return true;
+        List<Votante> votantes = AccesoADatos.obtenerVotantes();
+        for (Votante votanteSiguiente : votantes) {
+            // Primero verifica que los rut sean iguales, después se verifica la clave
+            if (votanteSiguiente.getRut().equals(rut)) {
+                if (votanteSiguiente.getClave().equals(clave)) return true;
             }
         }
         return false;
