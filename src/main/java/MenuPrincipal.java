@@ -1,6 +1,3 @@
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -411,14 +408,8 @@ public class MenuPrincipal {
     }
 
     private void mostrarMenuCreacionDeVotacion() {
-        String nuevaIDVotacion = AccesoADatos.obtenerNuevaIDVotacion();
         Votacion votacion = ValidadorDeDatos.pedirCamposDeVotacion();
-        votacion.setId(nuevaIDVotacion);
-        votacion.setEstado(Estado.PENDIENTE);
-        var votaciones = AccesoADatos.obtenerVotaciones();
-        votaciones.add(votacion);
-        AccesoADatos.escribirEnVotaciones(
-                AccesoADatos.convertirListaDeVotacionesAJSONArray(votaciones).toJSONString());
+        AccesoADatos.crearVotacion(votacion);
         System.out.println("¡Votación creada con exito!\n");
         mostrarMenuAgregacionDeOpciones(votacion);
     }

@@ -2,6 +2,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /*
     Clase con métodos dedicados a refrescar
@@ -21,30 +22,29 @@ public class RefrescadorVotaciones {
 
     public static void refrescarEstadosDeVotaciones() throws InterruptedException {
         while (true) {
-            JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-            for (Object jsonArrayVotacion : jsonArrayVotaciones) {
-                JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
+            List<Votacion> votaciones = AccesoADatos.obtenerVotaciones();
+            for (Votacion votacionSiguiente : votaciones) {
                 asignarEstadoAVotacion(obtenerFechaTiempoAhora(), votacionSiguiente);
             }
-            AccesoADatos.escribirEnVotaciones(jsonArrayVotaciones.toJSONString());
+            AccesoADatos.escribirVotaciones(votaciones);
             System.out.println("Estados actualizados: " + obtenerFechaTiempoAhora());
             Thread.sleep(1000);
         }
     }
 
-    public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, JSONObject votacion) {
-        String estado = votacion.get(CampoDeVotacion.ESTADO.getTexto()).toString();
-        if (estado.equals(Estado.BORRADOR.getTexto())) return;
-        var fechaTiempoInicio = AccesoADatos.parsearFechaTiempoInicio(votacion);
-        var fechaTiempoTermino = AccesoADatos.parsearFechaTiempoTermino(votacion);
+    public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, Votacion votacion) {
+        Estado estado = votacion.getEstado();
+        if (estado.equals(Estado.BORRADOR)) return;
+        var fechaTiempoInicio = votacion.getFechaTiempoInicio();
+        var fechaTiempoTermino = votacion.getFechaTiempoTermino();
         if (fechaTiempoAhora.isAfter(fechaTiempoTermino)) {
-            estado = Estado.FINALIZADO.getTexto();
+            estado = Estado.FINALIZADO;
         } else if (fechaTiempoAhora.isBefore(fechaTiempoInicio)) {
-            estado = Estado.PENDIENTE.getTexto();
+            estado = Estado.PENDIENTE;
         } else {
-            estado = Estado.EN_CURSO.getTexto();
+            estado = Estado.EN_CURSO;
         }
-        votacion.put(CampoDeVotacion.ESTADO.getTexto(), estado);
+        votacion.setEstado(estado);
     }
 
     public static LocalDateTime obtenerFechaTiempoAhora() {

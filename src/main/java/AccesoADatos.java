@@ -313,7 +313,7 @@ public class AccesoADatos {
                             .format(DateTimeFormatter.ofPattern("HH:mm")));
             votacionObj.put(CampoDeVotacion.FECHA_TERMINO.getTexto(),
                     Optional.ofNullable(votacion.getFechaTermino())
-                            .orElse(LocalDate.of(2100,1,1))
+                            .orElse(LocalDate.of(2099,1,1))
                             .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             votacionObj.put(CampoDeVotacion.HORA_TERMINO.getTexto(),
                     Optional.ofNullable(votacion.getTiempoTermino())
@@ -335,6 +335,14 @@ public class AccesoADatos {
             array.add(votacionObj);
         }
         return array;
+    }
+
+    public static void crearVotacion(Votacion votacion) {
+        votacion.setId(obtenerNuevaIDVotacion());
+        votacion.setEstado(Estado.PENDIENTE);
+        List<Votacion> votaciones = obtenerVotaciones();
+        votaciones.add(votacion);
+        escribirVotaciones(votaciones);
     }
 
     public static void eliminarVotacion(Votacion votacion) {
