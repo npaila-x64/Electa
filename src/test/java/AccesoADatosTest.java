@@ -74,16 +74,16 @@ class AccesoADatosTest {
 //                "que campo de votaciones dado no existe. " + exception.getMessage());
 //    }
 
-    @Test
-    void verificaQueMetodoTiraExcepcionSiSeLeEntregaCampoNoExistente2() {
-        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-        var exception = assertThrows(AccesoADatosInterrumpidoException.class,
-                () -> AccesoADatos
-                        .obtenerVotacionPorCampo(
-                                jsonArrayVotaciones, "no_existe", "1"));
-        logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
-                "que campo de votaciones dado no existe. " + exception.getMessage());
-    }
+//    @Test
+//    void verificaQueMetodoTiraExcepcionSiSeLeEntregaCampoNoExistente2() {
+//        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
+//        var exception = assertThrows(AccesoADatosInterrumpidoException.class,
+//                () -> AccesoADatos
+//                        .obtenerVotacionPorCampo(
+//                                jsonArrayVotaciones, "no_existe", "1"));
+//        logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
+//                "que campo de votaciones dado no existe. " + exception.getMessage());
+//    }
 
     @Test
     void verificaQueMetodoTiraExcepcionSiSeLeEntregaRutaNoExistente() {

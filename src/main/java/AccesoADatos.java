@@ -19,6 +19,13 @@ import java.util.Scanner;
 /*
     Clase que contiene los métodos que interactúan
     directamente con los archivos de datos JSON
+
+    Para modificar los datos de las votaciones se realiza una llamada al método
+    obtenerVotaciones() donde estas se parsean desde el archivo votaciones.json
+    a un List<Votacion>
+    Luego para escribirlos de nuevo al archivo votaciones.json se realiza una llamada
+    al método escribirVotaciones(), que recibe como argumento una List<Votacion> que
+    contiene todas las votaciones
  */
 
 public class AccesoADatos {
@@ -53,13 +60,13 @@ public class AccesoADatos {
 
     public static List<Votacion> obtenerVotacionesConEstado(Estado estado) {
         List<Votacion> votaciones = obtenerVotaciones();
-        List<Votacion> nuevasVotaciones = new ArrayList<>();
+        List<Votacion> votacionesCopia = new ArrayList<>();
         for (Votacion votacionSiguiente : votaciones) {
             if (votacionSiguiente.getEstado().equals(estado)) {
-                nuevasVotaciones.add(votacionSiguiente);
+                votacionesCopia.add(votacionSiguiente);
             }
         }
-        return nuevasVotaciones;
+        return votacionesCopia;
     }
 
     public static List<String> obtenerTitulosVotaciones() {
@@ -141,26 +148,27 @@ public class AccesoADatos {
     public static List<Opcion> obtenerOpcionesDeVotacionJSON(JSONObject votacionSiguiente) {
         JSONObject opciones = (JSONObject) votacionSiguiente.get(CampoDeVotacion.OPCIONES.getTexto());
         List<Opcion> listaOpciones = new ArrayList<>();
-        for (Object opcionStr : opciones.keySet()) {
+        for (Object opcionSiguiente : opciones.keySet()) {
             Opcion opcion = new Opcion();
-            opcion.setNombre(opcionStr);
-            opcion.setCantidadDeVotos(opciones.get(opcionStr));
+            opcion.setNombre(opcionSiguiente);
+            opcion.setCantidadDeVotos(opciones.get(opcionSiguiente));
             listaOpciones.add(opcion);
         }
         return listaOpciones;
     }
 
     public static List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante(Votante votante) {
-        List<Votacion> votacionesEnCurso = filtrarVotacionesEnCurso();
+        List<Votacion> votacionesEnCurso = ObtenerVotacionesEnCurso();
         List<Votacion> votacionesEnElQuePuedeVotarElVotante = new ArrayList<>();
-        for (var votacionSiguiente : votacionesEnCurso) {
-            filtrarVotacionVotadaAVotante(
-                    votacionesEnElQuePuedeVotarElVotante, votacionSiguiente, votante);
+        for (Votacion votacionSiguiente : votacionesEnCurso) {
+            if (!votanteVotoEnEstaVotacion(votacionSiguiente, votante)) {
+                votacionesEnElQuePuedeVotarElVotante.add(votacionSiguiente);
+            }
         }
         return votacionesEnElQuePuedeVotarElVotante;
     }
 
-    public static List<Votacion> filtrarVotacionesEnCurso() {
+    public static List<Votacion> ObtenerVotacionesEnCurso() {
         List<Votacion> votaciones = obtenerVotaciones();
         List<Votacion> votacionesEnCurso = new ArrayList<>();
         for (var votacionSiguiente : votaciones) {
@@ -171,16 +179,16 @@ public class AccesoADatos {
         return votacionesEnCurso;
     }
 
-    public static void filtrarVotacionVotadaAVotante(List<Votacion> IDsVotaciones, Votacion votacion, Votante votante) {
-        List<Votante> votantes = votacion.getVotantes();
-        for (var IDVotanteQueYaVotoEnEstaVotacion : votantes) {
-            if (votante.getId().equals(IDVotanteQueYaVotoEnEstaVotacion.getId())) {
-                // Se da a entender que el votante ya está en la
-                // lista de personas quienes votaron en esta votación
-                return;
+    public static boolean votanteVotoEnEstaVotacion(Votacion votacionSiguiente, Votante votante) {
+        List<Votante> votantes = votacionSiguiente.getVotantes();
+        for (Votante votanteQueVotoEnEstaVotacion : votantes) {
+            if (votante.getId().equals(votanteQueVotoEnEstaVotacion.getId())) {
+                // Si esta condición se cumple se da a entender que el votante ya
+                // está en la lista de votantes quienes votaron en esta votación
+                return true;
             }
         }
-        IDsVotaciones.add(votacion);
+        return false;
     }
 
     public static Votacion obtenerVotacionPorID(List<Votacion> votaciones, Votacion votacion) {
@@ -227,8 +235,8 @@ public class AccesoADatos {
         return st.toString();
     }
 
-    public static void escribirEnVotaciones(String contenido) {
-        escribirArchivoJSON(RUTA_VOTACIONES, contenido);
+    public static void escribirVotaciones(List<Votacion> votaciones) {
+        escribirArchivoJSON(RUTA_VOTACIONES, convertirListaDeVotacionesAJSONArray(votaciones).toJSONString());
     }
 
     public static void escribirArchivoJSON(String ruta, String contenido) {
@@ -266,7 +274,7 @@ public class AccesoADatos {
                 List<Votante> votantes = votacionSiguiente.getVotantes();
                 votantes.add(votante);
                 votacionSiguiente.setVotantes(votantes);
-                escribirEnVotaciones(convertirListaDeVotacionesAJSONArray(votaciones).toJSONString());
+                escribirVotaciones(votaciones);
                 return;
             }
         }
@@ -332,23 +340,24 @@ public class AccesoADatos {
     public static void eliminarVotacion(Votacion votacion) {
         List<Votacion> votaciones = obtenerVotaciones();
         votaciones.removeIf(votacionSiguiente -> votacionSiguiente.getId().equals(votacion.getId()));
-        escribirEnVotaciones(convertirListaDeVotacionesAJSONArray(votaciones).toJSONString());
+        escribirVotaciones(votaciones);
     }
 
-    public static void eliminarOpcionDeVotacion(Votacion votacion, Opcion opcionElegida) {
+    public static void eliminarOpcionDeVotacion(Votacion votacionElegida, Opcion opcionElegida) {
         List<Votacion> votaciones = obtenerVotaciones();
-        Votacion nuevaVotacion = obtenerVotacionPorID(votaciones, votacion);
-        List<Opcion> opciones = nuevaVotacion.getOpciones();
+        // De la ID de la votación elegida se obtiene una copia de la votación con alcance local
+        Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacionElegida);
+        List<Opcion> opciones = votacionCopia.getOpciones();
         opciones.removeIf(opcion -> opcion.getNombre().equals(opcionElegida.getNombre()));
-        nuevaVotacion.setOpciones(opciones);
-        escribirEnVotaciones(convertirListaDeVotacionesAJSONArray(votaciones).toJSONString());
+        votacionCopia.setOpciones(opciones);
+        escribirVotaciones(votaciones);
     }
 
-    public static void actualizarCampoDeVotacion(Votacion viejaVotacion, CampoDeVotacion campo, Object valor) {
+    public static void actualizarCampoDeVotacion(Votacion votacionElegida, CampoDeVotacion campo, Object valor) {
         List<Votacion> votaciones = obtenerVotaciones();
-        Votacion votacion = obtenerVotacionPorID(votaciones, viejaVotacion);
-        votacion.setAttributo(campo, valor);
-        escribirEnVotaciones(convertirListaDeVotacionesAJSONArray(votaciones).toJSONString());
+        Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacionElegida);
+        votacionCopia.setAttributo(campo, valor);
+        escribirVotaciones(votaciones);
     }
 
     public static void agregarOpcionAVotacion(Votacion votacion, String nombreOpcion) {
@@ -359,7 +368,7 @@ public class AccesoADatos {
         opcion.setCantidadDeVotos(0);
         opciones.add(opcion);
         votacion.setOpciones(opciones);
-        escribirEnVotaciones(convertirListaDeVotacionesAJSONArray(votaciones).toJSONString());
+        escribirVotaciones(votaciones);
     }
 
     public static LocalDateTime parsearFechaTiempoInicio(JSONObject votacion) {
@@ -375,6 +384,7 @@ public class AccesoADatos {
     }
 
     public static LocalDateTime parsearFechaTiempoVotacion(Object fecha, Object tiempo) {
+        // TODO Desarrollar manejo de excepciones y crear pruebas unitarias
         var fechaArr = fecha.toString().split("-");
         var dia = Integer.parseInt(fechaArr[0]);
         var mes = Integer.parseInt(fechaArr[1]);
