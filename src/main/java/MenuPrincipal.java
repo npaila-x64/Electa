@@ -233,14 +233,7 @@ public class MenuPrincipal {
     }
 
     public void mostrarResultadosDatos(Votacion votacion) {
-        var titulo = votacion.getTitulo();
-        var votosBlancos = votacion.getVotosBlancos();
-        var votosPreferenciales = votacion.getVotosPreferenciales();
-        int totalVotos = votosPreferenciales + votosBlancos;
-        var fechaTiempoInicio = votacion.getFechaTiempoInicio()
-                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"));
-        var fechaTiempoTermino = votacion.getFechaTiempoTermino()
-                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm"));
+        var datos = obtenerDatos(votacion);
         System.out.printf("""
                         Resultados para la votacion "%s"
                         Votos preferenciales %s %s
@@ -248,12 +241,27 @@ public class MenuPrincipal {
                         Total votos %s %s
                         Fecha y hora de inicio %s %s hrs
                         Fecha y hora de término %s %s hrs
-                        %n""", titulo,
-                Utilidades.padTexto("", 30 - 20), votosPreferenciales,
-                Utilidades.padTexto("", 30 - 13), votosBlancos,
-                Utilidades.padTexto("", 30 - 11), totalVotos,
-                Utilidades.padTexto("", 30 - 22), fechaTiempoInicio,
-                Utilidades.padTexto("", 30 - 23), fechaTiempoTermino);
+                        %n""", datos.get("titulo"),
+                Utilidades.padTexto("", 30 - 20), datos.get("votosPreferenciales"),
+                Utilidades.padTexto("", 30 - 13), datos.get("votosBlancos"),
+                Utilidades.padTexto("", 30 - 11), datos.get("totalVotos"),
+                Utilidades.padTexto("", 30 - 22), datos.get("fechaTiempoInicio"),
+                Utilidades.padTexto("", 30 - 23), datos.get("fechaTiempoTermino"));
+    }
+
+    private HashMap<String, String> obtenerDatos(Votacion votacion) {
+        HashMap<String, String> datos = new HashMap<>();
+        int votosBlancos = votacion.getVotosBlancos(), votosPreferenciales = votacion.getVotosPreferenciales();
+        int totalVotos = votosBlancos +  votosPreferenciales;
+        datos.put("titulo", votacion.getTitulo());
+        datos.put("votosBlancos", String.valueOf(votosBlancos));
+        datos.put("votosPreferenciales", String.valueOf(votosPreferenciales));
+        datos.put("totalVotos", String.valueOf(totalVotos));
+        datos.put("fechaTiempoInicio", votacion.getFechaTiempoInicio()
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm")));
+        datos.put("fechaTiempoTermino", votacion.getFechaTiempoTermino()
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm")));
+        return datos;
     }
 
     private void mostrarPanelDeControlDeVotaciones() {
