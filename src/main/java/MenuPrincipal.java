@@ -20,25 +20,25 @@ public class MenuPrincipal {
     private void mostrarMenuDeIngreso() {
         while (true) {
             mostrarOpcionesDeIngreso();
-            switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
-                case 0 -> {return;}
-                case 1 -> ingresarComoVotante();
-                case 2 -> ingresarComoAdministrador();
+            try {
+                switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
+                    case 0 -> {return;}
+                    case 1 -> ingresarComoVotante();
+                    case 2 -> ingresarComoAdministrador();
+                }
+            } catch (AccesoADatosInterrumpidoException e) {
+                mostrarSistemaNoDisponible(e.getMessage());
             }
         }
     }
 
     private void ingresarComoAdministrador() {
-        try {
-            String clave = ValidadorDeDatos
-                    .pedirEntrada("Ingrese la contraseña del administrador \n> ");
-            if (ValidadorDeDatos.esCredencialAdministradorValida(clave)) {
-                mostrarMenuAdministador();
-            } else {
-                System.out.println("Contraseña incorrecta");
-            }
-        } catch (AccesoADatosInterrumpidoException e) {
-            mostrarSistemaNoDisponible(e.getMessage());
+        String clave = ValidadorDeDatos
+                .pedirEntrada("Ingrese la contraseña del administrador \n> ");
+        if (ValidadorDeDatos.esCredencialAdministradorValida(clave)) {
+            mostrarMenuAdministador();
+        } else {
+            System.err.println("Contraseña incorrecta");
         }
     }
 
@@ -67,16 +67,12 @@ public class MenuPrincipal {
     }
 
     private void ingresarComoVotante() {
-        try {
-            String rutVotante = ValidadorDeDatos.pedirEntrada("Ingrese su rut\n> ");
-            String claveVotante = ValidadorDeDatos.pedirEntrada("Ingrese su clave\n> ");
-            if (ValidadorDeDatos.esCredencialVotanteValida(rutVotante, claveVotante)) {
-                mostrarMenuVotacionesVotante(AccesoADatos.obtenerVotantePorRut(rutVotante));
-            } else {
-                System.out.println("RUT o contraseña incorrectos");
-            }
-        } catch (AccesoADatosInterrumpidoException e) {
-            mostrarSistemaNoDisponible(e.getMessage());
+        String rutVotante = ValidadorDeDatos.pedirEntrada("Ingrese su rut\n> ");
+        String claveVotante = ValidadorDeDatos.pedirEntrada("Ingrese su clave\n> ");
+        if (ValidadorDeDatos.esCredencialVotanteValida(rutVotante, claveVotante)) {
+            mostrarMenuVotacionesVotante(AccesoADatos.obtenerVotantePorRut(rutVotante));
+        } else {
+            System.err.println("RUT y/o contraseña incorrectos");
         }
     }
 
@@ -440,7 +436,7 @@ public class MenuPrincipal {
         List<Opcion> opciones = votacion.getOpciones();
         System.out.println("Votos por opciones");
         for (var opcion : opciones) {
-            System.out.println(Utilidades.padTexto(opcion.getNombre(), ".", 30)
+            System.out.println(Utilidades.padTexto(opcion.getNombre(), 30)
                     .concat(opcion.getCantidadDeVotos().toString()));
         }
     }
