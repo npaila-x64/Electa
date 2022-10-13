@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,19 @@ public class Votacion {
     private List<Votante> votantes;
     private Integer votosPreferenciales;
     private Integer votosBlancos;
+    private List<Voto> listaDeVotos;
+
+    public Votacion() {
+        this.opciones = new ArrayList<>();
+        this.votantes = new ArrayList<>();
+        this.listaDeVotos = new ArrayList<>();
+        this.votosBlancos = 0;
+        this.votosPreferenciales = 0;
+        this.estado = Estado.BORRADOR;
+        setFechaTiempoInicio(LocalDateTime.now());
+        setFechaTiempoTermino(LocalDateTime.now().plusYears(50));
+        agregarVotoBlanco();
+    }
 
     public Integer getId() {
         return id;
@@ -134,12 +148,24 @@ public class Votacion {
         return votosBlancos;
     }
 
+    private void agregarVotoBlanco() {
+        this.opciones.add(0, new Opcion(TipoDeVoto.VOTO_BLANCO));
+    }
+
     public void setVotosBlancos(Object votosBlancos) {
         this.votosBlancos = Integer.parseInt(votosBlancos.toString());
     }
 
     public Integer getTotalVotos(){
         return votosPreferenciales+votosBlancos;
+    }
+
+    public List<Voto> getListaDeVotos() {
+        return listaDeVotos;
+    }
+
+    public void setListaDeVotos(List<Voto> listaDeVotos) {
+        this.listaDeVotos = listaDeVotos;
     }
 
     public void setAttributo(CampoDeVotacion campo, Object valor) {

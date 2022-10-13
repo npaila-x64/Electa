@@ -4,7 +4,6 @@ public class Opcion {
 
     private String nombre;
     private Votacion votacion;
-    private List<Voto> listaDeVotos;
     private Integer cantidadDeVotos;
     private final String textoVotoBlanco = "Abstenerse";
 
@@ -30,14 +29,6 @@ public class Opcion {
 
     public void setVotacion(Votacion votacion) {
         this.votacion = votacion;
-    }
-
-    public List<Voto> getListaDeVotos() {
-        return listaDeVotos;
-    }
-
-    public void setListaDeVotos(List<Voto> listaDeVotos) {
-        this.listaDeVotos = listaDeVotos;
     }
 
     public Integer getCantidadDeVotos() {
