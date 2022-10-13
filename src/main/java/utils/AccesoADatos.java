@@ -2,6 +2,7 @@ package utils;
 
 import excepciones.AccesoADatosInterrumpidoException;
 import modelos.*;
+import modelos.enums.CampoDeOpcion;
 import modelos.enums.CampoDeVotacion;
 import modelos.enums.CampoDeVotante;
 import modelos.enums.Estado;
@@ -149,9 +150,9 @@ public class AccesoADatos {
         for (Object jsonArrayOpcion : opciones) {
             JSONObject opcionSiguiente = (JSONObject) jsonArrayOpcion;
             Opcion opcion = new Opcion();
-            opcion.setId(opcionSiguiente.get("id"));
-            opcion.setNombre(opcionSiguiente.get("nombre"));
-            opcion.setCantidadDeVotos(opcionSiguiente.get("votos"));
+            opcion.setId(opcionSiguiente.get(CampoDeOpcion.ID.getTexto()));
+            opcion.setNombre(opcionSiguiente.get(CampoDeOpcion.NOMBRE.getTexto()));
+            opcion.setCantidadDeVotos(opcionSiguiente.get(CampoDeOpcion.VOTOS.getTexto()));
             listaOpciones.add(opcion);
         }
         return listaOpciones;
@@ -367,9 +368,9 @@ public class AccesoADatos {
         JSONArray opcionesArray = new JSONArray();
         for (Opcion opcion : votacion.getOpciones()) {
             JSONObject opcionSiguiente = new JSONObject();
-            opcionSiguiente.put("id", opcion.getId());
-            opcionSiguiente.put("nombre", opcion.getNombre());
-            opcionSiguiente.put("votos", opcion.getCantidadDeVotos());
+            opcionSiguiente.put(CampoDeOpcion.ID.getTexto(), opcion.getId());
+            opcionSiguiente.put(CampoDeOpcion.NOMBRE.getTexto(), opcion.getNombre());
+            opcionSiguiente.put(CampoDeOpcion.VOTOS.getTexto(), opcion.getCantidadDeVotos());
             opcionesArray.add(opcionSiguiente);
         }
         votacionObj.put(CampoDeVotacion.OPCIONES.getTexto(), opcionesArray);
