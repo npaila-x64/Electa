@@ -249,14 +249,12 @@ public class MenuPrincipal {
                 Utilidades.padTexto("", 30 - 23), datos.get("fechaTiempoTermino"));
     }
 
-    private HashMap<String, String> obtenerDatos(Votacion votacion) {
-        HashMap<String, String> datos = new HashMap<>();
-        int votosBlancos = votacion.getVotosBlancos(), votosPreferenciales = votacion.getVotosPreferenciales();
-        int totalVotos = votosBlancos +  votosPreferenciales;
+    private HashMap<String, Object> obtenerDatos(Votacion votacion) {
+        var datos = new HashMap<String, Object>();
         datos.put("titulo", votacion.getTitulo());
-        datos.put("votosBlancos", String.valueOf(votosBlancos));
-        datos.put("votosPreferenciales", String.valueOf(votosPreferenciales));
-        datos.put("totalVotos", String.valueOf(totalVotos));
+        datos.put("votosBlancos", votacion.getVotosBlancos());
+        datos.put("votosPreferenciales", votacion.getVotosPreferenciales());
+        datos.put("totalVotos", votacion.getTotalVotos());
         datos.put("fechaTiempoInicio", votacion.getFechaTiempoInicio()
                 .format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm")));
         datos.put("fechaTiempoTermino", votacion.getFechaTiempoTermino()
