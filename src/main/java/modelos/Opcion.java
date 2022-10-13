@@ -14,8 +14,7 @@ public class Opcion {
     public Opcion(TipoDeVoto tipoDeVoto) {
         if (tipoDeVoto.equals(TipoDeVoto.VOTO_BLANCO)) {
             this.id = 1;
-            String textoVotoBlanco = "Abstenerse";
-            this.nombre = textoVotoBlanco;
+            this.nombre = "Abstenerse";
             this.cantidadDeVotos = 0;
         }
     }

@@ -192,7 +192,7 @@ public class AccesoADatos {
     public static Votacion obtenerVotacionPorID(List<Votacion> votaciones, Votacion votacion) {
         return votaciones
                 .stream()
-                .filter(v -> v.getId().equals(votacion.getId()))
+                .filter(votacionSiguiente -> votacionSiguiente.getId().equals(votacion.getId()))
                 .findFirst()
                 .orElseThrow(
                         () -> AccesoADatosInterrumpidoException
@@ -210,6 +210,7 @@ public class AccesoADatos {
     }
 
     public static String obtenerNuevaIdVotacion() {
+        // TODO Se puede convertir a método funcional para mejorar legibilidad (1)
         int maxID = 0;
         List<Votacion> votaciones = obtenerVotaciones();
         for (Votacion votacionSiguiente : votaciones) {
@@ -223,6 +224,7 @@ public class AccesoADatos {
     }
 
     public static String obtenerNuevaIdOpcion(Votacion votacion) {
+        // TODO Se puede convertir a método funcional para mejorar legibilidad (2)
         int maxID = 0;
         Votacion votacionCopia = obtenerVotacionPorID(obtenerVotaciones(), votacion);
         for (Opcion opcionSiguiente : votacionCopia.getOpciones()) {
@@ -256,6 +258,7 @@ public class AccesoADatos {
             myWriter.write(contenido);
             myWriter.close();
         } catch (IOException | NullPointerException e) {
+            // TODO Averiguar donde es más conveniente atrapar esta excepción, ya que al usuario simplemente lo devuelve al menú principal (durante el transcurso de toda la aplicación)
             throw AccesoADatosInterrumpidoException.noSePudoEscribirArchivo(ruta);
         }
     }
@@ -290,6 +293,7 @@ public class AccesoADatos {
     }
 
     public static void votarOpcionPreferencial(Votacion votacion, Opcion opcionElegida) {
+        // TODO Se puede refactorizar
         List<Opcion> opciones = votacion.getOpciones();
         for (Opcion opcion : opciones) {
             System.out.println(opcion.getId());
@@ -327,7 +331,7 @@ public class AccesoADatos {
     }
 
     private static void convertirJSONCampoFechaYHora(Votacion votacion, JSONObject votacionObj){
-        // TODO estandarizar fecha de inicio y termino por defecto
+        // TODO Refactorizar esto, se ve horrible >:(
         votacionObj.put(CampoDeVotacion.FECHA_INICIO.getTexto(),
                 Optional.ofNullable(votacion.getFechaInicio())
                         .orElse(LocalDate.of(1900,1,1))
@@ -409,7 +413,7 @@ public class AccesoADatos {
     }
 
     public static void agregarOpcionAVotacion(Votacion votacion, String nombreOpcion) {
-        // TODO tratar de evitar que se agregue una opcion duplicada
+        // TODO Evitar que se agregue una opcion duplicada (entregarle un mensaje al usuario)
         List<Votacion> votaciones = obtenerVotaciones();
         Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacion);
         List<Opcion> opciones = votacionCopia.getOpciones();

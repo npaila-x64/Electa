@@ -5,7 +5,7 @@ public class AccesoADatosInterrumpidoException extends RuntimeException {
     private AccesoADatosInterrumpidoException(String mensaje) {
         super(mensaje);
     }
-
+    // TODO Registrar los eventos de excepciones a testinglogs.log
     public static AccesoADatosInterrumpidoException noSePudoCargarArchivo(String ruta) {
         return new AccesoADatosInterrumpidoException("No se pudo cargar el archivo " + ruta);
     }

@@ -52,7 +52,7 @@ public class Votacion {
         this.votosBlancos = 0;
         this.votosPreferenciales = 0;
         this.estado = Estado.BORRADOR;
-//      TODO estandarizar fecha de inicio y termino por defecto
+//      TODO Ver un modo estandarizar fechas de inicio y termino por defecto
         setFechaTiempoInicio(LocalDateTime.now());
         setFechaTiempoTermino(LocalDateTime.now().plusYears(50));
         agregarVotoBlanco();
@@ -191,6 +191,7 @@ public class Votacion {
     }
 
     public void setAttributo(CampoDeVotacion campo, Object valor) {
+        // TODO Averiguar si esto es buena práctica
         Map<CampoDeVotacion, Runnable> mapaDeSetters = new HashMap<>();
         mapaDeSetters.put(CampoDeVotacion.ID, () -> setId(valor));
         mapaDeSetters.put(CampoDeVotacion.TITULO, () -> setTitulo(valor));

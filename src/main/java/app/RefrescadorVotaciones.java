@@ -36,6 +36,7 @@ public class RefrescadorVotaciones {
     }
 
     public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, Votacion votacion) {
+        // TODO Arreglar este desorden
         Estado estado = votacion.getEstado();
         if (estado.equals(Estado.BORRADOR)) return;
         var fechaTiempoInicio = votacion.getFechaTiempoInicio();

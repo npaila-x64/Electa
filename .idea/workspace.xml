@@ -4,33 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="reemplaza método estructural por método funcional">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="reemplaza más métodos a paradigma funcional">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/datos-de-prueba/votaciones_respaldo.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos-de-prueba/votaciones_respaldo.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/datos-de-prueba/votaciones_test.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos-de-prueba/votaciones_test.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/datos/votantes.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos/votantes.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/AccesoADatos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/AccesoADatos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/AccesoADatosInterrumpidoException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/excepciones/AccesoADatosInterrumpidoException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Administrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/Administrador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampoDeVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/enums/CampoDeVotacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampoDeVotante.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/enums/CampoDeVotante.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Electa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Electa.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Estado.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/enums/Estado.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MenuPrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/menus/MenuPrincipal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Opcion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/Opcion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/RefrescadorVotaciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/RefrescadorVotaciones.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Utilidades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Utilidades.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ValidadorDeDatos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ValidadorDeDatos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ValidadorRut.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ValidadorRut.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Votacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/Votacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Votante.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/Votante.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Voto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/Voto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/AccesoADatosTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/AccesoADatosTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/MenuPrincipalTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MenuPrincipalTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ValidadorDeDatosTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ValidadorDeDatosTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ValidadorRutTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ValidadorRutTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/RefrescadorVotaciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/RefrescadorVotaciones.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/excepciones/AccesoADatosInterrumpidoException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/excepciones/AccesoADatosInterrumpidoException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/menus/MenuPrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/menus/MenuPrincipal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modelos/Votacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/Votacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/AccesoADatos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/AccesoADatos.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -341,7 +321,28 @@
       <option name="project" value="LOCAL" />
       <updated>1665696934750</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="reorganiza proyecto en paquetes">
+      <created>1665697719415</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1665697719415</updated>
+    </task>
+    <task id="LOCAL-00028" summary="reemplaza manejo de objetos json a instancias de clases">
+      <created>1665698423521</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1665698423521</updated>
+    </task>
+    <task id="LOCAL-00029" summary="reemplaza más métodos a paradigma funcional">
+      <created>1665699511963</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1665699511963</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -371,8 +372,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="commit inicial" />
-    <MESSAGE value="agrega script principal" />
     <MESSAGE value="agrega libreria JUnit" />
     <MESSAGE value="agrega manejo de excepcion en caso que archivo votantes no exista" />
     <MESSAGE value="refactoriza métodos pedirString" />
@@ -395,7 +394,10 @@
     <MESSAGE value="elimina clase innecesaria" />
     <MESSAGE value="reimplementa setters y getters de objetos con elementos mutables" />
     <MESSAGE value="reemplaza método estructural por método funcional" />
-    <option name="LAST_COMMIT_MESSAGE" value="reemplaza método estructural por método funcional" />
+    <MESSAGE value="reorganiza proyecto en paquetes" />
+    <MESSAGE value="reemplaza manejo de objetos json a instancias de clases" />
+    <MESSAGE value="reemplaza más métodos a paradigma funcional" />
+    <option name="LAST_COMMIT_MESSAGE" value="reemplaza más métodos a paradigma funcional" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
