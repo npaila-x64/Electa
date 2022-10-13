@@ -169,22 +169,20 @@ public class AccesoADatos {
     public static List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante(Votante votante) {
         List<Votacion> votacionesEnCurso = ObtenerVotacionesEnCurso();
         List<Votacion> votacionesEnElQuePuedeVotarElVotante = new ArrayList<>();
-        for (Votacion votacionSiguiente : votacionesEnCurso) {
-            if (!votanteVotoEnEstaVotacion(votacionSiguiente, votante)) {
-                votacionesEnElQuePuedeVotarElVotante.add(votacionSiguiente);
-            }
-        }
+        votacionesEnCurso
+                .stream()
+                .filter(votacionSiguiente -> !votanteVotoEnEstaVotacion(votacionSiguiente, votante))
+                .forEach(votacionesEnElQuePuedeVotarElVotante::add);
         return votacionesEnElQuePuedeVotarElVotante;
     }
 
     public static List<Votacion> ObtenerVotacionesEnCurso() {
         List<Votacion> votaciones = obtenerVotaciones();
         List<Votacion> votacionesEnCurso = new ArrayList<>();
-        for (var votacionSiguiente : votaciones) {
-            if (votacionSiguiente.getEstado().equals(Estado.EN_CURSO)) {
-                votacionesEnCurso.add(votacionSiguiente);
-            }
-        }
+        votaciones
+                .stream()
+                .filter(votacionSiguiente -> votacionSiguiente.getEstado().equals(Estado.EN_CURSO))
+                .forEach(votacionesEnCurso::add);
         return votacionesEnCurso;
     }
 
@@ -211,13 +209,13 @@ public class AccesoADatos {
     }
 
     public static Votante obtenerVotantePorRut(String rut) {
-        List<Votante> votantes = obtenerVotantes();
-        for (Votante votanteSiguiente : votantes) {
-            if (votanteSiguiente.getRut().equals(rut)) {
-                return votanteSiguiente;
-            }
-        }
-        throw AccesoADatosInterrumpidoException.talElementoNoExiste(rut);
+        return obtenerVotantes()
+                .stream()
+                .filter(votacionSiguiente -> votacionSiguiente.getRut().equals(rut))
+                .findFirst()
+                .orElseThrow(
+                        () -> AccesoADatosInterrumpidoException
+                                .talElementoNoExiste(rut));
     }
 
     public static String obtenerNuevaIdVotacion() {
