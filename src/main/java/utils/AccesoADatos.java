@@ -222,10 +222,9 @@ public class AccesoADatos {
 
     public static String obtenerNuevaIdVotacion() {
         int maxID = 0;
-        JSONArray jsonArrayVotaciones = parsearVotaciones();
-        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
-            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-            int id = parsearObjectAInt(votacionSiguiente.get(CampoDeVotacion.ID.getTexto()));
+        List<Votacion> votaciones = obtenerVotaciones();
+        for (Votacion votacionSiguiente : votaciones) {
+            int id = votacionSiguiente.getId();
             if (id > maxID) {
                 maxID = id;
             }
@@ -457,9 +456,5 @@ public class AccesoADatos {
         var hora = Integer.parseInt(tiempoArr[0]);
         var minutos = Integer.parseInt(tiempoArr[1]);
         return LocalDateTime.of(anio, mes, dia, hora, minutos);
-    }
-
-    public static int parsearObjectAInt(Object obj) {
-        return Integer.parseInt(String.valueOf(obj));
     }
 }
