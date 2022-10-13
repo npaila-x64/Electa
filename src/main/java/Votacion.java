@@ -138,6 +138,10 @@ public class Votacion {
         this.votosBlancos = Integer.parseInt(votosBlancos.toString());
     }
 
+    public Integer getTotalVotos(){
+        return votosPreferenciales+votosBlancos;
+    }
+
     public void setAttributo(CampoDeVotacion campo, Object valor) {
         Map<CampoDeVotacion, Runnable> mapaDeSetters = new HashMap<>();
         mapaDeSetters.put(CampoDeVotacion.ID, () -> setId(valor));
