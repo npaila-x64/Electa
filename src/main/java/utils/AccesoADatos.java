@@ -76,15 +76,6 @@ public class AccesoADatos {
         return votacionesCopia;
     }
 
-    public static List<String> obtenerTitulosVotaciones() {
-        List<Votacion> votaciones = obtenerVotaciones();
-        List<String> tituloVotaciones = new ArrayList<>();
-        for (var votacion : votaciones) {
-            tituloVotaciones.add(votacion.getTitulo());
-        }
-        return tituloVotaciones;
-    }
-
     public static List<Votacion> obtenerVotaciones() {
         List<Votacion> votaciones = new ArrayList<>();
         JSONArray jsonArrayVotaciones = parsearVotaciones();

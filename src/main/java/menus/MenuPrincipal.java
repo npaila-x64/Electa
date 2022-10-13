@@ -108,36 +108,10 @@ public class MenuPrincipal {
                 """.concat("> "));
     }
 
-    private void mostrarTotalVotaciones() {
-        List<String> titulosVotaciones = AccesoADatos.obtenerTitulosVotaciones();
-        System.out.println("Votaciones");
-        for (String titulo : titulosVotaciones) {
-            System.out.printf("\"%s\"%n", titulo);
-        }
-    }
-
     private void mostrarVotacionesEnCurso() {
         System.out.println("Votaciones En Curso");
         mostrarTitulosVotaciones(AccesoADatos
                 .obtenerVotacionesConEstado(Estado.EN_CURSO));
-    }
-
-    private void mostrarVotacionesFinalizadas() {
-        System.out.println("Votaciones Finalizadas");
-        mostrarTitulosVotaciones(AccesoADatos
-                .obtenerVotacionesConEstado(Estado.FINALIZADO));
-    }
-
-    private void mostrarVotacionesBorrador() {
-        System.out.println("Votaciones Borrador");
-        mostrarTitulosVotaciones(AccesoADatos
-                .obtenerVotacionesConEstado(Estado.BORRADOR));
-    }
-
-    private void mostrarVotacionesPendientes() {
-        System.out.println("Votaciones Pendientes");
-        mostrarTitulosVotaciones(AccesoADatos
-                .obtenerVotacionesConEstado(Estado.PENDIENTE));
     }
 
     private void mostrarTitulosVotaciones(List<Votacion> votaciones) {
