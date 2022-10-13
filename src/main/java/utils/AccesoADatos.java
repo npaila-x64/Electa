@@ -1,3 +1,10 @@
+package utils;
+
+import excepciones.AccesoADatosInterrumpidoException;
+import modelos.*;
+import modelos.enums.CampoDeVotacion;
+import modelos.enums.CampoDeVotante;
+import modelos.enums.Estado;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -22,9 +29,9 @@ import java.util.Scanner;
 
     Para modificar los datos de las votaciones se realiza una llamada al método
     obtenerVotaciones() donde estas se parsean desde el archivo votaciones.json
-    a un List<Votacion>
+    a un List<modelos.Votacion>
     Luego para escribirlos de nuevo al archivo votaciones.json se realiza una llamada
-    al método escribirVotaciones(), que recibe como argumento una List<Votacion> que
+    al método escribirVotaciones(), que recibe como argumento una List<modelos.Votacion> que
     contiene todas las votaciones
  */
 

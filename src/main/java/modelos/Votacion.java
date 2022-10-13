@@ -1,3 +1,9 @@
+package modelos;
+
+import modelos.enums.CampoDeVotacion;
+import modelos.enums.Estado;
+import modelos.enums.TipoDeVoto;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,7 +30,7 @@ public class Votacion {
     private Integer votosBlancos;
     private List<Voto> listaDeVotos;
 
-    // Método constructor usado para clonar una Votacion
+    // Método constructor usado para clonar una modelos.Votacion
     public Votacion(Votacion clon) {
         this.id = clon.getId();
         this.titulo = clon.getTitulo();

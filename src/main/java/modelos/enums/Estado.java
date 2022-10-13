@@ -1,3 +1,5 @@
+package modelos.enums;
+
 import java.util.List;
 
 public enum Estado {

@@ -1,8 +1,6 @@
-public class Utilidades {
+package utils;
 
-    public static int parsearObjectAInt(Object obj) {
-        return Integer.parseInt(String.valueOf(obj));
-    }
+public class Utilidades {
 
     public static String padTexto(String texto, int largo) {
         return padTexto(texto, ".", largo);

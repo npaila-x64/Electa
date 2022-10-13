@@ -1,3 +1,13 @@
+package menus;
+
+import excepciones.AccesoADatosInterrumpidoException;
+import modelos.*;
+import modelos.enums.CampoDeVotacion;
+import modelos.enums.Estado;
+import utils.AccesoADatos;
+import utils.Utilidades;
+import utils.ValidadorDeDatos;
+
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -196,7 +206,7 @@ public class MenuPrincipal {
     }
 
     private void mostrarVotoRealizadoConExito() {
-        System.out.println("¡Voto realizado con exito!\n");
+        System.out.println("¡modelos.Voto realizado con exito!\n");
     }
 
     public void mostrarListaOpciones(List<Opcion> opciones) {
@@ -303,9 +313,9 @@ public class MenuPrincipal {
 //        opciones.put("Modificar algún campo",       () -> mostrarMenuEditarCamposDeVotacion(IDVotacion));
 //        opciones.put("Para agregar una opción",     () -> agregarOpcionDeVotacion(IDVotacion));
 //        opciones.put("Para eliminar alguna opción", () -> mostrarMenuEliminarOpcionesDeVotacion(IDVotacion));
-//        opciones.put("Para eliminar la votación",   () -> AccesoADatos.eliminarVotacion(IDVotacion));
+//        opciones.put("Para eliminar la votación",   () -> utils.AccesoADatos.eliminarVotacion(IDVotacion));
 //        LinkedHashSet<String> set = new LinkedHashSet(opciones.values());
-//        int opcion = ValidadorDeDatos.pedirOpcionHasta(set.size());
+//        int opcion = utils.ValidadorDeDatos.pedirOpcionHasta(set.size());
         while (true) {
             mostrarOpcionesEditorDeVotacion(votacion);
             switch (ValidadorDeDatos.pedirOpcionHasta(4)) {
@@ -385,7 +395,7 @@ public class MenuPrincipal {
         map.put("Hora de inicio ............. %s hrs", votacion.getTiempoInicio());
         map.put("Fecha de término ........... %s", votacion.getFechaTermino());
         map.put("Hora de término ............ %s hrs", votacion.getTiempoTermino());
-        map.put("Estado ..................... %s", votacion.getEstado().getTexto());
+        map.put("modelos.enums.Estado ..................... %s", votacion.getEstado().getTexto());
         for (var key : map.keySet()) {
             System.out.printf(key.concat("%n"), map.get(key));
         }

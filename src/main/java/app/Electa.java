@@ -1,3 +1,7 @@
+package app;
+
+import menus.MenuPrincipal;
+
 public class Electa {
 
     public static void main(String[] args) {

@@ -1,3 +1,5 @@
+package modelos;
+
 public class Usuario {
 
     private Integer id;

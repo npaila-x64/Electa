@@ -1,4 +1,6 @@
-import java.util.List;
+package modelos;
+
+import modelos.enums.TipoDeVoto;
 
 public class Opcion {
 
@@ -49,7 +51,4 @@ public class Opcion {
     public void setCantidadDeVotos(Object cantidadDeVotos) {
         this.cantidadDeVotos = Integer.parseInt(cantidadDeVotos.toString());
     }
-}
-enum TipoDeVoto {
-    VOTO_BLANCO, VOTO_PREFERENCIAL
 }

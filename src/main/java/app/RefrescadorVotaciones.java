@@ -1,5 +1,8 @@
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+package app;
+
+import modelos.enums.Estado;
+import modelos.Votacion;
+import utils.AccesoADatos;
 
 import java.time.LocalDateTime;
 import java.util.List;

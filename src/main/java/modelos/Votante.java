@@ -1,3 +1,5 @@
+package modelos;
+
 public class Votante extends Usuario {
 
     private String rut;

@@ -1,3 +1,5 @@
+package modelos.enums;
+
 import java.util.List;
 
 public enum CampoDeVotacion {
@@ -33,7 +35,7 @@ public enum CampoDeVotacion {
     }
 
     /*  Conjunto de Enums que representan los campos de una votación
-        que son directamente editables por un Administrador */
+        que son directamente editables por un modelos.Administrador */
     public static List<CampoDeVotacion> getCamposDeVotacionEditablesPorAdministrador() {
         return List.of(
                 TITULO, DESCRIPCION, FECHA_INICIO, HORA_INICIO, FECHA_TERMINO, HORA_TERMINO);

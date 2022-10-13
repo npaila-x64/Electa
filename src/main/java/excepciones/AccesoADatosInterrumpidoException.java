@@ -1,3 +1,5 @@
+package excepciones;
+
 public class AccesoADatosInterrumpidoException extends RuntimeException {
 
     private AccesoADatosInterrumpidoException(String mensaje) {

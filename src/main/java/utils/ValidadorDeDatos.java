@@ -1,3 +1,9 @@
+package utils;
+
+import excepciones.AccesoADatosInterrumpidoException;
+import modelos.enums.CampoDeVotante;
+import modelos.Votacion;
+import modelos.Votante;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

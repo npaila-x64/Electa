@@ -1,3 +1,5 @@
+package modelos;
+
 public class Voto {
 
     private Integer id;

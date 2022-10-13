@@ -1,3 +1,5 @@
+package modelos.enums;
+
 public enum CampoDeVotante {
 
     ID("id"),

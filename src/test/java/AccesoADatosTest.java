@@ -1,12 +1,12 @@
+import excepciones.AccesoADatosInterrumpidoException;
 import org.apache.log4j.Logger;
-import org.json.simple.JSONArray;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.AccesoADatos;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.sql.SQLOutput;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,7 +43,7 @@ class AccesoADatosTest {
 //    @Test
 //    void verificaQueVotoOpcionPreferencialNuloTiraExcepcion(){
 //        var exception = assertThrows(NullPointerException.class, () ->
-//                AccesoADatos.votarOpcionPreferencial(null, "1", "1")
+//                utils.AccesoADatos.votarOpcionPreferencial(null, "1", "1")
 //                , "Se ha ingresado una entrada nula");
 //        logger.info("Se ha lanzado la excepción NullPointerException, dado " +
 //                "que el objeto JSONObject de votaciones es nulo. " + exception.getMessage());
@@ -53,35 +53,35 @@ class AccesoADatosTest {
     void verificaQueCargarArchivoJSONNoExistenteTiraExcepcion() {
         var exception = assertThrows(AccesoADatosInterrumpidoException.class,
                 () -> AccesoADatos.parsearArchivoJSON("ruta/que/no/existe"));
-        logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
+        logger.info("Se ha lanzado la excepción excepciones.AccesoADatosInterrumpidoException, dado " +
                 "que el archivo JSON no puede ser parseado. " + exception.getMessage());
     }
 
 //    @Test
 //    void verificaQueIntentarObtenerRutNoExistenteTiraExcepcion() {
-//        var exception = assertThrows(AccesoADatosInterrumpidoException.class,
-//                () -> AccesoADatos.obtenerIDDeRut("123"));
-//        logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
+//        var exception = assertThrows(excepciones.AccesoADatosInterrumpidoException.class,
+//                () -> utils.AccesoADatos.obtenerIDDeRut("123"));
+//        logger.info("Se ha lanzado la excepción excepciones.AccesoADatosInterrumpidoException, dado " +
 //                "que la ID asociada al RUT dado no existe. " + exception.getMessage());
 //    }
 
 //    @Test
 //    void verificaQueMetodoTiraExcepcionSiSeLeEntregaCampoNoExistente() {
 //        var exception = assertThrows(NullPointerException.class,
-//                () -> AccesoADatos
-//                        .obtenerVotacionesConEstado(Estado.FINALIZADO));
+//                () -> utils.AccesoADatos
+//                        .obtenerVotacionesConEstado(modelos.enums.Estado.FINALIZADO));
 //        logger.info("Se ha lanzado la excepción NullPointerException, dado " +
 //                "que campo de votaciones dado no existe. " + exception.getMessage());
 //    }
 
 //    @Test
 //    void verificaQueMetodoTiraExcepcionSiSeLeEntregaCampoNoExistente2() {
-//        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-//        var exception = assertThrows(AccesoADatosInterrumpidoException.class,
-//                () -> AccesoADatos
+//        JSONArray jsonArrayVotaciones = utils.AccesoADatos.parsearVotaciones();
+//        var exception = assertThrows(excepciones.AccesoADatosInterrumpidoException.class,
+//                () -> utils.AccesoADatos
 //                        .obtenerVotacionPorCampo(
 //                                jsonArrayVotaciones, "no_existe", "1"));
-//        logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
+//        logger.info("Se ha lanzado la excepción excepciones.AccesoADatosInterrumpidoException, dado " +
 //                "que campo de votaciones dado no existe. " + exception.getMessage());
 //    }
 
@@ -89,7 +89,7 @@ class AccesoADatosTest {
     void verificaQueMetodoTiraExcepcionSiSeLeEntregaRutaNoExistente() {
         var exception = assertThrows(AccesoADatosInterrumpidoException.class,
                 () -> AccesoADatos.escribirArchivoJSON("ruta/que/no/existe", "123"));
-        logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
+        logger.info("Se ha lanzado la excepción excepciones.AccesoADatosInterrumpidoException, dado " +
                 "que la ruta entregada no existe. " + exception.getMessage());
     }
 
@@ -98,17 +98,17 @@ class AccesoADatosTest {
         var exception = assertThrows(AccesoADatosInterrumpidoException.class,
                 () -> AccesoADatos.escribirArchivoJSON
                         ("src/main/datos-de-prueba/votaciones_test.json", (String) null));
-        logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
+        logger.info("Se ha lanzado la excepción excepciones.AccesoADatosInterrumpidoException, dado " +
                 "que el contenido entregado es nulo. " + exception.getMessage());
     }
 //    @Test
 //    void verificaQueMetodoTiraExcepcionSiSeLeEntregaCampoNoExistente2() {
-//        JSONArray jsonArrayVotaciones = AccesoADatos.parsearVotaciones();
-//        var exception = assertThrows(AccesoADatosInterrumpidoException.class,
-//                () -> AccesoADatos
+//        JSONArray jsonArrayVotaciones = utils.AccesoADatos.parsearVotaciones();
+//        var exception = assertThrows(excepciones.AccesoADatosInterrumpidoException.class,
+//                () -> utils.AccesoADatos
 //                        .obtenerVotacionPorCampo(
 //                                jsonArrayVotaciones, "no_existe", "1"));
-//        logger.info("Se ha lanzado la excepción AccesoADatosInterrumpidoException, dado " +
+//        logger.info("Se ha lanzado la excepción excepciones.AccesoADatosInterrumpidoException, dado " +
 //                "que campo de votaciones dado no existe. " + exception.getMessage());
 //    }
 }
