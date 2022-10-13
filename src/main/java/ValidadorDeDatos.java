@@ -45,18 +45,8 @@ public class ValidadorDeDatos {
 
     public static Votacion pedirCamposDeVotacion() {
         Votacion votacion = new Votacion();
-        List<Opcion> opciones = new ArrayList<>();
-        List<Votante> votantes = new ArrayList<>();
         situarDatosCampo(votacion, ingresarDatosCampo());
-        situarDatosVotacion(votacion, opciones, votantes);
         return votacion;
-    }
-
-    public static void situarDatosVotacion(Votacion votacion, List<Opcion> opciones, List<Votante> votantes) {
-        votacion.setOpciones(opciones);
-        votacion.setVotantes(votantes);
-        votacion.setVotosBlancos(0);
-        votacion.setVotosPreferenciales(0);
     }
 
     public static void situarDatosCampo(Votacion votacion, HashMap<String, String> datos) {

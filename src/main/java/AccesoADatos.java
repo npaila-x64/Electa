@@ -146,12 +146,14 @@ public class AccesoADatos {
     }
 
     public static List<Opcion> obtenerOpcionesDeVotacionJSON(JSONObject votacionSiguiente) {
-        JSONObject opciones = (JSONObject) votacionSiguiente.get(CampoDeVotacion.OPCIONES.getTexto());
+        JSONArray opciones = (JSONArray) votacionSiguiente.get(CampoDeVotacion.OPCIONES.getTexto());
         List<Opcion> listaOpciones = new ArrayList<>();
-        for (Object opcionSiguiente : opciones.keySet()) {
+        for (Object jsonArrayOpcion : opciones) {
+            JSONObject opcionSiguiente = (JSONObject) jsonArrayOpcion;
             Opcion opcion = new Opcion();
-            opcion.setNombre(opcionSiguiente);
-            opcion.setCantidadDeVotos(opciones.get(opcionSiguiente));
+            opcion.setId(opcionSiguiente.get("id"));
+            opcion.setNombre(opcionSiguiente.get("nombre"));
+            opcion.setCantidadDeVotos(opcionSiguiente.get("votos"));
             listaOpciones.add(opcion);
         }
         return listaOpciones;
@@ -210,12 +212,25 @@ public class AccesoADatos {
         throw AccesoADatosInterrumpidoException.talElementoNoExiste(rut);
     }
 
-    public static String obtenerNuevaIDVotacion() {
+    public static String obtenerNuevaIdVotacion() {
         int maxID = 0;
         JSONArray jsonArrayVotaciones = parsearVotaciones();
         for (Object jsonArrayVotacion : jsonArrayVotaciones) {
             JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
             int id = parsearObjectAInt(votacionSiguiente.get(CampoDeVotacion.ID.getTexto()));
+            if (id > maxID) {
+                maxID = id;
+            }
+        }
+        maxID++;
+        return String.valueOf(maxID);
+    }
+
+    public static String obtenerNuevaIdOpcion(Votacion votacion) {
+        int maxID = 0;
+        Votacion votacionCopia = obtenerVotacionPorID(obtenerVotaciones(), votacion);
+        for (Opcion opcionSiguiente : votacionCopia.getOpciones()) {
+            int id = opcionSiguiente.getId();
             if (id > maxID) {
                 maxID = id;
             }
@@ -244,9 +259,7 @@ public class AccesoADatos {
             FileWriter myWriter = new FileWriter(ruta);
             myWriter.write(contenido);
             myWriter.close();
-        } catch (IOException e) {
-            throw AccesoADatosInterrumpidoException.noSePudoEscribirArchivo(ruta);
-        } catch (NullPointerException e){
+        } catch (IOException | NullPointerException e) {
             throw AccesoADatosInterrumpidoException.noSePudoEscribirArchivo(ruta);
         }
     }
@@ -282,8 +295,9 @@ public class AccesoADatos {
 
     public static void votarOpcionPreferencial(Votacion votacion, Opcion opcionElegida) {
         List<Opcion> opciones = votacion.getOpciones();
-        for (var opcion : opciones) {
-            if (opcion.equals(opcionElegida)) {
+        for (Opcion opcion : opciones) {
+            System.out.println(opcion.getId());
+            if (opcion.getId().equals(opcionElegida.getId())) {
                 int votosOpcion = opcion.getCantidadDeVotos();
                 votosOpcion++;
                 opcion.setCantidadDeVotos(votosOpcion);
@@ -349,11 +363,15 @@ public class AccesoADatos {
     }
 
     private static void convertirJSONCampoOpciones(Votacion votacion, JSONObject votacionObj) {
-        JSONObject opcionesObj = new JSONObject();
+        JSONArray opcionesArray = new JSONArray();
         for (Opcion opcion : votacion.getOpciones()) {
-            opcionesObj.put(opcion.getNombre(), opcion.getCantidadDeVotos());
+            JSONObject opcionSiguiente = new JSONObject();
+            opcionSiguiente.put("id", opcion.getId());
+            opcionSiguiente.put("nombre", opcion.getNombre());
+            opcionSiguiente.put("votos", opcion.getCantidadDeVotos());
+            opcionesArray.add(opcionSiguiente);
         }
-        votacionObj.put(CampoDeVotacion.OPCIONES.getTexto(), opcionesObj);
+        votacionObj.put(CampoDeVotacion.OPCIONES.getTexto(), opcionesArray);
     }
 
     private static void convertirJSONCampoVotos(Votacion votacion, JSONObject votacionObj) {
@@ -362,7 +380,7 @@ public class AccesoADatos {
     }
 
     public static void crearVotacion(Votacion votacion) {
-        votacion.setId(obtenerNuevaIDVotacion());
+        votacion.setId(obtenerNuevaIdVotacion());
         votacion.setEstado(Estado.PENDIENTE);
         List<Votacion> votaciones = obtenerVotaciones();
         votaciones.add(votacion);
@@ -380,7 +398,7 @@ public class AccesoADatos {
         // De la ID de la votación elegida se obtiene una copia de la votación con alcance local
         Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacionElegida);
         List<Opcion> opciones = votacionCopia.getOpciones();
-        opciones.removeIf(opcion -> opcion.getNombre().equals(opcionElegida.getNombre()));
+        opciones.removeIf(opcion -> opcion.getId().equals(opcionElegida.getId()));
         votacionCopia.setOpciones(opciones);
         escribirVotaciones(votaciones);
     }
@@ -393,9 +411,11 @@ public class AccesoADatos {
     }
 
     public static void agregarOpcionAVotacion(Votacion votacion, String nombreOpcion) {
+        // TODO tratar de evitar que se agregue una opcion duplicada
         List<Votacion> votaciones = obtenerVotaciones();
         List<Opcion> opciones = votacion.getOpciones();
         Opcion opcion = new Opcion();
+        opcion.setId(obtenerNuevaIdOpcion(votacion));
         opcion.setNombre(nombreOpcion);
         opcion.setCantidadDeVotos(0);
         opciones.add(opcion);

@@ -2,6 +2,7 @@ import java.util.List;
 
 public class Opcion {
 
+    private Integer id;
     private String nombre;
     private Votacion votacion;
     private Integer cantidadDeVotos;
@@ -11,8 +12,18 @@ public class Opcion {
 
     public Opcion(TipoDeVoto tipoDeVoto) {
         if (tipoDeVoto.equals(TipoDeVoto.VOTO_BLANCO)) {
+            this.id = 1;
             this.nombre = textoVotoBlanco;
+            this.cantidadDeVotos = 0;
         }
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Object id) {
+        this.id = Integer.parseInt(id.toString());
     }
 
     public String getNombre() {

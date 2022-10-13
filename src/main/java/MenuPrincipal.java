@@ -179,7 +179,6 @@ public class MenuPrincipal {
 
     private void mostrarMenuOpcionesParaVotar(Votacion votacion, Votante votante) {
         List<Opcion> opciones = votacion.getOpciones();
-        agregarVotoBlanco(opciones);
         mostrarOpcionesMenuOpcionesParaVotar(opciones);
         int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
         if (opcionElegida == 0) return;
@@ -189,11 +188,6 @@ public class MenuPrincipal {
             AccesoADatos.realizarVotoPreferencial(votacion, votante, opciones.get(opcionElegida - 1));
         }
         mostrarVotoRealizadoConExito();
-    }
-
-    private void agregarVotoBlanco(List<Opcion> opciones) {
-        Opcion votoBlanco = new Opcion(TipoDeVoto.VOTO_BLANCO);
-        opciones.add(0, votoBlanco);
     }
 
     private void mostrarOpcionesMenuOpcionesParaVotar(List<Opcion> opciones) {
