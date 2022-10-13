@@ -194,12 +194,13 @@ public class AccesoADatos {
     }
 
     public static Votacion obtenerVotacionPorID(List<Votacion> votaciones, Votacion votacion) {
-        for (var votacionSiguiente : votaciones) {
-            if (votacionSiguiente.getId().equals(votacion.getId())) {
-                return votacionSiguiente;
-            }
-        }
-        throw AccesoADatosInterrumpidoException.talElementoNoExiste(CampoDeVotacion.ID.getTexto());
+        return votaciones
+                .stream()
+                .filter(v -> v.getId().equals(votacion.getId()))
+                .findFirst()
+                .orElseThrow(
+                        () -> AccesoADatosInterrumpidoException
+                                .talElementoNoExiste(CampoDeVotacion.ID.getTexto()));
     }
 
     public static Votante obtenerVotantePorRut(String rut) {
