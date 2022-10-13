@@ -331,6 +331,7 @@ public class AccesoADatos {
     }
 
     private static void convertirJSONCampoFechaYHora(Votacion votacion, JSONObject votacionObj){
+        // TODO estandarizar fecha de inicio y termino por defecto
         votacionObj.put(CampoDeVotacion.FECHA_INICIO.getTexto(),
                 Optional.ofNullable(votacion.getFechaInicio())
                         .orElse(LocalDate.of(1900,1,1))
@@ -395,11 +396,11 @@ public class AccesoADatos {
 
     public static void eliminarOpcionDeVotacion(Votacion votacionElegida, Opcion opcionElegida) {
         List<Votacion> votaciones = obtenerVotaciones();
-        // De la ID de la votación elegida se obtiene una copia de la votación con alcance local
         Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacionElegida);
         List<Opcion> opciones = votacionCopia.getOpciones();
         opciones.removeIf(opcion -> opcion.getId().equals(opcionElegida.getId()));
         votacionCopia.setOpciones(opciones);
+        votacionElegida.setOpciones(opciones);
         escribirVotaciones(votaciones);
     }
 
@@ -407,18 +408,21 @@ public class AccesoADatos {
         List<Votacion> votaciones = obtenerVotaciones();
         Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacionElegida);
         votacionCopia.setAttributo(campo, valor);
+        votacionElegida.setAttributo(campo, valor);
         escribirVotaciones(votaciones);
     }
 
     public static void agregarOpcionAVotacion(Votacion votacion, String nombreOpcion) {
         // TODO tratar de evitar que se agregue una opcion duplicada
         List<Votacion> votaciones = obtenerVotaciones();
-        List<Opcion> opciones = votacion.getOpciones();
+        Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacion);
+        List<Opcion> opciones = votacionCopia.getOpciones();
         Opcion opcion = new Opcion();
-        opcion.setId(obtenerNuevaIdOpcion(votacion));
+        opcion.setId(obtenerNuevaIdOpcion(votacionCopia));
         opcion.setNombre(nombreOpcion);
         opcion.setCantidadDeVotos(0);
         opciones.add(opcion);
+        votacionCopia.setOpciones(opciones);
         votacion.setOpciones(opciones);
         escribirVotaciones(votaciones);
     }

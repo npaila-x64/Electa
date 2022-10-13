@@ -24,6 +24,21 @@ public class Votacion {
     private Integer votosBlancos;
     private List<Voto> listaDeVotos;
 
+    // Método constructor usado para clonar una Votacion
+    public Votacion(Votacion clon) {
+        this.id = clon.getId();
+        this.titulo = clon.getTitulo();
+        this.descripcion = clon.getDescripcion();
+        this.opciones = clon.getOpciones();
+        this.votantes = clon.getVotantes();
+        this.listaDeVotos = clon.getListaDeVotos();
+        this.votosBlancos = clon.getVotosBlancos();
+        this.votosPreferenciales = getVotosPreferenciales();
+        this.estado = clon.getEstado();
+        setFechaTiempoInicio(clon.getFechaTiempoInicio());
+        setFechaTiempoTermino(clon.getFechaTiempoTermino());
+    }
+
     public Votacion() {
         this.opciones = new ArrayList<>();
         this.votantes = new ArrayList<>();
@@ -31,6 +46,7 @@ public class Votacion {
         this.votosBlancos = 0;
         this.votosPreferenciales = 0;
         this.estado = Estado.BORRADOR;
+//      TODO estandarizar fecha de inicio y termino por defecto
         setFechaTiempoInicio(LocalDateTime.now());
         setFechaTiempoTermino(LocalDateTime.now().plusYears(50));
         agregarVotoBlanco();
@@ -121,19 +137,19 @@ public class Votacion {
     }
 
     public List<Opcion> getOpciones() {
-        return opciones;
+        return new ArrayList<>(opciones);
     }
 
     public void setOpciones(List<Opcion> opciones) {
-        this.opciones = opciones;
+        this.opciones = new ArrayList<>(opciones);
     }
 
     public List<Votante> getVotantes() {
-        return votantes;
+        return new ArrayList<>(votantes);
     }
 
     public void setVotantes(List<Votante> votantes) {
-        this.votantes = votantes;
+        this.votantes = new ArrayList<>(votantes);
     }
 
     public Integer getVotosPreferenciales() {
@@ -161,11 +177,11 @@ public class Votacion {
     }
 
     public List<Voto> getListaDeVotos() {
-        return listaDeVotos;
+        return new ArrayList<>(listaDeVotos);
     }
 
     public void setListaDeVotos(List<Voto> listaDeVotos) {
-        this.listaDeVotos = listaDeVotos;
+        this.listaDeVotos = new ArrayList<>(listaDeVotos);
     }
 
     public void setAttributo(CampoDeVotacion campo, Object valor) {

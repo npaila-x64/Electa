@@ -6,13 +6,13 @@ public class Opcion {
     private String nombre;
     private Votacion votacion;
     private Integer cantidadDeVotos;
-    private final String textoVotoBlanco = "Abstenerse";
 
     public Opcion() {}
 
     public Opcion(TipoDeVoto tipoDeVoto) {
         if (tipoDeVoto.equals(TipoDeVoto.VOTO_BLANCO)) {
             this.id = 1;
+            String textoVotoBlanco = "Abstenerse";
             this.nombre = textoVotoBlanco;
             this.cantidadDeVotos = 0;
         }
@@ -35,11 +35,11 @@ public class Opcion {
     }
 
     public Votacion getVotacion() {
-        return votacion;
+        return new Votacion(votacion);
     }
 
     public void setVotacion(Votacion votacion) {
-        this.votacion = votacion;
+        this.votacion = new Votacion(votacion);
     }
 
     public Integer getCantidadDeVotos() {
