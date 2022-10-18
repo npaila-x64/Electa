@@ -294,20 +294,23 @@ public class AccesoADatos {
     }
 
     public static void votarOpcionPreferencial(Votacion votacion, Opcion opcionElegida) {
-        // TODO Se puede refactorizar
         List<Opcion> opciones = votacion.getOpciones();
         for (Opcion opcion : opciones) {
             System.out.println(opcion.getId());
             if (opcion.getId().equals(opcionElegida.getId())) {
-                int votosOpcion = opcion.getCantidadDeVotos();
-                votosOpcion++;
-                opcion.setCantidadDeVotos(votosOpcion);
-                int votosPreferencialesVotacion = votacion.getVotosPreferenciales();
-                votosPreferencialesVotacion++;
-                votacion.setVotosPreferenciales(votosPreferencialesVotacion);
+                aumentarCantidadVotos(votacion, opcion);
             }
         }
         votacion.setOpciones(opciones);
+    }
+
+    private static void aumentarCantidadVotos(Votacion votacion, Opcion opcion) {
+        int votosOpcion = opcion.getCantidadDeVotos();
+        votosOpcion++;
+        opcion.setCantidadDeVotos(votosOpcion);
+        int votosPreferencialesVotacion = votacion.getVotosPreferenciales();
+        votosPreferencialesVotacion++;
+        votacion.setVotosPreferenciales(votosPreferencialesVotacion);
     }
 
     public static JSONArray convertirListaDeVotacionesAJSONArray(List<Votacion> votaciones) {
