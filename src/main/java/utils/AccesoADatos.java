@@ -19,7 +19,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 
 /*
     Clase que contiene los métodos que interactúan
@@ -208,8 +211,15 @@ public class AccesoADatos {
     }
 
     public static String obtenerNuevaIdVotacion() {
+        // TODO Se puede convertir a método funcional para mejorar legibilidad (1)
+        int maxID = 0;
         List<Votacion> votaciones = obtenerVotaciones();
-        var maxID = votaciones.stream().max(Comparator.comparing(Votacion::getId)).get().getId();
+        for (Votacion votacionSiguiente : votaciones) {
+            int id = votacionSiguiente.getId();
+            if (id > maxID) {
+                maxID = id;
+            }
+        }
         maxID++;
         return String.valueOf(maxID);
     }
@@ -284,23 +294,20 @@ public class AccesoADatos {
     }
 
     public static void votarOpcionPreferencial(Votacion votacion, Opcion opcionElegida) {
+        // TODO Se puede refactorizar
         List<Opcion> opciones = votacion.getOpciones();
         for (Opcion opcion : opciones) {
             System.out.println(opcion.getId());
             if (opcion.getId().equals(opcionElegida.getId())) {
-                aumentarCantidadVotos(votacion, opcion);
+                int votosOpcion = opcion.getCantidadDeVotos();
+                votosOpcion++;
+                opcion.setCantidadDeVotos(votosOpcion);
+                int votosPreferencialesVotacion = votacion.getVotosPreferenciales();
+                votosPreferencialesVotacion++;
+                votacion.setVotosPreferenciales(votosPreferencialesVotacion);
             }
         }
         votacion.setOpciones(opciones);
-    }
-
-    private static void aumentarCantidadVotos(Votacion votacion, Opcion opcion) {
-        int votosOpcion = opcion.getCantidadDeVotos();
-        votosOpcion++;
-        opcion.setCantidadDeVotos(votosOpcion);
-        int votosPreferencialesVotacion = votacion.getVotosPreferenciales();
-        votosPreferencialesVotacion++;
-        votacion.setVotosPreferenciales(votosPreferencialesVotacion);
     }
 
     public static JSONArray convertirListaDeVotacionesAJSONArray(List<Votacion> votaciones) {
