@@ -353,7 +353,13 @@ public class MenuPrincipal {
     private void agregarOpcionDeVotacion(Votacion votacion) {
         String opcion = ValidadorDeDatos
                 .pedirEntrada("Escriba la opción que desea agregar\n> ", 35);
-        AccesoADatos.agregarOpcionAVotacion(votacion, opcion);
+
+        if(AccesoADatos.opcionYaExiste(votacion, opcion)){
+            mostrarOpcionYaExiste(opcion);
+            agregarOpcionDeVotacion(votacion);
+        }else{
+            AccesoADatos.agregarOpcionAVotacion(votacion, opcion);
+        }
     }
 
     private void mostrarDatosDeVotacion(Votacion votacion) {
