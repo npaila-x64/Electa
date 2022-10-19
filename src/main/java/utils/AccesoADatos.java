@@ -383,23 +383,10 @@ public class AccesoADatos {
     }
 
     private static void convertirJSONCampoFechaYHora(Votacion votacion, JSONObject votacionObj){
-        // TODO Refactorizar esto, se ve horrible >:(
-        votacionObj.put(CampoDeVotacion.FECHA_INICIO.getTexto(),
-                Optional.ofNullable(votacion.getFechaInicio())
-                        .orElse(LocalDate.of(1900,1,1))
-                        .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-        votacionObj.put(CampoDeVotacion.HORA_INICIO.getTexto(),
-                Optional.ofNullable(votacion.getTiempoInicio())
-                        .orElse(LocalTime.of(0,0))
-                        .format(DateTimeFormatter.ofPattern("HH:mm")));
-        votacionObj.put(CampoDeVotacion.FECHA_TERMINO.getTexto(),
-                Optional.ofNullable(votacion.getFechaTermino())
-                        .orElse(LocalDate.of(2099,1,1))
-                        .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-        votacionObj.put(CampoDeVotacion.HORA_TERMINO.getTexto(),
-                Optional.ofNullable(votacion.getTiempoTermino())
-                        .orElse(LocalTime.of(0,0))
-                        .format(DateTimeFormatter.ofPattern("HH:mm")));
+        votacionObj.put(CampoDeVotacion.FECHA_INICIO.getTexto(), votacion.getFechaInicio());
+        votacionObj.put(CampoDeVotacion.HORA_INICIO.getTexto(), votacion.getTiempoInicio());
+        votacionObj.put(CampoDeVotacion.FECHA_TERMINO.getTexto(), votacion.getFechaTermino());
+        votacionObj.put(CampoDeVotacion.HORA_TERMINO.getTexto(), votacion.getTiempoTermino());
     }
 
     private static void convertirJSONCampoVotantes(Votacion votacion, JSONObject votacionObj) {
