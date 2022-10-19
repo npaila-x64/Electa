@@ -383,10 +383,14 @@ public class AccesoADatos {
     }
 
     private static void convertirJSONCampoFechaYHora(Votacion votacion, JSONObject votacionObj){
-        votacionObj.put(CampoDeVotacion.FECHA_INICIO.getTexto(), votacion.getFechaInicio());
-        votacionObj.put(CampoDeVotacion.HORA_INICIO.getTexto(), votacion.getTiempoInicio());
-        votacionObj.put(CampoDeVotacion.FECHA_TERMINO.getTexto(), votacion.getFechaTermino());
-        votacionObj.put(CampoDeVotacion.HORA_TERMINO.getTexto(), votacion.getTiempoTermino());
+        votacionObj.put(CampoDeVotacion.FECHA_INICIO.getTexto(), votacion.getFechaInicio()
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        votacionObj.put(CampoDeVotacion.HORA_INICIO.getTexto(), votacion.getTiempoInicio()
+                .format(DateTimeFormatter.ofPattern("HH:mm")));
+        votacionObj.put(CampoDeVotacion.FECHA_TERMINO.getTexto(), votacion.getFechaTermino()
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        votacionObj.put(CampoDeVotacion.HORA_TERMINO.getTexto(), votacion.getTiempoTermino()
+                .format(DateTimeFormatter.ofPattern("HH:mm")));
     }
 
     private static void convertirJSONCampoVotantes(Votacion votacion, JSONObject votacionObj) {
