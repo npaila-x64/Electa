@@ -13,34 +13,7 @@ import java.util.*;
 
 public class MenuPrincipal {
 
-    public void iniciar() {
-        mostrarMenuDeIngreso();
-    }
 
-    private void mostrarOpcionesDeIngreso() {
-        System.out.print("""
-                
-                ¡Bienvenido/a al sistema Electa!
-                [1] Ingresar como Votante
-                [2] Ingresar como Administrador
-                Si desea salir escriba [0]
-                """.concat("> "));
-    }
-
-    private void mostrarMenuDeIngreso() {
-        while (true) {
-            mostrarOpcionesDeIngreso();
-            try {
-                switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
-                    case 0 -> {return;}
-                    case 1 -> ingresarComoVotante();
-                    case 2 -> ingresarComoAdministrador();
-                }
-            } catch (AccesoADatosInterrumpidoException e) {
-                mostrarSistemaNoDisponible(e.getMessage());
-            }
-        }
-    }
 
     private void ingresarComoAdministrador() {
         String clave = ValidadorDeDatos
@@ -77,13 +50,8 @@ public class MenuPrincipal {
     }
 
     private void ingresarComoVotante() {
-        String rutVotante = ValidadorDeDatos.pedirEntrada("Ingrese su rut\n> ");
-        String claveVotante = ValidadorDeDatos.pedirEntrada("Ingrese su clave\n> ");
-        if (ValidadorDeDatos.esCredencialVotanteValida(rutVotante, claveVotante)) {
-            mostrarMenuVotacionesVotante(AccesoADatos.obtenerVotantePorRut(rutVotante));
-        } else {
-            System.err.println("RUT y/o contraseña incorrectos");
-        }
+
+
     }
 
     private void mostrarMenuVotacionesVotante(Votante votante) {
@@ -423,11 +391,6 @@ public class MenuPrincipal {
             System.out.println(Utilidades.padTexto(opcion.getNombre(), 30)
                     .concat(opcion.getCantidadDeVotos().toString()));
         }
-    }
-
-    private void mostrarSistemaNoDisponible(String mensaje) {
-        System.err.println("El sistema no se encuentra disponible por ahora, disculpe las molestias\n" +
-                "Mensaje de error: " + mensaje);
     }
 
     private void mostrarOpcionYaExiste(String opcion){

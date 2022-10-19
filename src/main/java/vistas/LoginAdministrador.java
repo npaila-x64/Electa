@@ -4,9 +4,19 @@ import controladores.ControladorLogin;
 
 public class LoginAdministrador {
 
-	public ControladorLogin controladorLogin;
+	private String campoClave;
+	private ControladorLogin controladorLogin;
 
 	public LoginAdministrador(ControladorLogin controladorLogin) {
 		this.controladorLogin = controladorLogin;
+	}
+
+	public void iniciar() {
+		ingresarClave();
+		controladorLogin.validarDatos(this.campoClave);
+	}
+
+	private void ingresarClave() {
+
 	}
 }
