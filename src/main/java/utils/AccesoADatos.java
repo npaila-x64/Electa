@@ -401,7 +401,6 @@ public class AccesoADatos {
     }
 
     public static void agregarOpcionAVotacion(Votacion votacion, String nombreOpcion) {
-        // TODO Evitar que se agregue una opcion duplicada (entregarle un mensaje al usuario)
         List<Votacion> votaciones = obtenerVotaciones();
         Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacion);
         List<Opcion> opciones = votacionCopia.getOpciones();
