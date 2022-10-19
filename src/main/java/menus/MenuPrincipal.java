@@ -351,6 +351,7 @@ public class MenuPrincipal {
     }
 
     private void agregarOpcionDeVotacion(Votacion votacion) {
+        // TODO Validar ingreso de opción vacía
         String opcion = ValidadorDeDatos
                 .pedirEntrada("Escriba la opción que desea agregar\n> ", 35);
 
