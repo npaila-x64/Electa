@@ -19,10 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 /*
     Clase que contiene los métodos que interactúan
@@ -211,15 +208,8 @@ public class AccesoADatos {
     }
 
     public static String obtenerNuevaIdVotacion() {
-        // TODO Se puede convertir a método funcional para mejorar legibilidad (1)
-        int maxID = 0;
         List<Votacion> votaciones = obtenerVotaciones();
-        for (Votacion votacionSiguiente : votaciones) {
-            int id = votacionSiguiente.getId();
-            if (id > maxID) {
-                maxID = id;
-            }
-        }
+        var maxID = votaciones.stream().max(Comparator.comparing(Votacion::getId)).get().getId();
         maxID++;
         return String.valueOf(maxID);
     }
