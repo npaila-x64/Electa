@@ -7,4 +7,35 @@ public class Voto {
     private Votante votante;
     private Opcion opcion;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Votacion getVotacion() {
+        return votacion;
+    }
+
+    public void setVotacion(Votacion votacion) {
+        this.votacion = votacion;
+    }
+
+    public Votante getVotante() {
+        return votante;
+    }
+
+    public void setVotante(Votante votante) {
+        this.votante = votante;
+    }
+
+    public Opcion getOpcion() {
+        return opcion;
+    }
+
+    public void setOpcion(Opcion opcion) {
+        this.opcion = opcion;
+    }
 }
