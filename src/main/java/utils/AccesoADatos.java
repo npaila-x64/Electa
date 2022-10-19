@@ -19,10 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 /*
     Clase que contiene los métodos que interactúan
@@ -211,29 +208,16 @@ public class AccesoADatos {
     }
 
     public static String obtenerNuevaIdVotacion() {
-        // TODO Se puede convertir a método funcional para mejorar legibilidad (1)
-        int maxID = 0;
         List<Votacion> votaciones = obtenerVotaciones();
-        for (Votacion votacionSiguiente : votaciones) {
-            int id = votacionSiguiente.getId();
-            if (id > maxID) {
-                maxID = id;
-            }
-        }
+        var maxID = votaciones.stream().max(Comparator.comparing(Votacion::getId)).get().getId();
         maxID++;
         return String.valueOf(maxID);
     }
 
     public static String obtenerNuevaIdOpcion(Votacion votacion) {
-        // TODO Se puede convertir a método funcional para mejorar legibilidad (2)
-        int maxID = 0;
         Votacion votacionCopia = obtenerVotacionPorID(obtenerVotaciones(), votacion);
-        for (Opcion opcionSiguiente : votacionCopia.getOpciones()) {
-            int id = opcionSiguiente.getId();
-            if (id > maxID) {
-                maxID = id;
-            }
-        }
+        List<Opcion> opciones = votacionCopia.getOpciones();
+        var maxID = opciones.stream().max(Comparator.comparing(Opcion::getId)).get().getId();
         maxID++;
         return String.valueOf(maxID);
     }
@@ -294,20 +278,23 @@ public class AccesoADatos {
     }
 
     public static void votarOpcionPreferencial(Votacion votacion, Opcion opcionElegida) {
-        // TODO Se puede refactorizar
         List<Opcion> opciones = votacion.getOpciones();
         for (Opcion opcion : opciones) {
             System.out.println(opcion.getId());
             if (opcion.getId().equals(opcionElegida.getId())) {
-                int votosOpcion = opcion.getCantidadDeVotos();
-                votosOpcion++;
-                opcion.setCantidadDeVotos(votosOpcion);
-                int votosPreferencialesVotacion = votacion.getVotosPreferenciales();
-                votosPreferencialesVotacion++;
-                votacion.setVotosPreferenciales(votosPreferencialesVotacion);
+                aumentarCantidadVotos(votacion, opcion);
             }
         }
         votacion.setOpciones(opciones);
+    }
+
+    private static void aumentarCantidadVotos(Votacion votacion, Opcion opcion) {
+        int votosOpcion = opcion.getCantidadDeVotos();
+        votosOpcion++;
+        opcion.setCantidadDeVotos(votosOpcion);
+        int votosPreferencialesVotacion = votacion.getVotosPreferenciales();
+        votosPreferencialesVotacion++;
+        votacion.setVotosPreferenciales(votosPreferencialesVotacion);
     }
 
     public static JSONArray convertirListaDeVotacionesAJSONArray(List<Votacion> votaciones) {
@@ -414,7 +401,6 @@ public class AccesoADatos {
     }
 
     public static void agregarOpcionAVotacion(Votacion votacion, String nombreOpcion) {
-        // TODO Evitar que se agregue una opcion duplicada (entregarle un mensaje al usuario)
         List<Votacion> votaciones = obtenerVotaciones();
         Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacion);
         List<Opcion> opciones = votacionCopia.getOpciones();
@@ -426,6 +412,11 @@ public class AccesoADatos {
         votacionCopia.setOpciones(opciones);
         votacion.setOpciones(opciones);
         escribirVotaciones(votaciones);
+    }
+
+    public static boolean opcionYaExiste(Votacion votacion, String  nombreOpcion){
+        List<Opcion> opciones = votacion.getOpciones();
+        return opciones.stream().anyMatch(opcion -> opcion.getNombre().equals(nombreOpcion));
     }
 
     public static LocalDateTime parsearFechaTiempoInicio(JSONObject votacion) {

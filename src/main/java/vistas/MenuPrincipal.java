@@ -353,7 +353,13 @@ public class MenuPrincipal {
     private void agregarOpcionDeVotacion(Votacion votacion) {
         String opcion = ValidadorDeDatos
                 .pedirEntrada("Escriba la opción que desea agregar\n> ", 35);
-        AccesoADatos.agregarOpcionAVotacion(votacion, opcion);
+
+        if(AccesoADatos.opcionYaExiste(votacion, opcion)){
+            mostrarOpcionYaExiste(opcion);
+            agregarOpcionDeVotacion(votacion);
+        }else{
+            AccesoADatos.agregarOpcionAVotacion(votacion, opcion);
+        }
     }
 
     private void mostrarDatosDeVotacion(Votacion votacion) {
@@ -422,5 +428,9 @@ public class MenuPrincipal {
     private void mostrarSistemaNoDisponible(String mensaje) {
         System.err.println("El sistema no se encuentra disponible por ahora, disculpe las molestias\n" +
                 "Mensaje de error: " + mensaje);
+    }
+
+    private void mostrarOpcionYaExiste(String opcion){
+        System.out.println("La opcion " + opcion + " ya existe, por favor ingrese otra");
     }
 }
