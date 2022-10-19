@@ -433,12 +433,7 @@ public class AccesoADatos {
 
     public static boolean opcionYaExiste(Votacion votacion, String  nombreOpcion){
         List<Opcion> opciones = votacion.getOpciones();
-        for (Opcion opcion : opciones) {
-            if (opcion.getNombre().equals(nombreOpcion)) {
-                return true;
-            }
-        }
-        return false;
+        return opciones.stream().anyMatch(opcion -> opcion.getNombre().equals(nombreOpcion));
     }
 
     public static LocalDateTime parsearFechaTiempoInicio(JSONObject votacion) {
