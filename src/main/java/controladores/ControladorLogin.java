@@ -1,16 +1,18 @@
 package controladores;
 
 import excepciones.AccesoADatosInterrumpidoException;
+import modelos.Votante;
 import modelos.dao.UsuarioDao;
-import utils.AccesoADatos;
 import utils.ValidadorDeDatos;
 import vistas.LoginAdministrador;
 import vistas.LoginVotante;
 
+import java.util.List;
+
 public class ControladorLogin {
-	private LoginAdministrador loginAdministrador;
-	private LoginVotante loginVotante;
-	private UsuarioDao usuarioDao;
+	private final LoginAdministrador loginAdministrador;
+	private final LoginVotante loginVotante;
+	private final UsuarioDao usuarioDao;
 
 	public ControladorLogin() {
 		this.loginVotante = new LoginVotante(this);
@@ -47,16 +49,35 @@ public class ControladorLogin {
 		}
 	}
 
-	public void validarDatos(String campoClave) {
-
+	public void validarDatosAdministrador(String campoClave) {
+		if (esCredencialAdministradorValida(campoClave)) {
+//			mostrarMenuAdministador();
+		} else {
+			System.err.println("Contraseña incorrecta");
+		}
 	}
 
-	public void validarDatos(String rutVotante, String claveVotante) {
-		if (ValidadorDeDatos.esCredencialVotanteValida(rutVotante, claveVotante)) {
+	public void validarDatosVotante(String rutVotante, String claveVotante) {
+		if (esCredencialVotanteValida(rutVotante, claveVotante)) {
 //			mostrarMenuVotacionesVotante(AccesoADatos.obtenerVotantePorRut(rutVotante));
 		} else {
 			System.err.println("RUT y/o contraseña incorrectos");
 		}
+	}
+
+	private boolean esCredencialVotanteValida(String rut, String clave) {
+		List<Votante> votantes = this.usuarioDao.obtenerVotantes();
+		for (Votante votanteSiguiente : votantes) {
+			// Primero verifica que los rut sean iguales, después se verifica la clave
+			if (votanteSiguiente.getRut().equals(rut)) {
+				if (votanteSiguiente.getClave().equals(clave)) return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean esCredencialAdministradorValida(String clave) {
+		return clave.equals(this.usuarioDao.obtenerCredencialAdmin());
 	}
 
 	private void mostrarSistemaNoDisponible(String mensaje) {

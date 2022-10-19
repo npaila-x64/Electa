@@ -32,18 +32,8 @@ import java.util.*;
 
 public class AccesoADatos {
 
-    private static final String RUTA_VOTANTES = "src/main/datos/votantes.json";
-    private static final String RUTA_CREDENCIALES_ADMIN = "src/main/datos/credencialesAdmin.json";
     private static final String RUTA_VOTACIONES = "src/main/datos/votaciones.json";
     private static final String RUTA_VOTOS = "src/main/datos/votos.json";
-
-    public static JSONArray parsearVotantes() throws AccesoADatosInterrumpidoException {
-        return parsearArchivoJSON(RUTA_VOTANTES);
-    }
-
-    public static JSONArray parsearCredencialAdmin() throws AccesoADatosInterrumpidoException {
-        return parsearArchivoJSON(RUTA_CREDENCIALES_ADMIN);
-    }
 
     public static JSONArray parsearVotaciones() throws AccesoADatosInterrumpidoException {
         return parsearArchivoJSON(RUTA_VOTACIONES);
@@ -88,18 +78,6 @@ public class AccesoADatos {
         return votaciones;
     }
 
-    public static List<Votante> obtenerVotantes() {
-        List<Votante> votantes = new ArrayList<>();
-        JSONArray jsonArrayVotantes = parsearVotantes();
-        for (Object jsonArrayVotante : jsonArrayVotantes) {
-            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotante;
-            Votante votante = new Votante();
-            obtenerAtributosDeVotanteJSON(votante, votacionSiguiente);
-            votantes.add(votante);
-        }
-        return votantes;
-    }
-
     public static List<Voto> obtenerVotos() {
         List<Voto> votos = new ArrayList<>();
         // TODO ¿será necesario cargar todos los datos de los modelos a que hace referencia el voto?
@@ -137,12 +115,6 @@ public class AccesoADatos {
         votacion.setOpciones(obtenerOpcionesDeVotacionJSON(votacion, votacionJSON));
         votacion.setVotantes(obtenerVotantesDeVotacionJSON(votacion, votacionJSON));
         votacion.setVotos(obtenerVotosDeVotacion(votacion));
-    }
-
-    private static void obtenerAtributosDeVotanteJSON(Votante votante, JSONObject votanteJSON) {
-        votante.setId(votanteJSON.get(CampoDeVotante.ID.getTexto()));
-        votante.setRut(votanteJSON.get(CampoDeVotante.RUT.getTexto()));
-        votante.setClave(votanteJSON.get(CampoDeVotante.CLAVE.getTexto()));
     }
 
     public static List<Votante> obtenerVotantesDeVotacionJSON(Votacion votacion, JSONObject votacionSiguiente) {
@@ -222,16 +194,6 @@ public class AccesoADatos {
                 .orElseThrow(
                         () -> AccesoADatosInterrumpidoException
                                 .talElementoNoExiste(CampoDeVotacion.ID.getTexto()));
-    }
-
-    public static Votante obtenerVotantePorRut(String rut) {
-        return obtenerVotantes()
-                .stream()
-                .filter(votacionSiguiente -> votacionSiguiente.getRut().equals(rut))
-                .findFirst()
-                .orElseThrow(
-                        () -> AccesoADatosInterrumpidoException
-                                .talElementoNoExiste(rut));
     }
 
     public static String obtenerNuevaIdVotacion() {
@@ -400,19 +362,6 @@ public class AccesoADatos {
                 Optional.ofNullable(votacion.getTiempoTermino())
                         .orElse(LocalTime.of(0,0))
                         .format(DateTimeFormatter.ofPattern("HH:mm")));
-    }
-
-    private static void convertirJSONCampoVotantes(Votacion votacion, JSONObject votacionObj) {
-        JSONArray votantesArray = obtenerArrayIdVotantes(votacion);
-        votacionObj.put(CampoDeVotacion.VOTANTES.getTexto(), votantesArray);
-    }
-
-    private static JSONArray obtenerArrayIdVotantes(Votacion votacion) {
-        JSONArray votantesArray = new JSONArray();
-        for (Votante votante : votacion.getVotantes()) {
-            votantesArray.add(votante.getId());
-        }
-        return votantesArray;
     }
 
     private static void convertirJSONCampoOpciones(Votacion votacion, JSONObject votacionObj) {

@@ -1,6 +1,7 @@
 package vistas;
 
 import controladores.ControladorLogin;
+import utils.ValidadorDeDatos;
 
 public class LoginAdministrador {
 
@@ -13,10 +14,12 @@ public class LoginAdministrador {
 
 	public void iniciar() {
 		ingresarClave();
-		controladorLogin.validarDatos(this.campoClave);
+		controladorLogin.validarDatosAdministrador(this.campoClave);
 	}
 
 	private void ingresarClave() {
+		this.campoClave = ValidadorDeDatos
+				.pedirEntrada("Ingrese la contraseña del administrador \n> ");
 
 	}
 }

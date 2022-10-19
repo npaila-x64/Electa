@@ -17,7 +17,7 @@ public class LoginVotante {
 	public void iniciar() {
 		ingresarRut();
 		ingresarClave();
-		controladorLogin.validarDatos(this.campoRut, this.campoClave);
+		controladorLogin.validarDatosVotante(this.campoRut, this.campoClave);
 	}
 
 	private void ingresarRut() {

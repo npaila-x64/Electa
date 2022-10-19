@@ -13,18 +13,6 @@ import java.util.*;
 
 public class MenuPrincipal {
 
-
-
-    private void ingresarComoAdministrador() {
-        String clave = ValidadorDeDatos
-                .pedirEntrada("Ingrese la contraseña del administrador \n> ");
-        if (ValidadorDeDatos.esCredencialAdministradorValida(clave)) {
-            mostrarMenuAdministador();
-        } else {
-            System.err.println("Contraseña incorrecta");
-        }
-    }
-
     private void mostrarMenuAdministador() {
         System.out.println("\nBienvenido/a al menú de administración");
         while (true) {
@@ -47,11 +35,6 @@ public class MenuPrincipal {
                 [3] Ver resultados de votaciones
                 Si desea cerrar su sesión escriba [0]
                 """.concat("> "));
-    }
-
-    private void ingresarComoVotante() {
-
-
     }
 
     private void mostrarMenuVotacionesVotante(Votante votante) {

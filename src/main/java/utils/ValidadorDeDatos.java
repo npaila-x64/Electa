@@ -31,24 +31,6 @@ public class ValidadorDeDatos {
         return hora.matches(PATRON_DE_HORA);
     }
 
-    public static boolean esCredencialAdministradorValida(String clave) throws AccesoADatosInterrumpidoException {
-        JSONArray credencialArray = AccesoADatos.parsearCredencialAdmin();
-        JSONObject credencialObject = (JSONObject) credencialArray.get(0);
-        String claveObtenida = String.valueOf(credencialObject.get(CampoDeVotante.CLAVE.getTexto()));
-        return clave.equals(claveObtenida);
-    }
-
-    public static boolean esCredencialVotanteValida(String rut, String clave) throws AccesoADatosInterrumpidoException {
-        List<Votante> votantes = AccesoADatos.obtenerVotantes();
-        for (Votante votanteSiguiente : votantes) {
-            // Primero verifica que los rut sean iguales, después se verifica la clave
-            if (votanteSiguiente.getRut().equals(rut)) {
-                if (votanteSiguiente.getClave().equals(clave)) return true;
-            }
-        }
-        return false;
-    }
-
     public static Votacion pedirCamposDeVotacion() {
         Votacion votacion = new Votacion();
         situarDatosCampo(votacion, ingresarDatosCampo());
