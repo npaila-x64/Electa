@@ -431,6 +431,16 @@ public class AccesoADatos {
         escribirVotaciones(votaciones);
     }
 
+    public static boolean opcionYaExiste(Votacion votacion, String  nombreOpcion){
+        List<Opcion> opciones = votacion.getOpciones();
+        for (Opcion opcion : opciones) {
+            if (opcion.getNombre().equals(nombreOpcion)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static LocalDateTime parsearFechaTiempoInicio(JSONObject votacion) {
         return parsearFechaTiempoVotacion(
                 votacion.get(CampoDeVotacion.FECHA_INICIO.getTexto()),
