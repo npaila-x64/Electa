@@ -215,15 +215,9 @@ public class AccesoADatos {
     }
 
     public static String obtenerNuevaIdOpcion(Votacion votacion) {
-        // TODO Se puede convertir a método funcional para mejorar legibilidad (2)
-        int maxID = 0;
         Votacion votacionCopia = obtenerVotacionPorID(obtenerVotaciones(), votacion);
-        for (Opcion opcionSiguiente : votacionCopia.getOpciones()) {
-            int id = opcionSiguiente.getId();
-            if (id > maxID) {
-                maxID = id;
-            }
-        }
+        List<Opcion> opciones = votacionCopia.getOpciones();
+        var maxID = opciones.stream().max(Comparator.comparing(Opcion::getId)).get().getId();
         maxID++;
         return String.valueOf(maxID);
     }
