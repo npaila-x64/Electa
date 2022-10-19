@@ -1,4 +1,4 @@
-package menus;
+package vistas;
 
 import excepciones.AccesoADatosInterrumpidoException;
 import modelos.*;

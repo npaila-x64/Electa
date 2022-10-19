@@ -1,6 +1,6 @@
 package app;
 
-import menus.MenuPrincipal;
+import vistas.MenuPrincipal;
 
 public class Electa {
 

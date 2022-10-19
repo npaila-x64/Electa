@@ -1,4 +1,4 @@
-import menus.MenuPrincipal;
+import vistas.MenuPrincipal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.Utilidades;
