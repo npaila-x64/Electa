@@ -28,7 +28,7 @@ public class Votacion {
     private List<Votante> votantes;
     private Integer votosPreferenciales;
     private Integer votosBlancos;
-    private List<Voto> listaDeVotos;
+    private List<Voto> votos;
 
     // Método constructor usado para clonar una modelos.Votacion
     public Votacion(Votacion clon) {
@@ -37,7 +37,7 @@ public class Votacion {
         this.descripcion = clon.getDescripcion();
         this.opciones = clon.getOpciones();
         this.votantes = clon.getVotantes();
-        this.listaDeVotos = clon.getListaDeVotos();
+        this.votos = clon.getVotos();
         this.votosBlancos = clon.getVotosBlancos();
         this.votosPreferenciales = getVotosPreferenciales();
         this.estado = clon.getEstado();
@@ -48,7 +48,7 @@ public class Votacion {
     public Votacion() {
         this.opciones = new ArrayList<>();
         this.votantes = new ArrayList<>();
-        this.listaDeVotos = new ArrayList<>();
+        this.votos = new ArrayList<>();
         this.votosBlancos = 0;
         this.votosPreferenciales = 0;
         this.estado = Estado.BORRADOR;
@@ -182,12 +182,12 @@ public class Votacion {
         return votosPreferenciales+votosBlancos;
     }
 
-    public List<Voto> getListaDeVotos() {
-        return new ArrayList<>(listaDeVotos);
+    public List<Voto> getVotos() {
+        return new ArrayList<>(votos);
     }
 
-    public void setListaDeVotos(List<Voto> listaDeVotos) {
-        this.listaDeVotos = new ArrayList<>(listaDeVotos);
+    public void setVotos(List<Voto> votos) {
+        this.votos = new ArrayList<>(votos);
     }
 
     public void setAttributo(CampoDeVotacion campo, Object valor) {
