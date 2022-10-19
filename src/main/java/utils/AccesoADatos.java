@@ -324,6 +324,19 @@ public class AccesoADatos {
         return array;
     }
 
+    private static void convertirJSONCampoVotantes(Votacion votacion, JSONObject votacionObj) {
+        JSONArray votantesArray = obtenerArrayIdVotantes(votacion);
+        votacionObj.put(CampoDeVotacion.VOTANTES.getTexto(), votantesArray);
+    }
+
+    private static JSONArray obtenerArrayIdVotantes(Votacion votacion) {
+        JSONArray votantesArray = new JSONArray();
+        for (Votante votante : votacion.getVotantes()) {
+            votantesArray.add(votante.getId());
+        }
+        return votantesArray;
+    }
+
     public static JSONArray convertirListaDeVotosAJSONArray(List<Voto> votos) {
         JSONArray array = new JSONArray();
         for (Voto voto : votos) {
