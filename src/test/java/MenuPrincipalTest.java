@@ -1,7 +1,7 @@
+import vistas.MenuPrincipal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.NoSuchElementException;
+import utils.Utilidades;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,6 +38,6 @@ class MenuPrincipalTest {
     @Test
     void padTextoTest() {
         assertEquals("test..........................",
-                app.padTexto("test", ".", 30));
+                Utilidades.padTexto("test", ".", 30));
     }
 }
