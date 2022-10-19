@@ -55,7 +55,7 @@ public class Votacion {
 //      TODO Ver un modo estandarizar fechas de inicio y termino por defecto
         setFechaTiempoInicio(LocalDateTime.now());
         setFechaTiempoTermino(LocalDateTime.now().plusYears(50));
-        agregarVotoBlanco();
+        agregarOpcionBlanco();
     }
 
     public Integer getId() {
@@ -162,19 +162,33 @@ public class Votacion {
         return votosPreferenciales;
     }
 
-    public void setVotosPreferenciales(Object votosPreferenciales) {
+    private void setVotosPreferenciales(Object votosPreferenciales) {
         this.votosPreferenciales = Integer.parseInt(votosPreferenciales.toString());
+    }
+
+    private void updateVotos() {
+        this.votosPreferenciales = 0;
+        this.votosBlancos = 0;
+        for (Voto voto : this.votos) {
+            if (voto.getVotacion().getId().equals(this.getId())) {
+                if (voto.getOpcion().getId() != 1) {
+                    this.votosPreferenciales++;
+                } else {
+                    this.votosBlancos++;
+                }
+            }
+        }
     }
 
     public Integer getVotosBlancos() {
         return votosBlancos;
     }
 
-    private void agregarVotoBlanco() {
+    private void agregarOpcionBlanco() {
         this.opciones.add(0, new Opcion(TipoDeVoto.VOTO_BLANCO));
     }
 
-    public void setVotosBlancos(Object votosBlancos) {
+    private void setVotosBlancos(Object votosBlancos) {
         this.votosBlancos = Integer.parseInt(votosBlancos.toString());
     }
 
@@ -188,6 +202,7 @@ public class Votacion {
 
     public void setVotos(List<Voto> votos) {
         this.votos = new ArrayList<>(votos);
+        updateVotos();
     }
 
     public void setAttributo(CampoDeVotacion campo, Object valor) {

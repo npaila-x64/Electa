@@ -136,9 +136,7 @@ public class AccesoADatos {
         votacion.setFechaTiempoTermino(parsearFechaTiempoTermino(votacionJSON));
         votacion.setOpciones(obtenerOpcionesDeVotacionJSON(votacion, votacionJSON));
         votacion.setVotantes(obtenerVotantesDeVotacionJSON(votacion, votacionJSON));
-        votacion.setVotosPreferenciales(
-                votacionJSON.get(CampoDeVotacion.VOTOS_PREFERENCIALES.getTexto()));
-        votacion.setVotosBlancos(votacionJSON.get(CampoDeVotacion.VOTOS_BLANCOS.getTexto()));
+        votacion.setVotos(obtenerVotosDeVotacion(votacion));
     }
 
     private static void obtenerAtributosDeVotanteJSON(Votante votante, JSONObject votanteJSON) {
@@ -289,23 +287,18 @@ public class AccesoADatos {
     }
 
     public static void registrarVotoBlanco(Votacion votacion, Votante votante) {
-        votarOpcionBlanco(votacion);
-        registrarVotoEnVotaciones(votacion, votante);
-    }
-
-    private static void votarOpcionBlanco(Votacion votacion) {
-        int votosBlancos = votacion.getVotosBlancos();
-        votosBlancos++;
-        votacion.setVotosBlancos(votosBlancos);
+        Opcion opcionBlanco = new Opcion(TipoDeVoto.VOTO_BLANCO);
+        registrarVotoEnVotos(votacion, votante, opcionBlanco);
+        registrarVotanteEnVotaciones(votacion, votante);
     }
 
     public static void registrarVotoPreferencial(Votacion votacion, Votante votante, Opcion opcionElegida) {
         votarOpcionPreferencial(votacion, opcionElegida);
-        registrarVotoEnVotaciones(votacion, votante);
         registrarVotoEnVotos(votacion, votante, opcionElegida);
+        registrarVotanteEnVotaciones(votacion, votante);
     }
 
-    public static void registrarVotoEnVotaciones(Votacion votacion, Votante votante) {
+    public static void registrarVotanteEnVotaciones(Votacion votacion, Votante votante) {
         List<Votacion> votaciones = obtenerVotaciones();
         for (var votacionSiguiente : votaciones) {
             if (votacionSiguiente.getId().equals(votacion.getId())) {
@@ -326,6 +319,7 @@ public class AccesoADatos {
         voto.setVotante(votante);
         voto.setOpcion(opcion);
         votos.add(voto);
+        votacion.setVotos(votos);
         escribirVotos(votos);
     }
 
@@ -333,18 +327,25 @@ public class AccesoADatos {
         List<Opcion> opciones = votacion.getOpciones();
         opciones.stream()
                 .filter(opcion -> opcion.getId().equals(opcionElegida.getId()))
-                .forEach(opcion -> incrementarCantidadDeVotosDeOpcionEnUno(votacion, opcion));
+                .forEach(AccesoADatos::incrementarCantidadDeVotosDeOpcionEnUno);
         votacion.setOpciones(opciones);
     }
 
-    private static void incrementarCantidadDeVotosDeOpcionEnUno(Votacion votacion, Opcion opcion) {
+    private static void incrementarCantidadDeVotosDeOpcionEnUno(Opcion opcion) {
         int votosOpcion = opcion.getCantidadDeVotos();
         votosOpcion++;
         opcion.setCantidadDeVotos(votosOpcion);
-        // TODO borrar este segmento ya que los votos se obtendrán del recuento de objetos Voto
-        int votosPreferencialesVotacion = votacion.getVotosPreferenciales();
-        votosPreferencialesVotacion++;
-        votacion.setVotosPreferenciales(votosPreferencialesVotacion);
+    }
+
+    private static List<Voto> obtenerVotosDeVotacion(Votacion votacion) {
+        List<Voto> votos = obtenerVotos();
+        List<Voto> votosDeVotacion = new ArrayList<>();
+        for (Voto voto : votos) {
+            if (voto.getVotacion().getId().equals(votacion.getId())) {
+                votosDeVotacion.add(voto);
+            }
+        }
+        return votosDeVotacion;
     }
 
     public static JSONArray convertirListaDeVotacionesAJSONArray(List<Votacion> votaciones) {
