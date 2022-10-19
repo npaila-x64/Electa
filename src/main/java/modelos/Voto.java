@@ -11,8 +11,8 @@ public class Voto {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Object id) {
+        this.id = Integer.parseInt(id.toString());
     }
 
     public Votacion getVotacion() {
