@@ -9,7 +9,12 @@ public class Opcion {
     private Votacion votacion;
     private Integer cantidadDeVotos;
 
-    public Opcion() {}
+    public Opcion() {
+        this.id = -1;
+        this.nombre = "";
+        this.votacion = new Votacion();
+        this.cantidadDeVotos = 0;
+    }
 
     public Opcion(TipoDeVoto tipoDeVoto) {
         if (tipoDeVoto.equals(TipoDeVoto.VOTO_BLANCO)) {

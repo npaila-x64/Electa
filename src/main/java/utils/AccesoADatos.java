@@ -2,10 +2,7 @@ package utils;
 
 import excepciones.AccesoADatosInterrumpidoException;
 import modelos.*;
-import modelos.enums.CampoDeOpcion;
-import modelos.enums.CampoDeVotacion;
-import modelos.enums.CampoDeVotante;
-import modelos.enums.Estado;
+import modelos.enums.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,9 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -38,6 +33,7 @@ public class AccesoADatos {
     private static final String RUTA_VOTANTES = "src/main/datos/votantes.json";
     private static final String RUTA_CREDENCIALES_ADMIN = "src/main/datos/credencialesAdmin.json";
     private static final String RUTA_VOTACIONES = "src/main/datos/votaciones.json";
+    private static final String RUTA_VOTOS = "src/main/datos/votos.json";
 
     public static JSONArray parsearVotantes() throws AccesoADatosInterrumpidoException {
         return parsearArchivoJSON(RUTA_VOTANTES);
@@ -49,6 +45,10 @@ public class AccesoADatos {
 
     public static JSONArray parsearVotaciones() throws AccesoADatosInterrumpidoException {
         return parsearArchivoJSON(RUTA_VOTACIONES);
+    }
+
+    public static JSONArray parsearVotos() throws AccesoADatosInterrumpidoException {
+        return parsearArchivoJSON(RUTA_VOTOS);
     }
 
     public static JSONArray parsearArchivoJSON(String ruta) throws AccesoADatosInterrumpidoException {
@@ -98,6 +98,33 @@ public class AccesoADatos {
         return votantes;
     }
 
+    public static List<Voto> obtenerVotos() {
+        List<Voto> votos = new ArrayList<>();
+        // TODO ¿será necesario cargar todos los datos de los modelos a que hace referencia el voto?
+        JSONArray jsonArrayVotos = parsearVotos();
+        for (Object jsonArrayVoto : jsonArrayVotos) {
+            // TODO Refactorizar!
+            JSONObject votoSiguiente = (JSONObject) jsonArrayVoto;
+            Voto voto = new Voto();
+            voto.setId(votoSiguiente.get(CampoDeVoto.ID.getTexto()));
+
+            Votante votante = new Votante();
+            votante.setId(votoSiguiente.get(CampoDeVoto.VOTANTE.getTexto()));
+            voto.setVotante(votante);
+
+            Votacion votacion = new Votacion();
+            votacion.setId(votoSiguiente.get(CampoDeVoto.VOTACION.getTexto()));
+            voto.setVotacion(votacion);
+
+            Opcion opcion = new Opcion();
+            opcion.setId(votoSiguiente.get(CampoDeVoto.OPCION.getTexto()));
+            voto.setOpcion(opcion);
+
+            votos.add(voto);
+        }
+        return votos;
+    }
+
     private static void obtenerAtributosDeVotacionJSON(Votacion votacion, JSONObject votacionJSON) {
         votacion.setId(votacionJSON.get(CampoDeVotacion.ID.getTexto()));
         votacion.setTitulo(votacionJSON.get(CampoDeVotacion.TITULO.getTexto()));
@@ -107,9 +134,7 @@ public class AccesoADatos {
         votacion.setFechaTiempoTermino(parsearFechaTiempoTermino(votacionJSON));
         votacion.setOpciones(obtenerOpcionesDeVotacionJSON(votacion, votacionJSON));
         votacion.setVotantes(obtenerVotantesDeVotacionJSON(votacion, votacionJSON));
-        votacion.setVotosPreferenciales(
-                votacionJSON.get(CampoDeVotacion.VOTOS_PREFERENCIALES.getTexto()));
-        votacion.setVotosBlancos(votacionJSON.get(CampoDeVotacion.VOTOS_BLANCOS.getTexto()));
+        votacion.setVotos(obtenerVotosDeVotacion(votacion));
     }
 
     private static void obtenerAtributosDeVotanteJSON(Votante votante, JSONObject votanteJSON) {
@@ -222,6 +247,13 @@ public class AccesoADatos {
         return String.valueOf(maxID);
     }
 
+    public static String obtenerNuevaIdVoto() {
+        List<Voto> votos = obtenerVotos();
+        var maxID = votos.stream().max(Comparator.comparing(Voto::getId)).orElse(new Voto()).getId();
+        maxID++;
+        return String.valueOf(maxID);
+    }
+
     public static String leerContenidosJSON(String ruta) throws FileNotFoundException {
         StringBuilder st = new StringBuilder();
         File archivoJSON = new File(ruta);
@@ -237,6 +269,10 @@ public class AccesoADatos {
         escribirArchivoJSON(RUTA_VOTACIONES, convertirListaDeVotacionesAJSONArray(votaciones).toJSONString());
     }
 
+    public static void escribirVotos(List<Voto> votos) {
+        escribirArchivoJSON(RUTA_VOTOS, convertirListaDeVotosAJSONArray(votos).toJSONString());
+    }
+
     public static void escribirArchivoJSON(String ruta, String contenido) {
         try {
             FileWriter myWriter = new FileWriter(ruta);
@@ -248,23 +284,20 @@ public class AccesoADatos {
         }
     }
 
-    public static void realizarVotoBlanco(Votacion votacion, Votante votante) {
-        votarOpcionBlanco(votacion);
-        realizarVoto(votacion, votante);
+    public static void registrarVotoBlanco(Votacion votacion, Votante votante) {
+        Opcion opcionBlanco = new Opcion(TipoDeVoto.VOTO_BLANCO);
+        registrarVoto(votacion, opcionBlanco);
+        registrarVotoEnVotos(votacion, votante, opcionBlanco);
+        registrarVotanteEnVotaciones(votacion, votante);
     }
 
-    private static void votarOpcionBlanco(Votacion votacion) {
-        int votosBlancos = votacion.getVotosBlancos();
-        votosBlancos++;
-        votacion.setVotosBlancos(votosBlancos);
+    public static void registrarVotoPreferencial(Votacion votacion, Votante votante, Opcion opcionElegida) {
+        registrarVoto(votacion, opcionElegida);
+        registrarVotoEnVotos(votacion, votante, opcionElegida);
+        registrarVotanteEnVotaciones(votacion, votante);
     }
 
-    public static void realizarVotoPreferencial(Votacion votacion, Votante votante, Opcion opcionElegida) {
-        votarOpcionPreferencial(votacion, opcionElegida);
-        realizarVoto(votacion, votante);
-    }
-
-    public static void realizarVoto(Votacion votacion, Votante votante) {
+    public static void registrarVotanteEnVotaciones(Votacion votacion, Votante votante) {
         List<Votacion> votaciones = obtenerVotaciones();
         for (var votacionSiguiente : votaciones) {
             if (votacionSiguiente.getId().equals(votacion.getId())) {
@@ -277,24 +310,48 @@ public class AccesoADatos {
         }
     }
 
-    public static void votarOpcionPreferencial(Votacion votacion, Opcion opcionElegida) {
-        List<Opcion> opciones = votacion.getOpciones();
-        for (Opcion opcion : opciones) {
-            System.out.println(opcion.getId());
-            if (opcion.getId().equals(opcionElegida.getId())) {
-                aumentarCantidadVotos(votacion, opcion);
-            }
-        }
-        votacion.setOpciones(opciones);
+    public static void registrarVotoEnVotos(Votacion votacion, Votante votante, Opcion opcion) {
+        List<Voto> votos = obtenerVotos();
+        Voto voto = new Voto();
+        voto.setId(obtenerNuevaIdVoto());
+        voto.setVotacion(votacion);
+        voto.setVotante(votante);
+        voto.setOpcion(opcion);
+        votos.add(voto);
+        votacion.setVotos(votos);
+        escribirVotos(votos);
     }
 
-    private static void aumentarCantidadVotos(Votacion votacion, Opcion opcion) {
+    public static void registrarVoto(Votacion votacion, Opcion opcionElegida) {
+        List<Votacion> votaciones = obtenerVotaciones();
+        for (var votacionSiguiente : votaciones) {
+            if (votacionSiguiente.getId().equals(votacion.getId())) {
+                List<Opcion> opciones = votacionSiguiente.getOpciones();
+                opciones.stream()
+                        .filter(opcion -> opcion.getId().equals(opcionElegida.getId()))
+                        .forEach(AccesoADatos::incrementarCantidadDeVotosDeOpcionEnUno);
+                votacionSiguiente.setOpciones(opciones);
+                escribirVotaciones(votaciones);
+                return;
+            }
+        }
+    }
+
+    private static void incrementarCantidadDeVotosDeOpcionEnUno(Opcion opcion) {
         int votosOpcion = opcion.getCantidadDeVotos();
         votosOpcion++;
         opcion.setCantidadDeVotos(votosOpcion);
-        int votosPreferencialesVotacion = votacion.getVotosPreferenciales();
-        votosPreferencialesVotacion++;
-        votacion.setVotosPreferenciales(votosPreferencialesVotacion);
+    }
+
+    private static List<Voto> obtenerVotosDeVotacion(Votacion votacion) {
+        List<Voto> votos = obtenerVotos();
+        List<Voto> votosDeVotacion = new ArrayList<>();
+        for (Voto voto : votos) {
+            if (voto.getVotacion().getId().equals(votacion.getId())) {
+                votosDeVotacion.add(voto);
+            }
+        }
+        return votosDeVotacion;
     }
 
     public static JSONArray convertirListaDeVotacionesAJSONArray(List<Votacion> votaciones) {
@@ -311,6 +368,19 @@ public class AccesoADatos {
         return array;
     }
 
+    public static JSONArray convertirListaDeVotosAJSONArray(List<Voto> votos) {
+        JSONArray array = new JSONArray();
+        for (Voto voto : votos) {
+            JSONObject votoObj = new JSONObject();
+            votoObj.put(CampoDeVoto.ID.getTexto(), voto.getId());
+            votoObj.put(CampoDeVoto.VOTANTE.getTexto(), voto.getVotante().getId());
+            votoObj.put(CampoDeVoto.VOTACION.getTexto(), voto.getVotacion().getId());
+            votoObj.put(CampoDeVoto.OPCION.getTexto(), voto.getOpcion().getId());
+            array.add(votoObj);
+        }
+        return array;
+    }
+
     private static void convertirJSONCampoInfoVotacion(Votacion votacion, JSONObject votacionObj) {
         votacionObj.put(CampoDeVotacion.ID.getTexto(), votacion.getId());
         votacionObj.put(CampoDeVotacion.TITULO.getTexto(), votacion.getTitulo());
@@ -319,23 +389,14 @@ public class AccesoADatos {
     }
 
     private static void convertirJSONCampoFechaYHora(Votacion votacion, JSONObject votacionObj){
-        // TODO Refactorizar esto, se ve horrible >:(
-        votacionObj.put(CampoDeVotacion.FECHA_INICIO.getTexto(),
-                Optional.ofNullable(votacion.getFechaInicio())
-                        .orElse(LocalDate.of(1900,1,1))
-                        .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-        votacionObj.put(CampoDeVotacion.HORA_INICIO.getTexto(),
-                Optional.ofNullable(votacion.getTiempoInicio())
-                        .orElse(LocalTime.of(0,0))
-                        .format(DateTimeFormatter.ofPattern("HH:mm")));
-        votacionObj.put(CampoDeVotacion.FECHA_TERMINO.getTexto(),
-                Optional.ofNullable(votacion.getFechaTermino())
-                        .orElse(LocalDate.of(2099,1,1))
-                        .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-        votacionObj.put(CampoDeVotacion.HORA_TERMINO.getTexto(),
-                Optional.ofNullable(votacion.getTiempoTermino())
-                        .orElse(LocalTime.of(0,0))
-                        .format(DateTimeFormatter.ofPattern("HH:mm")));
+        votacionObj.put(CampoDeVotacion.FECHA_INICIO.getTexto(), votacion.getFechaInicio()
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        votacionObj.put(CampoDeVotacion.HORA_INICIO.getTexto(), votacion.getTiempoInicio()
+                .format(DateTimeFormatter.ofPattern("HH:mm")));
+        votacionObj.put(CampoDeVotacion.FECHA_TERMINO.getTexto(), votacion.getFechaTermino()
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        votacionObj.put(CampoDeVotacion.HORA_TERMINO.getTexto(), votacion.getTiempoTermino()
+                .format(DateTimeFormatter.ofPattern("HH:mm")));
     }
 
     private static void convertirJSONCampoVotantes(Votacion votacion, JSONObject votacionObj) {

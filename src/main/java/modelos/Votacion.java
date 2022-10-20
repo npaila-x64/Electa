@@ -28,7 +28,7 @@ public class Votacion {
     private List<Votante> votantes;
     private Integer votosPreferenciales;
     private Integer votosBlancos;
-    private List<Voto> listaDeVotos;
+    private List<Voto> votos;
 
     // Método constructor usado para clonar una modelos.Votacion
     public Votacion(Votacion clon) {
@@ -37,7 +37,7 @@ public class Votacion {
         this.descripcion = clon.getDescripcion();
         this.opciones = clon.getOpciones();
         this.votantes = clon.getVotantes();
-        this.listaDeVotos = clon.getListaDeVotos();
+        this.votos = clon.getVotos();
         this.votosBlancos = clon.getVotosBlancos();
         this.votosPreferenciales = getVotosPreferenciales();
         this.estado = clon.getEstado();
@@ -48,14 +48,14 @@ public class Votacion {
     public Votacion() {
         this.opciones = new ArrayList<>();
         this.votantes = new ArrayList<>();
-        this.listaDeVotos = new ArrayList<>();
+        this.votos = new ArrayList<>();
         this.votosBlancos = 0;
         this.votosPreferenciales = 0;
         this.estado = Estado.BORRADOR;
 //      TODO Ver un modo estandarizar fechas de inicio y termino por defecto
         setFechaTiempoInicio(LocalDateTime.now());
         setFechaTiempoTermino(LocalDateTime.now().plusYears(50));
-        agregarVotoBlanco();
+        agregarOpcionBlanco();
     }
 
     public Integer getId() {
@@ -162,19 +162,33 @@ public class Votacion {
         return votosPreferenciales;
     }
 
-    public void setVotosPreferenciales(Object votosPreferenciales) {
+    private void setVotosPreferenciales(Object votosPreferenciales) {
         this.votosPreferenciales = Integer.parseInt(votosPreferenciales.toString());
+    }
+
+    private void updateVotos() {
+        this.votosPreferenciales = 0;
+        this.votosBlancos = 0;
+        for (Voto voto : this.votos) {
+            if (voto.getVotacion().getId().equals(this.getId())) {
+                if (voto.getOpcion().getId() != 1) {
+                    this.votosPreferenciales++;
+                } else {
+                    this.votosBlancos++;
+                }
+            }
+        }
     }
 
     public Integer getVotosBlancos() {
         return votosBlancos;
     }
 
-    private void agregarVotoBlanco() {
+    private void agregarOpcionBlanco() {
         this.opciones.add(0, new Opcion(TipoDeVoto.VOTO_BLANCO));
     }
 
-    public void setVotosBlancos(Object votosBlancos) {
+    private void setVotosBlancos(Object votosBlancos) {
         this.votosBlancos = Integer.parseInt(votosBlancos.toString());
     }
 
@@ -182,12 +196,13 @@ public class Votacion {
         return votosPreferenciales+votosBlancos;
     }
 
-    public List<Voto> getListaDeVotos() {
-        return new ArrayList<>(listaDeVotos);
+    public List<Voto> getVotos() {
+        return new ArrayList<>(votos);
     }
 
-    public void setListaDeVotos(List<Voto> listaDeVotos) {
-        this.listaDeVotos = new ArrayList<>(listaDeVotos);
+    public void setVotos(List<Voto> votos) {
+        this.votos = new ArrayList<>(votos);
+        updateVotos();
     }
 
     public void setAttributo(CampoDeVotacion campo, Object valor) {

@@ -167,9 +167,9 @@ public class MenuPrincipal {
         int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
         if (opcionElegida == 0) return;
         if (opcionElegida == 1) {
-            AccesoADatos.realizarVotoBlanco(votacion, votante);
+            AccesoADatos.registrarVotoBlanco(votacion, votante);
         } else {
-            AccesoADatos.realizarVotoPreferencial(votacion, votante, opciones.get(opcionElegida - 1));
+            AccesoADatos.registrarVotoPreferencial(votacion, votante, opciones.get(opcionElegida - 1));
         }
         mostrarVotoRealizadoConExito();
     }
@@ -180,7 +180,7 @@ public class MenuPrincipal {
     }
 
     private void mostrarVotoRealizadoConExito() {
-        System.out.println("¡modelos.Voto realizado con exito!\n");
+        System.out.println("¡Voto realizado con exito!\n");
     }
 
     public void mostrarListaOpciones(List<Opcion> opciones) {
@@ -351,6 +351,7 @@ public class MenuPrincipal {
     }
 
     private void agregarOpcionDeVotacion(Votacion votacion) {
+        // TODO Validar ingreso de opción vacía
         String opcion = ValidadorDeDatos
                 .pedirEntrada("Escriba la opción que desea agregar\n> ", 35);
 

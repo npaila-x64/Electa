@@ -7,12 +7,16 @@ public class Voto {
     private Votante votante;
     private Opcion opcion;
 
+    public Voto() {
+        this.id = 0;
+    }
+
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Object id) {
+        this.id = Integer.parseInt(id.toString());
     }
 
     public Votacion getVotacion() {
