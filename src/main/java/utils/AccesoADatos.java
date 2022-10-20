@@ -213,7 +213,7 @@ public class AccesoADatos {
 
     public static String obtenerNuevaIdVoto() {
         List<Voto> votos = obtenerVotos();
-        var maxID = votos.stream().max(Comparator.comparing(Voto::getId)).get().getId();
+        var maxID = votos.stream().max(Comparator.comparing(Voto::getId)).orElse(new Voto()).getId();
         maxID++;
         return String.valueOf(maxID);
     }

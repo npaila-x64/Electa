@@ -7,6 +7,10 @@ public class Voto {
     private Votante votante;
     private Opcion opcion;
 
+    public Voto() {
+        this.id = 0;
+    }
+
     public Integer getId() {
         return id;
     }
