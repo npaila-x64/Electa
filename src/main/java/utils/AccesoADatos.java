@@ -12,9 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -250,12 +248,13 @@ public class AccesoADatos {
 
     public static void registrarVotoBlanco(Votacion votacion, Votante votante) {
         Opcion opcionBlanco = new Opcion(TipoDeVoto.VOTO_BLANCO);
+        registrarVoto(votacion, opcionBlanco);
         registrarVotoEnVotos(votacion, votante, opcionBlanco);
         registrarVotanteEnVotaciones(votacion, votante);
     }
 
     public static void registrarVotoPreferencial(Votacion votacion, Votante votante, Opcion opcionElegida) {
-        votarOpcionPreferencial(votacion, opcionElegida);
+        registrarVoto(votacion, opcionElegida);
         registrarVotoEnVotos(votacion, votante, opcionElegida);
         registrarVotanteEnVotaciones(votacion, votante);
     }
@@ -285,12 +284,19 @@ public class AccesoADatos {
         escribirVotos(votos);
     }
 
-    public static void votarOpcionPreferencial(Votacion votacion, Opcion opcionElegida) {
-        List<Opcion> opciones = votacion.getOpciones();
-        opciones.stream()
-                .filter(opcion -> opcion.getId().equals(opcionElegida.getId()))
-                .forEach(AccesoADatos::incrementarCantidadDeVotosDeOpcionEnUno);
-        votacion.setOpciones(opciones);
+    public static void registrarVoto(Votacion votacion, Opcion opcionElegida) {
+        List<Votacion> votaciones = obtenerVotaciones();
+        for (var votacionSiguiente : votaciones) {
+            if (votacionSiguiente.getId().equals(votacion.getId())) {
+                List<Opcion> opciones = votacionSiguiente.getOpciones();
+                opciones.stream()
+                        .filter(opcion -> opcion.getId().equals(opcionElegida.getId()))
+                        .forEach(AccesoADatos::incrementarCantidadDeVotosDeOpcionEnUno);
+                votacionSiguiente.setOpciones(opciones);
+                escribirVotaciones(votaciones);
+                return;
+            }
+        }
     }
 
     private static void incrementarCantidadDeVotosDeOpcionEnUno(Opcion opcion) {
