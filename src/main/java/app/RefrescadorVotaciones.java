@@ -29,7 +29,7 @@ public class RefrescadorVotaciones {
             for (Votacion votacionSiguiente : votaciones) {
                 asignarEstadoAVotacion(obtenerFechaTiempoAhora(), votacionSiguiente);
             }
-            AccesoADatos.escribirVotaciones(votaciones);
+            escribirVotaciones(votaciones);
             System.out.println("Estados actualizados: " + obtenerFechaTiempoAhora());
             Thread.sleep(1000);
         }

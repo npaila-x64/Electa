@@ -40,8 +40,8 @@ public class ControladorLogin {
 			try {
 				switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
 					case 0 -> {return;}
-					case 1 -> loginVotante.iniciar();
-					case 2 -> loginAdministrador.iniciar();
+					case 1 -> loginVotante.mostrar();
+					case 2 -> loginAdministrador.mostrar();
 				}
 			} catch (AccesoADatosInterrumpidoException e) {
 				mostrarSistemaNoDisponible(e.getMessage());
@@ -51,26 +51,32 @@ public class ControladorLogin {
 
 	public void validarDatosAdministrador(String campoClave) {
 		if (esCredencialAdministradorValida(campoClave)) {
-//			mostrarMenuAdministador();
+			new ControladorAdministracion().iniciar();
 		} else {
 			System.err.println("Contraseña incorrecta");
 		}
 	}
 
 	public void validarDatosVotante(String rutVotante, String claveVotante) {
-		if (esCredencialVotanteValida(rutVotante, claveVotante)) {
-//			mostrarMenuVotacionesVotante(AccesoADatos.obtenerVotantePorRut(rutVotante));
+		Votante votanteIngresado = new Votante();
+		votanteIngresado.setRut(rutVotante);
+		votanteIngresado.setClave(claveVotante);
+		if (esCredencialVotanteValida(votanteIngresado)) {
+			new ControladorVotacionesEnCurso(votanteIngresado).iniciar();
 		} else {
 			System.err.println("RUT y/o contraseña incorrectos");
 		}
 	}
 
-	private boolean esCredencialVotanteValida(String rut, String clave) {
+	private boolean esCredencialVotanteValida(Votante votante) {
 		List<Votante> votantes = this.usuarioDao.obtenerVotantes();
 		for (Votante votanteSiguiente : votantes) {
 			// Primero verifica que los rut sean iguales, después se verifica la clave
-			if (votanteSiguiente.getRut().equals(rut)) {
-				if (votanteSiguiente.getClave().equals(clave)) return true;
+			if (votanteSiguiente.getRut().equals(votante.getRut())) {
+				if (votanteSiguiente.getClave().equals(votante.getClave())) {
+					votante.setId(votanteSiguiente.getId());
+					return true;
+				}
 			}
 		}
 		return false;

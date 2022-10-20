@@ -49,39 +49,6 @@ public class MenuPrincipal {
         }
     }
 
-    private void mostrarOpcionesMenuVotacionesVotante() {
-        System.out.print("""
-                
-                OPCIONES
-                [1] Votar
-                [2] Ver Resultados
-                Si desea cerrar su sesión escriba [0]
-                """.concat("> "));
-    }
-
-    private void mostrarVotacionesEnCurso() {
-        System.out.println("Votaciones En Curso");
-        mostrarTitulosVotaciones(AccesoADatos
-                .obtenerVotacionesConEstado(Estado.EN_CURSO));
-    }
-
-    private void mostrarTitulosVotaciones(List<Votacion> votaciones) {
-        for (Votacion votacion : votaciones) {
-            System.out.printf("\"%s\"%n", votacion.getTitulo());
-        }
-    }
-
-    private void mostrarMenuResultados() {
-        while (true) {
-            List<Votacion> votacionesFinalizadas = AccesoADatos
-                    .obtenerVotacionesConEstado(Estado.FINALIZADO);
-            mostrarOpcionesMenuResultados(votacionesFinalizadas);
-            int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(votacionesFinalizadas.size());
-            if (opcionElegida == 0) break;
-            mostrarResultadosVotacion(votacionesFinalizadas.get(opcionElegida - 1));
-        }
-    }
-
     private void mostrarOpcionesMenuResultados(List<Votacion> votacionesFinalizadas) {
         System.out.println("Votaciones finalizadas disponibles para su revisión");
         List<String> titulos = new ArrayList<>();
@@ -89,18 +56,6 @@ public class MenuPrincipal {
             titulos.add(votacionSiguiente.getTitulo());
         }
         mostrarListaDeCampos(titulos);
-    }
-
-    private void mostrarMenuParaVotar(Votante votante) {
-        while (true) {
-            List<Votacion> votacionesDisponibles = AccesoADatos
-                    .obtenerVotacionesEnElQuePuedeVotarElVotante(votante);
-            mostrarVotacionesDisponiblesParaVotacion(votacionesDisponibles);
-            int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(votacionesDisponibles.size());
-            if (opcionElegida == 0) break;
-            mostrarMenuOpcionesParaVotar(
-                    votacionesDisponibles.get(opcionElegida - 1), votante);
-        }
     }
 
     private void mostrarVotacionesDisponiblesParaVotacion(List<Votacion> votaciones) {
