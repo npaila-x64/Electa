@@ -183,9 +183,4 @@ public class AccesoADatos {
         }
         return array;
     }
-
-    public static boolean opcionYaExiste(Votacion votacion, String  nombreOpcion){
-        List<Opcion> opciones = votacion.getOpciones();
-        return opciones.stream().anyMatch(opcion -> opcion.getNombre().equals(nombreOpcion));
-    }
 }

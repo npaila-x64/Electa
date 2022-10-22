@@ -1,11 +1,13 @@
 package controladores;
 
+import controladores.admin.ControladorAdministracion;
+import controladores.votante.ControladorVotacionesEnCurso;
 import excepciones.AccesoADatosInterrumpidoException;
 import modelos.Votante;
 import modelos.dao.UsuarioDao;
 import utils.ValidadorDeDatos;
-import vistas.LoginAdministrador;
-import vistas.LoginVotante;
+import vistas.admin.LoginAdministrador;
+import vistas.votante.LoginVotante;
 
 import java.util.List;
 

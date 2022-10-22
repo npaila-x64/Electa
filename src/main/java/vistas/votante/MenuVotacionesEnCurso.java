@@ -1,16 +1,15 @@
-package vistas;
+package vistas.votante;
 
-import controladores.ControladorVotacionesEnCurso;
+import controladores.votante.ControladorVotacionesEnCurso;
 import modelos.Votacion;
-import modelos.Votante;
-import modelos.enums.Estado;
-import utils.AccesoADatos;
 import utils.ValidadorDeDatos;
 
 import java.util.List;
 
 public class MenuVotacionesEnCurso {
+
 	private final ControladorVotacionesEnCurso controlador;
+
 	public MenuVotacionesEnCurso(ControladorVotacionesEnCurso controlador) {
 		this.controlador = controlador;
 	}

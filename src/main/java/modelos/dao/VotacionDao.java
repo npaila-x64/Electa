@@ -303,4 +303,9 @@ public class VotacionDao {
         votacion.setOpciones(opciones);
         escribirVotaciones(votaciones);
     }
+
+    public boolean opcionYaExiste(Votacion votacion, String  nombreOpcion){
+        List<Opcion> opciones = votacion.getOpciones();
+        return opciones.stream().anyMatch(opcion -> opcion.getNombre().equals(nombreOpcion));
+    }
 }

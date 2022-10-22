@@ -1,4 +1,4 @@
-package vistas;
+package vistas.votante;
 
 import controladores.ControladorLogin;
 import utils.ValidadorDeDatos;

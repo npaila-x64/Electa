@@ -31,35 +31,6 @@ public class ValidadorDeDatos {
         return hora.matches(PATRON_DE_HORA);
     }
 
-    public static Votacion pedirCamposDeVotacion() {
-        Votacion votacion = new Votacion();
-        situarDatosCampo(votacion, ingresarDatosCampo());
-        return votacion;
-    }
-
-    public static void situarDatosCampo(Votacion votacion, HashMap<String, String> datos) {
-        votacion.setTitulo(datos.get("titulo"));
-        votacion.setDescripcion(datos.get("descripción"));
-        LocalDate fechaInicioDate = LocalDate.parse(datos.get("fechaInicio"), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        LocalTime horaInicioTime = LocalTime.parse(datos.get("horaInicio"), DateTimeFormatter.ofPattern("HH:mm"));
-        votacion.setFechaTiempoInicio(fechaInicioDate.atTime(horaInicioTime));
-        LocalDate fechaTerminoDate = LocalDate.parse(datos.get("fechaTermino"), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        LocalTime horaTerminoTime = LocalTime.parse(datos.get("horaTermino"), DateTimeFormatter.ofPattern("HH:mm"));
-        votacion.setFechaTiempoTermino(fechaTerminoDate.atTime(horaTerminoTime));
-    }
-
-    public static HashMap<String, String> ingresarDatosCampo(){
-        HashMap<String, String> datosCampo = new HashMap<>();
-        datosCampo.put("titulo", pedirEntrada("Escriba el título de la votación que desea agregar\n> ", 50));
-        System.out.println("Rellene los siguientes campos");
-        datosCampo.put("descripción", pedirEntrada("Descripción\n> "));
-        datosCampo.put("fechaInicio", pedirEntradaFormatoFecha("Fecha de inicio (dd-MM-aaaa)\n> "));
-        datosCampo.put("horaInicio", pedirEntradaFormatoHora("Hora de inicio (hh:mm formato 24 horas)\n> "));
-        datosCampo.put("fechaTermino", pedirEntradaFormatoFecha("Fecha de término (dd-MM-aaaa)\n> "));
-        datosCampo.put("horaTermino", pedirEntradaFormatoHora("Hora de término (hh:mm formato 24 horas)\n> "));
-        return datosCampo;
-    }
-
     public static int pedirValorEnteroEnIntervalo(int limite) throws InputMismatchException {
         int valor = new Scanner(System.in).nextInt();
         if (valor < 0 || valor > limite) {
