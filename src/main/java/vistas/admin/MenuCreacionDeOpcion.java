@@ -1,9 +1,7 @@
 package vistas.admin;
 
 import controladores.admin.ControladorCreacionDeOpcion;
-import modelos.Opcion;
 import modelos.Votacion;
-import utils.AccesoADatos;
 import utils.Utilidades;
 import utils.ValidadorDeDatos;
 

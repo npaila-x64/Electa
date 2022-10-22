@@ -1,6 +1,5 @@
 package vistas.admin;
 
-import controladores.admin.ControladorCreacionDeOpcion;
 import controladores.admin.ControladorCreacionDeVotacion;
 
 import static utils.ValidadorDeDatos.*;

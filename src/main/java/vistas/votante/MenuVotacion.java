@@ -1,10 +1,7 @@
 package vistas.votante;
 
 import controladores.votante.ControladorVotacion;
-import modelos.Opcion;
 import modelos.Votacion;
-import modelos.Votante;
-import utils.AccesoADatos;
 import utils.ValidadorDeDatos;
 
 import java.util.ArrayList;

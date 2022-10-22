@@ -4,7 +4,6 @@ import modelos.Opcion;
 import modelos.Votacion;
 import modelos.dao.VotacionDao;
 import modelos.enums.CampoDeVotacion;
-import utils.AccesoADatos;
 import utils.ValidadorDeDatos;
 import vistas.admin.MenuEditorDeVotacion;
 
