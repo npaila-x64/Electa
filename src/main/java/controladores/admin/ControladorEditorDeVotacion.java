@@ -18,7 +18,7 @@ public class ControladorEditorDeVotacion {
 
     public ControladorEditorDeVotacion(Votacion votacion) {
         this.vista = new MenuEditorDeVotacion(this);
-        this.votacionDao = votacionDao;
+        this.votacionDao = new VotacionDao();
         this.votacion = votacion;
     }
 
