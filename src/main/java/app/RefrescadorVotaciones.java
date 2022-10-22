@@ -15,25 +15,25 @@ import java.util.List;
 
 public class RefrescadorVotaciones {
 
-    public static void main(String[] args) {
-        try {
-            refrescarEstadosDeVotaciones();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void refrescarEstadosDeVotaciones() throws InterruptedException {
-        while (true) {
-            List<Votacion> votaciones = AccesoADatos.obtenerVotaciones();
-            for (Votacion votacionSiguiente : votaciones) {
-                asignarEstadoAVotacion(obtenerFechaTiempoAhora(), votacionSiguiente);
-            }
-            escribirVotaciones(votaciones);
-            System.out.println("Estados actualizados: " + obtenerFechaTiempoAhora());
-            Thread.sleep(1000);
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            refrescarEstadosDeVotaciones();
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    public static void refrescarEstadosDeVotaciones() throws InterruptedException {
+//        while (true) {
+//            List<Votacion> votaciones = AccesoADatos.obtenerVotaciones();
+//            for (Votacion votacionSiguiente : votaciones) {
+//                asignarEstadoAVotacion(obtenerFechaTiempoAhora(), votacionSiguiente);
+//            }
+//            escribirVotaciones(votaciones);
+//            System.out.println("Estados actualizados: " + obtenerFechaTiempoAhora());
+//            Thread.sleep(1000);
+//        }
+//    }
 
     public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, Votacion votacion) {
         // TODO Arreglar este desorden

@@ -25,8 +25,7 @@ public class MenuVotacion {
             int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(votaciones.size());
             if (opcionElegida == 0) break;
             var votante = controlador.obtenerVotante();
-            mostrarMenuOpcionesParaVotar(
-                    votaciones.get(opcionElegida - 1), votante);
+            controlador.mostrarMenuOpcionesParaVotar(opcionElegida);
         }
     }
 
@@ -39,42 +38,11 @@ public class MenuVotacion {
         mostrarListaDeCampos(titulos);
     }
 
-    private void mostrarMenuOpcionesParaVotar(Votacion votacion, Votante votante) {
-        List<Opcion> opciones = votacion.getOpciones();
-        mostrarOpcionesMenuOpcionesParaVotar(opciones);
-        int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
-        if (opcionElegida == 0) return;
-        if (opcionElegida == 1) {
-            AccesoADatos.registrarVotoBlanco(votacion, votante);
-        } else {
-            AccesoADatos.registrarVotoPreferencial(votacion, votante, opciones.get(opcionElegida - 1));
-        }
-        mostrarVotoRealizadoConExito();
-    }
-
-    private void mostrarOpcionesMenuOpcionesParaVotar(List<Opcion> opciones) {
-        System.out.println("Opciones disponibles");
-        mostrarListaOpciones(opciones);
-    }
-
-    private void mostrarVotoRealizadoConExito() {
-        System.out.println("¡Voto realizado con exito!\n");
-    }
-
     private void mostrarListaDeCampos(List<String> campos) {
         System.out.println("Elija una opción");
         for (int indice = 0; indice < campos.size(); indice++) {
             int indiceAjustado = indice + 1;
             System.out.printf("[%s] %s%n", indiceAjustado, campos.get(indice));
-        }
-        System.out.print("Si desea volver escriba [0]\n> ");
-    }
-
-    public void mostrarListaOpciones(List<Opcion> opciones) {
-        System.out.println("Elija una opción");
-        for (int indice = 0; indice < opciones.size(); indice++) {
-            int indiceAjustado = indice + 1;
-            System.out.printf("[%s] %s%n", indiceAjustado, opciones.get(indice).getNombre());
         }
         System.out.print("Si desea volver escriba [0]\n> ");
     }

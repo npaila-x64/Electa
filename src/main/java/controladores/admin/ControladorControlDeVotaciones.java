@@ -28,7 +28,7 @@ public class ControladorControlDeVotaciones {
     }
 
     public List<Votacion> obtenerVotaciones() {
-        return obtenerVotaciones();
+        return this.votaciones;
     }
 
     private Votacion obtenerVotacion(Integer opcionElegida) {
