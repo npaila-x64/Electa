@@ -12,8 +12,9 @@ import java.util.List;
 
 public class ControladorEditorDeVotacion {
 
-    private MenuEditorDeVotacion vista;
-    private VotacionDao votacionDao;
+    // TODO Terminar de descoplar a clase vista
+    private final MenuEditorDeVotacion vista;
+    private final VotacionDao votacionDao;
     private Votacion votacion;
 
     public ControladorEditorDeVotacion(Votacion votacion) {
