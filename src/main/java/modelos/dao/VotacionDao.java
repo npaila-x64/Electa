@@ -345,26 +345,37 @@ public class VotacionDao {
         // TODO ¿será necesario cargar todos los datos de los modelos a que hace referencia el voto?
         JSONArray jsonArrayVotos = parsearVotos();
         for (Object jsonArrayVoto : jsonArrayVotos) {
-            // TODO Refactorizar!
             JSONObject votoSiguiente = (JSONObject) jsonArrayVoto;
             Voto voto = new Voto();
-            voto.setId(votoSiguiente.get(CampoDeVoto.ID.getTexto()));
-
-            Votante votante = new Votante();
-            votante.setId(votoSiguiente.get(CampoDeVoto.VOTANTE.getTexto()));
-            voto.setVotante(votante);
-
-            Votacion votacion = new Votacion();
-            votacion.setId(votoSiguiente.get(CampoDeVoto.VOTACION.getTexto()));
-            voto.setVotacion(votacion);
-
-            Opcion opcion = new Opcion();
-            opcion.setId(votoSiguiente.get(CampoDeVoto.OPCION.getTexto()));
-            voto.setOpcion(opcion);
-
+            asignarDatosIdEnVoto(voto, votoSiguiente);
+            asignarDatosVotanteEnVoto(voto, votoSiguiente);
+            asignarDatosVotacionEnVoto(voto, votoSiguiente);
+            asignarDatosOpcionEnVoto(voto, votoSiguiente);
             votos.add(voto);
         }
         return votos;
+    }
+
+    private void asignarDatosIdEnVoto(Voto voto, JSONObject votoSiguiente) {
+        voto.setId(votoSiguiente.get(CampoDeVoto.ID.getTexto()));
+    }
+
+    private void asignarDatosVotanteEnVoto(Voto voto, JSONObject votoSiguiente) {
+        Votante votante = new Votante();
+        votante.setId(votoSiguiente.get(CampoDeVoto.VOTANTE.getTexto()));
+        voto.setVotante(votante);
+    }
+
+    private void asignarDatosVotacionEnVoto(Voto voto, JSONObject votoSiguiente) {
+        Votacion votacion = new Votacion();
+        votacion.setId(votoSiguiente.get(CampoDeVoto.VOTACION.getTexto()));
+        voto.setVotacion(votacion);
+    }
+
+    private void asignarDatosOpcionEnVoto(Voto voto, JSONObject votoSiguiente) {
+        Opcion opcion = new Opcion();
+        opcion.setId(votoSiguiente.get(CampoDeVoto.OPCION.getTexto()));
+        voto.setOpcion(opcion);
     }
 
     public String obtenerNuevaIdVoto() {
