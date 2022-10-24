@@ -2,10 +2,8 @@ package app;
 
 import modelos.enums.Estado;
 import modelos.Votacion;
-import utils.AccesoADatos;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /*
     Clase con métodos dedicados a refrescar
@@ -36,19 +34,18 @@ public class RefrescadorVotaciones {
 //    }
 
     public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, Votacion votacion) {
-        // TODO Arreglar este desorden
         Estado estado = votacion.getEstado();
         if (estado.equals(Estado.BORRADOR)) return;
+        estado = determinarEstado(fechaTiempoAhora, votacion);
+        votacion.setEstado(estado);
+    }
+
+    private static Estado determinarEstado(LocalDateTime fechaTiempoAhora, Votacion votacion) {
         var fechaTiempoInicio = votacion.getFechaTiempoInicio();
         var fechaTiempoTermino = votacion.getFechaTiempoTermino();
-        if (fechaTiempoAhora.isAfter(fechaTiempoTermino)) {
-            estado = Estado.FINALIZADO;
-        } else if (fechaTiempoAhora.isBefore(fechaTiempoInicio)) {
-            estado = Estado.PENDIENTE;
-        } else {
-            estado = Estado.EN_CURSO;
-        }
-        votacion.setEstado(estado);
+
+        return fechaTiempoAhora.isAfter(fechaTiempoTermino) ? Estado.FINALIZADO :
+                fechaTiempoAhora.isBefore(fechaTiempoInicio) ? Estado.PENDIENTE : Estado.EN_CURSO;
     }
 
     public static LocalDateTime obtenerFechaTiempoAhora() {
