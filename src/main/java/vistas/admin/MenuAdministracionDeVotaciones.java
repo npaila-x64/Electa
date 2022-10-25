@@ -1,6 +1,6 @@
 package vistas.admin;
 
-import controladores.admin.ControladorControlDeVotaciones;
+import controladores.admin.ControladorAdministracionDeVotaciones;
 import modelos.Votacion;
 import modelos.enums.Estado;
 import utils.Utilidades;
@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MenuControlDeVotaciones {
+public class MenuAdministracionDeVotaciones {
 
-    private final ControladorControlDeVotaciones controlador;
+    private final ControladorAdministracionDeVotaciones controlador;
 
-    public MenuControlDeVotaciones(ControladorControlDeVotaciones controlador) {
+    public MenuAdministracionDeVotaciones(ControladorAdministracionDeVotaciones controlador) {
         this.controlador = controlador;
     }
 

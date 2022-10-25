@@ -2,18 +2,18 @@ package controladores.admin;
 
 import modelos.Votacion;
 import modelos.dao.VotacionDao;
-import vistas.admin.MenuControlDeVotaciones;
+import vistas.admin.MenuAdministracionDeVotaciones;
 
 import java.util.List;
 
-public class ControladorControlDeVotaciones {
+public class ControladorAdministracionDeVotaciones {
 
-    private final MenuControlDeVotaciones vista;
+    private final MenuAdministracionDeVotaciones vista;
     private final VotacionDao votacionDao;
     private List<Votacion> votaciones;
 
-    public ControladorControlDeVotaciones() {
-        this.vista = new MenuControlDeVotaciones(this);
+    public ControladorAdministracionDeVotaciones() {
+        this.vista = new MenuAdministracionDeVotaciones(this);
         this.votacionDao = new VotacionDao();
         refrescarVotaciones();
     }

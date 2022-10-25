@@ -16,7 +16,7 @@ public class ControladorAdministracion {
     }
 
     public void mostrarPanelDeControlDeVotaciones() {
-        new ControladorControlDeVotaciones().iniciar();
+        new ControladorAdministracionDeVotaciones().iniciar();
     }
 
     public void mostrarMenuCreacionDeVotacion() {

@@ -25,13 +25,11 @@ public class MenuAdministracion {
     }
 
     private void mostrarOpcionesMenuAdministador() {
-        System.out.print("""
-                
-                Elija una opción
-                [1] Ver, modificar, o eliminar votaciones
-                [2] Crear nueva votación
-                [3] Ver resultados de votaciones
-                Si desea cerrar su sesión escriba [0]
-                """.concat("> "));
+        System.out.print(("\n" +
+                          "Elija una opción\n" +
+                          "[1] Ver, modificar, o eliminar votaciones\n" +
+                          "[2] Crear nueva votación\n" +
+                          "[3] Ver resultados de votaciones\n" +
+                          "Si desea cerrar su sesión escriba [0]\n").concat("> "));
     }
 }

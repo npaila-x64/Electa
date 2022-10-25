@@ -27,13 +27,11 @@ public class ControladorLogin {
 	}
 
 	private void mostrarOpcionesDeIngreso() {
-		System.out.print("""
-                
-                ¡Bienvenido/a al sistema Electa!
-                [1] Ingresar como Votante
-                [2] Ingresar como Administrador
-                Si desea salir escriba [0]
-                """.concat("> "));
+		System.out.print(("\n" +
+						  "¡Bienvenido/a al sistema Electa!\n" +
+						  "[1] Ingresar como Votante\n" +
+						  "[2] Ingresar como Administrador\n" +
+						  "Si desea salir escriba [0]\n").concat("> "));
 	}
 
 	private void mostrarMenuDeIngreso() {

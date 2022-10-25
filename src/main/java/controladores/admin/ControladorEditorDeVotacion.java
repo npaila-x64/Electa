@@ -52,10 +52,8 @@ public class ControladorEditorDeVotacion {
     }
 
     private void mostrarOpcionesMenuEditarCamposDeVotacion(List<CampoDeVotacion> campos) {
-        System.out.print("""
-                
-                Escriba el índice del campo que desea modificar
-                """);
+        System.out.print("\n" +
+                         "Escriba el índice del campo que desea modificar\n");
         List<String> camposTexto = new ArrayList<>();
         for (CampoDeVotacion c : campos) camposTexto.add(c.getTexto());
         mostrarListaDeCampos(camposTexto);
