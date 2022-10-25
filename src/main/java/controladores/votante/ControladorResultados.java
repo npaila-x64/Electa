@@ -12,12 +12,10 @@ import java.util.List;
 public class ControladorResultados {
 
     private final MenuResultados vista;
-    private final VotacionDao votacionDao;
     private List<Votacion> votaciones;
 
     public ControladorResultados() {
         this.vista = new MenuResultados(this);
-        this.votacionDao = new VotacionDao();
         refrescarVotaciones();
     }
 
@@ -48,6 +46,6 @@ public class ControladorResultados {
     }
 
     private void refrescarVotaciones() {
-        this.votaciones = this.votacionDao.obtenerVotacionesConEstado(Estado.FINALIZADO);
+        this.votaciones = VotacionDao.obtenerVotacionesConEstado(Estado.FINALIZADO);
     }
 }

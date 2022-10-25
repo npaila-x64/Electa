@@ -8,12 +8,10 @@ import vistas.admin.MenuCreacionDeOpcion;
 public class ControladorCreacionDeOpcion {
 
     private final MenuCreacionDeOpcion vista;
-    private final VotacionDao votacionDao;
     private final Votacion votacion;
 
     public ControladorCreacionDeOpcion(Votacion votacion) {
         this.vista = new MenuCreacionDeOpcion(this);
-        this.votacionDao = new VotacionDao();
         this.votacion = votacion;
     }
 
@@ -29,11 +27,11 @@ public class ControladorCreacionDeOpcion {
         // TODO Validar ingreso de opción vacía
         String opcion = ValidadorDeDatos
                 .pedirEntrada("Escriba la opción que desea agregar\n> ", 35);
-        if (votacionDao.opcionYaExiste(votacion, opcion)){
+        if (VotacionDao.opcionYaExiste(votacion, opcion)){
             vista.mostrarOpcionYaExiste(opcion);
             agregarOpcionDeVotacion();
         } else {
-            votacionDao.agregarOpcionAVotacion(votacion, opcion);
+            VotacionDao.agregarOpcionAVotacion(votacion, opcion);
         }
     }
 }

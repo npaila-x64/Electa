@@ -12,18 +12,16 @@ public class ControladorCreacionDeVotacion {
 
     private final MenuCreacionDeVotacion vista;
     private final Votacion votacion;
-    private final VotacionDao votacionDao;
 
     public ControladorCreacionDeVotacion() {
         this.vista = new MenuCreacionDeVotacion(this);
         this.votacion = new Votacion();
-        this.votacionDao = new VotacionDao();
     }
 
     public void iniciar() {
         vista.ingresarDatosCampo();
         situarDatosCampo();
-        votacionDao.crearVotacion(votacion);
+        VotacionDao.crearVotacion(votacion);
         vista.mostrarVotacionCreadaConExito();
         new ControladorCreacionDeOpcion(votacion).iniciar();
     }

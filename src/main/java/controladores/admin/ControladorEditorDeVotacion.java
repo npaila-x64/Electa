@@ -14,12 +14,10 @@ public class ControladorEditorDeVotacion {
 
     // TODO Terminar de descoplar a clase vista
     private final MenuEditorDeVotacion vista;
-    private final VotacionDao votacionDao;
-    private Votacion votacion;
+    private final Votacion votacion;
 
     public ControladorEditorDeVotacion(Votacion votacion) {
         this.vista = new MenuEditorDeVotacion(this);
-        this.votacionDao = new VotacionDao();
         this.votacion = votacion;
     }
 
@@ -48,7 +46,7 @@ public class ControladorEditorDeVotacion {
 
     private void editarCampoDeVotacion(Votacion votacion, CampoDeVotacion campo) {
         Object texto = ValidadorDeDatos.pedirEntrada(campo.getTexto().concat("> "));
-        votacionDao.actualizarCampoDeVotacion(votacion, campo, texto);
+        VotacionDao.actualizarCampoDeVotacion(votacion, campo, texto);
     }
 
     private void mostrarOpcionesMenuEditarCamposDeVotacion(List<CampoDeVotacion> campos) {
@@ -65,12 +63,12 @@ public class ControladorEditorDeVotacion {
         mostrarListaOpciones(opciones);
         int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
         if (opcionElegida == 0) return;
-        votacionDao.eliminarOpcionDeVotacion(votacion, opciones.get(opcionElegida - 1));
+        VotacionDao.eliminarOpcionDeVotacion(votacion, opciones.get(opcionElegida - 1));
         System.out.println("Opción eliminada con exito");
     }
 
     public void eliminarVotacion() {
-        votacionDao.eliminarVotacion(votacion);
+        VotacionDao.eliminarVotacion(votacion);
     }
 
     public void mostrarListaOpciones(List<Opcion> opciones) {

@@ -16,8 +16,6 @@ import java.util.List;
 public class ControladorVotacion {
 
     private final MenuVotacion vista;
-    private final VotacionDao votacionDao;
-    private final VotoDao votoDao;
     private List<Votacion> votacionesEnElQuePuedeVotarElVotante;
     private final Votante votante;
 
@@ -74,7 +72,7 @@ public class ControladorVotacion {
     }
 
     private void refrescarVotaciones() {
-        this.votacionesEnElQuePuedeVotarElVotante = this.votacionDao
+        this.votacionesEnElQuePuedeVotarElVotante = VotacionDao
                 .obtenerVotacionesEnElQuePuedeVotarElVotante(votante);
     }
 
@@ -88,7 +86,7 @@ public class ControladorVotacion {
                         .filter(opcion -> opcion.getId().equals(opcionElegida.getId()))
                         .forEach(this::incrementarCantidadDeVotosDeOpcionEnUno);
                 votacionSiguiente.setOpciones(opciones);
-                votacionDao.escribirVotaciones(votaciones);
+                VotacionDao.escribirVotaciones(votaciones);
                 return;
             }
         }
@@ -120,22 +118,22 @@ public class ControladorVotacion {
                 List<Votante> votantes = votacionSiguiente.getVotantes();
                 votantes.add(votante);
                 votacionSiguiente.setVotantes(votantes);
-                votacionDao.escribirVotaciones(votaciones);
+                VotacionDao.escribirVotaciones(votaciones);
                 return;
             }
         }
     }
 
     public void registrarVotoEnVotos(Votacion votacion, Votante votante, Opcion opcion) {
-        List<Voto> votos = votoDao.obtenerVotos();
+        List<Voto> votos = VotoDao.obtenerVotos();
         Voto voto = new Voto();
-        voto.setId(votoDao.obtenerNuevaIdVoto());
+        voto.setId(VotoDao.obtenerNuevaIdVoto());
         voto.setVotacion(votacion);
         voto.setVotante(votante);
         voto.setOpcion(opcion);
         votos.add(voto);
         votacion.setVotos(votos);
-        votoDao.escribirVotos(votos);
+        VotoDao.escribirVotos(votos);
     }
 
 //    private List<Voto> obtenerVotosDeVotacion(Votacion votacion) {

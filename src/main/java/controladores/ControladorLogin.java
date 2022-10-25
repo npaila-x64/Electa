@@ -14,12 +14,10 @@ import java.util.List;
 public class ControladorLogin {
 	private final LoginAdministrador loginAdministrador;
 	private final LoginVotante loginVotante;
-	private final UsuarioDao usuarioDao;
 
 	public ControladorLogin() {
 		this.loginVotante = new LoginVotante(this);
 		this.loginAdministrador = new LoginAdministrador(this);
-		this.usuarioDao = new UsuarioDao();
 	}
 
 	public void iniciar() {
@@ -69,7 +67,7 @@ public class ControladorLogin {
 	}
 
 	private boolean esCredencialVotanteValida(Votante votante) {
-		List<Votante> votantes = this.usuarioDao.obtenerVotantes();
+		List<Votante> votantes = UsuarioDao.obtenerVotantes();
 		for (Votante votanteSiguiente : votantes) {
 			// Primero verifica que los rut sean iguales, después se verifica la clave
 			if (votanteSiguiente.getRut().equals(votante.getRut())) {
@@ -83,7 +81,7 @@ public class ControladorLogin {
 	}
 
 	private boolean esCredencialAdministradorValida(String clave) {
-		return clave.equals(this.usuarioDao.obtenerCredencialAdmin());
+		return clave.equals(UsuarioDao.obtenerCredencialAdmin());
 	}
 
 	private void mostrarSistemaNoDisponible(String mensaje) {
