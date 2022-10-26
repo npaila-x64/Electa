@@ -12,6 +12,7 @@ import vistas.votante.LoginVotante;
 import java.util.List;
 
 public class ControladorLogin {
+
 	private final LoginAdministrador loginAdministrador;
 	private final LoginVotante loginVotante;
 
@@ -60,7 +61,7 @@ public class ControladorLogin {
 		votanteIngresado.setRut(rutVotante);
 		votanteIngresado.setClave(claveVotante);
 		if (esCredencialVotanteValida(votanteIngresado)) {
-			new ControladorVotacionesEnCurso(votanteIngresado).iniciar();
+			new ControladorVotacionesEnCurso(votanteIngresado.getId()).iniciar();
 		} else {
 			System.err.println("RUT y/o contraseña incorrectos");
 		}

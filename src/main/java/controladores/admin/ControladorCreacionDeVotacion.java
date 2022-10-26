@@ -11,22 +11,21 @@ import java.time.format.DateTimeFormatter;
 public class ControladorCreacionDeVotacion {
 
     private final MenuCreacionDeVotacion vista;
-    private final Votacion votacion;
 
     public ControladorCreacionDeVotacion() {
         this.vista = new MenuCreacionDeVotacion(this);
-        this.votacion = new Votacion();
     }
 
     public void iniciar() {
+        Votacion votacion = new Votacion();
         vista.ingresarDatosCampo();
-        situarDatosCampo();
+        situarDatosCampo(votacion);
         VotacionDao.crearVotacion(votacion);
         vista.mostrarVotacionCreadaConExito();
-        new ControladorCreacionDeOpcion(votacion).iniciar();
+        new ControladorCreacionDeOpcion(votacion.getId()).iniciar();
     }
 
-    private void situarDatosCampo() {
+    private void situarDatosCampo(Votacion votacion) {
         votacion.setTitulo(vista.getCampoTitulo());
         votacion.setDescripcion(vista.getCampoDescripcion());
         LocalDate fechaInicioDate = LocalDate.parse(vista.getCampoFechaInicio(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));

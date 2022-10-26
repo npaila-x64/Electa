@@ -8,11 +8,11 @@ import vistas.admin.MenuCreacionDeOpcion;
 public class ControladorCreacionDeOpcion {
 
     private final MenuCreacionDeOpcion vista;
-    private final Votacion votacion;
+    private final Integer idVotacion;
 
-    public ControladorCreacionDeOpcion(Votacion votacion) {
+    public ControladorCreacionDeOpcion(Integer idVotacion) {
         this.vista = new MenuCreacionDeOpcion(this);
-        this.votacion = votacion;
+        this.idVotacion = idVotacion;
     }
 
     public void iniciar() {
@@ -20,18 +20,18 @@ public class ControladorCreacionDeOpcion {
     }
 
     public Votacion obtenerVotacion() {
-        return this.votacion;
+        return VotacionDao.obtenerVotacionPorID(VotacionDao.obtenerVotaciones(), idVotacion);
     }
 
     public void agregarOpcionDeVotacion() {
         // TODO Validar ingreso de opción vacía
         String opcion = ValidadorDeDatos
                 .pedirEntrada("Escriba la opción que desea agregar\n> ", 35);
-        if (VotacionDao.opcionYaExiste(votacion, opcion)){
+        if (VotacionDao.opcionYaExiste(obtenerVotacion(), opcion)){
             vista.mostrarOpcionYaExiste(opcion);
             agregarOpcionDeVotacion();
         } else {
-            VotacionDao.agregarOpcionAVotacion(votacion, opcion);
+            VotacionDao.agregarOpcionAVotacion(obtenerVotacion(), opcion);
         }
     }
 }

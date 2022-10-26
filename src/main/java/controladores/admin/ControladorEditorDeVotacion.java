@@ -14,11 +14,11 @@ public class ControladorEditorDeVotacion {
 
     // TODO Terminar de descoplar a clase vista
     private final MenuEditorDeVotacion vista;
-    private final Votacion votacion;
+    private final Integer idVotacion;
 
-    public ControladorEditorDeVotacion(Votacion votacion) {
+    public ControladorEditorDeVotacion(Integer idVotacion) {
         this.vista = new MenuEditorDeVotacion(this);
-        this.votacion = votacion;
+        this.idVotacion = idVotacion;
     }
 
     public void iniciar() {
@@ -26,11 +26,11 @@ public class ControladorEditorDeVotacion {
     }
 
     public Votacion obtenerVotacion() {
-        return votacion;
+        return VotacionDao.obtenerVotacionPorID(VotacionDao.obtenerVotaciones(), idVotacion);
     }
 
     public void mostrarMenuCreacionDeOpcion() {
-        new ControladorCreacionDeOpcion(votacion).iniciar();
+        new ControladorCreacionDeOpcion(idVotacion).iniciar();
     }
 
     public void mostrarMenuEditarCamposDeVotacion() {
@@ -40,7 +40,7 @@ public class ControladorEditorDeVotacion {
             mostrarOpcionesMenuEditarCamposDeVotacion(campos);
             int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(campos.size());
             if (opcionElegida == 0) break;
-            editarCampoDeVotacion(votacion, campos.get(opcionElegida - 1));
+            editarCampoDeVotacion(obtenerVotacion(), campos.get(opcionElegida - 1));
         }
     }
 
@@ -58,17 +58,17 @@ public class ControladorEditorDeVotacion {
     }
 
     public void mostrarMenuEliminarOpcionesDeVotacion() {
-        List<Opcion> opciones = votacion.getOpciones();
+        List<Opcion> opciones = obtenerVotacion().getOpciones();
         System.out.println("Escriba la opción que desea eliminar");
         mostrarListaOpciones(opciones);
         int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
         if (opcionElegida == 0) return;
-        VotacionDao.eliminarOpcionDeVotacion(votacion, opciones.get(opcionElegida - 1));
+        VotacionDao.eliminarOpcionDeVotacion(obtenerVotacion(), opciones.get(opcionElegida - 1));
         System.out.println("Opción eliminada con exito");
     }
 
     public void eliminarVotacion() {
-        VotacionDao.eliminarVotacion(votacion);
+        VotacionDao.eliminarVotacion(obtenerVotacion());
     }
 
     public void mostrarListaOpciones(List<Opcion> opciones) {

@@ -11,13 +11,11 @@ import java.util.List;
 public class ControladorVotacionesEnCurso {
 
 	private final MenuVotacionesEnCurso vista;
-	private List<Votacion> votacionesEnCurso;
-	private final Votante votante;
+	private final Integer idVotante;
 
-	public ControladorVotacionesEnCurso(Votante votanteDeEstaSesion) {
-		this.votante = votanteDeEstaSesion;
+	public ControladorVotacionesEnCurso(Integer idVotanteDeEstaSesion) {
+		this.idVotante = idVotanteDeEstaSesion;
 		this.vista = new MenuVotacionesEnCurso(this);
-		refrescarVotaciones();
 	}
 
 	public void iniciar() {
@@ -25,19 +23,15 @@ public class ControladorVotacionesEnCurso {
 	}
 
 	public List<Votacion> obtenerVotacionesEnCurso() {
-		refrescarVotaciones();
-		return this.votacionesEnCurso;
+		return VotacionDao.obtenerVotacionesConEstado(Estado.EN_CURSO);
 	}
 
 	public void mostrarMenuParaVotar() {
-		new ControladorVotacion(this.votante).iniciar();
+		new ControladorVotacion(this.idVotante).iniciar();
 	}
 
 	public void mostrarMenuResultados() {
 		new ControladorResultados().iniciar();
 	}
 
-	private void refrescarVotaciones() {
-		this.votacionesEnCurso = VotacionDao.obtenerVotacionesConEstado(Estado.EN_CURSO);
-	}
 }

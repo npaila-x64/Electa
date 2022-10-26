@@ -9,13 +9,11 @@ import java.util.List;
 public class ControladorAdministracionDeVotaciones {
 
     private final MenuAdministracionDeVotaciones vista;
-    private final VotacionDao votacionDao;
-    private List<Votacion> votaciones;
+    //private List<Votacion> votaciones;
 
     public ControladorAdministracionDeVotaciones() {
         this.vista = new MenuAdministracionDeVotaciones(this);
-        this.votacionDao = new VotacionDao();
-        refrescarVotaciones();
+        //refrescarVotaciones();
     }
 
     public void iniciar() {
@@ -24,7 +22,7 @@ public class ControladorAdministracionDeVotaciones {
 
     public void mostrarEditorDeVotacion(Integer opcionElegida) {
         Votacion votacion = obtenerVotacion(opcionElegida);
-        new ControladorEditorDeVotacion(votacion).iniciar();
+        new ControladorEditorDeVotacion(votacion.getId()).iniciar();
     }
 
     public List<Votacion> obtenerVotaciones() {
@@ -35,7 +33,7 @@ public class ControladorAdministracionDeVotaciones {
         return votaciones.get(opcionElegida - 1);
     }
 
-    public void refrescarVotaciones() {
-        this.votaciones = votacionDao.obtenerVotaciones();
-    }
+    //public void refrescarVotaciones() {
+    //    this.votaciones = VotacionDao.obtenerVotaciones();
+    //}
 }

@@ -1,7 +1,10 @@
 package controladores.admin;
 
 import controladores.votante.ControladorResultados;
+import modelos.Votacion;
 import vistas.admin.MenuAdministracion;
+
+import java.util.List;
 
 public class ControladorAdministracion {
 
