@@ -9,11 +9,9 @@ import java.util.List;
 public class ControladorAdministracionDeVotaciones {
 
     private final MenuAdministracionDeVotaciones vista;
-    //private List<Votacion> votaciones;
 
     public ControladorAdministracionDeVotaciones() {
         this.vista = new MenuAdministracionDeVotaciones(this);
-        //refrescarVotaciones();
     }
 
     public void iniciar() {
@@ -25,15 +23,8 @@ public class ControladorAdministracionDeVotaciones {
         new ControladorEditorDeVotacion(votacion.getId()).iniciar();
     }
 
-    public List<Votacion> obtenerVotaciones() {
-        return this.votaciones;
-    }
-
     private Votacion obtenerVotacion(Integer opcionElegida) {
-        return votaciones.get(opcionElegida - 1);
+        List<Votacion> votaciones = VotacionDao.obtenerVotaciones();
+        return votaciones.get(opcionElegida -1);
     }
-
-    //public void refrescarVotaciones() {
-    //    this.votaciones = VotacionDao.obtenerVotaciones();
-    //}
 }
