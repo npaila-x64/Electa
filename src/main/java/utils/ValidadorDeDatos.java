@@ -94,6 +94,7 @@ public class ValidadorDeDatos {
 
         return entrada;
     }
+
     public static boolean esHoraValida(String hora) {
         return hora.matches("([01]\\d|2[0-3]):[0-5]\\d");
     }
