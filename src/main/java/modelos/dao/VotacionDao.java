@@ -262,9 +262,13 @@ public class VotacionDao {
     }
 
     public static Votacion obtenerVotacionPorID(List<Votacion> votaciones, Votacion votacion) {
+        return obtenerVotacionPorID(votaciones, votacion.getId());
+    }
+
+    public static Votacion obtenerVotacionPorID(List<Votacion> votaciones, Integer idVotacion) {
         return votaciones
                 .stream()
-                .filter(votacionSiguiente -> votacionSiguiente.getId().equals(votacion.getId()))
+                .filter(votacionSiguiente -> votacionSiguiente.getId().equals(idVotacion))
                 .findFirst()
                 .orElseThrow(
                         () -> AccesoADatosInterrumpidoException
