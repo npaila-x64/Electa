@@ -13,14 +13,8 @@ import java.util.List;
 
 public class ControladorResultados {
 
-    private final MenuResultados vista;
-
     public ControladorResultados() {
-        this.vista = new MenuResultados(this);
-    }
-
-    public void iniciar() {
-        this.vista.mostrar();
+        new MenuResultados(this).mostrar();
     }
 
     public HashMap<String, Object> obtenerDatosDeVotacion(Votacion votacion) {

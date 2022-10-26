@@ -50,7 +50,7 @@ public class ControladorLogin {
 
 	public void validarDatosAdministrador(String campoClave) {
 		if (esCredencialAdministradorValida(campoClave)) {
-			new ControladorAdministracion().iniciar();
+			new ControladorAdministracion();
 		} else {
 			System.err.println("Contraseña incorrecta");
 		}
@@ -61,7 +61,7 @@ public class ControladorLogin {
 		votanteIngresado.setRut(rutVotante);
 		votanteIngresado.setClave(claveVotante);
 		if (esCredencialVotanteValida(votanteIngresado)) {
-			new ControladorVotacionesEnCurso(votanteIngresado.getId()).iniciar();
+			new ControladorVotacionesEnCurso(votanteIngresado.getId());
 		} else {
 			System.err.println("RUT y/o contraseña incorrectos");
 		}

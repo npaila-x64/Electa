@@ -16,16 +16,11 @@ import java.util.List;
 
 public class ControladorVotacion {
 
-    private final MenuVotacion vista;
     private final Integer idVotante;
 
     public ControladorVotacion(Integer idVotante) {
-        this.vista = new MenuVotacion(this);
+        new MenuVotacion(this).mostrar();
         this.idVotante = idVotante;
-    }
-
-    public void iniciar() {
-        this.vista.mostrar();
     }
 
     public List<Votacion> obtenerVotaciones() {

@@ -10,16 +10,11 @@ import java.util.List;
 
 public class ControladorVotacionesEnCurso {
 
-	private final MenuVotacionesEnCurso vista;
 	private final Integer idVotante;
 
 	public ControladorVotacionesEnCurso(Integer idVotanteDeEstaSesion) {
 		this.idVotante = idVotanteDeEstaSesion;
-		this.vista = new MenuVotacionesEnCurso(this);
-	}
-
-	public void iniciar() {
-		this.vista.mostrar();
+		new MenuVotacionesEnCurso(this).mostrar();
 	}
 
 	public List<Votacion> obtenerVotacionesEnCurso() {
@@ -27,11 +22,11 @@ public class ControladorVotacionesEnCurso {
 	}
 
 	public void mostrarMenuParaVotar() {
-		new ControladorVotacion(this.idVotante).iniciar();
+		new ControladorVotacion(this.idVotante);
 	}
 
 	public void mostrarMenuResultados() {
-		new ControladorResultados().iniciar();
+		new ControladorResultados();
 	}
 
 }

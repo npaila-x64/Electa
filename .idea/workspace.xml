@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="elimina imports innecesarios">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="elimina método innecesario">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorEditorDeVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorEditorDeVotacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/modelos/Administrador.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/modelos/Usuario.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/modelos/Votante.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/Votante.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracionDeVotaciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracionDeVotaciones.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorResultados.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -379,7 +381,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="dev_mvc" />
+                        <option value="nicolas_dev" />
                       </list>
                     </value>
                   </entry>
