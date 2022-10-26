@@ -4,7 +4,6 @@ import excepciones.AccesoADatosInterrumpidoException;
 import modelos.Opcion;
 import modelos.Votacion;
 import modelos.Votante;
-import modelos.Voto;
 import modelos.enums.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -137,7 +136,7 @@ public class VotacionDao {
         return votantes;
     }
 
-    public static List<Votacion> ObtenerVotacionesEnCurso() {
+    public static List<Votacion> obtenerVotacionesEnCurso() {
         List<Votacion> votaciones = obtenerVotaciones();
         List<Votacion> votacionesEnCurso = new ArrayList<>();
         votaciones
@@ -158,12 +157,12 @@ public class VotacionDao {
         return votacionesCopia;
     }
 
-    public static List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante(Votante votante) {
-        List<Votacion> votacionesEnCurso = ObtenerVotacionesEnCurso();
+    public static List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante(Integer idVotante) {
+        List<Votacion> votacionesEnCurso = obtenerVotacionesEnCurso();
         List<Votacion> votacionesEnElQuePuedeVotarElVotante = new ArrayList<>();
         votacionesEnCurso
                 .stream()
-                .filter(votacionSiguiente -> !votanteVotoEnEstaVotacion(votacionSiguiente, votante))
+                .filter(votacionSiguiente -> !votanteVotoEnEstaVotacion(votacionSiguiente, idVotante))
                 .forEach(votacionesEnElQuePuedeVotarElVotante::add);
         return votacionesEnElQuePuedeVotarElVotante;
     }
@@ -183,10 +182,10 @@ public class VotacionDao {
         return String.valueOf(maxID);
     }
 
-    public static boolean votanteVotoEnEstaVotacion(Votacion votacionSiguiente, Votante votante) {
+    public static boolean votanteVotoEnEstaVotacion(Votacion votacionSiguiente, Integer idVotante) {
         List<Votante> votantes = votacionSiguiente.getVotantes();
         for (Votante votanteQueVotoEnEstaVotacion : votantes) {
-            if (votante.getId().equals(votanteQueVotoEnEstaVotacion.getId())) {
+            if (idVotante.equals(votanteQueVotoEnEstaVotacion.getId())) {
                 // Si esta condición se cumple se da a entender que el votante ya
                 // está en la lista de votantes quienes votaron en esta votación
                 return true;
