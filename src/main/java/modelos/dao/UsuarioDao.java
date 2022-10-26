@@ -2,6 +2,7 @@ package modelos.dao;
 
 import excepciones.AccesoADatosInterrumpidoException;
 import modelos.Votante;
+import modelos.enums.CampoDeVotacion;
 import modelos.enums.CampoDeVotante;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -45,5 +46,14 @@ public class UsuarioDao {
         votante.setId(votanteJSON.get(CampoDeVotante.ID.getTexto()));
         votante.setRut(votanteJSON.get(CampoDeVotante.RUT.getTexto()));
         votante.setClave(votanteJSON.get(CampoDeVotante.CLAVE.getTexto()));
+    }
+    
+    public static Votante obtenerVotantePorId(Integer idVotante){
+        var votantes = obtenerVotantes();
+        return votantes.stream().filter
+                (votanteSiguiente -> votanteSiguiente.getId().equals(idVotante))
+                .findFirst().orElseThrow(
+                        () -> AccesoADatosInterrumpidoException
+                        .talElementoNoExiste(CampoDeVotacion.ID.getTexto()));
     }
 }
