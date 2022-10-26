@@ -44,14 +44,13 @@ public class MenuResultados {
     public void mostrarResultadosDatos(Votacion votacion) {
         // TODO Mmmmmmh se ve innecesario...
         var datos = this.controlador.obtenerDatosDeVotacion(votacion);
-        System.out.printf("""
-                        Resultados para la votacion "%s"
-                        Votos preferenciales %s %s
-                        Votos blancos %s %s
-                        Total votos %s %s
-                        Fecha y hora de inicio %s %s hrs
-                        Fecha y hora de término %s %s hrs
-                        %n""", datos.get("titulo"),
+        System.out.printf("Resultados para la votacion \"%s\"\n" +
+                          "Votos preferenciales %s %s\n" +
+                          "Votos blancos %s %s\n" +
+                          "Total votos %s %s\n" +
+                          "Fecha y hora de inicio %s %s hrs\n" +
+                          "Fecha y hora de término %s %s hrs\n" +
+                          "%n", datos.get("titulo"),
                 Utilidades.padTexto("", 30 - 20), datos.get("votosPreferenciales"),
                 Utilidades.padTexto("", 30 - 13), datos.get("votosBlancos"),
                 Utilidades.padTexto("", 30 - 11), datos.get("totalVotos"),
