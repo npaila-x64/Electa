@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="reemplaza más métodos a paradigma funcional">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="elimina imports innecesarios">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/RefrescadorVotaciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/RefrescadorVotaciones.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/excepciones/AccesoADatosInterrumpidoException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/excepciones/AccesoADatosInterrumpidoException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/menus/MenuPrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/menus/MenuPrincipal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/modelos/Votacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/Votacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/AccesoADatos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/AccesoADatos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorEditorDeVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorEditorDeVotacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modelos/Administrador.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modelos/Usuario.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/modelos/Votante.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/Votante.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +28,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="dev" />
+        <entry key="$PROJECT_DIR$" value="nicolas_dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -342,7 +341,28 @@
       <option name="project" value="LOCAL" />
       <updated>1665699511963</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="crea controlador y vistas de menu votaciones en curso">
+      <created>1666237630659</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1666237630659</updated>
+    </task>
+    <task id="LOCAL-00031" summary="agrega últimos ajustes de la base del mvc">
+      <created>1666443304445</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1666443304445</updated>
+    </task>
+    <task id="LOCAL-00032" summary="elimina imports innecesarios">
+      <created>1666447565739</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1666447565739</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -359,7 +379,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="nicolas_dev" />
+                        <option value="dev_mvc" />
                       </list>
                     </value>
                   </entry>
@@ -372,9 +392,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="agrega libreria JUnit" />
-    <MESSAGE value="agrega manejo de excepcion en caso que archivo votantes no exista" />
-    <MESSAGE value="refactoriza métodos pedirString" />
     <MESSAGE value="agrega manejo de excepciones a métodos de ingreso" />
     <MESSAGE value="agrega nueva clase junto a test para manejo de comunicación con datos" />
     <MESSAGE value="agrega métodos getter y setter de fecha y tiempo" />
@@ -397,7 +414,10 @@
     <MESSAGE value="reorganiza proyecto en paquetes" />
     <MESSAGE value="reemplaza manejo de objetos json a instancias de clases" />
     <MESSAGE value="reemplaza más métodos a paradigma funcional" />
-    <option name="LAST_COMMIT_MESSAGE" value="reemplaza más métodos a paradigma funcional" />
+    <MESSAGE value="crea controlador y vistas de menu votaciones en curso" />
+    <MESSAGE value="agrega últimos ajustes de la base del mvc" />
+    <MESSAGE value="elimina imports innecesarios" />
+    <option name="LAST_COMMIT_MESSAGE" value="elimina imports innecesarios" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

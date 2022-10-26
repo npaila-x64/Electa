@@ -1,11 +1,11 @@
 package app;
 
-import vistas.MenuPrincipal;
+import controladores.ControladorLogin;
 
 public class Electa {
 
     public static void main(String[] args) {
-        MenuPrincipal app = new MenuPrincipal();
+        ControladorLogin app = new ControladorLogin();
         app.iniciar();
     }
 
