@@ -35,14 +35,12 @@ public class MenuEditorDeVotacion {
 
     private void mostrarOpcionesEditorDeVotacion() {
         mostrarDatosDeVotacion();
-        System.out.print("""
-                
-                [1] Modificar algún campo
-                [2] Para agregar una opción
-                [3] Para eliminar alguna opción
-                [4] Para eliminar la votación
-                Si desea volver escriba [0]
-                """.concat("> "));
+        System.out.print(("\n" +
+                          "[1] Modificar algún campo\n" +
+                          "[2] Para agregar una opción\n" +
+                          "[3] Para eliminar alguna opción\n" +
+                          "[4] Para eliminar la votación\n" +
+                          "Si desea volver escriba [0]\n").concat("> "));
     }
 
     private void mostrarDatosDeVotacion() {

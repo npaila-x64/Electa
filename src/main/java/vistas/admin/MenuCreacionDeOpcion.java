@@ -20,19 +20,19 @@ public class MenuCreacionDeOpcion {
             mostrarDatosDeVotacion();
             mostrarMenuMenuAgregacionDeOpciones();
             switch (ValidadorDeDatos.pedirOpcionHasta(1)) {
-                case 0 -> {return;}
+                case 0 -> {
+                    return;
+                }
                 case 1 -> controlador.agregarOpcionDeVotacion();
             }
         }
     }
 
     private void mostrarMenuMenuAgregacionDeOpciones() {
-        System.out.print("""
-                    
-                    Para agregar una opción escriba [1]
-                    Para finalizar y volver escriba [0]
-                    Elija una opción
-                    """.concat("> "));
+        System.out.print(("\n" +
+                          "Para agregar una opción escriba [1]\n" +
+                          "Para finalizar y volver escriba [0]\n" +
+                          "Elija una opción\n").concat("> "));
     }
 
     private void mostrarDatosDeVotacion() {
@@ -63,7 +63,7 @@ public class MenuCreacionDeOpcion {
         }
     }
 
-    public void mostrarOpcionYaExiste(String opcion){
+    public void mostrarOpcionYaExiste(String opcion) {
         System.out.println("La opcion " + opcion + " ya existe, por favor ingrese otra");
     }
 }

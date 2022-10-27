@@ -12,14 +12,13 @@ import vistas.votante.LoginVotante;
 import java.util.List;
 
 public class ControladorLogin {
+
 	private final LoginAdministrador loginAdministrador;
 	private final LoginVotante loginVotante;
-	private final UsuarioDao usuarioDao;
 
 	public ControladorLogin() {
 		this.loginVotante = new LoginVotante(this);
 		this.loginAdministrador = new LoginAdministrador(this);
-		this.usuarioDao = new UsuarioDao();
 	}
 
 	public void iniciar() {
@@ -27,13 +26,11 @@ public class ControladorLogin {
 	}
 
 	private void mostrarOpcionesDeIngreso() {
-		System.out.print("""
-                
-                ¡Bienvenido/a al sistema Electa!
-                [1] Ingresar como Votante
-                [2] Ingresar como Administrador
-                Si desea salir escriba [0]
-                """.concat("> "));
+		System.out.print(("\n" +
+						  "¡Bienvenido/a al sistema Electa!\n" +
+						  "[1] Ingresar como Votante\n" +
+						  "[2] Ingresar como Administrador\n" +
+						  "Si desea salir escriba [0]\n").concat("> "));
 	}
 
 	private void mostrarMenuDeIngreso() {
@@ -64,14 +61,14 @@ public class ControladorLogin {
 		votanteIngresado.setRut(rutVotante);
 		votanteIngresado.setClave(claveVotante);
 		if (esCredencialVotanteValida(votanteIngresado)) {
-			new ControladorVotacionesEnCurso(votanteIngresado).iniciar();
+			new ControladorVotacionesEnCurso(votanteIngresado.getId()).iniciar();
 		} else {
 			System.err.println("RUT y/o contraseña incorrectos");
 		}
 	}
 
 	private boolean esCredencialVotanteValida(Votante votante) {
-		List<Votante> votantes = this.usuarioDao.obtenerVotantes();
+		List<Votante> votantes = UsuarioDao.obtenerVotantes();
 		for (Votante votanteSiguiente : votantes) {
 			// Primero verifica que los rut sean iguales, después se verifica la clave
 			if (votanteSiguiente.getRut().equals(votante.getRut())) {
@@ -85,7 +82,7 @@ public class ControladorLogin {
 	}
 
 	private boolean esCredencialAdministradorValida(String clave) {
-		return clave.equals(this.usuarioDao.obtenerCredencialAdmin());
+		return clave.equals(UsuarioDao.obtenerCredencialAdmin());
 	}
 
 	private void mostrarSistemaNoDisponible(String mensaje) {

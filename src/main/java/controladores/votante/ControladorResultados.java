@@ -1,24 +1,22 @@
 package controladores.votante;
 
+import controladores.ControladorLogin;
 import modelos.Votacion;
 import modelos.dao.VotacionDao;
 import modelos.enums.Estado;
 import vistas.votante.MenuResultados;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ControladorResultados {
 
     private final MenuResultados vista;
-    private final VotacionDao votacionDao;
-    private List<Votacion> votaciones;
 
     public ControladorResultados() {
         this.vista = new MenuResultados(this);
-        this.votacionDao = new VotacionDao();
-        refrescarVotaciones();
     }
 
     public void iniciar() {
@@ -39,15 +37,11 @@ public class ControladorResultados {
     }
 
     public List<Votacion> obtenerVotacionesParaMostrar() {
-        refrescarVotaciones();
-        return this.votaciones;
+        return VotacionDao.obtenerVotacionesConEstado(Estado.FINALIZADO);
     }
 
     public Votacion obtenerVotacion(int opcionElegida) {
-        return this.votaciones.get(opcionElegida - 1);
-    }
-
-    private void refrescarVotaciones() {
-        this.votaciones = this.votacionDao.obtenerVotacionesConEstado(Estado.FINALIZADO);
+        List<Votacion> votaciones = VotacionDao.obtenerVotaciones();
+        return votaciones.get(opcionElegida -1);
     }
 }

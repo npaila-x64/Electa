@@ -1,7 +1,10 @@
 package controladores.admin;
 
 import controladores.votante.ControladorResultados;
+import modelos.Votacion;
 import vistas.admin.MenuAdministracion;
+
+import java.util.List;
 
 public class ControladorAdministracion {
 
@@ -16,7 +19,7 @@ public class ControladorAdministracion {
     }
 
     public void mostrarPanelDeControlDeVotaciones() {
-        new ControladorControlDeVotaciones().iniciar();
+        new ControladorAdministracionDeVotaciones().iniciar();
     }
 
     public void mostrarMenuCreacionDeVotacion() {

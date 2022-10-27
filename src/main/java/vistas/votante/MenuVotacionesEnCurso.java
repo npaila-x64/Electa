@@ -38,12 +38,10 @@ public class MenuVotacionesEnCurso {
 	}
 
 	private void mostrarOpcionesMenuVotacionesVotante() {
-		System.out.print("""
-                
-                OPCIONES
-                [1] Votar
-                [2] Ver Resultados
-                Si desea cerrar su sesión escriba [0]
-                """.concat("> "));
+		System.out.print(("\n" +
+						  "OPCIONES\n" +
+						  "[1] Votar\n" +
+						  "[2] Ver Resultados\n" +
+						  "Si desea cerrar su sesión escriba [0]\n").concat("> "));
 	}
 }

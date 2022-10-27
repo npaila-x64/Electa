@@ -1,7 +1,8 @@
 package vistas.admin;
 
-import controladores.admin.ControladorControlDeVotaciones;
+import controladores.admin.ControladorAdministracionDeVotaciones;
 import modelos.Votacion;
+import modelos.dao.VotacionDao;
 import modelos.enums.Estado;
 import utils.Utilidades;
 import utils.ValidadorDeDatos;
@@ -10,17 +11,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MenuControlDeVotaciones {
+public class MenuAdministracionDeVotaciones {
 
-    private final ControladorControlDeVotaciones controlador;
+    private final ControladorAdministracionDeVotaciones controlador;
 
-    public MenuControlDeVotaciones(ControladorControlDeVotaciones controlador) {
+    public MenuAdministracionDeVotaciones(ControladorAdministracionDeVotaciones controlador) {
         this.controlador = controlador;
     }
 
     public void mostrar() {
         while (true) {
-            var votaciones = controlador.obtenerVotaciones();
+            var votaciones = VotacionDao.obtenerVotaciones();
             mostrarOpcionesPanelDeControlDeVotaciones(votaciones);
             int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(votaciones.size());
             if (opcionElegida == 0) break;
@@ -29,10 +30,8 @@ public class MenuControlDeVotaciones {
     }
 
     private void mostrarOpcionesPanelDeControlDeVotaciones(List<Votacion> votaciones) {
-        System.out.print("""
-                Para modificar o eliminar una votación
-                escriba el número correspondiente a su índice
-                """);
+        System.out.print("Para modificar o eliminar una votación\n" +
+                         "escriba el número correspondiente a su índice\n");
         mostrarListaVotacionesDetallada(votaciones);
     }
 

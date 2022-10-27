@@ -51,13 +51,4 @@ public class RefrescadorVotaciones {
     public static LocalDateTime obtenerFechaTiempoAhora() {
         return LocalDateTime.now();
     }
-
-    public static boolean esMayor(int[] fechaActual, int[] fechaTermino, int indice) {
-        if (fechaTermino[indice] < fechaActual[indice]) return true;
-        if (fechaTermino[indice] == fechaActual[indice]) {
-            if (fechaActual.length - 1 == indice) return true;
-            return esMayor(fechaActual, fechaTermino, indice + 1);
-        }
-        return false;
-    }
 }
