@@ -10,7 +10,6 @@ public class Opcion {
     public Opcion() {
         this.id = -1;
         this.nombre = "";
-        this.votacion = new Votacion();
         this.cantidadDeVotos = 0;
     }
 
