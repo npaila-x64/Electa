@@ -18,8 +18,8 @@ public class ControladorVotacion {
     private final Integer idVotante;
 
     public ControladorVotacion(Integer idVotante) {
-        new MenuVotacion(this).mostrar();
         this.idVotante = idVotante;
+        new MenuVotacion(this).mostrar();
     }
 
     public List<Votacion> obtenerVotaciones() {
