@@ -1,9 +1,8 @@
 package controladores.votante;
 
 import modelos.Votacion;
-import modelos.Votante;
 import modelos.dao.VotacionDao;
-import modelos.enums.Estado;
+import modelos.enums.EstadoDeVotacion;
 import vistas.votante.MenuVotacionesEnCurso;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class ControladorVotacionesEnCurso {
 	}
 
 	public List<Votacion> obtenerVotacionesEnCurso() {
-		return VotacionDao.obtenerVotacionesConEstado(Estado.EN_CURSO);
+		return VotacionDao.obtenerVotacionesConEstado(EstadoDeVotacion.EN_CURSO);
 	}
 
 	public void mostrarMenuParaVotar() {

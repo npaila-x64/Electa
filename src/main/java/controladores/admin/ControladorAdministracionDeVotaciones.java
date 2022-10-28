@@ -9,13 +9,12 @@ import java.util.List;
 public class ControladorAdministracionDeVotaciones {
 
     public ControladorAdministracionDeVotaciones() {
-        var vista = new MenuAdministracionDeVotaciones(this);
-        vista.mostrar();
+        new MenuAdministracionDeVotaciones(this).mostrar();
     }
 
     public void mostrarEditorDeVotacion(Integer opcionElegida) {
         Votacion votacion = obtenerVotacion(opcionElegida);
-        new ControladorEditorDeVotacion(votacion.getId()).iniciar();
+        new ControladorEditorDeVotacion(votacion.getId());
     }
 
     private Votacion obtenerVotacion(Integer opcionElegida) {

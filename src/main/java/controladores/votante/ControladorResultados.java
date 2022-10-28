@@ -1,13 +1,11 @@
 package controladores.votante;
 
-import controladores.ControladorLogin;
 import modelos.Votacion;
 import modelos.dao.VotacionDao;
-import modelos.enums.Estado;
+import modelos.enums.EstadoDeVotacion;
 import vistas.votante.MenuResultados;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class ControladorResultados {
     }
 
     public List<Votacion> obtenerVotacionesParaMostrar() {
-        return VotacionDao.obtenerVotacionesConEstado(Estado.FINALIZADO);
+        return VotacionDao.obtenerVotacionesConEstado(EstadoDeVotacion.FINALIZADO);
     }
 
     public Votacion obtenerVotacion(int opcionElegida) {

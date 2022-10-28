@@ -2,7 +2,7 @@ package modelos.enums;
 
 import java.util.List;
 
-public enum Estado {
+public enum EstadoDeVotacion {
 
     BORRADOR("BORRADOR"),
     PENDIENTE("PENDIENTE"),
@@ -11,11 +11,11 @@ public enum Estado {
 
     private String texto;
 
-    Estado(String texto) {
+    EstadoDeVotacion(String texto) {
         this.texto = texto;
     }
 
-    public static List<Estado> getEstados() {
+    public static List<EstadoDeVotacion> getEstados() {
         return List.of(BORRADOR, PENDIENTE, EN_CURSO, FINALIZADO);
     }
 
@@ -23,8 +23,8 @@ public enum Estado {
         return texto;
     }
 
-    public static Estado fromObject(Object texto) {
-        for (Estado estado : Estado.values()) {
+    public static EstadoDeVotacion fromObject(Object texto) {
+        for (EstadoDeVotacion estado : EstadoDeVotacion.values()) {
             if (estado.getTexto().equalsIgnoreCase(texto.toString())) {
                 return estado;
             }
