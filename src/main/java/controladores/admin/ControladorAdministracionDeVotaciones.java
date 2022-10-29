@@ -8,19 +8,13 @@ import java.util.List;
 
 public class ControladorAdministracionDeVotaciones {
 
-    private final MenuAdministracionDeVotaciones vista;
-
     public ControladorAdministracionDeVotaciones() {
-        this.vista = new MenuAdministracionDeVotaciones(this);
-    }
-
-    public void iniciar() {
-        this.vista.mostrar();
+        new MenuAdministracionDeVotaciones(this).mostrar();
     }
 
     public void mostrarEditorDeVotacion(Integer opcionElegida) {
         Votacion votacion = obtenerVotacion(opcionElegida);
-        new ControladorEditorDeVotacion(votacion.getId()).iniciar();
+        new ControladorEditorDeVotacion(votacion.getId());
     }
 
     private Votacion obtenerVotacion(Integer opcionElegida) {

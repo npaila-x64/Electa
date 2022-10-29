@@ -13,7 +13,7 @@ public class ControladorCreacionDeVotacion {
     private final MenuCreacionDeVotacion vista;
 
     public ControladorCreacionDeVotacion() {
-        this.vista = new MenuCreacionDeVotacion(this);
+        this.vista = new MenuCreacionDeVotacion();
     }
 
     public void iniciar() {

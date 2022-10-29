@@ -1,7 +1,5 @@
 package modelos;
 
-import modelos.enums.TipoDeVoto;
-
 public class Opcion {
 
     private Integer id;
@@ -16,12 +14,12 @@ public class Opcion {
         this.cantidadDeVotos = 0;
     }
 
-    public Opcion(TipoDeVoto tipoDeVoto) {
-        if (tipoDeVoto.equals(TipoDeVoto.VOTO_BLANCO)) {
-            this.id = 1;
-            this.nombre = "Abstenerse";
-            this.cantidadDeVotos = 0;
-        }
+    public static Opcion getOpcionConVotoBlanco() {
+        var opcion = new Opcion();
+        opcion.setId(1);
+        opcion.setNombre("Abstenerse");
+        opcion.setCantidadDeVotos(0);
+        return opcion;
     }
 
     public Integer getId() {

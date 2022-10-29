@@ -13,14 +13,6 @@ import java.util.List;
 
 public class ControladorLogin {
 
-	private final LoginAdministrador loginAdministrador;
-	private final LoginVotante loginVotante;
-
-	public ControladorLogin() {
-		this.loginVotante = new LoginVotante(this);
-		this.loginAdministrador = new LoginAdministrador(this);
-	}
-
 	public void iniciar() {
 		mostrarMenuDeIngreso();
 	}
@@ -39,8 +31,8 @@ public class ControladorLogin {
 			try {
 				switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
 					case 0 -> {return;}
-					case 1 -> loginVotante.mostrar();
-					case 2 -> loginAdministrador.mostrar();
+					case 1 -> new LoginVotante(this);
+					case 2 -> new LoginAdministrador(this);
 				}
 			} catch (AccesoADatosInterrumpidoException e) {
 				mostrarSistemaNoDisponible(e.getMessage());
@@ -50,7 +42,7 @@ public class ControladorLogin {
 
 	public void validarDatosAdministrador(String campoClave) {
 		if (esCredencialAdministradorValida(campoClave)) {
-			new ControladorAdministracion().iniciar();
+			new ControladorAdministracion();
 		} else {
 			System.err.println("Contraseña incorrecta");
 		}
@@ -61,7 +53,7 @@ public class ControladorLogin {
 		votanteIngresado.setRut(rutVotante);
 		votanteIngresado.setClave(claveVotante);
 		if (esCredencialVotanteValida(votanteIngresado)) {
-			new ControladorVotacionesEnCurso(votanteIngresado.getId()).iniciar();
+			new ControladorVotacionesEnCurso(votanteIngresado.getId());
 		} else {
 			System.err.println("RUT y/o contraseña incorrectos");
 		}

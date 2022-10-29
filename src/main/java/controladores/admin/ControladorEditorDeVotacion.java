@@ -13,16 +13,11 @@ import java.util.List;
 public class ControladorEditorDeVotacion {
 
     // TODO Terminar de descoplar a clase vista
-    private final MenuEditorDeVotacion vista;
     private final Integer idVotacion;
 
     public ControladorEditorDeVotacion(Integer idVotacion) {
-        this.vista = new MenuEditorDeVotacion(this);
+        new MenuEditorDeVotacion(this).mostrar();
         this.idVotacion = idVotacion;
-    }
-
-    public void iniciar() {
-        this.vista.mostrar();
     }
 
     public Votacion obtenerVotacion() {

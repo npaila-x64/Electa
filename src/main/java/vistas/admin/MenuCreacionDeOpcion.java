@@ -49,7 +49,7 @@ public class MenuCreacionDeOpcion {
         map.put("Hora de inicio ............. %s hrs", votacion.getTiempoInicio());
         map.put("Fecha de término ........... %s", votacion.getFechaTermino());
         map.put("Hora de término ............ %s hrs", votacion.getTiempoTermino());
-        map.put("Estado ..................... %s", votacion.getEstado().getTexto());
+        map.put("Estado ..................... %s", votacion.getEstadoDeVotacion().getTexto());
         for (var key : map.keySet()) {
             System.out.printf(key.concat("%n"), map.get(key));
         }

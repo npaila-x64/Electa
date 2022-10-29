@@ -1,37 +1,31 @@
 package controladores.votante;
 
 import modelos.Votacion;
-import modelos.Votante;
 import modelos.dao.VotacionDao;
-import modelos.enums.Estado;
+import modelos.enums.EstadoDeVotacion;
 import vistas.votante.MenuVotacionesEnCurso;
 
 import java.util.List;
 
 public class ControladorVotacionesEnCurso {
 
-	private final MenuVotacionesEnCurso vista;
 	private final Integer idVotante;
 
 	public ControladorVotacionesEnCurso(Integer idVotanteDeEstaSesion) {
 		this.idVotante = idVotanteDeEstaSesion;
-		this.vista = new MenuVotacionesEnCurso(this);
-	}
-
-	public void iniciar() {
-		this.vista.mostrar();
+		new MenuVotacionesEnCurso(this).mostrar();
 	}
 
 	public List<Votacion> obtenerVotacionesEnCurso() {
-		return VotacionDao.obtenerVotacionesConEstado(Estado.EN_CURSO);
+		return VotacionDao.obtenerVotacionesConEstado(EstadoDeVotacion.EN_CURSO);
 	}
 
 	public void mostrarMenuParaVotar() {
-		new ControladorVotacion(this.idVotante).iniciar();
+		new ControladorVotacion(this.idVotante);
 	}
 
 	public void mostrarMenuResultados() {
-		new ControladorResultados().iniciar();
+		new ControladorResultados();
 	}
 
 }

@@ -6,13 +6,8 @@ import utils.ValidadorDeDatos;
 public class LoginAdministrador {
 
 	private String campoClave;
-	private final ControladorLogin controladorLogin;
 
 	public LoginAdministrador(ControladorLogin controladorLogin) {
-		this.controladorLogin = controladorLogin;
-	}
-
-	public void mostrar() {
 		ingresarClave();
 		controladorLogin.validarDatosAdministrador(this.campoClave);
 	}

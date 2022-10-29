@@ -6,7 +6,6 @@ import static utils.ValidadorDeDatos.*;
 
 public class MenuCreacionDeVotacion {
 
-    private final ControladorCreacionDeVotacion controlador;
     private String campoTitulo;
     private String campoDescripcion;
     private String campoFechaInicio;
@@ -14,8 +13,7 @@ public class MenuCreacionDeVotacion {
     private String campoFechaTermino;
     private String campoHoraTermino;
 
-    public MenuCreacionDeVotacion(ControladorCreacionDeVotacion controlador) {
-        this.controlador = controlador;
+    public MenuCreacionDeVotacion() {
     }
 
     public void mostrarVotacionCreadaConExito() {

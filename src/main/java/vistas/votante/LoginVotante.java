@@ -8,13 +8,7 @@ public class LoginVotante {
 	private String campoRut;
 	private String campoClave;
 
-	private final ControladorLogin controladorLogin;
-
 	public LoginVotante(ControladorLogin controladorLogin) {
-		this.controladorLogin = controladorLogin;
-	}
-
-	public void mostrar() {
 		ingresarRut();
 		ingresarClave();
 		controladorLogin.validarDatosVotante(this.campoRut, this.campoClave);

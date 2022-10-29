@@ -1,25 +1,16 @@
 package controladores.admin;
 
 import controladores.votante.ControladorResultados;
-import modelos.Votacion;
 import vistas.admin.MenuAdministracion;
-
-import java.util.List;
 
 public class ControladorAdministracion {
 
-    private final MenuAdministracion vista;
-
     public ControladorAdministracion() {
-        this.vista = new MenuAdministracion(this);
-    }
-
-    public void iniciar() {
-        this.vista.mostrar();
+        new MenuAdministracion(this).mostrar();
     }
 
     public void mostrarPanelDeControlDeVotaciones() {
-        new ControladorAdministracionDeVotaciones().iniciar();
+        new ControladorAdministracionDeVotaciones();
     }
 
     public void mostrarMenuCreacionDeVotacion() {
@@ -27,6 +18,6 @@ public class ControladorAdministracion {
     }
 
     public void mostrarMenuResultados() {
-        new ControladorResultados().iniciar();
+        new ControladorResultados();
     }
 }

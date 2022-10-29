@@ -7,7 +7,6 @@ import modelos.Voto;
 import modelos.dao.UsuarioDao;
 import modelos.dao.VotacionDao;
 import modelos.dao.VotoDao;
-import modelos.enums.TipoDeVoto;
 import utils.ValidadorDeDatos;
 import vistas.votante.MenuVotacion;
 
@@ -16,16 +15,11 @@ import java.util.List;
 
 public class ControladorVotacion {
 
-    private final MenuVotacion vista;
     private final Integer idVotante;
 
     public ControladorVotacion(Integer idVotante) {
-        this.vista = new MenuVotacion(this);
+        new MenuVotacion(this).mostrar();
         this.idVotante = idVotante;
-    }
-
-    public void iniciar() {
-        this.vista.mostrar();
     }
 
     public List<Votacion> obtenerVotaciones() {
@@ -109,7 +103,7 @@ public class ControladorVotacion {
     }
 
     public void registrarVotoBlanco(Votacion votacion, Votante votante) {
-        Opcion opcionBlanco = new Opcion(TipoDeVoto.VOTO_BLANCO);
+        Opcion opcionBlanco = Opcion.getOpcionConVotoBlanco();
         registrarVoto(votacion, opcionBlanco);
         registrarVotoEnVotos(votacion, votante, opcionBlanco);
         registrarVotanteEnVotaciones(votacion, votante);

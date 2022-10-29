@@ -1,8 +1,7 @@
 package modelos;
 
 import modelos.enums.CampoDeVotacion;
-import modelos.enums.Estado;
-import modelos.enums.TipoDeVoto;
+import modelos.enums.EstadoDeVotacion;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,7 +16,7 @@ public class Votacion {
     private Integer id;
     private String titulo;
     private String descripcion;
-    private Estado estado;
+    private EstadoDeVotacion estadoDeVotacion;
     private LocalDateTime fechaTiempoInicio;
     private LocalDate fechaInicio;
     private LocalTime tiempoInicio;
@@ -30,7 +29,7 @@ public class Votacion {
     private Integer votosBlancos;
     private List<Voto> votos;
 
-    // Método constructor usado para clonar una modelos.Votacion
+    // Método constructor usado para clonar una Votacion
     public Votacion(Votacion clon) {
         this.id = clon.getId();
         this.titulo = clon.getTitulo();
@@ -40,7 +39,7 @@ public class Votacion {
         this.votos = clon.getVotos();
         this.votosBlancos = clon.getVotosBlancos();
         this.votosPreferenciales = getVotosPreferenciales();
-        this.estado = clon.getEstado();
+        this.estadoDeVotacion = clon.getEstadoDeVotacion();
         setFechaTiempoInicio(clon.getFechaTiempoInicio());
         setFechaTiempoTermino(clon.getFechaTiempoTermino());
     }
@@ -51,7 +50,7 @@ public class Votacion {
         this.votos = new ArrayList<>();
         this.votosBlancos = 0;
         this.votosPreferenciales = 0;
-        this.estado = Estado.BORRADOR;
+        this.estadoDeVotacion = EstadoDeVotacion.BORRADOR;
 //      TODO Ver un modo estandarizar fechas de inicio y termino por defecto
         setFechaTiempoInicio(LocalDateTime.now());
         setFechaTiempoTermino(LocalDateTime.now().plusYears(50));
@@ -82,12 +81,12 @@ public class Votacion {
         this.descripcion = descripcion.toString();
     }
 
-    public Estado getEstado() {
-        return estado;
+    public EstadoDeVotacion getEstadoDeVotacion() {
+        return estadoDeVotacion;
     }
 
-    public void setEstado(Object estado) {
-        this.estado = Estado.fromObject(estado);
+    public void setEstadoDeVotacion(Object estadoDeVotacion) {
+        this.estadoDeVotacion = EstadoDeVotacion.fromObject(estadoDeVotacion);
     }
 
     public LocalDateTime getFechaTiempoInicio() {
@@ -185,7 +184,7 @@ public class Votacion {
     }
 
     private void agregarOpcionBlanco() {
-        this.opciones.add(0, new Opcion(TipoDeVoto.VOTO_BLANCO));
+        this.opciones.add(0, Opcion.getOpcionConVotoBlanco());
     }
 
     private void setVotosBlancos(Object votosBlancos) {
@@ -211,7 +210,7 @@ public class Votacion {
         mapaDeSetters.put(CampoDeVotacion.ID, () -> setId(valor));
         mapaDeSetters.put(CampoDeVotacion.TITULO, () -> setTitulo(valor));
         mapaDeSetters.put(CampoDeVotacion.DESCRIPCION, () -> setDescripcion(valor));
-        mapaDeSetters.put(CampoDeVotacion.ESTADO, () -> setEstado(valor));
+        mapaDeSetters.put(CampoDeVotacion.ESTADO, () -> setEstadoDeVotacion(valor));
         mapaDeSetters.put(CampoDeVotacion.FECHA_INICIO, () -> setFechaInicio((LocalDate) valor));
         mapaDeSetters.put(CampoDeVotacion.HORA_INICIO, () -> setTiempoInicio((LocalTime) valor));
         mapaDeSetters.put(CampoDeVotacion.FECHA_TERMINO, () -> setFechaTermino((LocalDate) valor));
