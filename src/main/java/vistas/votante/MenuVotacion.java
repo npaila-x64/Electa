@@ -17,11 +17,10 @@ public class MenuVotacion {
 
     public void mostrar() {
         while (true) {
-            var votaciones = controlador.obtenerVotaciones();
+            var votaciones = controlador.obtenerVotacionesEnElQuePuedeVotarElVotante();
             mostrarVotacionesDisponiblesParaVotacion(votaciones);
             int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(votaciones.size());
             if (opcionElegida == 0) break;
-            var votante = controlador.obtenerVotante();
             controlador.mostrarMenuOpcionesParaVotar(opcionElegida);
         }
     }

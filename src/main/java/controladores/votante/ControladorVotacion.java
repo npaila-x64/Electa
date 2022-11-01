@@ -22,7 +22,7 @@ public class ControladorVotacion {
         new MenuVotacion(this).mostrar();
     }
 
-    public List<Votacion> obtenerVotaciones() {
+    public List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante() {
         return VotacionDao
                 .obtenerVotacionesEnElQuePuedeVotarElVotante(idVotante);
     }
@@ -64,18 +64,8 @@ public class ControladorVotacion {
         System.out.print("Si desea volver escriba [0]\n> ");
     }
 
-    private List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante() {
-        List<Votacion> votacionesEnCurso = VotacionDao.obtenerVotacionesEnCurso();
-        List<Votacion> votacionesEnElQuePuedeVotarElVotante = new ArrayList<>();
-        votacionesEnCurso
-                .stream()
-                .filter(votacionSiguiente -> !VotacionDao.votanteVotoEnEstaVotacion(votacionSiguiente, idVotante))
-                .forEach(votacionesEnElQuePuedeVotarElVotante::add);
-        return votacionesEnElQuePuedeVotarElVotante;
-    }
-
     public void registrarVoto(Votacion votacion, Opcion opcionElegida) {
-        List<Votacion> votaciones = obtenerVotaciones();
+        List<Votacion> votaciones = VotacionDao.obtenerVotaciones();
         for (var votacionSiguiente : votaciones) {
             if (votacionSiguiente.getId().equals(votacion.getId())) {
                 List<Opcion> opciones = votacionSiguiente.getOpciones();
@@ -109,7 +99,7 @@ public class ControladorVotacion {
     }
 
     public void registrarVotanteEnVotaciones(Votacion votacion, Votante votante) {
-        List<Votacion> votaciones = obtenerVotaciones();
+        List<Votacion> votaciones = VotacionDao.obtenerVotaciones();
         for (var votacionSiguiente : votaciones) {
             if (votacionSiguiente.getId().equals(votacion.getId())) {
                 List<Votante> votantes = votacionSiguiente.getVotantes();
