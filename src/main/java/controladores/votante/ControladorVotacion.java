@@ -38,11 +38,10 @@ public class ControladorVotacion {
         List<Opcion> opciones = votacion.getOpciones();
         mostrarOpcionesMenuOpcionesParaVotar(opciones);
         int nuevaOpcion = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
-        if (nuevaOpcion == 0) return;
-        if (nuevaOpcion == 1) {
-            registrarVotoBlanco(votacion, obtenerVotante());
-        } else {
-            registrarVotoPreferencial(votacion, obtenerVotante(), opciones.get(nuevaOpcion - 1));
+        switch (nuevaOpcion) {
+            case 0 -> {return;}
+            case 1 -> registrarVotoBlanco(votacion, obtenerVotante());
+            default -> registrarVotoPreferencial(votacion, obtenerVotante(), opciones.get(nuevaOpcion - 1));
         }
         mostrarVotoRealizadoConExito();
     }
