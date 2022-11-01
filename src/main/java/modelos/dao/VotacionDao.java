@@ -52,7 +52,7 @@ public class VotacionDao {
         votacion.setId(votacionJSON.get(CampoDeVotacion.ID.getTexto()));
         votacion.setTitulo(votacionJSON.get(CampoDeVotacion.TITULO.getTexto()));
         votacion.setDescripcion(votacionJSON.get(CampoDeVotacion.DESCRIPCION.getTexto()));
-        votacion.setEstado(votacionJSON.get(CampoDeVotacion.ESTADO.getTexto()));
+        votacion.setEstadoDeVotacion(votacionJSON.get(CampoDeVotacion.ESTADO.getTexto()));
         votacion.setFechaTiempoInicio(parsearFechaTiempoInicio(votacionJSON));
         votacion.setFechaTiempoTermino(parsearFechaTiempoTermino(votacionJSON));
         votacion.setOpciones(obtenerOpcionesDeVotacionJSON(votacion, votacionJSON));
@@ -141,16 +141,16 @@ public class VotacionDao {
         List<Votacion> votacionesEnCurso = new ArrayList<>();
         votaciones
                 .stream()
-                .filter(votacionSiguiente -> votacionSiguiente.getEstado().equals(Estado.EN_CURSO))
+                .filter(votacionSiguiente -> votacionSiguiente.getEstadoDeVotacion().equals(EstadoDeVotacion.EN_CURSO))
                 .forEach(votacionesEnCurso::add);
         return votacionesEnCurso;
     }
 
-    public static List<Votacion> obtenerVotacionesConEstado(Estado estado) {
+    public static List<Votacion> obtenerVotacionesConEstado(EstadoDeVotacion estado) {
         List<Votacion> votaciones = obtenerVotaciones();
         List<Votacion> votacionesCopia = new ArrayList<>();
         for (Votacion votacionSiguiente : votaciones) {
-            if (votacionSiguiente.getEstado().equals(estado)) {
+            if (votacionSiguiente.getEstadoDeVotacion().equals(estado)) {
                 votacionesCopia.add(votacionSiguiente);
             }
         }
@@ -216,7 +216,7 @@ public class VotacionDao {
         votacionObj.put(CampoDeVotacion.ID.getTexto(), votacion.getId());
         votacionObj.put(CampoDeVotacion.TITULO.getTexto(), votacion.getTitulo());
         votacionObj.put(CampoDeVotacion.DESCRIPCION.getTexto(), votacion.getDescripcion());
-        votacionObj.put(CampoDeVotacion.ESTADO.getTexto(), votacion.getEstado().getTexto());
+        votacionObj.put(CampoDeVotacion.ESTADO.getTexto(), votacion.getEstadoDeVotacion().getTexto());
     }
 
     private static void convertirJSONCampoFechaYHora(Votacion votacion, JSONObject votacionObj){
@@ -276,7 +276,7 @@ public class VotacionDao {
 
     public static void crearVotacion(Votacion votacion) {
         votacion.setId(obtenerNuevaIdVotacion());
-        votacion.setEstado(Estado.PENDIENTE);
+        votacion.setEstadoDeVotacion(EstadoDeVotacion.PENDIENTE);
         List<Votacion> votaciones = obtenerVotaciones();
         votaciones.add(votacion);
         escribirVotaciones(votaciones);

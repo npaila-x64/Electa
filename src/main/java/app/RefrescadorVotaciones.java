@@ -1,6 +1,6 @@
 package app;
 
-import modelos.enums.Estado;
+import modelos.enums.EstadoDeVotacion;
 import modelos.Votacion;
 import utils.AccesoADatos;
 
@@ -37,18 +37,18 @@ public class RefrescadorVotaciones {
 
     public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, Votacion votacion) {
         // TODO Arreglar este desorden
-        Estado estado = votacion.getEstado();
-        if (estado.equals(Estado.BORRADOR)) return;
+        EstadoDeVotacion estado = votacion.getEstadoDeVotacion();
+        if (estado.equals(EstadoDeVotacion.BORRADOR)) return;
         var fechaTiempoInicio = votacion.getFechaTiempoInicio();
         var fechaTiempoTermino = votacion.getFechaTiempoTermino();
         if (fechaTiempoAhora.isAfter(fechaTiempoTermino)) {
-            estado = Estado.FINALIZADO;
+            estado = EstadoDeVotacion.FINALIZADO;
         } else if (fechaTiempoAhora.isBefore(fechaTiempoInicio)) {
-            estado = Estado.PENDIENTE;
+            estado = EstadoDeVotacion.PENDIENTE;
         } else {
-            estado = Estado.EN_CURSO;
+            estado = EstadoDeVotacion.EN_CURSO;
         }
-        votacion.setEstado(estado);
+        votacion.setEstadoDeVotacion(estado);
     }
 
     public static LocalDateTime obtenerFechaTiempoAhora() {
