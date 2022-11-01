@@ -24,7 +24,6 @@ public class ControladorCreacionDeOpcion {
     }
 
     public void agregarOpcionDeVotacion() {
-        // TODO Validar ingreso de opción vacía
         String opcion = ValidadorDeDatos
                 .pedirEntrada("Escriba la opción que desea agregar\n> ", 35);
         if (VotacionDao.opcionYaExiste(obtenerVotacion(), opcion)){

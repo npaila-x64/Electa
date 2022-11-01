@@ -114,12 +114,26 @@ public class ValidadorDeDatos {
     }
 
     public static String pedirEntrada(int limite) {
-        String entrada = new Scanner(System.in).nextLine();
+        String entrada = pedirEntradaNoVacia();
         if (entrada.length() > limite) {
             mostrarTextoInvalido();
             return pedirEntrada();
         }
         return entrada;
+    }
+
+    public static String pedirEntradaNoVacia() {
+        String texto = pedirEntrada();
+        if(texto.isBlank()){
+            mostrarTextoVacio();
+            return pedirEntradaNoVacia();
+        }else {
+            return texto;
+        }
+    }
+
+    public static void mostrarTextoVacio(){
+        System.out.print("Por favor, ingrese una entrada no vacia\n> ");
     }
 
     public static void mostrarTextoInvalido() {
