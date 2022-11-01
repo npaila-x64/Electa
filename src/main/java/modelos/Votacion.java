@@ -29,6 +29,7 @@ public class Votacion {
     private Integer votosBlancos;
     private List<Voto> votos;
 
+    // TODO el clon puede ser creado por un método especial llamado clon() en vez de usar el constructor
     // Método constructor usado para clonar una Votacion
     public Votacion(Votacion clon) {
         this.id = clon.getId();
@@ -220,5 +221,18 @@ public class Votacion {
         mapaDeSetters.put(CampoDeVotacion.VOTOS_BLANCOS, () -> setVotosBlancos(valor));
         mapaDeSetters.put(CampoDeVotacion.VOTOS_PREFERENCIALES, () -> setVotosPreferenciales(valor));
         mapaDeSetters.get(campo).run();
+    }
+
+    @Override
+    public String toString() {
+        return new String()
+            .concat(String.format("%s: %s\n", CampoDeVotacion.ID, id))
+            .concat(String.format("%s: %s\n", CampoDeVotacion.TITULO, titulo))
+            .concat(String.format("%s: %s\n", CampoDeVotacion.DESCRIPCION, descripcion))
+            .concat(String.format("%s: %s\n", CampoDeVotacion.ESTADO, estadoDeVotacion))
+            .concat(String.format("%s: %s\n", CampoDeVotacion.FECHA_INICIO, fechaTiempoInicio))
+            .concat(String.format("%s: %s\n", CampoDeVotacion.FECHA_TERMINO, fechaTiempoTermino))
+            .concat(String.format("%s: %s\n", CampoDeVotacion.VOTOS_PREFERENCIALES, votosPreferenciales))
+            .concat(String.format("%s: %s\n", CampoDeVotacion.VOTOS_BLANCOS, votosBlancos));
     }
 }
