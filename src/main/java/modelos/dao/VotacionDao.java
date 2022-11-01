@@ -35,19 +35,6 @@ public class VotacionDao {
         return votaciones;
     }
 
-//    public List<Votacion> obtenerVotaciones(List<Voto> votos) {
-//        List<Votacion> votaciones = new ArrayList<>();
-//        JSONArray jsonArrayVotaciones = parsearVotaciones();
-//        for (Object jsonArrayVotacion : jsonArrayVotaciones) {
-//            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotacion;
-//            Votacion votacion = new Votacion();
-//            obtenerAtributosDeVotacionJSON(votacion, votacionSiguiente);
-//            votaciones.add(votacion);
-//        }
-//        return votaciones;
-//    }
-
-
     private static void obtenerAtributosDeVotacionJSON(Votacion votacion, JSONObject votacionJSON) {
         votacion.setId(votacionJSON.get(CampoDeVotacion.ID.getTexto()));
         votacion.setTitulo(votacionJSON.get(CampoDeVotacion.TITULO.getTexto()));
@@ -58,10 +45,6 @@ public class VotacionDao {
         votacion.setOpciones(obtenerOpcionesDeVotacionJSON(votacion, votacionJSON));
         votacion.setVotantes(obtenerVotantesDeVotacionJSON(votacion, votacionJSON));
 //        votacion.setVotos(obtenerVotosDeVotacion(votacion));
-    }
-
-    public void setVotos() {
-
     }
 
 //    private List<Voto> obtenerVotosDeVotacion(Votacion votacion) {
