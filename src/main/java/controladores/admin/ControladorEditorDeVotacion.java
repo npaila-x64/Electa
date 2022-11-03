@@ -16,8 +16,8 @@ public class ControladorEditorDeVotacion {
     private final Integer idVotacion;
 
     public ControladorEditorDeVotacion(Integer idVotacion) {
-        new MenuEditorDeVotacion(this).mostrar();
         this.idVotacion = idVotacion;
+        new MenuEditorDeVotacion(this).mostrar();
     }
 
     public Votacion obtenerVotacion() {
