@@ -40,11 +40,14 @@ public class ControladorLogin {
 		}
 	}
 
-	public void validarDatosAdministrador(String campoClave) {
-		if (esCredencialAdministradorValida(campoClave)) {
+	public void validarDatosAdministrador(String rutAdmin, String claveAdmin) {
+		Votante admininIngresado = new Votante();
+		admininIngresado.setRut(rutAdmin);
+		admininIngresado.setClave(claveAdmin);
+		if (esCredencialAdministradorValida(admininIngresado)) {
 			new ControladorAdministracion();
 		} else {
-			System.err.println("Contraseña incorrecta");
+			System.err.println("RUT y/o contraseña incorrectos");
 		}
 	}
 
@@ -73,8 +76,17 @@ public class ControladorLogin {
 		return false;
 	}
 
-	private boolean esCredencialAdministradorValida(String clave) {
-		return clave.equals(UsuarioDao.obtenerCredencialAdmin());
+	private boolean esCredencialAdministradorValida(Votante admin) {
+		List<Votante> administradores = UsuarioDao.obtenerAdministradores();
+		for (Votante adminSiguiente : administradores) {
+			// Primero verifica que los rut sean iguales, después se verifica la clave
+			if (adminSiguiente.getRut().equals(admin.getRut())) {
+				if (adminSiguiente.getClave().equals(admin.getClave())) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private void mostrarSistemaNoDisponible(String mensaje) {
