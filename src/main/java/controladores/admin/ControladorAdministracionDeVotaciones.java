@@ -23,18 +23,10 @@ public class ControladorAdministracionDeVotaciones {
         return votaciones.get(opcionElegida -1);
     }
 
-    public boolean seEncuentraEnCurso(Integer opcionElegida){
+    public boolean votacionNoEsEditable(Integer opcionElegida){
         Votacion votacion = obtenerVotacion(opcionElegida);
-        return votacion.getEstadoDeVotacion().equals(EstadoDeVotacion.EN_CURSO);
-    }
-
-    public boolean seEncuentraFinalizada(Integer opcionElegida){
-        Votacion votacion = obtenerVotacion(opcionElegida);
-        return votacion.getEstadoDeVotacion().equals(EstadoDeVotacion.FINALIZADO);
-    }
-
-    public boolean noEsEditable(Integer opcionElegida){
-        if(seEncuentraEnCurso(opcionElegida) || seEncuentraFinalizada(opcionElegida)){
+        if(votacion.estaEnEstado(EstadoDeVotacion.EN_CURSO) ||
+                votacion.estaEnEstado(EstadoDeVotacion.FINALIZADO)){
             mostrarMensajeVotacionNoEditable();
             return true;
         }
