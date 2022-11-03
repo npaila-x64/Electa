@@ -133,7 +133,7 @@ public class VotacionDao {
         List<Votacion> votaciones = obtenerVotaciones();
         List<Votacion> votacionesCopia = new ArrayList<>();
         for (Votacion votacionSiguiente : votaciones) {
-            if (votacionSiguiente.getEstadoDeVotacion().equals(estado)) {
+            if (votacionSiguiente.estaEnEstado(estado)) {
                 votacionesCopia.add(votacionSiguiente);
             }
         }
