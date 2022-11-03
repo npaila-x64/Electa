@@ -40,6 +40,7 @@ public class ControladorLogin {
 		}
 	}
 
+    // TODO casi igual al método validarDatosVotante
 	public void validarDatosAdministrador(String rutAdmin, String claveAdmin) {
 		Votante admininIngresado = new Votante();
 		admininIngresado.setRut(rutAdmin);
@@ -76,6 +77,7 @@ public class ControladorLogin {
 		return false;
 	}
 
+	// TODO es casi igual al método esCredencialVotanteValida
 	private boolean esCredencialAdministradorValida(Votante admin) {
 		List<Votante> administradores = UsuarioDao.obtenerAdministradores();
 		for (Votante adminSiguiente : administradores) {
