@@ -40,7 +40,7 @@ public class UsuarioDao {
         }
         return votantes;
     }
-
+    //TODO casi igual al método obtenerVotantes
     public static List<Votante> obtenerAdministradores(){
         List<Votante> administradores = new ArrayList<>();
         JSONArray jsonArrayAdmins = parsearAdministradores();
