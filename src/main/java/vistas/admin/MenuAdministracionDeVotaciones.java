@@ -25,6 +25,7 @@ public class MenuAdministracionDeVotaciones {
             mostrarOpcionesPanelDeControlDeVotaciones(votaciones);
             int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(votaciones.size());
             if (opcionElegida == 0) break;
+            if(controlador.noEsEditable(opcionElegida)) continue;
             controlador.mostrarEditorDeVotacion(opcionElegida);
         }
     }
