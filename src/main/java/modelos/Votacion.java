@@ -223,6 +223,10 @@ public class Votacion {
         mapaDeSetters.get(campo).run();
     }
 
+    public boolean estaEnEstado(EstadoDeVotacion estadoConsultado){
+        return estadoDeVotacion.equals(estadoConsultado);
+    }
+
     @Override
     public String toString() {
         return new String()
