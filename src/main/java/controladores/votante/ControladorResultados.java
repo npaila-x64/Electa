@@ -33,7 +33,7 @@ public class ControladorResultados {
     }
 
     public Votacion obtenerVotacion(int opcionElegida) {
-        List<Votacion> votaciones = VotacionDao.obtenerVotaciones();
+        List<Votacion> votaciones = VotacionDao.obtenerVotacionesFinalizadas();
         return votaciones.get(opcionElegida -1);
     }
 }

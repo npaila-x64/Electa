@@ -129,6 +129,16 @@ public class VotacionDao {
         return votacionesEnCurso;
     }
 
+    public static List<Votacion> obtenerVotacionesFinalizadas() {
+        List<Votacion> votaciones = obtenerVotaciones();
+        List<Votacion> votacionesEnCurso = new ArrayList<>();
+        votaciones
+                .stream()
+                .filter(votacionSiguiente -> votacionSiguiente.getEstadoDeVotacion().equals(EstadoDeVotacion.FINALIZADO))
+                .forEach(votacionesEnCurso::add);
+        return votacionesEnCurso;
+    }
+
     public static List<Votacion> obtenerVotacionesConEstado(EstadoDeVotacion estado) {
         List<Votacion> votaciones = obtenerVotaciones();
         List<Votacion> votacionesCopia = new ArrayList<>();
