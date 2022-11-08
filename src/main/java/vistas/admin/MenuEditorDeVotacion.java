@@ -16,11 +16,6 @@ public class MenuEditorDeVotacion {
     }
 
     public void mostrar() {
-        //      FIXME A futuro se podría usar el siguiente formato para las opciones / menús
-//        LinkedHashMap<String, Runnable> opciones = new LinkedHashMap<>();
-//        opciones.put("Modificar algún campo",       () -> mostrarMenuEditarCamposDeVotacion(IDVotacion));
-//        LinkedHashSet<String> set = new LinkedHashSet(opciones.values());
-//        int opcion = utils.ValidadorDeDatos.pedirOpcionHasta(set.size());
         while (true) {
             mostrarOpcionesEditorDeVotacion();
             switch (ValidadorDeDatos.pedirOpcionHasta(4)) {
