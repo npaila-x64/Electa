@@ -2,7 +2,7 @@ package vistas.admin;
 
 import controladores.admin.ControladorAdministracionDeVotaciones;
 import modelos.Votacion;
-import modelos.dao.VotacionDao;
+import dao.VotacionDao;
 import modelos.enums.EstadoDeVotacion;
 import utils.Utilidades;
 import utils.ValidadorDeDatos;

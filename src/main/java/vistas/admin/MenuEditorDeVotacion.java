@@ -1,11 +1,15 @@
 package vistas.admin;
 
 import controladores.admin.ControladorEditorDeVotacion;
+import modelos.Opcion;
 import modelos.Votacion;
+import modelos.enums.CampoDeVotacion;
 import utils.Utilidades;
 import utils.ValidadorDeDatos;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class MenuEditorDeVotacion {
 
@@ -20,9 +24,9 @@ public class MenuEditorDeVotacion {
             mostrarOpcionesEditorDeVotacion();
             switch (ValidadorDeDatos.pedirOpcionHasta(4)) {
                 case 0 -> {return;}
-                case 1 -> controlador.mostrarMenuEditarCamposDeVotacion();
+                case 1 -> mostrarMenuEditarCamposDeVotacion();
                 case 2 -> controlador.mostrarMenuCreacionDeOpcion();
-                case 3 -> controlador.mostrarMenuEliminarOpcionesDeVotacion();
+                case 3 -> mostrarMenuEliminarOpcionesDeVotacion();
                 case 4 -> {controlador.eliminarVotacion(); return;}
             }
         }
@@ -64,5 +68,52 @@ public class MenuEditorDeVotacion {
         for (var opcion : opciones) {
             System.out.println(Utilidades.padTexto("", 8).concat(opcion.getNombre()));
         }
+    }
+
+    public void mostrarMenuEditarCamposDeVotacion() {
+        List<CampoDeVotacion> campos =
+                new ArrayList<>(CampoDeVotacion.getCamposDeVotacionEditablesPorAdministrador());
+        while (true) {
+            mostrarOpcionesMenuEditarCamposDeVotacion(campos);
+            int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(campos.size());
+            if (opcionElegida == 0) break;
+            controlador.editarCampoDeVotacion(campos.get(opcionElegida - 1));
+        }
+    }
+
+    private void mostrarOpcionesMenuEditarCamposDeVotacion(List<CampoDeVotacion> campos) {
+        System.out.print("\n" +
+                "Escriba el índice del campo que desea modificar\n");
+        List<String> camposTexto = new ArrayList<>();
+        for (CampoDeVotacion c : campos) camposTexto.add(c.getTexto());
+        mostrarListaDeCampos(camposTexto);
+    }
+
+    private void mostrarListaDeCampos(List<String> campos) {
+        System.out.println("Elija una opción");
+        for (int indice = 0; indice < campos.size(); indice++) {
+            int indiceAjustado = indice + 1;
+            System.out.printf("[%s] %s%n", indiceAjustado, campos.get(indice));
+        }
+        System.out.print("Si desea volver escriba [0]\n> ");
+    }
+
+    public void mostrarMenuEliminarOpcionesDeVotacion() {
+        List<Opcion> opciones = controlador.obtenerOpcionesDeVotacion();
+        System.out.println("Escriba la opción que desea eliminar");
+        mostrarListaOpciones(opciones);
+        int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
+        if (opcionElegida == 0) return;
+        controlador.eliminarOpcionDeVotacion(opcionElegida);
+        System.out.println("Opción eliminada con exito");
+    }
+
+    public void mostrarListaOpciones(List<Opcion> opciones) {
+        System.out.println("Elija una opción");
+        for (int indice = 0; indice < opciones.size(); indice++) {
+            int indiceAjustado = indice + 1;
+            System.out.printf("[%s] %s%n", indiceAjustado, opciones.get(indice).getNombre());
+        }
+        System.out.print("Si desea volver escriba [0]\n> ");
     }
 }

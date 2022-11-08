@@ -11,7 +11,6 @@ import java.util.List;
 
 public class ControladorEditorDeVotacion {
 
-    // TODO Terminar de descoplar a clase vista
     private final Integer idVotacion;
 
     public ControladorEditorDeVotacion(Integer idVotacion) {

@@ -1,4 +1,4 @@
-package modelos.dao;
+package dao;
 
 import excepciones.AccesoADatosInterrumpidoException;
 import modelos.Opcion;
