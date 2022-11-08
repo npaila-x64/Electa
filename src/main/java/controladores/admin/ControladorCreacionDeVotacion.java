@@ -1,7 +1,7 @@
 package controladores.admin;
 
 import modelos.Votacion;
-import modelos.dao.VotacionDao;
+import dao.VotacionDao;
 import vistas.admin.MenuCreacionDeVotacion;
 
 import java.time.LocalDate;

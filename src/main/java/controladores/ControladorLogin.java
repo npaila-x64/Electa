@@ -4,7 +4,7 @@ import controladores.admin.ControladorAdministracion;
 import controladores.votante.ControladorVotacionesEnCurso;
 import excepciones.AccesoADatosInterrumpidoException;
 import modelos.Votante;
-import modelos.dao.UsuarioDao;
+import dao.UsuarioDao;
 import utils.ValidadorDeDatos;
 import vistas.admin.LoginAdministrador;
 import vistas.votante.LoginVotante;

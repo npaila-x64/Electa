@@ -1,7 +1,7 @@
 package controladores.votante;
 
 import modelos.Votacion;
-import modelos.dao.VotacionDao;
+import dao.VotacionDao;
 import modelos.enums.EstadoDeVotacion;
 import vistas.votante.MenuResultados;
 

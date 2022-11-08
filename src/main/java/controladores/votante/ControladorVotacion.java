@@ -4,9 +4,9 @@ import modelos.Opcion;
 import modelos.Votacion;
 import modelos.Votante;
 import modelos.Voto;
-import modelos.dao.UsuarioDao;
-import modelos.dao.VotacionDao;
-import modelos.dao.VotoDao;
+import dao.UsuarioDao;
+import dao.VotacionDao;
+import dao.VotoDao;
 import utils.ValidadorDeDatos;
 import vistas.votante.MenuVotacion;
 

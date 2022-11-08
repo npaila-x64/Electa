@@ -1,4 +1,4 @@
-package app;
+package lanzador;
 
 import controladores.ControladorLogin;
 

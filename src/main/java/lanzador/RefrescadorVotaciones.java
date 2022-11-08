@@ -1,4 +1,4 @@
-package app;
+package lanzador;
 
 import modelos.enums.EstadoDeVotacion;
 import modelos.Votacion;
@@ -6,7 +6,7 @@ import modelos.Votacion;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import modelos.dao.VotacionDao;
+import dao.VotacionDao;
 
 
 /*

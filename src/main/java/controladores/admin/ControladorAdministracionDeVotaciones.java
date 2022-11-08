@@ -1,7 +1,7 @@
 package controladores.admin;
 
 import modelos.Votacion;
-import modelos.dao.VotacionDao;
+import dao.VotacionDao;
 import modelos.enums.EstadoDeVotacion;
 import vistas.admin.MenuAdministracionDeVotaciones;
 
