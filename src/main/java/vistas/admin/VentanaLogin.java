@@ -36,11 +36,12 @@ class MyFrame extends JFrame implements ActionListener {
         logo = new JLabel();
         logo.setIcon(imagen);
 
-        logo.setSize(205, 78);
-//        logo.setLocation(300, 230);
+        logo.setSize(250, 96);
+        logo.setLocation(325, 0);
         logo.setHorizontalAlignment(JLabel.CENTER);
         logo.setVerticalAlignment(JLabel.CENTER);
 //        titulo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        //logo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         c.add(logo);
 
 
