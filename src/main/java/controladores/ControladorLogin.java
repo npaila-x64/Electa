@@ -6,14 +6,18 @@ import excepciones.AccesoADatosInterrumpidoException;
 import modelos.Votante;
 import dao.UsuarioDao;
 import utils.ValidadorDeDatos;
-import vistas.admin.LoginAdministrador;
+import vistas.admin.*;
 import vistas.votante.LoginVotante;
 
 import java.util.List;
 
-public class ControladorLogin {
+public class ControladorLogin implements LoginVistaControlador {
+
+	private LoginVista loginVista;
 
 	public void iniciar() {
+		loginVista = new VentanaLogin(this);
+
 		mostrarMenuDeIngreso();
 	}
 
@@ -94,5 +98,25 @@ public class ControladorLogin {
 	private void mostrarSistemaNoDisponible(String mensaje) {
 		System.err.println("El sistema no se encuentra disponible por ahora, disculpe las molestias\n" +
 				"Mensaje de error: " + mensaje);
+	}
+
+	@Override
+	public void credencialesCambio(LoginVista vista) {
+		
+	}
+
+	@Override
+	public void autenticacionFueSolicitada(LoginVista vista) {
+		String rutVotante = loginVista.obtenerRut();
+		String claveVotante = loginVista.obtenerClave();
+		Votante votanteIngresado = new Votante();
+		votanteIngresado.setRut(rutVotante);
+		votanteIngresado.setClave(claveVotante);
+		if (esCredencialVotanteValida(votanteIngresado)) {
+			loginVista.autenticacionSeLogro();
+			new ControladorVotacionesEnCurso(votanteIngresado.getId());
+		} else {
+			loginVista.autenticacionFallo();
+		}
 	}
 }

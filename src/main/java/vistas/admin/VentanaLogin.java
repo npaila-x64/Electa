@@ -1,9 +1,10 @@
 package vistas.admin;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-class MyFrame extends JFrame implements ActionListener {
+public class VentanaLogin extends JFrame implements ActionListener, LoginVista {
 
     private Container c;
     private JLabel titulo;
@@ -11,9 +12,15 @@ class MyFrame extends JFrame implements ActionListener {
     private JTextField trut;
     private JTextField tclave;
     private JButton ingreso;
+    private LoginVistaControlador controlador;
 
-    public MyFrame()
-    {
+    public void setLoginVistaControlador(LoginVistaControlador controlador) {
+        this.controlador = controlador;
+    }
+
+    public VentanaLogin(LoginVistaControlador controlador) {
+        setLoginVistaControlador(controlador);
+
         setTitle("Electa");
         setBounds(300, 90, 900, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -29,7 +36,6 @@ class MyFrame extends JFrame implements ActionListener {
         titulo.setSize(900, 300);
         titulo.setHorizontalAlignment(JLabel.CENTER);
         titulo.setVerticalAlignment(JLabel.CENTER);
-//        titulo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         c.add(titulo);
 
         ImageIcon imagen = new ImageIcon("src/main/img/logo.png");
@@ -40,11 +46,7 @@ class MyFrame extends JFrame implements ActionListener {
         logo.setLocation(325, 0);
         logo.setHorizontalAlignment(JLabel.CENTER);
         logo.setVerticalAlignment(JLabel.CENTER);
-//        titulo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        //logo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         c.add(logo);
-
-
 
         trut = new JTextField();
         trut.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -53,7 +55,6 @@ class MyFrame extends JFrame implements ActionListener {
         trut.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         trut.setText("Rut");
         c.add(trut);
-
 
         tclave = new JTextField();
         tclave.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -64,10 +65,10 @@ class MyFrame extends JFrame implements ActionListener {
         c.add(tclave);
 
         ingreso = new JButton("Ingresar");
+        ingreso.addActionListener(this);
         ingreso.setFont(new Font("Arial", Font.PLAIN, 15));
         ingreso.setSize(200, 50);
         ingreso.setLocation(350, 420);
-        ingreso.addActionListener(this);
 
         ingreso.setBackground(Color.BLACK);
         ingreso.setForeground(Color.WHITE);
@@ -77,17 +78,43 @@ class MyFrame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
+    @Override
+    public String obtenerRut() {
+        return trut.getText();
+    }
+
+    @Override
+    public String obtenerClave() {
+        return tclave.getText();
+    }
+
+    @Override
+    public void autenticacionFallo() {
+        System.out.println("Fallo la autenticación");
+    }
+
+    @Override
+    public void autenticacionSeLogro() {
+        System.out.println("La autenticación se logró con exito");
+    }
+
+    @Override
+    public LoginVistaControlador getVistaLoginControlador() {
+        return controlador;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ingreso) {
+            getVistaLoginControlador().autenticacionFueSolicitada(this);
         }
     }
 }
 
-class VentanaLogin {
+class VentanaLoginTest {
 
     public static void main(String[] args) throws Exception
     {
-        MyFrame f = new MyFrame();
+        VentanaLogin f = new VentanaLogin(null);
     }
 }
