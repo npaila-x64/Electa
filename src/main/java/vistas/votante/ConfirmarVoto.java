@@ -1,12 +1,11 @@
 package vistas.votante;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
-class MyFrame extends JFrame implements ActionListener {
+class MyFrame extends JFrame {
 
     private Container c;
-    private JLabel titulo;
+    private JLabel encabezado;
     private JLabel candidato;
     private JLabel confirmar;
     private JButton botonSi;
@@ -24,14 +23,14 @@ class MyFrame extends JFrame implements ActionListener {
         c.setBackground(Color.WHITE);
         c.setLayout(null);
 
-        titulo = new JLabel("Usted votó por");
-        titulo.setFont(new Font("Arial", Font.PLAIN, 36));
-        titulo.setLocation(0,75);
-        titulo.setSize(900, 100);
-        titulo.setHorizontalAlignment(JLabel.CENTER);
-        titulo.setVerticalAlignment(JLabel.CENTER);
+        encabezado = new JLabel("Usted votó por");
+        encabezado.setFont(new Font("Arial", Font.PLAIN, 36));
+        encabezado.setLocation(0,75);
+        encabezado.setSize(900, 100);
+        encabezado.setHorizontalAlignment(JLabel.CENTER);
+        encabezado.setVerticalAlignment(JLabel.CENTER);
 //        titulo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        c.add(titulo);
+        c.add(encabezado);
 
         candidato = new JLabel("insertar candidato");
         candidato.setFont(new Font("Arial", Font.BOLD, 36));
@@ -56,8 +55,6 @@ class MyFrame extends JFrame implements ActionListener {
         botonSi.setFont(new Font("Arial", Font.PLAIN, 15));
         botonSi.setSize(200, 50);
         botonSi.setLocation(175, 420);
-        botonSi.addActionListener(this);
-
         botonSi.setBackground(Color.BLACK);
         botonSi.setForeground(Color.WHITE);
 
@@ -67,8 +64,6 @@ class MyFrame extends JFrame implements ActionListener {
         botonNo.setFont(new Font("Arial", Font.PLAIN, 15));
         botonNo.setSize(200, 50);
         botonNo.setLocation(525, 420);
-        botonNo.addActionListener(this);
-
         botonNo.setBackground(Color.BLACK);
         botonNo.setForeground(Color.WHITE);
 
@@ -77,11 +72,6 @@ class MyFrame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
-        if (e.getSource() == botonSi) {
-        }
-    }
 }
 
 class ConfirmarVoto {
