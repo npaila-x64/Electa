@@ -5,9 +5,9 @@ import java.awt.*;
 class MyFrame extends JFrame {
 
     private Container c;
-    private JLabel encabezado;
-    private JLabel candidato;
-    private JLabel confirmar;
+    private JLabel tEncabezado;
+    private JLabel tCandidato;
+    private JLabel tConfirmar;
     private JButton botonSi;
     private JButton botonNo;
 
@@ -23,32 +23,31 @@ class MyFrame extends JFrame {
         c.setBackground(Color.WHITE);
         c.setLayout(null);
 
-        encabezado = new JLabel("Usted votó por");
-        encabezado.setFont(new Font("Arial", Font.PLAIN, 36));
-        encabezado.setLocation(0,75);
-        encabezado.setSize(900, 100);
-        encabezado.setHorizontalAlignment(JLabel.CENTER);
-        encabezado.setVerticalAlignment(JLabel.CENTER);
-//        titulo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        c.add(encabezado);
+        tEncabezado = new JLabel("Usted votó por");
+        tEncabezado.setFont(new Font("Arial", Font.PLAIN, 36));
+        tEncabezado.setLocation(0,75);
+        tEncabezado.setSize(900, 100);
+        tEncabezado.setHorizontalAlignment(JLabel.CENTER);
+        tEncabezado.setVerticalAlignment(JLabel.CENTER);
+        c.add(tEncabezado);
 
-        candidato = new JLabel("insertar candidato");
-        candidato.setFont(new Font("Arial", Font.BOLD, 36));
-        candidato.setLocation(0,175);
-        candidato.setSize(900, 100);
-        candidato.setHorizontalAlignment(JLabel.CENTER);
-        candidato.setVerticalAlignment(JLabel.CENTER);
+        String candidato = "Insertar Candidato";
+        tCandidato = new JLabel(candidato);
+        tCandidato.setFont(new Font("Arial", Font.BOLD, 36));
+        tCandidato.setLocation(0,175);
+        tCandidato.setSize(900, 100);
+        tCandidato.setHorizontalAlignment(JLabel.CENTER);
+        tCandidato.setVerticalAlignment(JLabel.CENTER);
         //candidato.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        c.add(candidato);
+        c.add(tCandidato);
 
-        confirmar = new JLabel("¿Desea confirmar su voto?");
-        confirmar.setFont(new Font("Arial", Font.PLAIN, 36));
-        confirmar.setLocation(0,275);
-        confirmar.setSize(900, 100);
-        confirmar.setHorizontalAlignment(JLabel.CENTER);
-        confirmar.setVerticalAlignment(JLabel.CENTER);
-        //confirmar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        c.add(confirmar);
+        tConfirmar = new JLabel("¿Desea confirmar su voto?");
+        tConfirmar.setFont(new Font("Arial", Font.PLAIN, 36));
+        tConfirmar.setLocation(0,275);
+        tConfirmar.setSize(900, 100);
+        tConfirmar.setHorizontalAlignment(JLabel.CENTER);
+        tConfirmar.setVerticalAlignment(JLabel.CENTER);
+        c.add(tConfirmar);
 
 
         botonSi = new JButton("Si");
@@ -57,7 +56,6 @@ class MyFrame extends JFrame {
         botonSi.setLocation(175, 420);
         botonSi.setBackground(Color.BLACK);
         botonSi.setForeground(Color.WHITE);
-
         c.add(botonSi);
 
         botonNo = new JButton("No");
