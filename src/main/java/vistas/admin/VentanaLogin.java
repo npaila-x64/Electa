@@ -20,50 +20,21 @@ public class VentanaLogin extends JFrame implements ActionListener, LoginVista {
 
     public VentanaLogin(LoginVistaControlador controlador) {
         setLoginVistaControlador(controlador);
+        crearComponentes();
+        setVisible(true);
+    }
 
-        setTitle("Electa");
-        setBounds(300, 90, 900, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
+    private void crearComponentes() {
+        configurarVentana();
+        configurarPanel();
+        configurarTitulo();
+        configurarLogo();
+        configurarCampoDeTextoRut();
+        configurarCampoDeTextoClave();
+        configurarBotonIngreso();
+    }
 
-        c = getContentPane();
-        c.setBackground(Color.WHITE);
-        c.setLayout(null);
-
-        titulo = new JLabel("Tu cuenta Electa");
-        titulo.setFont(new Font("Arial", Font.BOLD, 36));
-        titulo.setSize(900, 300);
-        titulo.setHorizontalAlignment(JLabel.CENTER);
-        titulo.setVerticalAlignment(JLabel.CENTER);
-        c.add(titulo);
-
-        ImageIcon imagen = new ImageIcon("src/main/img/logo.png");
-        logo = new JLabel();
-        logo.setIcon(imagen);
-
-        logo.setSize(250, 96);
-        logo.setLocation(325, 0);
-        logo.setHorizontalAlignment(JLabel.CENTER);
-        logo.setVerticalAlignment(JLabel.CENTER);
-        c.add(logo);
-
-        trut = new JTextField();
-        trut.setFont(new Font("Arial", Font.PLAIN, 15));
-        trut.setSize(300, 45);
-        trut.setLocation(300, 230);
-        trut.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        trut.setText("Rut");
-        c.add(trut);
-
-        tclave = new JTextField();
-        tclave.setFont(new Font("Arial", Font.PLAIN, 15));
-        tclave.setSize(300, 45);
-        tclave.setLocation(300, 315);
-        tclave.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        tclave.setText("Contraseña");
-        c.add(tclave);
-
+    private void configurarBotonIngreso() {
         ingreso = new JButton("Ingresar");
         ingreso.addActionListener(this);
         ingreso.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -74,8 +45,61 @@ public class VentanaLogin extends JFrame implements ActionListener, LoginVista {
         ingreso.setForeground(Color.WHITE);
 
         c.add(ingreso);
+    }
 
-        setVisible(true);
+    private void configurarCampoDeTextoClave() {
+        tclave = new JTextField();
+        tclave.setFont(new Font("Arial", Font.PLAIN, 15));
+        tclave.setSize(300, 45);
+        tclave.setLocation(300, 315);
+        tclave.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        tclave.setText("Contraseña");
+        c.add(tclave);
+    }
+
+    private void configurarCampoDeTextoRut() {
+        trut = new JTextField();
+        trut.setFont(new Font("Arial", Font.PLAIN, 15));
+        trut.setSize(300, 45);
+        trut.setLocation(300, 230);
+        trut.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        trut.setText("Rut");
+        c.add(trut);
+    }
+
+    private void configurarLogo() {
+        ImageIcon imagen = new ImageIcon("src/main/img/logo.png");
+        logo = new JLabel();
+        logo.setIcon(imagen);
+
+        logo.setSize(250, 96);
+        logo.setLocation(325, 0);
+        logo.setHorizontalAlignment(JLabel.CENTER);
+        logo.setVerticalAlignment(JLabel.CENTER);
+        c.add(logo);
+    }
+
+    private void configurarTitulo() {
+        titulo = new JLabel("Tu cuenta Electa");
+        titulo.setFont(new Font("Arial", Font.BOLD, 36));
+        titulo.setSize(900, 300);
+        titulo.setHorizontalAlignment(JLabel.CENTER);
+        titulo.setVerticalAlignment(JLabel.CENTER);
+        c.add(titulo);
+    }
+
+    private void configurarPanel() {
+        c = getContentPane();
+        c.setBackground(Color.WHITE);
+        c.setLayout(null);
+    }
+
+    private void configurarVentana() {
+        setTitle("Electa");
+        setBounds(300, 90, 900, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
     }
 
     @Override
