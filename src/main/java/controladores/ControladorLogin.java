@@ -101,11 +101,6 @@ public class ControladorLogin implements LoginVistaControlador {
 	}
 
 	@Override
-	public void credencialesCambio(LoginVista vista) {
-		
-	}
-
-	@Override
 	public void autenticacionFueSolicitada(LoginVista vista) {
 		String rutVotante = loginVista.obtenerRut();
 		String claveVotante = loginVista.obtenerClave();

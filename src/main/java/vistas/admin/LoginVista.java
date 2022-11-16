@@ -2,12 +2,11 @@ package vistas.admin;
 
 public interface LoginVista {
 
-    public String obtenerRut();
-    public String obtenerClave();
+    String obtenerRut();
+    String obtenerClave();
 
-    public void autenticacionFallo();
-    public void autenticacionSeLogro();
+    void autenticacionFallo();
+    void autenticacionSeLogro();
 
-    public LoginVistaControlador getVistaLoginControlador();
-
+    LoginVistaControlador getVistaLoginControlador();
 }

@@ -25,49 +25,39 @@ public class VentanaLogin extends JFrame implements ActionListener, LoginVista {
     }
 
     private void crearComponentes() {
-        configurarVentana();
-        configurarPanel();
-        configurarTitulo();
-        configurarLogo();
-        configurarCampoDeTextoRut();
-        configurarCampoDeTextoClave();
-        configurarBotonIngreso();
+        crearVentana();
+        crearPanel();
+        crearTitulo();
+        crearLogo();
+        crearCampoDeTextoRut();
+        crearCampoDeTextoClave();
+        crearBotonIngreso();
     }
 
-    private void configurarBotonIngreso() {
-        ingreso = new JButton("Ingresar");
-        ingreso.addActionListener(this);
-        ingreso.setFont(new Font("Arial", Font.PLAIN, 15));
-        ingreso.setSize(200, 50);
-        ingreso.setLocation(350, 420);
-
-        ingreso.setBackground(Color.BLACK);
-        ingreso.setForeground(Color.WHITE);
-
-        c.add(ingreso);
+    private void crearVentana() {
+        setTitle("Electa");
+        setBounds(300, 90, 900, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
     }
 
-    private void configurarCampoDeTextoClave() {
-        tclave = new JTextField();
-        tclave.setFont(new Font("Arial", Font.PLAIN, 15));
-        tclave.setSize(300, 45);
-        tclave.setLocation(300, 315);
-        tclave.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        tclave.setText("Contraseña");
-        c.add(tclave);
+    private void crearPanel() {
+        c = getContentPane();
+        c.setBackground(Color.WHITE);
+        c.setLayout(null);
     }
 
-    private void configurarCampoDeTextoRut() {
-        trut = new JTextField();
-        trut.setFont(new Font("Arial", Font.PLAIN, 15));
-        trut.setSize(300, 45);
-        trut.setLocation(300, 230);
-        trut.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        trut.setText("Rut");
-        c.add(trut);
+    private void crearTitulo() {
+        titulo = new JLabel("Tu cuenta Electa");
+        titulo.setFont(new Font("Arial", Font.BOLD, 36));
+        titulo.setSize(900, 300);
+        titulo.setHorizontalAlignment(JLabel.CENTER);
+        titulo.setVerticalAlignment(JLabel.CENTER);
+        c.add(titulo);
     }
 
-    private void configurarLogo() {
+    private void crearLogo() {
         ImageIcon imagen = new ImageIcon("src/main/img/logo.png");
         logo = new JLabel();
         logo.setIcon(imagen);
@@ -79,27 +69,37 @@ public class VentanaLogin extends JFrame implements ActionListener, LoginVista {
         c.add(logo);
     }
 
-    private void configurarTitulo() {
-        titulo = new JLabel("Tu cuenta Electa");
-        titulo.setFont(new Font("Arial", Font.BOLD, 36));
-        titulo.setSize(900, 300);
-        titulo.setHorizontalAlignment(JLabel.CENTER);
-        titulo.setVerticalAlignment(JLabel.CENTER);
-        c.add(titulo);
+    private void crearCampoDeTextoRut() {
+        trut = new JTextField();
+        trut.setFont(new Font("Arial", Font.PLAIN, 15));
+        trut.setSize(300, 45);
+        trut.setLocation(300, 230);
+        trut.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        trut.setText("Rut");
+        c.add(trut);
     }
 
-    private void configurarPanel() {
-        c = getContentPane();
-        c.setBackground(Color.WHITE);
-        c.setLayout(null);
+    private void crearCampoDeTextoClave() {
+        tclave = new JTextField();
+        tclave.setFont(new Font("Arial", Font.PLAIN, 15));
+        tclave.setSize(300, 45);
+        tclave.setLocation(300, 315);
+        tclave.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        tclave.setText("Contraseña");
+        c.add(tclave);
     }
 
-    private void configurarVentana() {
-        setTitle("Electa");
-        setBounds(300, 90, 900, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
+    private void crearBotonIngreso() {
+        ingreso = new JButton("Ingresar");
+        ingreso.addActionListener(this);
+        ingreso.setFont(new Font("Arial", Font.PLAIN, 15));
+        ingreso.setSize(200, 50);
+        ingreso.setLocation(350, 420);
+
+        ingreso.setBackground(Color.BLACK);
+        ingreso.setForeground(Color.WHITE);
+
+        c.add(ingreso);
     }
 
     @Override
