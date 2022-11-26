@@ -113,7 +113,7 @@ class MenuEditorVotacionesFrame extends JFrame {
         bGuardar = new JButton("Guardar");
         bGuardar.setFont(new Font("Arial", Font.PLAIN, 15));
         bGuardar.setSize(200, 50);
-        bGuardar.setLocation(225, 475);
+        bGuardar.setLocation(435, 475);
         bGuardar.setBackground(Color.BLACK);
         bGuardar.setForeground(Color.WHITE);
         c.add(bGuardar);
@@ -121,7 +121,7 @@ class MenuEditorVotacionesFrame extends JFrame {
         bCancelar = new JButton("Cancelar");
         bCancelar.setFont(new Font("Arial", Font.PLAIN, 15));
         bCancelar.setSize(200, 50);
-        bCancelar.setLocation(435, 475);
+        bCancelar.setLocation(645, 475);
         bCancelar.setBackground(Color.BLACK);
         bCancelar.setForeground(Color.WHITE);
         c.add(bCancelar);
@@ -129,7 +129,8 @@ class MenuEditorVotacionesFrame extends JFrame {
         bEliminar = new JButton("Eliminar");
         bEliminar.setFont(new Font("Arial", Font.PLAIN, 15));
         bEliminar.setSize(200, 50);
-        bEliminar.setLocation(645, 475);
+        //bEliminar.setLocation(645, 475);
+        bEliminar.setLocation(40, 475);
         bEliminar.setBackground(Color.BLACK);
         bEliminar.setForeground(Color.WHITE);
         c.add(bEliminar);
