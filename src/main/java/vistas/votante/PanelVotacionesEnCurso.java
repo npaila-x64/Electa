@@ -65,6 +65,9 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         if (e.getSource() == bCerrarSesion) {
             controlador.cerrarSesionFueSolicitada();
         }
+        if (e.getSource() == bResultados) {
+            controlador.abirResultadosFueSolicitada();
+        }
     }
 }
 

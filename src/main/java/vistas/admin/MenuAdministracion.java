@@ -19,7 +19,6 @@ public class MenuAdministracion {
                 case 0 -> {return;}
                 case 1 -> controlador.mostrarPanelDeControlDeVotaciones();
                 case 2 -> controlador.mostrarMenuCreacionDeVotacion();
-                case 3 -> controlador.mostrarMenuResultados();
             }
         }
     }

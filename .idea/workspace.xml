@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="crea configuraciones para mostrar panel de login">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="agrega transición de login a votaciones en curso">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorResultados.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/MenuVotacionesEnCurso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/MenuVotacionesEnCurso.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/VentanaMenuVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/PanelVotacionesEnCurso.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/VentanaResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/PanelResultados.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -481,7 +481,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669473321772</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="agrega transición de login a votaciones en curso">
+      <created>1669478358690</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1669478358690</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -511,7 +518,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="crea constructor de Votacion con valores por defecto" />
     <MESSAGE value="reforma clase y objetos de Opcion para uso de id" />
     <MESSAGE value="elimina clase innecesaria" />
     <MESSAGE value="reimplementa setters y getters de objetos con elementos mutables" />
@@ -536,7 +542,8 @@
     <MESSAGE value="crea marco JFrame" />
     <MESSAGE value="crea controlador principal" />
     <MESSAGE value="crea configuraciones para mostrar panel de login" />
-    <option name="LAST_COMMIT_MESSAGE" value="crea configuraciones para mostrar panel de login" />
+    <MESSAGE value="agrega transición de login a votaciones en curso" />
+    <option name="LAST_COMMIT_MESSAGE" value="agrega transición de login a votaciones en curso" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

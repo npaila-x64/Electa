@@ -1,6 +1,7 @@
 package vistas;
 
 import vistas.admin.PanelLogin;
+import vistas.votante.PanelResultados;
 import vistas.votante.PanelVotacionesEnCurso;
 
 import javax.swing.*;
@@ -44,5 +45,13 @@ public class Marco extends JFrame {
 
     public void mostrarVotacionesEnCurso() {
         cl.show(panel, "votacionesEnCurso");
+    }
+
+    public void agregarResultados(PanelResultados resultados) {
+        panel.add("resultados", resultados);
+    }
+
+    public void mostrarResultados() {
+        cl.show(panel, "resultados");
     }
 }

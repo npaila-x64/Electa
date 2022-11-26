@@ -1,9 +1,11 @@
 package controladores;
 
+import controladores.votante.ControladorResultados;
 import controladores.votante.ControladorVotacionesEnCurso;
 import modelos.Votante;
 import vistas.Marco;
 import vistas.admin.PanelLogin;
+import vistas.votante.PanelResultados;
 import vistas.votante.PanelVotacionesEnCurso;
 
 public class ControladorAplicacion {
@@ -12,6 +14,7 @@ public class ControladorAplicacion {
     private Votante usuario;
     private ControladorLogin login;
     private ControladorVotacionesEnCurso votacionesEnCurso;
+    private ControladorResultados resultados;
 
     public void iniciar() {
         vista = new Marco();
@@ -24,6 +27,7 @@ public class ControladorAplicacion {
     private void crearControladores() {
         login = new ControladorLogin(this);
         votacionesEnCurso = new ControladorVotacionesEnCurso(this);
+        resultados = new ControladorResultados(this);
     }
 
     public void mostrarLogin() {
@@ -50,6 +54,10 @@ public class ControladorAplicacion {
         login.abrir();
     }
 
+    public void abrirResultados() {
+        resultados.abrir();
+    }
+
     public void agregarVotacionesEnCurso(PanelVotacionesEnCurso votacionesEnCurso) {
         vista.agregarVotacionesEnCurso(votacionesEnCurso);
     }
@@ -60,5 +68,13 @@ public class ControladorAplicacion {
 
     public Votante obtenerUsuario() {
         return usuario;
+    }
+
+    public void agregarResultados(PanelResultados resultados) {
+        vista.agregarResultados(resultados);
+    }
+
+    public void mostrarResultados() {
+        vista.mostrarResultados();
     }
 }

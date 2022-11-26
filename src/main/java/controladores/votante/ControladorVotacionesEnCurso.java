@@ -33,4 +33,8 @@ public class ControladorVotacionesEnCurso {
 	public void cerrarSesionFueSolicitada() {
 		controlador.abrirLogin();
 	}
+
+	public void abirResultadosFueSolicitada() {
+		controlador.abrirResultados();
+	}
 }
