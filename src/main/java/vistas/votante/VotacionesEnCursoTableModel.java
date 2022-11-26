@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public class VotacionesEnCursoTableModel extends AbstractTableModel {
 
-    private final String[] columnNames = {"Votación"};
+    private final String[] columnNames = {"Votación", "Botón"};
+    private final Class[] columnClass = new Class[] {String.class, String.class};
+
     private List<Votacion> votaciones;
 
     public VotacionesEnCursoTableModel() {
@@ -33,17 +35,25 @@ public class VotacionesEnCursoTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int col) {
-        if (col == 0) {
-            return votaciones.get(row).getTitulo();
-        }
-        throw new IllegalStateException();
+        return switch (col) {
+            case 0 -> votaciones.get(row).getTitulo();
+            case 1 -> "Ir a votación";
+            default -> throw new IllegalStateException();
+        };
     }
 
+    @Override
     public String getColumnName(int col) {
         return columnNames[col];
     }
 
-    public Class getColumnClass(int col) {
-        return String.class;
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return columnClass[columnIndex];
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int col) {
+        return col != 0;
     }
 }

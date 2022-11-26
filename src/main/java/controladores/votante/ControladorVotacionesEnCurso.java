@@ -49,7 +49,10 @@ public class ControladorVotacionesEnCurso {
 	}
 
 	public TableModel obtenerModeloDeTabla() {
-		System.out.println(modelo.getColumnName(0));
 		return modelo;
+	}
+
+	public void abrirVotacionFueSolicitado(int id) {
+
 	}
 }
