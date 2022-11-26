@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
     private JLabel bordesTabla;
+    private JTable tVotacionesEnCurso;
     private JButton bCerrarSesion;
     private JButton bResultados;
     private ControladorVotacionesEnCurso controlador;
@@ -37,11 +38,16 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
     }
 
     private void crearTablaDeVotaciones() {
-        bordesTabla = new JLabel();
-        bordesTabla.setSize(805, 390);
-        bordesTabla.setLocation(40, 40);
-        bordesTabla.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        this.add(bordesTabla);
+        tVotacionesEnCurso = new JTable(controlador.obtenerModeloDeTabla());
+        tVotacionesEnCurso.setBounds(30, 40, 200, 300);
+        tVotacionesEnCurso.setAutoCreateRowSorter(true);
+        tVotacionesEnCurso.setRowHeight(70);
+        tVotacionesEnCurso.setTableHeader(null);
+        tVotacionesEnCurso.setCellSelectionEnabled(false);
+        JScrollPane scrollPane = new JScrollPane(tVotacionesEnCurso);
+        scrollPane.setSize(805, 390);
+        scrollPane.setLocation(40, 40);
+        this.add(scrollPane);
     }
 
     private void crearBotonCerrarSesion() {

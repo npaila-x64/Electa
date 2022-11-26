@@ -1,6 +1,5 @@
 package vistas;
 
-import vistas.admin.PanelLogin;
 import vistas.votante.PanelResultados;
 import vistas.votante.PanelVotacionesEnCurso;
 

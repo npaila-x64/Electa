@@ -4,7 +4,7 @@ import controladores.votante.ControladorResultados;
 import controladores.votante.ControladorVotacionesEnCurso;
 import modelos.Votante;
 import vistas.Marco;
-import vistas.admin.PanelLogin;
+import vistas.PanelLogin;
 import vistas.votante.PanelResultados;
 import vistas.votante.PanelVotacionesEnCurso;
 

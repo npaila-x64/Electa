@@ -2,7 +2,7 @@ package controladores;
 
 import modelos.Votante;
 import dao.UsuarioDao;
-import vistas.admin.*;
+import vistas.PanelLogin;
 
 import java.util.List;
 
@@ -52,15 +52,13 @@ public class ControladorLogin {
 	}
 
 	private void autenticarVotante() {
-		String rutVotante = vista.getRut();
-		String claveVotante = vista.getClave();
 		Votante votanteIngresado = new Votante();
-		votanteIngresado.setRut(rutVotante);
-		votanteIngresado.setClave(claveVotante);
+		votanteIngresado.setRut(vista.getRut());
+		votanteIngresado.setClave(vista.getClave());
 		if (esCredencialVotanteValida(votanteIngresado)) {
-			vista.autenticacionSeLogro();
 			controlador.asignarUsuarioDeSesion(votanteIngresado);
 			controlador.abrirVotacionesEnCurso();
+			vista.autenticacionSeLogro();
 		} else {
 			vista.autenticacionFallo();
 		}
