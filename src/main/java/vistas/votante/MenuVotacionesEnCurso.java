@@ -14,18 +14,6 @@ public class MenuVotacionesEnCurso {
 		this.controlador = controlador;
 	}
 
-	public void mostrar() {
-		while (true) {
-			mostrarVotacionesEnCurso();
-			mostrarOpcionesMenuVotacionesVotante();
-			switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
-				case 0 -> {return;}
-				case 1 -> controlador.mostrarMenuParaVotar();
-				case 2 -> controlador.mostrarMenuResultados();
-			}
-		}
-	}
-
 	private void mostrarVotacionesEnCurso() {
 		System.out.println("Votaciones En Curso");
 		mostrarTitulosVotaciones(controlador.obtenerVotacionesEnCurso());
