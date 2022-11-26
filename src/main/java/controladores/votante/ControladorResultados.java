@@ -1,9 +1,12 @@
 package controladores.votante;
 
+import controladores.ControladorAplicacion;
 import modelos.Votacion;
 import dao.VotacionDao;
 import modelos.enums.EstadoDeVotacion;
 import vistas.votante.MenuResultados;
+import vistas.votante.PanelResultados;
+import vistas.votante.PanelVotacionesEnCurso;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -11,8 +14,13 @@ import java.util.List;
 
 public class ControladorResultados {
 
-    public ControladorResultados() {
-        new MenuResultados(this).mostrar();
+    private ControladorAplicacion controlador;
+    private PanelResultados vista;
+
+    public ControladorResultados(ControladorAplicacion controlador) {
+        this.controlador = controlador;
+        vista = new PanelResultados(this);
+        this.controlador.agregarResultados(vista);
     }
 
     public HashMap<String, Object> obtenerDatosDeVotacion(Votacion votacion) {
@@ -35,5 +43,13 @@ public class ControladorResultados {
     public Votacion obtenerVotacion(int opcionElegida) {
         List<Votacion> votaciones = VotacionDao.obtenerVotacionesFinalizadas();
         return votaciones.get(opcionElegida -1);
+    }
+
+    public void abrir() {
+        controlador.mostrarResultados();
+    }
+
+    public void volverFueSolitado() {
+        controlador.abrirVotacionesEnCurso();
     }
 }

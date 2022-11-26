@@ -16,8 +16,4 @@ public class ControladorAdministracion {
     public void mostrarMenuCreacionDeVotacion() {
         new ControladorCreacionDeVotacion().iniciar();
     }
-
-    public void mostrarMenuResultados() {
-        new ControladorResultados();
-    }
 }
