@@ -1,4 +1,4 @@
-package vistas.admin;
+package vistas;
 import controladores.ControladorLogin;
 
 import javax.swing.*;
@@ -74,16 +74,22 @@ public class PanelLogin extends JPanel implements ActionListener {
         trut.setSize(300, 45);
         trut.setLocation(300, 230);
         trut.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        trut.setBorder(BorderFactory.createCompoundBorder(
+                trut.getBorder(),
+                BorderFactory.createEmptyBorder(5, 10, 5, 5)));
         trut.setText("Rut");
         this.add(trut);
     }
 
     private void crearCampoDeTextoClave() {
-        tclave = new JTextField();
+        tclave = new JPasswordField();
         tclave.setFont(new Font("Arial", Font.PLAIN, 15));
         tclave.setSize(300, 45);
         tclave.setLocation(300, 315);
         tclave.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        tclave.setBorder(BorderFactory.createCompoundBorder(
+                tclave.getBorder(),
+                BorderFactory.createEmptyBorder(5, 10, 5, 5)));
         tclave.setText("Contraseña");
         this.add(tclave);
     }
