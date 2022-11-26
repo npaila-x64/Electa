@@ -1,5 +1,6 @@
 package vistas;
 
+import vistas.votante.PanelOpciones;
 import vistas.votante.PanelResultados;
 import vistas.votante.PanelVotacionesEnCurso;
 
@@ -52,5 +53,13 @@ public class Marco extends JFrame {
 
     public void mostrarResultados() {
         cl.show(panel, "resultados");
+    }
+
+    public void agregarOpciones(PanelOpciones opciones) {
+        panel.add("opciones", opciones);
+    }
+
+    public void mostrarOpciones() {
+        cl.show(panel, "opciones");
     }
 }

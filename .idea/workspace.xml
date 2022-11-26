@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="crea funcionalidad parcial de tabla de votaciones en curso">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="crea mayoría de funcionalidades de tabla de votaciones en curso">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/datos/votaciones.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos/votaciones.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/datos/votantes.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos/votantes.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/PanelVotacionesEnCurso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/PanelVotacionesEnCurso.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/VotacionesEnCursoTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/VotacionesEnCursoTableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/VentanaOpciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/PanelOpciones.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,6 +83,7 @@
       <recent name="" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="vistas.votante" />
       <recent name="controladores" />
     </key>
   </component>
@@ -160,13 +164,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1662468710255</updated>
-    </task>
-    <task id="LOCAL-00003" summary="agrega libreria JUnit">
-      <created>1662476891522</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1662476891522</updated>
     </task>
     <task id="LOCAL-00004" summary="agrega manejo de excepcion en caso que archivo votantes no exista">
       <created>1663874851052</created>
@@ -504,7 +501,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669495488538</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="crea mayoría de funcionalidades de tabla de votaciones en curso">
+      <created>1669503416698</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1669503416698</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -534,7 +538,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="reemplaza manejo de objetos json a instancias de clases" />
     <MESSAGE value="reemplaza más métodos a paradigma funcional" />
     <MESSAGE value="crea controlador y vistas de menu votaciones en curso" />
     <MESSAGE value="agrega últimos ajustes de la base del mvc" />
@@ -559,7 +562,8 @@
     <MESSAGE value="agrega mensajes de advertencia en login en caso de credenciales incorrectas" />
     <MESSAGE value="reemplaza campo de texto de clave por JPasswordField" />
     <MESSAGE value="crea funcionalidad parcial de tabla de votaciones en curso" />
-    <option name="LAST_COMMIT_MESSAGE" value="crea funcionalidad parcial de tabla de votaciones en curso" />
+    <MESSAGE value="crea mayoría de funcionalidades de tabla de votaciones en curso" />
+    <option name="LAST_COMMIT_MESSAGE" value="crea mayoría de funcionalidades de tabla de votaciones en curso" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

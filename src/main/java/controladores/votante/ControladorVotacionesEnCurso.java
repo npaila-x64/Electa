@@ -16,6 +16,7 @@ public class ControladorVotacionesEnCurso {
 	private final ControladorAplicacion controlador;
 	private final PanelVotacionesEnCurso vista;
 	private final VotacionesEnCursoTableModel modelo;
+	private List<Votacion> votaciones;
 
 	public ControladorVotacionesEnCurso(ControladorAplicacion controlador) {
 		this.controlador = controlador;
@@ -24,9 +25,9 @@ public class ControladorVotacionesEnCurso {
 		this.controlador.agregarVotacionesEnCurso(vista);
 	}
 
-	public void cargarVotaciones() {
+	private void cargarVotaciones() {
 		Votante votante = controlador.obtenerUsuario();
-		List<Votacion> votaciones = VotacionDao
+		votaciones = VotacionDao
 				.obtenerVotacionesEnElQuePuedeVotarElVotante(votante.getId());
 		modelo.setVotaciones(votaciones);
 	}
@@ -48,11 +49,11 @@ public class ControladorVotacionesEnCurso {
 		controlador.abrirResultados();
 	}
 
-	public TableModel obtenerModeloDeTabla() {
+	public TableModel getModeloDeTabla() {
 		return modelo;
 	}
 
 	public void abrirVotacionFueSolicitado(int id) {
-
+		controlador.abrirOpcion(votaciones.get(id));
 	}
 }

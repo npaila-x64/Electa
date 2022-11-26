@@ -1,5 +1,6 @@
 package controladores.votante;
 
+import controladores.ControladorAplicacion;
 import modelos.Opcion;
 import modelos.Votacion;
 import modelos.Votante;
@@ -8,18 +9,25 @@ import dao.UsuarioDao;
 import dao.VotacionDao;
 import dao.VotoDao;
 import utils.ValidadorDeDatos;
-import vistas.votante.MenuVotacion;
+import vistas.votante.*;
 
+import javax.swing.table.TableModel;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ControladorVotacion {
 
-    private final Integer idVotante;
+    private final ControladorAplicacion controlador;
+    private Integer idVotante;
+    private final PanelOpciones vista;
+    private final OpcionesTableModel modelo;
+    private List<Opcion> opciones;
 
-    public ControladorVotacion(Integer idVotante) {
-        this.idVotante = idVotante;
-        new MenuVotacion(this).mostrar();
+    public ControladorVotacion(ControladorAplicacion controlador) {
+        this.controlador = controlador;
+        modelo = new OpcionesTableModel();
+        vista = new PanelOpciones(this);
+        this.controlador.agregarOpciones(vista);
     }
 
     public List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante() {
@@ -132,5 +140,27 @@ public class ControladorVotacion {
             }
         }
         return votosDeVotacion;
+    }
+
+    public TableModel getModeloDeTabla() {
+        return modelo;
+    }
+
+    public void votarPorOpcionFueSolicitado(int fila) {
+        System.out.println(fila);
+    }
+
+    public void abrir(List<Opcion> opciones) {
+        this.opciones = opciones;
+        cargarOpciones();
+        controlador.mostrarOpciones();
+    }
+
+    private void cargarOpciones() {
+        modelo.setOpciones(opciones);
+    }
+
+    public void volverFueSolicitado() {
+        controlador.abrirVotacionesEnCurso();
     }
 }

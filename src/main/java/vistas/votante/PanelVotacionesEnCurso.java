@@ -2,19 +2,17 @@ package vistas.votante;
 import controladores.votante.ControladorVotacionesEnCurso;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
     private JLabel lVotaciones;
     private JTable tVotacionesEnCurso;
     private JButton bCerrarSesion;
     private JButton bResultados;
-    private ControladorVotacionesEnCurso controlador;
+    private final ControladorVotacionesEnCurso controlador;
 
     public PanelVotacionesEnCurso(ControladorVotacionesEnCurso controlador) {
         this.controlador = controlador;
@@ -50,7 +48,7 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
     }
 
     private void crearTablaDeVotaciones() {
-        tVotacionesEnCurso = new JTable(controlador.obtenerModeloDeTabla());
+        tVotacionesEnCurso = new JTable(controlador.getModeloDeTabla());
         tVotacionesEnCurso.setBounds(30, 40, 200, 300);
         tVotacionesEnCurso.setRowHeight(60);
         tVotacionesEnCurso.setTableHeader(null);
@@ -112,9 +110,3 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         }
     }
 }
-
-//class VentanaMenuVotacion {
-//    public static void main(String[] args) throws Exception {
-//        PanelVotacionesEnCurso f = new PanelVotacionesEnCurso();
-//    }
-//}
