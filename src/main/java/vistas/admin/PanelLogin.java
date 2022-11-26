@@ -6,9 +6,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VentanaLogin extends JFrame implements ActionListener {
+public class PanelLogin extends JPanel implements ActionListener {
 
-    private Container c;
     private JLabel titulo;
     private JLabel logo;
     private JTextField trut;
@@ -16,19 +15,14 @@ public class VentanaLogin extends JFrame implements ActionListener {
     private JButton ingreso;
     private ControladorLogin controlador;
 
-    public void setLoginVistaControlador(ControladorLogin controlador) {
+    public PanelLogin(ControladorLogin controlador) {
         this.controlador = controlador;
-    }
-
-    public VentanaLogin(ControladorLogin controlador) {
-        setLoginVistaControlador(controlador);
         crearComponentes();
         setVisible(true);
     }
 
     private void crearComponentes() {
-        crearVentana();
-        crearPanel();
+        configurarPanel();
         crearTitulo();
         crearLogo();
         crearCampoDeTextoRut();
@@ -36,18 +30,9 @@ public class VentanaLogin extends JFrame implements ActionListener {
         crearBotonIngreso();
     }
 
-    private void crearVentana() {
-        setTitle("Electa");
-        setBounds(300, 90, 900, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
-    }
-
-    private void crearPanel() {
-        c = getContentPane();
-        c.setBackground(Color.WHITE);
-        c.setLayout(null);
+    private void configurarPanel() {
+        this.setBackground(Color.WHITE);
+        this.setLayout(null);
     }
 
     private void crearTitulo() {
@@ -56,7 +41,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
         titulo.setSize(900, 300);
         titulo.setHorizontalAlignment(JLabel.CENTER);
         titulo.setVerticalAlignment(JLabel.CENTER);
-        c.add(titulo);
+        this.add(titulo);
     }
 
     private void crearLogo() {
@@ -68,7 +53,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
         logo.setLocation(325, 0);
         logo.setHorizontalAlignment(JLabel.CENTER);
         logo.setVerticalAlignment(JLabel.CENTER);
-        c.add(logo);
+        this.add(logo);
     }
 
     private void crearCampoDeTextoRut() {
@@ -78,7 +63,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
         trut.setLocation(300, 230);
         trut.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         trut.setText("Rut");
-        c.add(trut);
+        this.add(trut);
     }
 
     private void crearCampoDeTextoClave() {
@@ -88,7 +73,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
         tclave.setLocation(300, 315);
         tclave.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         tclave.setText("Contraseña");
-        c.add(tclave);
+        this.add(tclave);
     }
 
     private void crearBotonIngreso() {
@@ -101,7 +86,7 @@ public class VentanaLogin extends JFrame implements ActionListener {
         ingreso.setBackground(Color.BLACK);
         ingreso.setForeground(Color.WHITE);
 
-        c.add(ingreso);
+        this.add(ingreso);
     }
 
     public String obtenerRut() {
@@ -120,13 +105,9 @@ public class VentanaLogin extends JFrame implements ActionListener {
         System.out.println("La autenticación se logró con exito");
     }
 
-    public ControladorLogin getVistaLoginControlador() {
-        return controlador;
-    }
-
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ingreso) {
-            getVistaLoginControlador().autenticacionFueSolicitada();
+            controlador.autenticacionFueSolicitada();
         }
     }
 }
@@ -135,6 +116,6 @@ class VentanaLoginTest {
 
     public static void main(String[] args) throws Exception
     {
-        VentanaLogin f = new VentanaLogin(null);
+        PanelLogin f = new PanelLogin(null);
     }
 }

@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="reordena inicialización de componentes">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="elimina interfaces de login">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/LoginVista.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/LoginVista.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/LoginVistaControlador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/LoginVistaControlador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/VentanaLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/VentanaLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lanzador/Electa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lanzador/Electa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/VentanaLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelLogin.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +21,8 @@
         <option value="JUnit5 Test Class" />
         <option value="XML Properties File" />
         <option value="Kotlin File" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -93,15 +92,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RefrescadorVotaciones" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="lanzador.RefrescadorVotaciones" />
-      <module name="Electa" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="VentanaLogin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="vistas.admin.VentanaLogin" />
+    <configuration name="PanelLogin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="vistas.admin.PanelLogin" />
       <module name="Electa" />
       <extension name="coverage">
         <pattern>
@@ -109,6 +101,13 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RefrescadorVotaciones" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="lanzador.RefrescadorVotaciones" />
+      <module name="Electa" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -132,9 +131,9 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.PanelLogin" />
       <item itemvalue="Application.Electa" />
       <item itemvalue="Application.RefrescadorVotaciones" />
-      <item itemvalue="Application.VentanaLogin" />
       <item itemvalue="JUnit.All in Electa" />
       <item itemvalue="JUnit.MenuPrincipalTest.verificaQueIntentarObtenerRutNoExistenteTiraExcepcion" />
     </list>
@@ -143,7 +142,7 @@
         <item itemvalue="Application.Electa" />
         <item itemvalue="JUnit.MenuPrincipalTest.verificaQueIntentarObtenerRutNoExistenteTiraExcepcion" />
         <item itemvalue="JUnit.All in Electa" />
-        <item itemvalue="Application.VentanaLogin" />
+        <item itemvalue="Application.PanelLogin" />
         <item itemvalue="Application.RefrescadorVotaciones" />
       </list>
     </recent_temporary>
@@ -451,7 +450,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668517245062</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="elimina interfaces de login">
+      <created>1669471520455</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1669471520455</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -481,7 +487,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="cambia muestra de votación detallada de switch a mapa de Runnables" />
     <MESSAGE value="remueve argumentos innecesarios" />
     <MESSAGE value="cambia método a manejo de clases" />
     <MESSAGE value="mueve try-catch a menú" />
@@ -506,7 +511,8 @@
     <MESSAGE value="elimina FIXME" />
     <MESSAGE value="agrega interfaces vista y controlador, y primer test" />
     <MESSAGE value="reordena inicialización de componentes" />
-    <option name="LAST_COMMIT_MESSAGE" value="reordena inicialización de componentes" />
+    <MESSAGE value="elimina interfaces de login" />
+    <option name="LAST_COMMIT_MESSAGE" value="elimina interfaces de login" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
