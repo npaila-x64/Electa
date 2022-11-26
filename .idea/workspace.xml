@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="elimina interfaces de login">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="crea configuraciones para mostrar panel de login">
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lanzador/Electa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lanzador/Electa.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/VentanaLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelLogin.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -457,7 +454,28 @@
       <option name="project" value="LOCAL" />
       <updated>1669471520455</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="crea marco JFrame">
+      <created>1669473264083</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1669473264083</updated>
+    </task>
+    <task id="LOCAL-00045" summary="crea controlador principal">
+      <created>1669473282153</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1669473282153</updated>
+    </task>
+    <task id="LOCAL-00046" summary="crea configuraciones para mostrar panel de login">
+      <created>1669473321772</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1669473321772</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -487,9 +505,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="remueve argumentos innecesarios" />
-    <MESSAGE value="cambia método a manejo de clases" />
-    <MESSAGE value="mueve try-catch a menú" />
     <MESSAGE value="crea constructor de Votacion con valores por defecto" />
     <MESSAGE value="reforma clase y objetos de Opcion para uso de id" />
     <MESSAGE value="elimina clase innecesaria" />
@@ -512,7 +527,10 @@
     <MESSAGE value="agrega interfaces vista y controlador, y primer test" />
     <MESSAGE value="reordena inicialización de componentes" />
     <MESSAGE value="elimina interfaces de login" />
-    <option name="LAST_COMMIT_MESSAGE" value="elimina interfaces de login" />
+    <MESSAGE value="crea marco JFrame" />
+    <MESSAGE value="crea controlador principal" />
+    <MESSAGE value="crea configuraciones para mostrar panel de login" />
+    <option name="LAST_COMMIT_MESSAGE" value="crea configuraciones para mostrar panel de login" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

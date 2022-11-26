@@ -2,12 +2,9 @@ package controladores;
 
 import controladores.admin.ControladorAdministracion;
 import controladores.votante.ControladorVotacionesEnCurso;
-import excepciones.AccesoADatosInterrumpidoException;
 import modelos.Votante;
 import dao.UsuarioDao;
-import utils.ValidadorDeDatos;
 import vistas.admin.*;
-import vistas.votante.LoginVotante;
 
 import java.util.List;
 
@@ -24,29 +21,6 @@ public class ControladorLogin {
 
 	public void iniciar() {
 		controlador.mostrarLogin();
-	}
-
-    // TODO casi igual al método validarDatosVotante
-	public void validarDatosAdministrador(String rutAdmin, String claveAdmin) {
-		Votante adminIngresado = new Votante();
-		adminIngresado.setRut(rutAdmin);
-		adminIngresado.setClave(claveAdmin);
-		if (esCredencialAdministradorValida(adminIngresado)) {
-			new ControladorAdministracion();
-		} else {
-			System.err.println("RUT y/o contraseña incorrectos");
-		}
-	}
-
-	public void validarDatosVotante(String rutVotante, String claveVotante) {
-		Votante votanteIngresado = new Votante();
-		votanteIngresado.setRut(rutVotante);
-		votanteIngresado.setClave(claveVotante);
-		if (esCredencialVotanteValida(votanteIngresado)) {
-			new ControladorVotacionesEnCurso(votanteIngresado.getId());
-		} else {
-			System.err.println("RUT y/o contraseña incorrectos");
-		}
 	}
 
 	private boolean esCredencialVotanteValida(Votante votante) {
@@ -85,7 +59,7 @@ public class ControladorLogin {
 		votanteIngresado.setClave(claveVotante);
 		if (esCredencialVotanteValida(votanteIngresado)) {
 			vista.autenticacionSeLogro();
-
+			controlador.mostrarVotacionesEnCurso();
 			new ControladorVotacionesEnCurso(votanteIngresado.getId());
 		} else {
 			vista.autenticacionFallo();

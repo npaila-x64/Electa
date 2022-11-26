@@ -36,28 +36,4 @@ public class Marco extends JFrame {
     public void mostrarLogin() {
         cl.show(panel, "login");
     }
-
-//    public void mostrarMenu() {
-//        cl.show(panel, "menu");
-//    }
-//
-//    public void mostrarEditor() {
-//        cl.show(panel, "editor");
-//    }
-//
-//    public void agregarEditor(PanelEditor editor) {
-//        panel.add("editor", editor);
-//    }
-//
-//    public void agregarMenu(PanelMenu menu) {
-//        panel.add("menu", menu);
-//    }
-//
-//    public void agregarMostrador(PanelMostrador mostrador) {
-//        panel.add("mostrador", mostrador);
-//    }
-//
-//    public void mostrarMostrador() {
-//        cl.show(panel, "mostrador");
-//    }
 }

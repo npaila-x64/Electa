@@ -30,4 +30,12 @@ public class ControladorAplicacion {
     public void agregarLogin(PanelLogin login) {
         vista.agregarLogin(login);
     }
+
+    public void mostrarVotacionesEnCurso() {
+        vista.mostrarLogin();
+    }
+
+//    public void agregarVotacionesEnCurso(PanelVotacionesEnCurso votacionesEnCurso) {
+//        vista.agregarVotacionesEnCurso(votacionesEnCurso);
+//    }
 }
