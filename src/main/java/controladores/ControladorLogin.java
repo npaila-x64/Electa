@@ -11,45 +11,27 @@ import vistas.votante.LoginVotante;
 
 import java.util.List;
 
-public class ControladorLogin implements LoginVistaControlador {
+public class ControladorLogin {
 
-	private LoginVista loginVista;
+	private PanelLogin vista;
+	private ControladorAplicacion controlador;
+
+	public ControladorLogin(ControladorAplicacion controlador) {
+		this.controlador = controlador;
+		vista = new PanelLogin(this);
+		this.controlador.agregarLogin(vista);
+	}
 
 	public void iniciar() {
-		loginVista = new VentanaLogin(this);
-
-		mostrarMenuDeIngreso();
-	}
-
-	private void mostrarOpcionesDeIngreso() {
-		System.out.print(("\n" +
-						  "¡Bienvenido/a al sistema Electa!\n" +
-						  "[1] Ingresar como Votante\n" +
-						  "[2] Ingresar como Administrador\n" +
-						  "Si desea salir escriba [0]\n").concat("> "));
-	}
-
-	private void mostrarMenuDeIngreso() {
-		while (true) {
-			mostrarOpcionesDeIngreso();
-			try {
-				switch (ValidadorDeDatos.pedirOpcionHasta(2)) {
-					case 0 -> {return;}
-					case 1 -> new LoginVotante(this);
-					case 2 -> new LoginAdministrador(this);
-				}
-			} catch (AccesoADatosInterrumpidoException e) {
-				mostrarSistemaNoDisponible(e.getMessage());
-			}
-		}
+		controlador.mostrarLogin();
 	}
 
     // TODO casi igual al método validarDatosVotante
 	public void validarDatosAdministrador(String rutAdmin, String claveAdmin) {
-		Votante admininIngresado = new Votante();
-		admininIngresado.setRut(rutAdmin);
-		admininIngresado.setClave(claveAdmin);
-		if (esCredencialAdministradorValida(admininIngresado)) {
+		Votante adminIngresado = new Votante();
+		adminIngresado.setRut(rutAdmin);
+		adminIngresado.setClave(claveAdmin);
+		if (esCredencialAdministradorValida(adminIngresado)) {
 			new ControladorAdministracion();
 		} else {
 			System.err.println("RUT y/o contraseña incorrectos");
@@ -95,28 +77,18 @@ public class ControladorLogin implements LoginVistaControlador {
 		return false;
 	}
 
-	private void mostrarSistemaNoDisponible(String mensaje) {
-		System.err.println("El sistema no se encuentra disponible por ahora, disculpe las molestias\n" +
-				"Mensaje de error: " + mensaje);
-	}
-
-	@Override
-	public void credencialesCambio(LoginVista vista) {
-		
-	}
-
-	@Override
-	public void autenticacionFueSolicitada(LoginVista vista) {
-		String rutVotante = loginVista.obtenerRut();
-		String claveVotante = loginVista.obtenerClave();
+	public void autenticacionFueSolicitada() {
+		String rutVotante = vista.obtenerRut();
+		String claveVotante = vista.obtenerClave();
 		Votante votanteIngresado = new Votante();
 		votanteIngresado.setRut(rutVotante);
 		votanteIngresado.setClave(claveVotante);
 		if (esCredencialVotanteValida(votanteIngresado)) {
-			loginVista.autenticacionSeLogro();
+			vista.autenticacionSeLogro();
+
 			new ControladorVotacionesEnCurso(votanteIngresado.getId());
 		} else {
-			loginVista.autenticacionFallo();
+			vista.autenticacionFallo();
 		}
 	}
 }
