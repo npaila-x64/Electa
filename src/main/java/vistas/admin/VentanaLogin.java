@@ -1,10 +1,12 @@
 package vistas.admin;
+import controladores.ControladorLogin;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VentanaLogin extends JFrame implements ActionListener, LoginVista {
+public class VentanaLogin extends JFrame implements ActionListener {
 
     private Container c;
     private JLabel titulo;
@@ -12,13 +14,13 @@ public class VentanaLogin extends JFrame implements ActionListener, LoginVista {
     private JTextField trut;
     private JTextField tclave;
     private JButton ingreso;
-    private LoginVistaControlador controlador;
+    private ControladorLogin controlador;
 
-    public void setLoginVistaControlador(LoginVistaControlador controlador) {
+    public void setLoginVistaControlador(ControladorLogin controlador) {
         this.controlador = controlador;
     }
 
-    public VentanaLogin(LoginVistaControlador controlador) {
+    public VentanaLogin(ControladorLogin controlador) {
         setLoginVistaControlador(controlador);
         crearComponentes();
         setVisible(true);
@@ -102,35 +104,29 @@ public class VentanaLogin extends JFrame implements ActionListener, LoginVista {
         c.add(ingreso);
     }
 
-    @Override
     public String obtenerRut() {
         return trut.getText();
     }
 
-    @Override
     public String obtenerClave() {
         return tclave.getText();
     }
 
-    @Override
     public void autenticacionFallo() {
         System.out.println("Fallo la autenticación");
     }
 
-    @Override
     public void autenticacionSeLogro() {
         System.out.println("La autenticación se logró con exito");
     }
 
-    @Override
-    public LoginVistaControlador getVistaLoginControlador() {
+    public ControladorLogin getVistaLoginControlador() {
         return controlador;
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ingreso) {
-            getVistaLoginControlador().autenticacionFueSolicitada(this);
+            getVistaLoginControlador().autenticacionFueSolicitada();
         }
     }
 }

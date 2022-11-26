@@ -11,12 +11,12 @@ import vistas.votante.LoginVotante;
 
 import java.util.List;
 
-public class ControladorLogin implements LoginVistaControlador {
+public class ControladorLogin {
 
-	private LoginVista loginVista;
+	private VentanaLogin vista;
 
 	public void iniciar() {
-		loginVista = new VentanaLogin(this);
+		vista = new VentanaLogin(this);
 
 		mostrarMenuDeIngreso();
 	}
@@ -100,18 +100,17 @@ public class ControladorLogin implements LoginVistaControlador {
 				"Mensaje de error: " + mensaje);
 	}
 
-	@Override
-	public void autenticacionFueSolicitada(LoginVista vista) {
-		String rutVotante = loginVista.obtenerRut();
-		String claveVotante = loginVista.obtenerClave();
+	public void autenticacionFueSolicitada() {
+		String rutVotante = this.vista.obtenerRut();
+		String claveVotante = this.vista.obtenerClave();
 		Votante votanteIngresado = new Votante();
 		votanteIngresado.setRut(rutVotante);
 		votanteIngresado.setClave(claveVotante);
 		if (esCredencialVotanteValida(votanteIngresado)) {
-			loginVista.autenticacionSeLogro();
+			this.vista.autenticacionSeLogro();
 			new ControladorVotacionesEnCurso(votanteIngresado.getId());
 		} else {
-			loginVista.autenticacionFallo();
+			this.vista.autenticacionFallo();
 		}
 	}
 }
