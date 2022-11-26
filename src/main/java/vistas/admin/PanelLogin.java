@@ -10,6 +10,7 @@ public class PanelLogin extends JPanel implements ActionListener {
 
     private JLabel titulo;
     private JLabel logo;
+    private JLabel mensajeDeInvalidez;
     private JTextField trut;
     private JTextField tclave;
     private JButton ingreso;
@@ -30,21 +31,15 @@ public class PanelLogin extends JPanel implements ActionListener {
         crearCampoDeTextoClave();
         crearBotonIngresar();
         crearBotonIngresoAlternativo();
+        crearMensajeDeInvalidez();
     }
 
-    private void crearBotonIngresoAlternativo() {
-        ingresoAlternativo = new JButton();
-        ingresoAlternativo.setText("Ingreso administrativo");
-        ingresoAlternativo.addActionListener(this);
-        ingresoAlternativo.setFont(new Font("Arial", Font.PLAIN, 15));
-        ingresoAlternativo.setSize(181, 35);
-        ingresoAlternativo.setLocation(360, 493);
-        ingresoAlternativo.setFocusable(false);
-
-        ingresoAlternativo.setBackground(Color.WHITE);
-        ingresoAlternativo.setForeground(Color.BLACK);
-
-        this.add(ingresoAlternativo);
+    private void crearMensajeDeInvalidez() {
+        mensajeDeInvalidez = new JLabel();
+        mensajeDeInvalidez.setFont(new Font("Arial", Font.PLAIN, 18));
+        mensajeDeInvalidez.setForeground(Color.RED);
+        mensajeDeInvalidez.setVisible(false);
+        this.add(mensajeDeInvalidez);
     }
 
     private void configurarPanel() {
@@ -99,6 +94,7 @@ public class PanelLogin extends JPanel implements ActionListener {
         ingreso.setFont(new Font("Arial", Font.PLAIN, 15));
         ingreso.setSize(200, 50);
         ingreso.setLocation(350, 420);
+        ingreso.setFocusable(false);
 
         ingreso.setBackground(Color.BLACK);
         ingreso.setForeground(Color.WHITE);
@@ -106,33 +102,56 @@ public class PanelLogin extends JPanel implements ActionListener {
         this.add(ingreso);
     }
 
-    public String obtenerRut() {
+    private void crearBotonIngresoAlternativo() {
+        ingresoAlternativo = new JButton();
+        ingresoAlternativo.setText("Ingreso administrativo");
+        ingresoAlternativo.addActionListener(this);
+        ingresoAlternativo.setFont(new Font("Arial", Font.PLAIN, 15));
+        ingresoAlternativo.setSize(181, 35);
+        ingresoAlternativo.setLocation(360, 493);
+        ingresoAlternativo.setFocusable(false);
+
+        ingresoAlternativo.setBackground(Color.WHITE);
+        ingresoAlternativo.setForeground(Color.BLACK);
+
+        this.add(ingresoAlternativo);
+    }
+
+    public String getRut() {
         return trut.getText();
     }
 
-    public String obtenerClave() {
+    public String getClave() {
         return tclave.getText();
     }
 
     public void limpiar() {
         trut.setText("");
         tclave.setText("");
+        mensajeDeInvalidez.setVisible(false);
     }
 
     public void cambiarAIngresoAdministrativo() {
         titulo.setText("Ingreso administrativo");
+        ingresoAlternativo.setText("Ingreso como votante");
     }
 
     public void cambiarAIngresoVotante() {
         titulo.setText("Tu cuenta Electa");
+        ingresoAlternativo.setText("Ingreso administrativo");
     }
 
     public void autenticacionFallo() {
         System.out.println("Fallo la autenticación");
+        mensajeDeInvalidez.setSize(350, 20);
+        mensajeDeInvalidez.setLocation(282, 380);
+        mensajeDeInvalidez.setText("El rut y/o la constraseña están incorrectos");
+        mensajeDeInvalidez.setVisible(true);
     }
 
     public void autenticacionSeLogro() {
         System.out.println("La autenticación se logró con exito");
+        mensajeDeInvalidez.setVisible(false);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -142,6 +161,14 @@ public class PanelLogin extends JPanel implements ActionListener {
         if (e.getSource() == ingresoAlternativo) {
             controlador.cambioDeIngresoFueSolicitado();
         }
+    }
+
+    public void mostrarCredencialesEstanVacias() {
+        System.out.println("Fallo la autenticación");
+        mensajeDeInvalidez.setSize(320, 20);
+        mensajeDeInvalidez.setLocation(300, 380);
+        mensajeDeInvalidez.setText("El rut y/o la constraseña están vacíos");
+        mensajeDeInvalidez.setVisible(true);
     }
 }
 

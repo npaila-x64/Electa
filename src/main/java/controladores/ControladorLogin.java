@@ -33,19 +33,27 @@ public class ControladorLogin {
 	}
 
 	public void autenticacionFueSolicitada() {
-		if (ingresoAdministrativoEstaActivo) {
-			autenticarAdministrador();
+		if (!estanLasCredencialesVacias()) {
+			if (ingresoAdministrativoEstaActivo) {
+				autenticarAdministrador();
+			} else {
+				autenticarVotante();
+			}
 		} else {
-			autenticarVotante();
+			vista.mostrarCredencialesEstanVacias();
 		}
+	}
+
+	private boolean estanLasCredencialesVacias() {
+		return vista.getRut().isEmpty() && vista.getClave().isEmpty();
 	}
 
 	private void autenticarAdministrador() {
 	}
 
 	private void autenticarVotante() {
-		String rutVotante = vista.obtenerRut();
-		String claveVotante = vista.obtenerClave();
+		String rutVotante = vista.getRut();
+		String claveVotante = vista.getClave();
 		Votante votanteIngresado = new Votante();
 		votanteIngresado.setRut(rutVotante);
 		votanteIngresado.setClave(claveVotante);
