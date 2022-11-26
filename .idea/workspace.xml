@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="agrega transición de login a votaciones en curso">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="elimina interfaces de login">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorResultados.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/VentanaResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/PanelResultados.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelLogin.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,10 +140,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Electa" />
-        <item itemvalue="Application.VentanaMenuVotacion" />
         <item itemvalue="JUnit.MenuPrincipalTest.verificaQueIntentarObtenerRutNoExistenteTiraExcepcion" />
         <item itemvalue="JUnit.All in Electa" />
         <item itemvalue="Application.RefrescadorVotaciones" />
+        <item itemvalue="Application.VentanaMenuVotacion" />
       </list>
     </recent_temporary>
   </component>

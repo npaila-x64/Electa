@@ -10,6 +10,7 @@ public class ControladorLogin {
 
 	private PanelLogin vista;
 	private ControladorAplicacion controlador;
+	private boolean ingresoAdministrativoEstaActivo = false;
 
 	public ControladorLogin(ControladorAplicacion controlador) {
 		this.controlador = controlador;
@@ -32,6 +33,17 @@ public class ControladorLogin {
 	}
 
 	public void autenticacionFueSolicitada() {
+		if (ingresoAdministrativoEstaActivo) {
+			autenticarAdministrador();
+		} else {
+			autenticarVotante();
+		}
+	}
+
+	private void autenticarAdministrador() {
+	}
+
+	private void autenticarVotante() {
 		String rutVotante = vista.obtenerRut();
 		String claveVotante = vista.obtenerClave();
 		Votante votanteIngresado = new Votante();
@@ -49,5 +61,16 @@ public class ControladorLogin {
 	public void abrir() {
 		controlador.asignarUsuarioDeSesion(new Votante());
 		controlador.mostrarLogin();
+		vista.limpiar();
+	}
+
+	public void cambioDeIngresoFueSolicitado() {
+		ingresoAdministrativoEstaActivo = !ingresoAdministrativoEstaActivo;
+		if (ingresoAdministrativoEstaActivo) {
+			vista.cambiarAIngresoAdministrativo();
+		} else {
+			vista.cambiarAIngresoVotante();
+		}
+		vista.limpiar();
 	}
 }

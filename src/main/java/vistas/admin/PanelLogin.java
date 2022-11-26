@@ -13,6 +13,7 @@ public class PanelLogin extends JPanel implements ActionListener {
     private JTextField trut;
     private JTextField tclave;
     private JButton ingreso;
+    private JButton ingresoAlternativo;
     private ControladorLogin controlador;
 
     public PanelLogin(ControladorLogin controlador) {
@@ -27,7 +28,23 @@ public class PanelLogin extends JPanel implements ActionListener {
         crearLogo();
         crearCampoDeTextoRut();
         crearCampoDeTextoClave();
-        crearBotonIngreso();
+        crearBotonIngresar();
+        crearBotonIngresoAlternativo();
+    }
+
+    private void crearBotonIngresoAlternativo() {
+        ingresoAlternativo = new JButton();
+        ingresoAlternativo.setText("Ingreso administrativo");
+        ingresoAlternativo.addActionListener(this);
+        ingresoAlternativo.setFont(new Font("Arial", Font.PLAIN, 15));
+        ingresoAlternativo.setSize(181, 35);
+        ingresoAlternativo.setLocation(360, 493);
+        ingresoAlternativo.setFocusable(false);
+
+        ingresoAlternativo.setBackground(Color.WHITE);
+        ingresoAlternativo.setForeground(Color.BLACK);
+
+        this.add(ingresoAlternativo);
     }
 
     private void configurarPanel() {
@@ -76,7 +93,7 @@ public class PanelLogin extends JPanel implements ActionListener {
         this.add(tclave);
     }
 
-    private void crearBotonIngreso() {
+    private void crearBotonIngresar() {
         ingreso = new JButton("Ingresar");
         ingreso.addActionListener(this);
         ingreso.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -97,6 +114,19 @@ public class PanelLogin extends JPanel implements ActionListener {
         return tclave.getText();
     }
 
+    public void limpiar() {
+        trut.setText("");
+        tclave.setText("");
+    }
+
+    public void cambiarAIngresoAdministrativo() {
+        titulo.setText("Ingreso administrativo");
+    }
+
+    public void cambiarAIngresoVotante() {
+        titulo.setText("Tu cuenta Electa");
+    }
+
     public void autenticacionFallo() {
         System.out.println("Fallo la autenticación");
     }
@@ -108,6 +138,9 @@ public class PanelLogin extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ingreso) {
             controlador.autenticacionFueSolicitada();
+        }
+        if (e.getSource() == ingresoAlternativo) {
+            controlador.cambioDeIngresoFueSolicitado();
         }
     }
 }

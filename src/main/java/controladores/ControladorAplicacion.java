@@ -34,10 +34,6 @@ public class ControladorAplicacion {
         vista.mostrarLogin();
     }
 
-    public void cerrar() {
-        vista.dispose();
-    }
-
     public void agregarLogin(PanelLogin login) {
         vista.agregarLogin(login);
     }
