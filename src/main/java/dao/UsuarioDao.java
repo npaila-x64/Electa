@@ -53,6 +53,17 @@ public class UsuarioDao {
         return administradores;
     }
 
+    public static List<Integer> obtenerIdsAdministradores(){
+        List<Integer> idsAdministradores = new ArrayList<>();
+        JSONArray jsonArrayIdAdmins = parsearAdministradores();
+        for (Object jsonArrayIdAdmin : jsonArrayIdAdmins) {
+            JSONObject idSiguiente = (JSONObject) jsonArrayIdAdmin;
+            Object campoIdSiguiente = idSiguiente.get(CampoDeVotante.ID.getTexto());
+            idsAdministradores.add(Integer.parseInt(campoIdSiguiente.toString()));
+        }
+        return idsAdministradores;
+    }
+
     public static String obtenerCredencialAdmin() {
         JSONArray credencialArray = parsearCredencialAdmin();
         JSONObject credencialObject = (JSONObject) credencialArray.get(0);

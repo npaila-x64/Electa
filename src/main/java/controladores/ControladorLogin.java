@@ -32,6 +32,14 @@ public class ControladorLogin {
 		return false;
 	}
 
+	private boolean esCredencialAdminValida(Votante admin){
+		if(!esCredencialVotanteValida(admin)){
+			return false;
+		}
+		List<Integer> idsAdministradores = UsuarioDao.obtenerIdsAdministradores();
+		return idsAdministradores.stream().anyMatch(idAdministrador -> idAdministrador.equals(admin.getId()));
+	}
+
 	public void autenticacionFueSolicitada() {
 		if (!estanLasCredencialesVacias()) {
 			if (ingresoAdministrativoEstaActivo) {
@@ -49,6 +57,16 @@ public class ControladorLogin {
 	}
 
 	private void autenticarAdministrador() {
+		Votante votanteIngresado = new Votante();
+		votanteIngresado.setRut(vista.getRut());
+		votanteIngresado.setClave(vista.getClave());
+		if (esCredencialAdminValida(votanteIngresado)) {
+			controlador.asignarUsuarioDeSesion(votanteIngresado);
+			controlador.abrirVotacionesEnCurso();
+			vista.autenticacionSeLogro();
+		} else {
+			vista.autenticacionFallo();
+		}
 	}
 
 	private void autenticarVotante() {
