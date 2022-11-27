@@ -106,5 +106,8 @@ public class PanelOpciones extends JPanel implements ActionListener {
         if (e.getSource() == bVolver) {
             controlador.volverFueSolicitado();
         }
+        if (e.getSource() == bAbstencion) {
+            controlador.abstenerseFueSolicitado();
+        }
     }
 }

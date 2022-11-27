@@ -11,6 +11,9 @@ import vistas.votante.PanelOpciones;
 import vistas.votante.PanelResultados;
 import vistas.votante.PanelVotacionesEnCurso;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class ControladorAplicacion {
 
     private Marco vista;
@@ -89,5 +92,9 @@ public class ControladorAplicacion {
 
     public void mostrarOpciones() {
         vista.mostrarOpciones();
+    }
+
+    public JFrame getMarco() {
+        return vista;
     }
 }

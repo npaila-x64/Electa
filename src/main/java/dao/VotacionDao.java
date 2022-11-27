@@ -150,7 +150,8 @@ public class VotacionDao {
         return votacionesCopia;
     }
 
-    public static List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante(Integer idVotante) {
+    public static List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante(Votante votante) {
+        int idVotante = votante.getId();
         List<Votacion> votacionesEnCurso = obtenerVotacionesEnCurso();
         List<Votacion> votacionesEnElQuePuedeVotarElVotante = new ArrayList<>();
         votacionesEnCurso

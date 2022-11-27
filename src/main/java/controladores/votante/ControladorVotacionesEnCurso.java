@@ -28,7 +28,7 @@ public class ControladorVotacionesEnCurso {
 	private void cargarVotaciones() {
 		Votante votante = controlador.obtenerUsuario();
 		votaciones = VotacionDao
-				.obtenerVotacionesEnElQuePuedeVotarElVotante(votante.getId());
+				.obtenerVotacionesEnElQuePuedeVotarElVotante(votante);
 		modelo.setVotaciones(votaciones);
 	}
 

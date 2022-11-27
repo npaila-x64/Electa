@@ -11,6 +11,7 @@ import dao.VotoDao;
 import utils.ValidadorDeDatos;
 import vistas.votante.*;
 
+import javax.swing.*;
 import javax.swing.table.TableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,6 @@ import java.util.List;
 public class ControladorVotacion {
 
     private final ControladorAplicacion controlador;
-    private Integer idVotante;
     private final PanelOpciones vista;
     private final OpcionesTableModel modelo;
     private List<Opcion> opciones;
@@ -32,44 +32,26 @@ public class ControladorVotacion {
 
     public List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante() {
         return VotacionDao
-                .obtenerVotacionesEnElQuePuedeVotarElVotante(idVotante);
-    }
-
-    public Votante obtenerVotante() {
-        return UsuarioDao.obtenerVotantePorId(idVotante);
+                .obtenerVotacionesEnElQuePuedeVotarElVotante(controlador.obtenerUsuario());
     }
 
     public void mostrarMenuOpcionesParaVotar(Integer opcionElegida) {
         Votacion votacion = VotacionDao
-                .obtenerVotacionesEnElQuePuedeVotarElVotante(idVotante)
+                .obtenerVotacionesEnElQuePuedeVotarElVotante(controlador.obtenerUsuario())
                 .get(opcionElegida - 1);
         List<Opcion> opciones = votacion.getOpciones();
-        mostrarOpcionesMenuOpcionesParaVotar(opciones);
         int nuevaOpcion = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
         switch (nuevaOpcion) {
             case 0 -> {return;}
-            case 1 -> registrarVotoBlanco(votacion, obtenerVotante());
-            default -> registrarVotoPreferencial(votacion, obtenerVotante(), opciones.get(nuevaOpcion - 1));
+            case 1 -> registrarVotoBlanco(votacion, controlador.obtenerUsuario());
+            default -> registrarVotoPreferencial(votacion,
+                    controlador.obtenerUsuario(), opciones.get(nuevaOpcion - 1));
         }
         mostrarVotoRealizadoConExito();
     }
 
-    private void mostrarOpcionesMenuOpcionesParaVotar(List<Opcion> opciones) {
-        System.out.println("Opciones disponibles");
-        mostrarListaOpciones(opciones);
-    }
-
     private void mostrarVotoRealizadoConExito() {
         System.out.println("¡Voto realizado con exito!\n");
-    }
-
-    public void mostrarListaOpciones(List<Opcion> opciones) {
-        System.out.println("Elija una opción");
-        for (int indice = 0; indice < opciones.size(); indice++) {
-            int indiceAjustado = indice + 1;
-            System.out.printf("[%s] %s%n", indiceAjustado, opciones.get(indice).getNombre());
-        }
-        System.out.print("Si desea volver escriba [0]\n> ");
     }
 
     public void registrarVoto(Votacion votacion, Opcion opcionElegida) {
@@ -146,8 +128,17 @@ public class ControladorVotacion {
         return modelo;
     }
 
-    public void votarPorOpcionFueSolicitado(int fila) {
-        System.out.println(fila);
+    public void votarPorOpcionFueSolicitado(int id) {
+        Opcion opcion = opciones.get(id);
+        mostrarDialogoDeConfirmacion(opcion);
+    }
+
+    private void mostrarDialogoDeConfirmacion(Opcion opcion) {
+        DialogoDeConfirmacion dialogo =
+                new DialogoDeConfirmacion(controlador.getMarco(), "Confirme su voto", true);
+        dialogo.setNombreDeOpcion(opcion.getNombre());
+        boolean confirmacion = dialogo.mostrar();
+        System.out.println(confirmacion);
     }
 
     public void abrir(List<Opcion> opciones) {
@@ -162,5 +153,9 @@ public class ControladorVotacion {
 
     public void volverFueSolicitado() {
         controlador.abrirVotacionesEnCurso();
+    }
+
+    public void abstenerseFueSolicitado() {
+        mostrarDialogoDeConfirmacion(Opcion.getOpcionConVotoBlanco());
     }
 }

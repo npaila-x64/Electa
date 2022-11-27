@@ -20,14 +20,11 @@ import javax.swing.table.*;
  *
  */
 public class ButtonColumn extends AbstractCellEditor
-        implements TableCellRenderer, TableCellEditor, ActionListener, MouseListener
-{
+        implements TableCellRenderer, TableCellEditor, ActionListener, MouseListener {
     private JTable table;
     private Action action;
-    private int mnemonic;
     private Border originalBorder;
     private Border focusBorder;
-
     private JButton renderButton;
     private JButton editButton;
     private Object editorValue;
@@ -42,8 +39,7 @@ public class ButtonColumn extends AbstractCellEditor
      *  @param action the Action to be invoked when the button is invoked
      *  @param column the column to which the button renderer/editor is added
      */
-    public ButtonColumn(JTable table, Action action, int column)
-    {
+    public ButtonColumn(JTable table, Action action, int column) {
         this.table = table;
         this.action = action;
 
@@ -58,6 +54,8 @@ public class ButtonColumn extends AbstractCellEditor
         columnModel.getColumn(column).setCellRenderer( this );
         columnModel.getColumn(column).setCellEditor( this );
         table.addMouseListener( this);
+        renderButton.setBackground(Color.WHITE);
+        renderButton.setForeground(Color.BLACK);
     }
 
 
@@ -107,8 +105,7 @@ public class ButtonColumn extends AbstractCellEditor
     }
 
     @Override
-    public Object getCellEditorValue()
-    {
+    public Object getCellEditorValue() {
         return editorValue;
     }
 
@@ -116,8 +113,7 @@ public class ButtonColumn extends AbstractCellEditor
 //  Implement TableCellRenderer interface
 //
     public Component getTableCellRendererComponent(
-            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-    {
+            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         if (isSelected) {
             renderButton.setBackground(Color.WHITE);
             renderButton.setForeground(Color.BLACK);
