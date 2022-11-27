@@ -1,12 +1,18 @@
 package controladores.admin;
 
-import controladores.votante.ControladorResultados;
-import vistas.admin.MenuAdministracion;
+import controladores.ControladorAplicacion;
+import vistas.PanelLogin;
+import vistas.admin.PanelAdministracion;
 
 public class ControladorAdministracion {
 
-    public ControladorAdministracion() {
-        new MenuAdministracion(this).mostrar();
+    private final PanelAdministracion vista;
+    private final ControladorAplicacion controlador;
+
+    public ControladorAdministracion(ControladorAplicacion controlador) {
+        this.controlador = controlador;
+        vista = new PanelAdministracion(this);
+        this.controlador.agregarPanel(vista, "administracion");
     }
 
     public void mostrarPanelDeControlDeVotaciones() {
@@ -15,5 +21,17 @@ public class ControladorAdministracion {
 
     public void mostrarMenuCreacionDeVotacion() {
         new ControladorCreacionDeVotacion().iniciar();
+    }
+
+    public void cerrarSesionFueSolicitado() {
+        controlador.abrirLogin();
+    }
+
+    public void verResultadosFueSolicitado() {
+        controlador.abrirResultados();
+    }
+
+    public void abrir() {
+        controlador.mostrarPanel("administracion");
     }
 }

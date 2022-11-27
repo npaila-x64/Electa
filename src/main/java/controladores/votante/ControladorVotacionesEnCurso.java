@@ -22,7 +22,7 @@ public class ControladorVotacionesEnCurso {
 		this.controlador = controlador;
 		modelo = new VotacionesEnCursoTableModel();
 		vista = new PanelVotacionesEnCurso(this);
-		this.controlador.agregarVotacionesEnCurso(vista);
+		this.controlador.agregarPanel(vista, "votacionesEnCurso");
 	}
 
 	private void cargarVotaciones() {
@@ -38,7 +38,7 @@ public class ControladorVotacionesEnCurso {
 
 	public void abrir() {
 		cargarVotaciones();
-		controlador.mostrarVotacionesEnCurso();
+		controlador.mostrarPanel("votacionesEnCurso");
 	}
 
 	public void cerrarSesionFueSolicitada() {

@@ -26,7 +26,7 @@ public class ControladorVotacion {
         this.controlador = controlador;
         modelo = new OpcionesTableModel();
         vista = new PanelOpciones(this);
-        this.controlador.agregarOpciones(vista);
+        this.controlador.agregarPanel(vista, "opciones");
     }
 
     public List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante() {
@@ -123,7 +123,7 @@ public class ControladorVotacion {
         this.votacion = votacion;
         this.opciones = opciones;
         cargarOpciones();
-        controlador.mostrarOpciones();
+        controlador.mostrarPanel("opciones");
     }
 
     private void cargarOpciones() {

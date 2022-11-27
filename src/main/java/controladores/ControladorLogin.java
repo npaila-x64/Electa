@@ -15,7 +15,7 @@ public class ControladorLogin {
 	public ControladorLogin(ControladorAplicacion controlador) {
 		this.controlador = controlador;
 		vista = new PanelLogin(this);
-		this.controlador.agregarLogin(vista);
+		this.controlador.agregarPanel(vista, "login");
 	}
 
 	private boolean esCredencialVotanteValida(Votante votante) {
@@ -49,6 +49,7 @@ public class ControladorLogin {
 	}
 
 	private void autenticarAdministrador() {
+		controlador.abrirAdministracion();
 	}
 
 	private void autenticarVotante() {
@@ -66,7 +67,7 @@ public class ControladorLogin {
 
 	public void abrir() {
 		controlador.asignarUsuarioDeSesion(new Votante());
-		controlador.mostrarLogin();
+		controlador.mostrarPanel("login");
 		vista.limpiar();
 	}
 

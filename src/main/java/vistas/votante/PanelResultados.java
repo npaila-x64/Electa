@@ -1,5 +1,5 @@
 package vistas.votante;
-import controladores.votante.ControladorResultados;
+import controladores.ControladorResultados;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,7 +63,7 @@ public class PanelResultados extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == bVolver) {
-            controlador.volverFueSolitado();
+            controlador.volverFueSolitado("votacionesEnCurso");
         }
     }
 }

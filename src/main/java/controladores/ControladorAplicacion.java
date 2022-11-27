@@ -1,18 +1,18 @@
 package controladores;
 
-import controladores.votante.ControladorResultados;
+import controladores.admin.ControladorAdministracion;
 import controladores.votante.ControladorVotacion;
 import controladores.votante.ControladorVotacionesEnCurso;
 import modelos.Votacion;
 import modelos.Votante;
 import vistas.Marco;
 import vistas.PanelLogin;
+import vistas.admin.PanelAdministracion;
 import vistas.votante.PanelOpciones;
 import vistas.votante.PanelResultados;
 import vistas.votante.PanelVotacionesEnCurso;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class ControladorAplicacion {
 
@@ -22,13 +22,13 @@ public class ControladorAplicacion {
     private ControladorVotacionesEnCurso votacionesEnCurso;
     private ControladorResultados resultados;
     private ControladorVotacion votacion;
+    private ControladorAdministracion administracion;
 
     public void iniciar() {
         vista = new Marco();
         crearControladores();
-        login.abrir();
-        vista.mostrarLogin();
         vista.setVisible(true);
+        login.abrir();
     }
 
     private void crearControladores() {
@@ -36,18 +36,7 @@ public class ControladorAplicacion {
         votacionesEnCurso = new ControladorVotacionesEnCurso(this);
         resultados = new ControladorResultados(this);
         votacion = new ControladorVotacion(this);
-    }
-
-    public void mostrarLogin() {
-        vista.mostrarLogin();
-    }
-
-    public void agregarLogin(PanelLogin login) {
-        vista.agregarLogin(login);
-    }
-
-    public void mostrarVotacionesEnCurso() {
-        vista.mostrarVotacionesEnCurso();
+        administracion = new ControladorAdministracion(this);
     }
 
     public void abrirVotacionesEnCurso() {
@@ -62,8 +51,12 @@ public class ControladorAplicacion {
         resultados.abrir();
     }
 
-    public void agregarVotacionesEnCurso(PanelVotacionesEnCurso votacionesEnCurso) {
-        vista.agregarVotacionesEnCurso(votacionesEnCurso);
+    public void abrirAdministracion() {
+        administracion.abrir();
+    }
+
+    public void abrirOpcion(Votacion votacion) {
+        this.votacion.abrir(votacion, votacion.getOpciones());
     }
 
     public void asignarUsuarioDeSesion(Votante usuario) {
@@ -74,27 +67,15 @@ public class ControladorAplicacion {
         return usuario;
     }
 
-    public void agregarResultados(PanelResultados resultados) {
-        vista.agregarResultados(resultados);
-    }
-
-    public void mostrarResultados() {
-        vista.mostrarResultados();
-    }
-
-    public void agregarOpciones(PanelOpciones opciones) {
-        vista.agregarOpciones(opciones);
-    }
-
-    public void abrirOpcion(Votacion votacion) {
-        this.votacion.abrir(votacion, votacion.getOpciones());
-    }
-
-    public void mostrarOpciones() {
-        vista.mostrarOpciones();
+    public void agregarPanel(JPanel panel, String nombre) {
+        vista.agregarPanel(panel, nombre);
     }
 
     public JFrame getMarco() {
         return vista;
+    }
+
+    public void mostrarPanel(String panel) {
+        vista.mostrarPanel(panel);
     }
 }

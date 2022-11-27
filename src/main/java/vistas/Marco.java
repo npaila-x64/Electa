@@ -1,5 +1,6 @@
 package vistas;
 
+import vistas.admin.PanelAdministracion;
 import vistas.votante.PanelOpciones;
 import vistas.votante.PanelResultados;
 import vistas.votante.PanelVotacionesEnCurso;
@@ -31,35 +32,27 @@ public class Marco extends JFrame {
         setResizable(false);
     }
 
-    public void agregarLogin(PanelLogin login) {
-        panel.add("login", login);
-    }
-
-    public void mostrarLogin() {
-        cl.show(panel, "login");
-    }
-
     public void agregarVotacionesEnCurso(PanelVotacionesEnCurso votacionesEnCurso) {
         panel.add("votacionesEnCurso", votacionesEnCurso);
-    }
-
-    public void mostrarVotacionesEnCurso() {
-        cl.show(panel, "votacionesEnCurso");
     }
 
     public void agregarResultados(PanelResultados resultados) {
         panel.add("resultados", resultados);
     }
 
-    public void mostrarResultados() {
-        cl.show(panel, "resultados");
-    }
-
     public void agregarOpciones(PanelOpciones opciones) {
         panel.add("opciones", opciones);
     }
 
-    public void mostrarOpciones() {
-        cl.show(panel, "opciones");
+    public void agregarAdministracion(PanelAdministracion administracion) {
+        panel.add("administracion", administracion);
+    }
+
+    public void agregarPanel(JPanel panel, String nombre) {
+        this.panel.add(nombre, panel);
+    }
+
+    public void mostrarPanel(String panel) {
+        cl.show(this.panel, panel);
     }
 }

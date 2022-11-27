@@ -1,6 +1,6 @@
 package vistas.votante;
 
-import controladores.votante.ControladorResultados;
+import controladores.ControladorResultados;
 import modelos.Opcion;
 import modelos.Votacion;
 import utils.Utilidades;
