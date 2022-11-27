@@ -63,14 +63,7 @@ public class PanelResultados extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == bVolver) {
-            controlador.volverFueSolitado("votacionesEnCurso");
+            controlador.volverFueSolitado();
         }
     }
 }
-
-//class VentanaResultados {
-//    public static void main(String[] args) throws Exception
-//    {
-//        ResultadosFrame f = new ResultadosFrame();
-//    }
-//}

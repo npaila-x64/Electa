@@ -13,6 +13,7 @@ public class ControladorResultados {
 
     private ControladorAplicacion controlador;
     private PanelResultados vista;
+    private String panelPredecesor;
 
     public ControladorResultados(ControladorAplicacion controlador) {
         this.controlador = controlador;
@@ -46,7 +47,11 @@ public class ControladorResultados {
         controlador.mostrarPanel("resultados");
     }
 
-    public void volverFueSolitado(String panel) {
-        controlador.mostrarPanel(panel);
+    public void setPanelPredecesor(String panelPredecesor) {
+        this.panelPredecesor = panelPredecesor;
+    }
+
+    public void volverFueSolitado() {
+        controlador.mostrarPanel(panelPredecesor);
     }
 }

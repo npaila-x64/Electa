@@ -38,6 +38,7 @@ public class ControladorVotacionesEnCurso {
 
 	public void abrir() {
 		cargarVotaciones();
+		controlador.asignarPanelPredecesorDeResultados("votacionesEnCurso");
 		controlador.mostrarPanel("votacionesEnCurso");
 	}
 

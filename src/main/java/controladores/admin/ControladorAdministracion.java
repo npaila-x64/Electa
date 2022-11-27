@@ -1,7 +1,6 @@
 package controladores.admin;
 
 import controladores.ControladorAplicacion;
-import vistas.PanelLogin;
 import vistas.admin.PanelAdministracion;
 
 public class ControladorAdministracion {
@@ -32,6 +31,7 @@ public class ControladorAdministracion {
     }
 
     public void abrir() {
+        controlador.asignarPanelPredecesorDeResultados("administracion");
         controlador.mostrarPanel("administracion");
     }
 }

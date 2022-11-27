@@ -6,11 +6,6 @@ import controladores.votante.ControladorVotacionesEnCurso;
 import modelos.Votacion;
 import modelos.Votante;
 import vistas.Marco;
-import vistas.PanelLogin;
-import vistas.admin.PanelAdministracion;
-import vistas.votante.PanelOpciones;
-import vistas.votante.PanelResultados;
-import vistas.votante.PanelVotacionesEnCurso;
 
 import javax.swing.*;
 
@@ -77,5 +72,9 @@ public class ControladorAplicacion {
 
     public void mostrarPanel(String panel) {
         vista.mostrarPanel(panel);
+    }
+
+    public void asignarPanelPredecesorDeResultados(String nombre) {
+        resultados.setPanelPredecesor(nombre);
     }
 }

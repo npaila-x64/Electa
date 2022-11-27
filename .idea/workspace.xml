@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="agrega funcionalidad de votación por medio de interfaz">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="simplifica llamado entre controladores">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorResultados.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorResultados.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/VentanaMenuAdmin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelAdministracion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/MenuResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/MenuResultados.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/PanelResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/PanelResultados.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -166,13 +161,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1662468710255</updated>
-    </task>
-    <task id="LOCAL-00007" summary="agrega nueva clase junto a test para manejo de comunicación con datos">
-      <created>1663975625158</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1663975625158</updated>
     </task>
     <task id="LOCAL-00008" summary="agrega métodos getter y setter de fecha y tiempo">
       <created>1665182101790</created>
@@ -510,7 +498,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669512653748</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="simplifica llamado entre controladores">
+      <created>1669564670420</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1669564670420</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -540,7 +535,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="agrega últimos ajustes de la base del mvc" />
     <MESSAGE value="elimina imports innecesarios" />
     <MESSAGE value="elimina métodos iniciar() de controladores" />
     <MESSAGE value="arregla desincronización de nombres de Clase EstadoDeVotaciones y varios métodos respectivos" />
@@ -565,7 +559,8 @@
     <MESSAGE value="crea mayoría de funcionalidades de tabla de votaciones en curso" />
     <MESSAGE value="crea mayoría de funcionalidades de tabla de opciones" />
     <MESSAGE value="crea dialogo de confirmación" />
-    <option name="LAST_COMMIT_MESSAGE" value="crea dialogo de confirmación" />
+    <MESSAGE value="simplifica llamado entre controladores" />
+    <option name="LAST_COMMIT_MESSAGE" value="simplifica llamado entre controladores" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
