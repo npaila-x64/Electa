@@ -3,7 +3,7 @@ package controladores.votante;
 import controladores.ControladorAplicacion;
 import modelos.Opcion;
 import modelos.Votacion;
-import modelos.Votante;
+import modelos.Usuario;
 import modelos.Voto;
 import dao.VotacionDao;
 import dao.VotoDao;
@@ -11,7 +11,6 @@ import utils.ValidadorDeDatos;
 import vistas.votante.*;
 
 import javax.swing.table.TableModel;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ControladorVotacion {
@@ -69,17 +68,17 @@ public class ControladorVotacion {
         opcion.setCantidadDeVotos(votosOpcion);
     }
 
-    public void registrarVoto(Votacion votacion, Votante votante, Opcion opcionElegida) {
+    public void registrarVoto(Votacion votacion, Usuario votante, Opcion opcionElegida) {
         escribirVoto(votacion, opcionElegida);
         escribirVotoEnVotos(votacion, votante, opcionElegida);
         escribirVotanteEnVotaciones(votacion, votante);
     }
 
-    public void escribirVotanteEnVotaciones(Votacion votacion, Votante votante) {
+    public void escribirVotanteEnVotaciones(Votacion votacion, Usuario votante) {
         List<Votacion> votaciones = VotacionDao.obtenerVotaciones();
         for (var votacionSiguiente : votaciones) {
             if (votacionSiguiente.getId().equals(votacion.getId())) {
-                List<Votante> votantes = votacionSiguiente.getVotantes();
+                List<Usuario> votantes = votacionSiguiente.getVotantes();
                 votantes.add(votante);
                 votacionSiguiente.setVotantes(votantes);
                 VotacionDao.escribirVotaciones(votaciones);
@@ -88,7 +87,7 @@ public class ControladorVotacion {
         }
     }
 
-    public void escribirVotoEnVotos(Votacion votacion, Votante votante, Opcion opcion) {
+    public void escribirVotoEnVotos(Votacion votacion, Usuario votante, Opcion opcion) {
         List<Voto> votos = VotoDao.obtenerVotos();
         Voto voto = new Voto();
         voto.setId(VotoDao.obtenerNuevaIdVoto());

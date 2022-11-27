@@ -3,7 +3,7 @@ package controladores.votante;
 import controladores.ControladorAplicacion;
 import modelos.Votacion;
 import dao.VotacionDao;
-import modelos.Votante;
+import modelos.Usuario;
 import modelos.enums.EstadoDeVotacion;
 import vistas.votante.PanelVotacionesEnCurso;
 import vistas.votante.VotacionesEnCursoTableModel;
@@ -26,7 +26,7 @@ public class ControladorVotacionesEnCurso {
 	}
 
 	private void cargarVotaciones() {
-		Votante votante = controlador.obtenerUsuario();
+		Usuario votante = controlador.obtenerUsuario();
 		votaciones = VotacionDao
 				.obtenerVotacionesEnElQuePuedeVotarElVotante(votante);
 		modelo.setVotaciones(votaciones);

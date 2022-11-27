@@ -1,7 +1,7 @@
 package dao;
 
 import excepciones.AccesoADatosInterrumpidoException;
-import modelos.Votante;
+import modelos.Usuario;
 import modelos.enums.CampoDeVotacion;
 import modelos.enums.CampoDeVotante;
 import org.json.simple.JSONArray;
@@ -23,32 +23,32 @@ public class UsuarioDao {
         return AccesoADatos.parsearArchivoJSON(RUTA_ADMINISTRADORES);
     }
 
-    public static List<Votante> obtenerVotantes() {
+    public static List<Usuario> obtenerVotantes() {
         return obtenerUsuarios(parsearVotantes());
     }
 
-    public static List<Votante> obtenerAdministradores(){
+    public static List<Usuario> obtenerAdministradores(){
         return obtenerUsuarios(parsearAdministradores());
     }
 
-    public static List<Votante> obtenerUsuarios(JSONArray jsonArrayUsuarios){
-        List<Votante> votantes = new ArrayList<>();
+    public static List<Usuario> obtenerUsuarios(JSONArray jsonArrayUsuarios){
+        List<Usuario> usuarios = new ArrayList<>();
         for (Object jsonArrayUsuario : jsonArrayUsuarios) {
             JSONObject jsonArrayUsuarioSiguiente = (JSONObject) jsonArrayUsuario;
-            Votante votante = new Votante();
-            obtenerAtributosDeVotanteJSON(votante, jsonArrayUsuarioSiguiente);
-            votantes.add(votante);
+            Usuario usuario = new Usuario();
+            obtenerAtributosDeVotanteJSON(usuario, jsonArrayUsuarioSiguiente);
+            usuarios.add(usuario);
         }
-        return votantes;
+        return usuarios;
     }
 
-    private static void obtenerAtributosDeVotanteJSON(Votante votante, JSONObject votanteJSON) {
-        votante.setId(votanteJSON.get(CampoDeVotante.ID.getTexto()));
-        votante.setRut(votanteJSON.get(CampoDeVotante.RUT.getTexto()));
-        votante.setClave(votanteJSON.get(CampoDeVotante.CLAVE.getTexto()));
+    private static void obtenerAtributosDeVotanteJSON(Usuario usuario, JSONObject votanteJSON) {
+        usuario.setId(votanteJSON.get(CampoDeVotante.ID.getTexto()));
+        usuario.setRut(votanteJSON.get(CampoDeVotante.RUT.getTexto()));
+        usuario.setClave(votanteJSON.get(CampoDeVotante.CLAVE.getTexto()));
     }
     
-    public static Votante obtenerVotantePorId(Integer idVotante){
+    public static Usuario obtenerVotantePorId(Integer idVotante){
         var votantes = obtenerVotantes();
         return votantes.stream().filter
                 (votanteSiguiente -> votanteSiguiente.getId().equals(idVotante))

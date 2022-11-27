@@ -3,7 +3,7 @@ package dao;
 import excepciones.AccesoADatosInterrumpidoException;
 import modelos.Opcion;
 import modelos.Votacion;
-import modelos.Votante;
+import modelos.Usuario;
 import modelos.enums.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -102,17 +102,17 @@ public class VotacionDao {
         return listaOpciones;
     }
 
-    public static List<Votante> obtenerVotantesDeVotacionJSON(Votacion votacion, JSONObject votacionSiguiente) {
-        List<Votante> votantes = obtenerVotantesDeVotacionJSON(votacionSiguiente);
+    public static List<Usuario> obtenerVotantesDeVotacionJSON(Votacion votacion, JSONObject votacionSiguiente) {
+        List<Usuario> votantes = obtenerVotantesDeVotacionJSON(votacionSiguiente);
         votacion.setVotantes(votantes);
         return votantes;
     }
 
-    public static List<Votante> obtenerVotantesDeVotacionJSON(JSONObject votacionSiguiente) {
+    public static List<Usuario> obtenerVotantesDeVotacionJSON(JSONObject votacionSiguiente) {
         JSONArray votantesArray = (JSONArray) votacionSiguiente.get(CampoDeVotacion.VOTANTES.getTexto());
-        List<Votante> votantes = new ArrayList<>();
+        List<Usuario> votantes = new ArrayList<>();
         for (Object IDvotante : votantesArray) {
-            Votante votante = new Votante();
+            Usuario votante = new Usuario();
             votante.setId(Integer.parseInt(IDvotante.toString()));
             votantes.add(votante);
         }
@@ -150,7 +150,7 @@ public class VotacionDao {
         return votacionesCopia;
     }
 
-    public static List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante(Votante votante) {
+    public static List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante(Usuario votante) {
         int idVotante = votante.getId();
         List<Votacion> votacionesEnCurso = obtenerVotacionesEnCurso();
         List<Votacion> votacionesEnElQuePuedeVotarElVotante = new ArrayList<>();
@@ -177,8 +177,8 @@ public class VotacionDao {
     }
 
     public static boolean votanteVotoEnEstaVotacion(Votacion votacionSiguiente, Integer idVotante) {
-        List<Votante> votantes = votacionSiguiente.getVotantes();
-        for (Votante votanteQueVotoEnEstaVotacion : votantes) {
+        List<Usuario> votantes = votacionSiguiente.getVotantes();
+        for (Usuario votanteQueVotoEnEstaVotacion : votantes) {
             if (idVotante.equals(votanteQueVotoEnEstaVotacion.getId())) {
                 // Si esta condición se cumple se da a entender que el votante ya
                 // está en la lista de votantes quienes votaron en esta votación
@@ -248,7 +248,7 @@ public class VotacionDao {
 
     private static JSONArray obtenerArrayIdVotantes(Votacion votacion) {
         JSONArray votantesArray = new JSONArray();
-        for (Votante votante : votacion.getVotantes()) {
+        for (Usuario votante : votacion.getVotantes()) {
             votantesArray.add(votante.getId());
         }
         return votantesArray;

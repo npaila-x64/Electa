@@ -4,7 +4,7 @@ import controladores.votante.ControladorResultados;
 import controladores.votante.ControladorVotacion;
 import controladores.votante.ControladorVotacionesEnCurso;
 import modelos.Votacion;
-import modelos.Votante;
+import modelos.Usuario;
 import vistas.Marco;
 import vistas.PanelLogin;
 import vistas.votante.PanelOpciones;
@@ -12,12 +12,11 @@ import vistas.votante.PanelResultados;
 import vistas.votante.PanelVotacionesEnCurso;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class ControladorAplicacion {
 
     private Marco vista;
-    private Votante usuario;
+    private Usuario usuario;
     private ControladorLogin login;
     private ControladorVotacionesEnCurso votacionesEnCurso;
     private ControladorResultados resultados;
@@ -66,11 +65,11 @@ public class ControladorAplicacion {
         vista.agregarVotacionesEnCurso(votacionesEnCurso);
     }
 
-    public void asignarUsuarioDeSesion(Votante usuario) {
+    public void asignarUsuarioDeSesion(Usuario usuario) {
         this.usuario = usuario;
     }
 
-    public Votante obtenerUsuario() {
+    public Usuario obtenerUsuario() {
         return usuario;
     }
 

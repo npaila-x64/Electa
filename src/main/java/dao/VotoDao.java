@@ -3,7 +3,7 @@ package dao;
 import excepciones.AccesoADatosInterrumpidoException;
 import modelos.Opcion;
 import modelos.Votacion;
-import modelos.Votante;
+import modelos.Usuario;
 import modelos.Voto;
 import modelos.enums.CampoDeVoto;
 import org.json.simple.JSONArray;
@@ -39,7 +39,7 @@ public class VotoDao {
     }
 
     private static void asignarVotanteDelVoto(JSONObject votoSiguiente, Voto voto) {
-        Votante votante = new Votante();
+        Usuario votante = new Usuario();
         votante.setId(votoSiguiente.get(CampoDeVoto.VOTANTE.getTexto()));
         voto.setVotante(votante);
     }

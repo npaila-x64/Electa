@@ -24,7 +24,7 @@ public class Votacion {
     private LocalDate fechaTermino;
     private LocalTime tiempoTermino;
     private List<Opcion> opciones;
-    private List<Votante> votantes;
+    private List<Usuario> votantes;
     private Integer votosPreferenciales;
     private Integer votosBlancos;
     private List<Voto> votos;
@@ -150,11 +150,11 @@ public class Votacion {
         this.opciones = new ArrayList<>(opciones);
     }
 
-    public List<Votante> getVotantes() {
+    public List<Usuario> getVotantes() {
         return new ArrayList<>(votantes);
     }
 
-    public void setVotantes(List<Votante> votantes) {
+    public void setVotantes(List<Usuario> votantes) {
         this.votantes = new ArrayList<>(votantes);
     }
 
@@ -217,7 +217,7 @@ public class Votacion {
         mapaDeSetters.put(CampoDeVotacion.FECHA_TERMINO, () -> setFechaTermino((LocalDate) valor));
         mapaDeSetters.put(CampoDeVotacion.HORA_TERMINO, () -> setTiempoTermino((LocalTime) valor));
         mapaDeSetters.put(CampoDeVotacion.OPCIONES, () -> setOpciones((List<Opcion>) valor));
-        mapaDeSetters.put(CampoDeVotacion.VOTANTES, () -> setVotantes((List<Votante>) valor));
+        mapaDeSetters.put(CampoDeVotacion.VOTANTES, () -> setVotantes((List<Usuario>) valor));
         mapaDeSetters.put(CampoDeVotacion.VOTOS_BLANCOS, () -> setVotosBlancos(valor));
         mapaDeSetters.put(CampoDeVotacion.VOTOS_PREFERENCIALES, () -> setVotosPreferenciales(valor));
         mapaDeSetters.get(campo).run();

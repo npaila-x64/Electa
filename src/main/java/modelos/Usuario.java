@@ -1,6 +1,6 @@
 package modelos;
 
-public class Votante {
+public class Usuario {
 
     private Integer id;
     private String clave;
