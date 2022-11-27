@@ -1,5 +1,6 @@
 package controladores;
 
+import modelos.Votacion;
 import modelos.Votante;
 import dao.UsuarioDao;
 import vistas.PanelLogin;
@@ -20,24 +21,25 @@ public class ControladorLogin {
 
 	private boolean esCredencialVotanteValida(Votante votante) {
 		List<Votante> votantes = UsuarioDao.obtenerVotantes();
-		for (Votante votanteSiguiente : votantes) {
+		return esCredencialValida(votante, votantes);
+	}
+
+	private boolean esCredencialAdminValida(Votante admin){
+		List<Votante> administradores = UsuarioDao.obtenerAdministradores();
+		return esCredencialValida(admin, administradores);
+	}
+
+	private boolean esCredencialValida(Votante usuario, List<Votante> usuarios){
+		for (Votante usuarioSiguiente : usuarios) {
 			// Primero verifica que los rut sean iguales, después se verifica la clave
-			if (votanteSiguiente.getRut().equals(votante.getRut())) {
-				if (votanteSiguiente.getClave().equals(votante.getClave())) {
-					votante.setId(votanteSiguiente.getId());
+			if (usuarioSiguiente.getRut().equals(usuario.getRut())) {
+				if (usuarioSiguiente.getClave().equals(usuario.getClave())) {
+					usuario.setId(usuarioSiguiente.getId());
 					return true;
 				}
 			}
 		}
 		return false;
-	}
-
-	private boolean esCredencialAdminValida(Votante admin){
-		if(!esCredencialVotanteValida(admin)){
-			return false;
-		}
-		List<Integer> idsAdministradores = UsuarioDao.obtenerIdsAdministradores();
-		return idsAdministradores.stream().anyMatch(idAdministrador -> idAdministrador.equals(admin.getId()));
 	}
 
 	public void autenticacionFueSolicitada() {

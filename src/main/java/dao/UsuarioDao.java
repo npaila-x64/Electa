@@ -24,26 +24,22 @@ public class UsuarioDao {
     }
 
     public static List<Votante> obtenerVotantes() {
+        return obtenerUsuarios(parsearVotantes());
+    }
+
+    public static List<Votante> obtenerAdministradores(){
+        return obtenerUsuarios(parsearAdministradores());
+    }
+
+    public static List<Votante> obtenerUsuarios(JSONArray jsonArrayUsuarios){
         List<Votante> votantes = new ArrayList<>();
-        JSONArray jsonArrayVotantes = parsearVotantes();
-        for (Object jsonArrayVotante : jsonArrayVotantes) {
-            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotante;
+        for (Object jsonArrayUsuario : jsonArrayUsuarios) {
+            JSONObject jsonArrayUsuarioSiguiente = (JSONObject) jsonArrayUsuario;
             Votante votante = new Votante();
-            obtenerAtributosDeVotanteJSON(votante, votacionSiguiente);
+            obtenerAtributosDeVotanteJSON(votante, jsonArrayUsuarioSiguiente);
             votantes.add(votante);
         }
         return votantes;
-    }
-
-    public static List<Integer> obtenerIdsAdministradores(){
-        List<Integer> idsAdministradores = new ArrayList<>();
-        JSONArray jsonArrayIdAdmins = parsearAdministradores();
-        for (Object jsonArrayIdAdmin : jsonArrayIdAdmins) {
-            JSONObject idSiguiente = (JSONObject) jsonArrayIdAdmin;
-            Object campoIdSiguiente = idSiguiente.get(CampoDeVotante.ID.getTexto());
-            idsAdministradores.add(Integer.parseInt(campoIdSiguiente.toString()));
-        }
-        return idsAdministradores;
     }
 
     private static void obtenerAtributosDeVotanteJSON(Votante votante, JSONObject votanteJSON) {
