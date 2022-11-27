@@ -87,7 +87,7 @@ public class ControladorAplicacion {
     }
 
     public void abrirOpcion(Votacion votacion) {
-        this.votacion.abrir(votacion.getOpciones());
+        this.votacion.abrir(votacion, votacion.getOpciones());
     }
 
     public void mostrarOpciones() {

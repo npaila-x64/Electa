@@ -18,20 +18,10 @@ public class MenuVotacion {
     public void mostrar() {
         while (true) {
             var votaciones = controlador.obtenerVotacionesEnElQuePuedeVotarElVotante();
-            mostrarVotacionesDisponiblesParaVotacion(votaciones);
             int opcionElegida = ValidadorDeDatos.pedirOpcionHasta(votaciones.size());
             if (opcionElegida == 0) break;
             controlador.mostrarMenuOpcionesParaVotar(opcionElegida);
         }
-    }
-
-    private void mostrarVotacionesDisponiblesParaVotacion(List<Votacion> votaciones) {
-        System.out.println("Votaciones disponibles para votación");
-        List<String> titulos = new ArrayList<>();
-        for (var votacionSiguiente : votaciones) {
-            titulos.add(votacionSiguiente.getTitulo());
-        }
-        mostrarListaDeCampos(titulos);
     }
 
     private void mostrarListaDeCampos(List<String> campos) {

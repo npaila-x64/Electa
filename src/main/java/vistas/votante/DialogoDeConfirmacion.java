@@ -27,7 +27,7 @@ public class DialogoDeConfirmacion extends JDialog implements ActionListener {
         tCandidato.setText(nombreDeOpcion);
     }
 
-    public boolean mostrar() {
+    public boolean obtenerConfirmacion() {
         setVisible(true);
         return confirmacion;
     }
