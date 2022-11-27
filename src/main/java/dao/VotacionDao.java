@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 public class VotacionDao {
@@ -117,6 +118,45 @@ public class VotacionDao {
             votantes.add(votante);
         }
         return votantes;
+    }
+
+    public static List<Votacion> obtenerVotacionesPendientes() {
+        List<Votacion> votaciones = obtenerVotaciones();
+        List<Votacion> votacionesPendientes = new ArrayList<>();
+        votaciones
+                .stream()
+                .filter(votacionSiguiente -> votacionSiguiente.getEstadoDeVotacion().equals(EstadoDeVotacion.PENDIENTE))
+                .forEach(votacionesPendientes::add);
+        return votacionesPendientes;
+    }
+
+    public static List<Votacion> obtenerVotacionesConEstados(HashMap<EstadoDeVotacion, Boolean> estados) {
+        List<Votacion> votaciones = obtenerVotaciones();
+        List<Votacion> votacionesBorradores = new ArrayList<>();
+        votaciones
+                .stream()
+                .filter(votacionSiguiente -> verificarSiTieneEstado(estados, votacionSiguiente))
+                .forEach(votacionesBorradores::add);
+        return votacionesBorradores;
+    }
+
+    private static boolean verificarSiTieneEstado(HashMap<EstadoDeVotacion, Boolean> estados, Votacion votacion) {
+        for (EstadoDeVotacion estado : estados.keySet()) {
+            if (votacion.getEstadoDeVotacion().equals(estado) && estados.get(estado)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static List<Votacion> obtenerVotacionesBorradores() {
+        List<Votacion> votaciones = obtenerVotaciones();
+        List<Votacion> votacionesBorradores = new ArrayList<>();
+        votaciones
+                .stream()
+                .filter(votacionSiguiente -> votacionSiguiente.getEstadoDeVotacion().equals(EstadoDeVotacion.BORRADOR))
+                .forEach(votacionesBorradores::add);
+        return votacionesBorradores;
     }
 
     public static List<Votacion> obtenerVotacionesEnCurso() {

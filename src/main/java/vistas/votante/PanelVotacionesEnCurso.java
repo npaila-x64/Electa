@@ -33,7 +33,7 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         lVotaciones.setFont(new Font("Arial", Font.BOLD, 28));
         lVotaciones.setSize(274, 32);
         lVotaciones.setLocation(305, 32);
-        this.add(lVotaciones);
+        add(lVotaciones);
     }
 
     private void crearBotonResultados() {
@@ -44,7 +44,7 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         bResultados.setLocation(645, 475);
         bResultados.setBackground(Color.BLACK);
         bResultados.setForeground(Color.WHITE);
-        this.add(bResultados);
+        add(bResultados);
     }
 
     private void crearTablaDeVotaciones() {
@@ -73,7 +73,7 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(tVotacionesEnCurso);
         scrollPane.setSize(805, 345);
         scrollPane.setLocation(40, 85);
-        this.add(scrollPane);
+        add(scrollPane);
 
         Action abrirVotacion = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -92,12 +92,12 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         bCerrarSesion.setLocation(40, 475);
         bCerrarSesion.setBackground(Color.BLACK);
         bCerrarSesion.setForeground(Color.WHITE);
-        this.add(bCerrarSesion);
+        add(bCerrarSesion);
     }
 
     private void configurarPanel() {
-        this.setBackground(Color.WHITE);
-        this.setLayout(null);
+        setBackground(Color.WHITE);
+        setLayout(null);
     }
 
     @Override

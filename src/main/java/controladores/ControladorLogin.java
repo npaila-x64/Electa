@@ -45,7 +45,7 @@ public class ControladorLogin {
 	}
 
 	private boolean estanLasCredencialesVacias() {
-		return vista.getRut().isEmpty() && vista.getClave().isEmpty();
+		return vista.getRut().isEmpty() || vista.getClave().isEmpty();
 	}
 
 	private void autenticarAdministrador() {

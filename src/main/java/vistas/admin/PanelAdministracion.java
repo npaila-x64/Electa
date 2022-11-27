@@ -1,7 +1,9 @@
 package vistas.admin;
 import controladores.admin.ControladorAdministracion;
+import vistas.votante.ButtonColumn;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +11,7 @@ import java.awt.event.ActionListener;
 public class PanelAdministracion extends JPanel implements ActionListener {
 
     private ControladorAdministracion controlador;
-    private JLabel bordesTabla;
+    private JTable tVotaciones;
     private JLabel textoDesde;
     private JLabel textoHasta;
     private JTextField campoTextoDesde;
@@ -20,6 +22,7 @@ public class PanelAdministracion extends JPanel implements ActionListener {
     private JCheckBox checkEnCurso;
     private JCheckBox checkPendientes;
     private JCheckBox checkFinalizadas;
+    private JCheckBox checkBorradores;
 
     public PanelAdministracion(ControladorAdministracion controlador) {
         this.controlador = controlador;
@@ -32,6 +35,7 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         crearCheckMostrarEnCurso();
         crearCheckPendientes();
         crearCheckFinalizadas();
+        crearCheckBorradores();
         crearTablaDeVotaciones();
         crearBotonCrearVotacion();
         crearBotonResultados();
@@ -77,11 +81,41 @@ public class PanelAdministracion extends JPanel implements ActionListener {
     }
 
     private void crearTablaDeVotaciones() {
-        bordesTabla = new JLabel();
-        bordesTabla.setSize(805, 275);
-        bordesTabla.setLocation(40, 150);
-        bordesTabla.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        add(bordesTabla);
+        tVotaciones = new JTable(controlador.getModeloDeTabla());
+        tVotaciones.setBounds(30, 40, 200, 300);
+        tVotaciones.setRowHeight(60);
+        tVotaciones.setTableHeader(null);
+        tVotaciones.setCellSelectionEnabled(false);
+        tVotaciones.getColumnModel().getColumn(0).setPreferredWidth(575);
+        tVotaciones.getColumnModel().getColumn(1).setPreferredWidth(130);
+        tVotaciones.getColumnModel().getColumn(2).setPreferredWidth(100);
+        tVotaciones.setFont(new Font("Arial", Font.PLAIN, 14));
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                                                           Object value, boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus,
+                        row, column);
+                setBorder(BorderFactory.createCompoundBorder(getBorder(),
+                        BorderFactory.createEmptyBorder(0, 20, 0, 10)));
+                return this;
+            }
+        };
+        tVotaciones.setDefaultRenderer(String.class, renderer);
+
+        JScrollPane scrollPane = new JScrollPane(tVotaciones);
+        scrollPane.setSize(805, 295);
+        scrollPane.setLocation(40, 150);
+        add(scrollPane);
+
+        Action editarVotacion = new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                int fila = Integer.parseInt(e.getActionCommand());
+                controlador.editarVotacionFueSolicitado(fila);
+            }
+        };
+        new ButtonColumn(tVotaciones, editarVotacion, 2);
     }
 
     private void crearBotonCrearVotacion() {
@@ -119,29 +153,50 @@ public class PanelAdministracion extends JPanel implements ActionListener {
 
     private void crearCheckMostrarEnCurso() {
         checkEnCurso = new JCheckBox("Mostrar En Curso");
-        checkEnCurso.setFont(new Font("Arial", Font.PLAIN, 17));
+        checkEnCurso.setFont(new Font("Arial", Font.PLAIN, 14));
         checkEnCurso.setSize(160, 20);
         checkEnCurso.setLocation(50, 110);
         checkEnCurso.setBackground(Color.WHITE);
+        checkEnCurso.setFocusable(false);
+        checkEnCurso.addActionListener(this);
+        checkEnCurso.setSelected(true);
         add(checkEnCurso);
     }
 
     private void crearCheckPendientes() {
         checkPendientes = new JCheckBox("Mostrar Pendientes");
-        checkPendientes.setFont(new Font("Arial", Font.PLAIN, 17));
+        checkPendientes.setFont(new Font("Arial", Font.PLAIN, 14));
         checkPendientes.setSize(170, 20);
-        checkPendientes.setLocation(230, 110);
+        checkPendientes.setLocation(220, 110);
         checkPendientes.setBackground(Color.WHITE);
+        checkPendientes.setFocusable(false);
+        checkPendientes.addActionListener(this);
+        checkPendientes.setSelected(true);
         add(checkPendientes);
     }
 
     private void crearCheckFinalizadas() {
         checkFinalizadas = new JCheckBox("Mostrar Finalizadas");
-        checkFinalizadas.setFont(new Font("Arial", Font.PLAIN, 17));
+        checkFinalizadas.setFont(new Font("Arial", Font.PLAIN, 14));
         checkFinalizadas.setSize(170, 20);
-        checkFinalizadas.setLocation(420, 110);
+        checkFinalizadas.setLocation(410, 110);
         checkFinalizadas.setBackground(Color.WHITE);
+        checkFinalizadas.setFocusable(false);
+        checkFinalizadas.addActionListener(this);
+        checkFinalizadas.setSelected(true);
         add(checkFinalizadas);
+    }
+
+    private void crearCheckBorradores() {
+        checkBorradores = new JCheckBox("Mostrar Borradores");
+        checkBorradores.setFont(new Font("Arial", Font.PLAIN, 14));
+        checkBorradores.setSize(170, 20);
+        checkBorradores.setLocation(600, 110);
+        checkBorradores.setBackground(Color.WHITE);
+        checkBorradores.setFocusable(false);
+        checkBorradores.addActionListener(this);
+        checkBorradores.setSelected(true);
+        add(checkBorradores);
     }
 
     private void configurarPanel() {
@@ -156,6 +211,18 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         }
         if (e.getSource() == bResultados) {
             controlador.verResultadosFueSolicitado();
+        }
+        if (e.getSource() == checkEnCurso) {
+            controlador.checkEnCursoFueEjecutado();
+        }
+        if (e.getSource() == checkFinalizadas) {
+            controlador.checkFinalizadasFueEjecutado();
+        }
+        if (e.getSource() == checkPendientes) {
+            controlador.checkPendientesFueEjecutado();
+        }
+        if (e.getSource() == checkBorradores) {
+            controlador.checkBorradoresFueEjecutado();
         }
     }
 }
