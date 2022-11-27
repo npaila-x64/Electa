@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioDao {
-
-    private static final String RUTA_CREDENCIALES_ADMIN = "src/main/datos/credencialesAdmin.json";
     private static final String RUTA_ADMINISTRADORES = "src/main/datos/administradores.json";
     private static final String RUTA_VOTANTES = "src/main/datos/votantes.json";
 
@@ -23,10 +21,6 @@ public class UsuarioDao {
 
     private static JSONArray parsearAdministradores() throws AccesoADatosInterrumpidoException {
         return AccesoADatos.parsearArchivoJSON(RUTA_ADMINISTRADORES);
-    }
-
-    private static JSONArray parsearCredencialAdmin() throws AccesoADatosInterrumpidoException {
-        return AccesoADatos.parsearArchivoJSON(RUTA_CREDENCIALES_ADMIN);
     }
 
     public static List<Votante> obtenerVotantes() {
@@ -40,18 +34,6 @@ public class UsuarioDao {
         }
         return votantes;
     }
-    //TODO casi igual al método obtenerVotantes
-    public static List<Votante> obtenerAdministradores(){
-        List<Votante> administradores = new ArrayList<>();
-        JSONArray jsonArrayAdmins = parsearAdministradores();
-        for (Object jsonArrayAdmin : jsonArrayAdmins) {
-            JSONObject votacionSiguiente = (JSONObject) jsonArrayAdmin;
-            Votante admin = new Votante();
-            obtenerAtributosDeVotanteJSON(admin, votacionSiguiente);
-            administradores.add(admin);
-        }
-        return administradores;
-    }
 
     public static List<Integer> obtenerIdsAdministradores(){
         List<Integer> idsAdministradores = new ArrayList<>();
@@ -62,12 +44,6 @@ public class UsuarioDao {
             idsAdministradores.add(Integer.parseInt(campoIdSiguiente.toString()));
         }
         return idsAdministradores;
-    }
-
-    public static String obtenerCredencialAdmin() {
-        JSONArray credencialArray = parsearCredencialAdmin();
-        JSONObject credencialObject = (JSONObject) credencialArray.get(0);
-        return String.valueOf(credencialObject.get(CampoDeVotante.CLAVE.getTexto()));
     }
 
     private static void obtenerAtributosDeVotanteJSON(Votante votante, JSONObject votanteJSON) {
