@@ -38,19 +38,22 @@ public class RefrescadorVotaciones {
     }
 
     public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, Votacion votacion) {
-        // TODO Arreglar este desorden
         EstadoDeVotacion estado = votacion.getEstadoDeVotacion();
         if (estado.equals(EstadoDeVotacion.BORRADOR)) return;
         var fechaTiempoInicio = votacion.getFechaTiempoInicio();
         var fechaTiempoTermino = votacion.getFechaTiempoTermino();
-        if (fechaTiempoAhora.isAfter(fechaTiempoTermino)) {
-            estado = EstadoDeVotacion.FINALIZADO;
-        } else if (fechaTiempoAhora.isBefore(fechaTiempoInicio)) {
-            estado = EstadoDeVotacion.PENDIENTE;
-        } else {
-            estado = EstadoDeVotacion.EN_CURSO;
-        }
+        estado = obtenerEstadoPorFecha(fechaTiempoAhora, fechaTiempoInicio, fechaTiempoTermino);
         votacion.setEstadoDeVotacion(estado);
+    }
+
+    private static EstadoDeVotacion obtenerEstadoPorFecha(LocalDateTime fechaAhora, LocalDateTime fechaInicio, LocalDateTime fechaTermino) {
+        if (fechaAhora.isAfter(fechaTermino)) {
+            return EstadoDeVotacion.FINALIZADO;
+        } else if (fechaAhora.isBefore(fechaInicio)) {
+            return EstadoDeVotacion.PENDIENTE;
+        } else {
+            return EstadoDeVotacion.EN_CURSO;
+        }
     }
 
     public static LocalDateTime obtenerFechaTiempoAhora() {
