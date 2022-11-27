@@ -3,23 +3,33 @@ package controladores.votante;
 import controladores.ControladorAplicacion;
 import modelos.Votacion;
 import dao.VotacionDao;
+import modelos.Votante;
 import modelos.enums.EstadoDeVotacion;
-import vistas.admin.PanelLogin;
-import vistas.votante.MenuVotacionesEnCurso;
 import vistas.votante.PanelVotacionesEnCurso;
+import vistas.votante.VotacionesEnCursoTableModel;
 
-import java.awt.*;
+import javax.swing.table.TableModel;
 import java.util.List;
 
 public class ControladorVotacionesEnCurso {
 
-	private ControladorAplicacion controlador;
-	private PanelVotacionesEnCurso vista;
+	private final ControladorAplicacion controlador;
+	private final PanelVotacionesEnCurso vista;
+	private final VotacionesEnCursoTableModel modelo;
+	private List<Votacion> votaciones;
 
 	public ControladorVotacionesEnCurso(ControladorAplicacion controlador) {
 		this.controlador = controlador;
+		modelo = new VotacionesEnCursoTableModel();
 		vista = new PanelVotacionesEnCurso(this);
 		this.controlador.agregarVotacionesEnCurso(vista);
+	}
+
+	private void cargarVotaciones() {
+		Votante votante = controlador.obtenerUsuario();
+		votaciones = VotacionDao
+				.obtenerVotacionesEnElQuePuedeVotarElVotante(votante);
+		modelo.setVotaciones(votaciones);
 	}
 
 	public List<Votacion> obtenerVotacionesEnCurso() {
@@ -27,6 +37,7 @@ public class ControladorVotacionesEnCurso {
 	}
 
 	public void abrir() {
+		cargarVotaciones();
 		controlador.mostrarVotacionesEnCurso();
 	}
 
@@ -36,5 +47,13 @@ public class ControladorVotacionesEnCurso {
 
 	public void abirResultadosFueSolicitada() {
 		controlador.abrirResultados();
+	}
+
+	public TableModel getModeloDeTabla() {
+		return modelo;
+	}
+
+	public void abrirVotacionFueSolicitado(int id) {
+		controlador.abrirOpcion(votaciones.get(id));
 	}
 }

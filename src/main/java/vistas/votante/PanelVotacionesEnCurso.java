@@ -2,15 +2,17 @@ package vistas.votante;
 import controladores.votante.ControladorVotacionesEnCurso;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
-    private JLabel bordesTabla;
+    private JLabel lVotaciones;
+    private JTable tVotacionesEnCurso;
     private JButton bCerrarSesion;
     private JButton bResultados;
-    private ControladorVotacionesEnCurso controlador;
+    private final ControladorVotacionesEnCurso controlador;
 
     public PanelVotacionesEnCurso(ControladorVotacionesEnCurso controlador) {
         this.controlador = controlador;
@@ -20,9 +22,18 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
 
     private void crearComponentes() {
         configurarPanel();
+        crearEtiquetaVotaciones();
         crearTablaDeVotaciones();
         crearBotonCerrarSesion();
         crearBotonResultados();
+    }
+
+    private void crearEtiquetaVotaciones() {
+        lVotaciones = new JLabel("Votaciones en curso");
+        lVotaciones.setFont(new Font("Arial", Font.BOLD, 28));
+        lVotaciones.setSize(274, 32);
+        lVotaciones.setLocation(305, 32);
+        this.add(lVotaciones);
     }
 
     private void crearBotonResultados() {
@@ -37,11 +48,40 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
     }
 
     private void crearTablaDeVotaciones() {
-        bordesTabla = new JLabel();
-        bordesTabla.setSize(805, 390);
-        bordesTabla.setLocation(40, 40);
-        bordesTabla.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        this.add(bordesTabla);
+        tVotacionesEnCurso = new JTable(controlador.getModeloDeTabla());
+        tVotacionesEnCurso.setBounds(30, 40, 200, 300);
+        tVotacionesEnCurso.setRowHeight(60);
+        tVotacionesEnCurso.setTableHeader(null);
+        tVotacionesEnCurso.setCellSelectionEnabled(false);
+        tVotacionesEnCurso.getColumnModel().getColumn(0).setPreferredWidth(600);
+        tVotacionesEnCurso.getColumnModel().getColumn(1).setPreferredWidth(205);
+        tVotacionesEnCurso.setFont(new Font("Arial", Font.BOLD, 16));
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                                                           Object value, boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus,
+                        row, column);
+                setBorder(BorderFactory.createCompoundBorder(getBorder(),
+                        BorderFactory.createEmptyBorder(0, 20, 0, 10)));
+                return this;
+            }
+        };
+        tVotacionesEnCurso.setDefaultRenderer(String.class, renderer);
+
+        JScrollPane scrollPane = new JScrollPane(tVotacionesEnCurso);
+        scrollPane.setSize(805, 345);
+        scrollPane.setLocation(40, 85);
+        this.add(scrollPane);
+
+        Action abrirVotacion = new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                int fila = Integer.parseInt(e.getActionCommand());
+                controlador.abrirVotacionFueSolicitado(fila);
+            }
+        };
+        new ButtonColumn(tVotacionesEnCurso, abrirVotacion, 1);
     }
 
     private void crearBotonCerrarSesion() {
@@ -70,9 +110,3 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         }
     }
 }
-
-//class VentanaMenuVotacion {
-//    public static void main(String[] args) throws Exception {
-//        PanelVotacionesEnCurso f = new PanelVotacionesEnCurso();
-//    }
-//}

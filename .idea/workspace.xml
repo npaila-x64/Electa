@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="elimina interfaces de login">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="crea dialogo de confirmación">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/datos/votaciones.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos/votaciones.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/datos/votantes.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos/votantes.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/DialogoDeConfirmacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/DialogoDeConfirmacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/MenuVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/MenuVotacion.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +68,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="vistas.votante" />
+    </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
@@ -75,6 +81,7 @@
       <recent name="" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="vistas.votante" />
       <recent name="controladores" />
     </key>
   </component>
@@ -155,48 +162,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1662468710255</updated>
-    </task>
-    <task id="LOCAL-00001" summary="commit inicial">
-      <created>1662469560953</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1662469560953</updated>
-    </task>
-    <task id="LOCAL-00002" summary="agrega script principal">
-      <created>1662476737828</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1662476737828</updated>
-    </task>
-    <task id="LOCAL-00003" summary="agrega libreria JUnit">
-      <created>1662476891522</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1662476891522</updated>
-    </task>
-    <task id="LOCAL-00004" summary="agrega manejo de excepcion en caso que archivo votantes no exista">
-      <created>1663874851052</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1663874851052</updated>
-    </task>
-    <task id="LOCAL-00005" summary="refactoriza métodos pedirString">
-      <created>1663875446262</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1663875446262</updated>
-    </task>
-    <task id="LOCAL-00006" summary="agrega manejo de excepciones a métodos de ingreso">
-      <created>1663881098037</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1663881098038</updated>
     </task>
     <task id="LOCAL-00007" summary="agrega nueva clase junto a test para manejo de comunicación con datos">
       <created>1663975625158</created>
@@ -485,7 +450,63 @@
       <option name="project" value="LOCAL" />
       <updated>1669478358690</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="agrega boton de ingreso administrativo">
+      <created>1669487288523</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1669487288523</updated>
+    </task>
+    <task id="LOCAL-00049" summary="agrega mensajes de advertencia en login en caso de credenciales incorrectas">
+      <created>1669489308051</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1669489308051</updated>
+    </task>
+    <task id="LOCAL-00050" summary="reemplaza campo de texto de clave por JPasswordField">
+      <created>1669495443301</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1669495443302</updated>
+    </task>
+    <task id="LOCAL-00051" summary="crea funcionalidad parcial de tabla de votaciones en curso">
+      <created>1669495488538</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1669495488538</updated>
+    </task>
+    <task id="LOCAL-00052" summary="crea mayoría de funcionalidades de tabla de votaciones en curso">
+      <created>1669503416698</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1669503416698</updated>
+    </task>
+    <task id="LOCAL-00053" summary="crea mayoría de funcionalidades de tabla de opciones">
+      <created>1669505988758</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1669505988758</updated>
+    </task>
+    <task id="LOCAL-00054" summary="crea mayoría de funcionalidades de tabla de opciones">
+      <created>1669506002070</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1669506002071</updated>
+    </task>
+    <task id="LOCAL-00055" summary="crea dialogo de confirmación">
+      <created>1669512653748</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1669512653748</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -515,14 +536,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="reforma clase y objetos de Opcion para uso de id" />
-    <MESSAGE value="elimina clase innecesaria" />
-    <MESSAGE value="reimplementa setters y getters de objetos con elementos mutables" />
-    <MESSAGE value="reemplaza método estructural por método funcional" />
-    <MESSAGE value="reorganiza proyecto en paquetes" />
-    <MESSAGE value="reemplaza manejo de objetos json a instancias de clases" />
-    <MESSAGE value="reemplaza más métodos a paradigma funcional" />
-    <MESSAGE value="crea controlador y vistas de menu votaciones en curso" />
     <MESSAGE value="agrega últimos ajustes de la base del mvc" />
     <MESSAGE value="elimina imports innecesarios" />
     <MESSAGE value="elimina métodos iniciar() de controladores" />
@@ -540,7 +553,15 @@
     <MESSAGE value="crea controlador principal" />
     <MESSAGE value="crea configuraciones para mostrar panel de login" />
     <MESSAGE value="agrega transición de login a votaciones en curso" />
-    <option name="LAST_COMMIT_MESSAGE" value="agrega transición de login a votaciones en curso" />
+    <MESSAGE value="agrega boton de ingreso administrativo" />
+    <MESSAGE value="agrega mensajes de advertencia en login en caso de credenciales erróneas" />
+    <MESSAGE value="agrega mensajes de advertencia en login en caso de credenciales incorrectas" />
+    <MESSAGE value="reemplaza campo de texto de clave por JPasswordField" />
+    <MESSAGE value="crea funcionalidad parcial de tabla de votaciones en curso" />
+    <MESSAGE value="crea mayoría de funcionalidades de tabla de votaciones en curso" />
+    <MESSAGE value="crea mayoría de funcionalidades de tabla de opciones" />
+    <MESSAGE value="crea dialogo de confirmación" />
+    <option name="LAST_COMMIT_MESSAGE" value="crea dialogo de confirmación" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

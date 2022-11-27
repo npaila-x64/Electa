@@ -1,70 +1,54 @@
 package controladores.votante;
 
+import controladores.ControladorAplicacion;
 import modelos.Opcion;
 import modelos.Votacion;
 import modelos.Votante;
 import modelos.Voto;
-import dao.UsuarioDao;
 import dao.VotacionDao;
 import dao.VotoDao;
 import utils.ValidadorDeDatos;
-import vistas.votante.MenuVotacion;
+import vistas.votante.*;
 
+import javax.swing.table.TableModel;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ControladorVotacion {
 
-    private final Integer idVotante;
+    private final ControladorAplicacion controlador;
+    private final PanelOpciones vista;
+    private final OpcionesTableModel modelo;
+    private Votacion votacion;
+    private List<Opcion> opciones;
 
-    public ControladorVotacion(Integer idVotante) {
-        this.idVotante = idVotante;
-        new MenuVotacion(this).mostrar();
+    public ControladorVotacion(ControladorAplicacion controlador) {
+        this.controlador = controlador;
+        modelo = new OpcionesTableModel();
+        vista = new PanelOpciones(this);
+        this.controlador.agregarOpciones(vista);
     }
 
     public List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante() {
         return VotacionDao
-                .obtenerVotacionesEnElQuePuedeVotarElVotante(idVotante);
-    }
-
-    public Votante obtenerVotante() {
-        return UsuarioDao.obtenerVotantePorId(idVotante);
+                .obtenerVotacionesEnElQuePuedeVotarElVotante(controlador.obtenerUsuario());
     }
 
     public void mostrarMenuOpcionesParaVotar(Integer opcionElegida) {
-        Votacion votacion = VotacionDao
-                .obtenerVotacionesEnElQuePuedeVotarElVotante(idVotante)
-                .get(opcionElegida - 1);
-        List<Opcion> opciones = votacion.getOpciones();
-        mostrarOpcionesMenuOpcionesParaVotar(opciones);
         int nuevaOpcion = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
         switch (nuevaOpcion) {
             case 0 -> {return;}
-            case 1 -> registrarVotoBlanco(votacion, obtenerVotante());
-            default -> registrarVotoPreferencial(votacion, obtenerVotante(), opciones.get(nuevaOpcion - 1));
+            default -> registrarVoto(votacion,
+                    controlador.obtenerUsuario(), opciones.get(nuevaOpcion - 1));
         }
         mostrarVotoRealizadoConExito();
-    }
-
-    private void mostrarOpcionesMenuOpcionesParaVotar(List<Opcion> opciones) {
-        System.out.println("Opciones disponibles");
-        mostrarListaOpciones(opciones);
     }
 
     private void mostrarVotoRealizadoConExito() {
         System.out.println("¡Voto realizado con exito!\n");
     }
 
-    public void mostrarListaOpciones(List<Opcion> opciones) {
-        System.out.println("Elija una opción");
-        for (int indice = 0; indice < opciones.size(); indice++) {
-            int indiceAjustado = indice + 1;
-            System.out.printf("[%s] %s%n", indiceAjustado, opciones.get(indice).getNombre());
-        }
-        System.out.print("Si desea volver escriba [0]\n> ");
-    }
-
-    public void registrarVoto(Votacion votacion, Opcion opcionElegida) {
+    public void escribirVoto(Votacion votacion, Opcion opcionElegida) {
         List<Votacion> votaciones = VotacionDao.obtenerVotaciones();
         for (var votacionSiguiente : votaciones) {
             if (votacionSiguiente.getId().equals(votacion.getId())) {
@@ -85,20 +69,13 @@ public class ControladorVotacion {
         opcion.setCantidadDeVotos(votosOpcion);
     }
 
-    public void registrarVotoPreferencial(Votacion votacion, Votante votante, Opcion opcionElegida) {
-        registrarVoto(votacion, opcionElegida);
-        registrarVotoEnVotos(votacion, votante, opcionElegida);
-        registrarVotanteEnVotaciones(votacion, votante);
+    public void registrarVoto(Votacion votacion, Votante votante, Opcion opcionElegida) {
+        escribirVoto(votacion, opcionElegida);
+        escribirVotoEnVotos(votacion, votante, opcionElegida);
+        escribirVotanteEnVotaciones(votacion, votante);
     }
 
-    public void registrarVotoBlanco(Votacion votacion, Votante votante) {
-        Opcion opcionBlanco = Opcion.getOpcionConVotoBlanco();
-        registrarVoto(votacion, opcionBlanco);
-        registrarVotoEnVotos(votacion, votante, opcionBlanco);
-        registrarVotanteEnVotaciones(votacion, votante);
-    }
-
-    public void registrarVotanteEnVotaciones(Votacion votacion, Votante votante) {
+    public void escribirVotanteEnVotaciones(Votacion votacion, Votante votante) {
         List<Votacion> votaciones = VotacionDao.obtenerVotaciones();
         for (var votacionSiguiente : votaciones) {
             if (votacionSiguiente.getId().equals(votacion.getId())) {
@@ -111,7 +88,7 @@ public class ControladorVotacion {
         }
     }
 
-    public void registrarVotoEnVotos(Votacion votacion, Votante votante, Opcion opcion) {
+    public void escribirVotoEnVotos(Votacion votacion, Votante votante, Opcion opcion) {
         List<Voto> votos = VotoDao.obtenerVotos();
         Voto voto = new Voto();
         voto.setId(VotoDao.obtenerNuevaIdVoto());
@@ -123,14 +100,41 @@ public class ControladorVotacion {
         VotoDao.escribirVotos(votos);
     }
 
-    private List<Voto> obtenerVotosDeVotacion(Votacion votacion) {
-        List<Voto> votos = VotoDao.obtenerVotos();
-        List<Voto> votosDeVotacion = new ArrayList<>();
-        for (Voto voto : votos) {
-            if (voto.getVotacion().getId().equals(votacion.getId())) {
-                votosDeVotacion.add(voto);
-            }
+    public TableModel getModeloDeTabla() {
+        return modelo;
+    }
+
+    public void votarPorOpcionFueSolicitado(int id) {
+        Opcion opcion = opciones.get(id);
+        mostrarDialogoDeConfirmacion(opcion);
+    }
+
+    private void mostrarDialogoDeConfirmacion(Opcion opcion) {
+        DialogoDeConfirmacion dialogo =
+                new DialogoDeConfirmacion(controlador.getMarco(), "Confirme su voto", true);
+        dialogo.setNombreDeOpcion(opcion.getNombre());
+        if (dialogo.obtenerConfirmacion()) {
+            registrarVoto(votacion, controlador.obtenerUsuario(), opcion);
+            controlador.abrirVotacionesEnCurso();
         }
-        return votosDeVotacion;
+    }
+
+    public void abrir(Votacion votacion, List<Opcion> opciones) {
+        this.votacion = votacion;
+        this.opciones = opciones;
+        cargarOpciones();
+        controlador.mostrarOpciones();
+    }
+
+    private void cargarOpciones() {
+        modelo.setOpciones(opciones);
+    }
+
+    public void volverFueSolicitado() {
+        controlador.abrirVotacionesEnCurso();
+    }
+
+    public void abstenerseFueSolicitado() {
+        mostrarDialogoDeConfirmacion(Opcion.getOpcionConVotoBlanco());
     }
 }
