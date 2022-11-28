@@ -1,6 +1,7 @@
 package controladores;
 
 import controladores.admin.ControladorAdministracion;
+import controladores.admin.ControladorEditorDeVotacion;
 import controladores.votante.ControladorVotacion;
 import controladores.votante.ControladorVotacionesEnCurso;
 import modelos.Votacion;
@@ -18,6 +19,7 @@ public class ControladorAplicacion {
     private ControladorResultados resultados;
     private ControladorVotacion votacion;
     private ControladorAdministracion administracion;
+    private ControladorEditorDeVotacion editor;
 
     public void iniciar() {
         vista = new Marco();
@@ -32,6 +34,7 @@ public class ControladorAplicacion {
         resultados = new ControladorResultados(this);
         votacion = new ControladorVotacion(this);
         administracion = new ControladorAdministracion(this);
+        editor = new ControladorEditorDeVotacion(this);
     }
 
     public void abrirVotacionesEnCurso() {
@@ -52,6 +55,10 @@ public class ControladorAplicacion {
 
     public void abrirOpcion(Votacion votacion) {
         this.votacion.abrir(votacion, votacion.getOpciones());
+    }
+
+    public void abrirEditor(Votacion votacion) {
+        editor.abrir(votacion);
     }
 
     public void asignarUsuarioDeSesion(Usuario usuario) {
