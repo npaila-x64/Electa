@@ -22,7 +22,6 @@ public class ControladorCreacionDeVotacion {
         situarDatosCampo(votacion);
         VotacionDao.crearVotacion(votacion);
         vista.mostrarVotacionCreadaConExito();
-        new ControladorCreacionDeOpcion(votacion.getId()).iniciar();
     }
 
     private void situarDatosCampo(Votacion votacion) {

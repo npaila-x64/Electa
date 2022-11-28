@@ -11,6 +11,8 @@ public class PanelLogin extends JPanel implements ActionListener {
     private JLabel titulo;
     private JLabel logo;
     private JLabel mensajeDeInvalidez;
+    private JLabel erut;
+    private JLabel eclave;
     private JTextField trut;
     private JTextField tclave;
     private JButton ingreso;
@@ -27,11 +29,29 @@ public class PanelLogin extends JPanel implements ActionListener {
         configurarPanel();
         crearTitulo();
         crearLogo();
+        crearEtiquetaRut();
         crearCampoDeTextoRut();
+        crearEtiquetaClave();
         crearCampoDeTextoClave();
         crearBotonIngresar();
         crearBotonIngresoAlternativo();
         crearMensajeDeInvalidez();
+    }
+
+    private void crearEtiquetaRut() {
+        erut = new JLabel("Rut");
+        erut.setFont(new Font("Arial", Font.BOLD, 18));
+        erut.setSize(42, 29);
+        erut.setLocation(300, 188);
+        this.add(erut);
+    }
+
+    private void crearEtiquetaClave() {
+        eclave = new JLabel("Contraseña");
+        eclave.setFont(new Font("Arial", Font.BOLD, 18));
+        eclave.setSize(169, 29);
+        eclave.setLocation(300, 286);
+        this.add(eclave);
     }
 
     private void crearMensajeDeInvalidez() {
@@ -50,7 +70,7 @@ public class PanelLogin extends JPanel implements ActionListener {
     private void crearTitulo() {
         titulo = new JLabel("Tu cuenta Electa");
         titulo.setFont(new Font("Arial", Font.BOLD, 36));
-        titulo.setSize(900, 300);
+        titulo.setSize(900, 270);
         titulo.setHorizontalAlignment(JLabel.CENTER);
         titulo.setVerticalAlignment(JLabel.CENTER);
         this.add(titulo);
@@ -72,12 +92,11 @@ public class PanelLogin extends JPanel implements ActionListener {
         trut = new JTextField();
         trut.setFont(new Font("Arial", Font.PLAIN, 15));
         trut.setSize(300, 45);
-        trut.setLocation(300, 230);
+        trut.setLocation(300, 217);
         trut.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         trut.setBorder(BorderFactory.createCompoundBorder(
                 trut.getBorder(),
                 BorderFactory.createEmptyBorder(5, 10, 5, 5)));
-        trut.setText("Rut");
         this.add(trut);
     }
 
@@ -90,14 +109,13 @@ public class PanelLogin extends JPanel implements ActionListener {
         tclave.setBorder(BorderFactory.createCompoundBorder(
                 tclave.getBorder(),
                 BorderFactory.createEmptyBorder(5, 10, 5, 5)));
-        tclave.setText("Contraseña");
         this.add(tclave);
     }
 
     private void crearBotonIngresar() {
         ingreso = new JButton("Ingresar");
         ingreso.addActionListener(this);
-        ingreso.setFont(new Font("Arial", Font.PLAIN, 15));
+        ingreso.setFont(new Font("Arial", Font.BOLD, 17));
         ingreso.setSize(200, 50);
         ingreso.setLocation(350, 420);
         ingreso.setFocusable(false);
@@ -175,13 +193,5 @@ public class PanelLogin extends JPanel implements ActionListener {
         mensajeDeInvalidez.setLocation(300, 380);
         mensajeDeInvalidez.setText("El rut y/o la constraseña están vacíos");
         mensajeDeInvalidez.setVisible(true);
-    }
-}
-
-class VentanaLoginTest {
-
-    public static void main(String[] args) throws Exception
-    {
-        PanelLogin f = new PanelLogin(null);
     }
 }

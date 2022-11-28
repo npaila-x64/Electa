@@ -66,7 +66,7 @@ public class ControladorAdministracion {
     }
 
     public void editarVotacionFueSolicitado(int fila) {
-        System.out.println(fila);
+        controlador.abrirEditor(votaciones.get(fila));
     }
 
     public void checkBorradoresFueEjecutado() {
@@ -87,5 +87,9 @@ public class ControladorAdministracion {
     public void checkEnCursoFueEjecutado() {
         estados.put(EstadoDeVotacion.EN_CURSO, !estados.get(EstadoDeVotacion.EN_CURSO));
         cargarVotaciones();
+    }
+
+    public void crearVotacionFueSolicitado() {
+        controlador.abrirEditor(new Votacion());
     }
 }

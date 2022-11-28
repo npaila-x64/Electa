@@ -15,7 +15,7 @@ public class ControladorAdministracionDeVotaciones {
 
     public void mostrarEditorDeVotacion(Integer opcionElegida) {
         Votacion votacion = obtenerVotacion(opcionElegida);
-        new ControladorEditorDeVotacion(votacion.getId());
+//        new ControladorEditorDeVotacion(votacion.getId());
     }
 
     private Votacion obtenerVotacion(Integer opcionElegida) {

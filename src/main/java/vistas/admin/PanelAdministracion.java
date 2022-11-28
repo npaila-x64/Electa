@@ -40,10 +40,10 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         crearBotonCrearVotacion();
         crearBotonResultados();
         crearBotonCerrarSesion();
-        crearEtiquetaFiltroDesde();
-        crearEtiquetaFiltroHasta();
-        crearCampoDeTextoFiltroDesde();
-        crearCampoDeTextoFiltroHasta();
+//        crearEtiquetaFiltroDesde();
+//        crearEtiquetaFiltroHasta();
+//        crearCampoDeTextoFiltroDesde();
+//        crearCampoDeTextoFiltroHasta();
     }
 
     private void crearCampoDeTextoFiltroHasta() {
@@ -83,7 +83,7 @@ public class PanelAdministracion extends JPanel implements ActionListener {
     private void crearTablaDeVotaciones() {
         tVotaciones = new JTable(controlador.getModeloDeTabla());
         tVotaciones.setBounds(30, 40, 200, 300);
-        tVotaciones.setRowHeight(60);
+        tVotaciones.setRowHeight(50);
         tVotaciones.setTableHeader(null);
         tVotaciones.setCellSelectionEnabled(false);
         tVotaciones.getColumnModel().getColumn(0).setPreferredWidth(575);
@@ -120,7 +120,7 @@ public class PanelAdministracion extends JPanel implements ActionListener {
 
     private void crearBotonCrearVotacion() {
         bCrearVotacion = new JButton("Crear nueva votación");
-        bCrearVotacion.setFont(new Font("Arial", Font.PLAIN, 15));
+        bCrearVotacion.setFont(new Font("Arial", Font.BOLD, 15));
         bCrearVotacion.setSize(200, 50);
         bCrearVotacion.setLocation(350, 475);
         bCrearVotacion.setBackground(Color.BLACK);
@@ -131,7 +131,7 @@ public class PanelAdministracion extends JPanel implements ActionListener {
 
     private void crearBotonResultados() {
         bResultados = new JButton("Resultados");
-        bResultados.setFont(new Font("Arial", Font.PLAIN, 15));
+        bResultados.setFont(new Font("Arial", Font.BOLD, 15));
         bResultados.setSize(200, 50);
         bResultados.setLocation(645, 475);
         bResultados.setBackground(Color.BLACK);
@@ -142,7 +142,7 @@ public class PanelAdministracion extends JPanel implements ActionListener {
 
     private void crearBotonCerrarSesion() {
         bCerrarSesion = new JButton("Cerrar sesión");
-        bCerrarSesion.setFont(new Font("Arial", Font.PLAIN, 15));
+        bCerrarSesion.setFont(new Font("Arial", Font.BOLD, 15));
         bCerrarSesion.setSize(200, 50);
         bCerrarSesion.setLocation(40, 40);
         bCerrarSesion.setBackground(Color.BLACK);
@@ -206,6 +206,9 @@ public class PanelAdministracion extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == bCrearVotacion) {
+            controlador.crearVotacionFueSolicitado();
+        }
         if (e.getSource() == bCerrarSesion) {
             controlador.cerrarSesionFueSolicitado();
         }
