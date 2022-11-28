@@ -58,28 +58,31 @@ public class ControladorLogin {
 	}
 
 	private void autenticarAdministrador() {
+		autenticarUsuario(true);
+	}
+
+	private void autenticarVotante() {
+		autenticarUsuario(false);
+	}
+
+	private void autenticarUsuario(boolean esAdmin){
 		Usuario usuarioIngresado = new Usuario();
 		usuarioIngresado.setRut(vista.getRut());
 		usuarioIngresado.setClave(vista.getClave());
 		if (esCredencialAdminValida(usuarioIngresado)) {
 			controlador.asignarUsuarioDeSesion(usuarioIngresado);
-			controlador.abrirAdministracion();
+			abrirPanelSubsiguiente(esAdmin);
 			vista.autenticacionSeLogro();
 		} else {
 			vista.autenticacionFallo();
 		}
 	}
 
-	private void autenticarVotante() {
-		Usuario usuarioIngresado = new Usuario();
-		usuarioIngresado.setRut(vista.getRut());
-		usuarioIngresado.setClave(vista.getClave());
-		if (esCredencialVotanteValida(usuarioIngresado)) {
-			controlador.asignarUsuarioDeSesion(usuarioIngresado);
+	private void abrirPanelSubsiguiente(boolean esAdmin){
+		if(esAdmin){
+			controlador.abrirAdministracion();
+		}else{
 			controlador.abrirVotacionesEnCurso();
-			vista.autenticacionSeLogro();
-		} else {
-			vista.autenticacionFallo();
 		}
 	}
 
