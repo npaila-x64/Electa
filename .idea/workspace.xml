@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="crea transiciones entre administración y resultados">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorLogin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorResultados.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/VotacionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/VotacionDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelAdministracion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelAdministracion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/PanelVotacionesEnCurso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/PanelVotacionesEnCurso.java" afterDir="false" />
-    </list>
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="crea transiciones entre administración y resultados" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -32,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="dev_gui" />
+        <entry key="$PROJECT_DIR$" value="jorge_dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -524,7 +516,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="nicolas_dev" />
+                        <option value="dev_gui" />
                       </list>
                     </value>
                   </entry>

@@ -63,7 +63,7 @@ public class ControladorLogin {
 		usuarioIngresado.setClave(vista.getClave());
 		if (esCredencialAdminValida(usuarioIngresado)) {
 			controlador.asignarUsuarioDeSesion(usuarioIngresado);
-			controlador.abrirVotacionesEnCurso();
+			controlador.abrirAdministracion();
 			vista.autenticacionSeLogro();
 		} else {
 			vista.autenticacionFallo();

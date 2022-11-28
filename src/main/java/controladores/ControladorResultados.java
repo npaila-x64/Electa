@@ -2,9 +2,7 @@ package controladores;
 
 import modelos.Votacion;
 import dao.VotacionDao;
-import modelos.Votante;
 import modelos.enums.EstadoDeVotacion;
-import vistas.admin.AdministracionTableModel;
 import vistas.votante.PanelResultados;
 
 import java.time.format.DateTimeFormatter;
