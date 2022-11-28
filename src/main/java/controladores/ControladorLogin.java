@@ -43,11 +43,7 @@ public class ControladorLogin {
 
 	public void autenticacionFueSolicitada() {
 		if (!estanLasCredencialesVacias()) {
-			if (ingresoAdministrativoEstaActivo) {
-				autenticarAdministrador();
-			} else {
-				autenticarVotante();
-			}
+			autenticarUsuario(ingresoAdministrativoEstaActivo);
 		} else {
 			vista.mostrarCredencialesEstanVacias();
 		}
@@ -57,32 +53,39 @@ public class ControladorLogin {
 		return vista.getRut().isEmpty() || vista.getClave().isEmpty();
 	}
 
-	private void autenticarAdministrador() {
-		autenticarUsuario(true);
-	}
-
-	private void autenticarVotante() {
-		autenticarUsuario(false);
-	}
-
 	private void autenticarUsuario(boolean esAdmin){
+		Usuario usuarioIngresado = obtenerUsuarioIngresado();
+		if (esAdmin){
+			autenticarAdministrador(usuarioIngresado);
+		} else {
+			autenticarVotante(usuarioIngresado);
+		}
+	}
+
+	private Usuario obtenerUsuarioIngresado(){
 		Usuario usuarioIngresado = new Usuario();
 		usuarioIngresado.setRut(vista.getRut());
 		usuarioIngresado.setClave(vista.getClave());
-		if (esCredencialAdminValida(usuarioIngresado)) {
+		return usuarioIngresado;
+	}
+
+	private void autenticarAdministrador(Usuario usuarioIngresado) {
+		if (esCredencialAdminValida(usuarioIngresado)){
 			controlador.asignarUsuarioDeSesion(usuarioIngresado);
-			abrirPanelSubsiguiente(esAdmin);
+			controlador.abrirAdministracion();
 			vista.autenticacionSeLogro();
 		} else {
 			vista.autenticacionFallo();
 		}
 	}
 
-	private void abrirPanelSubsiguiente(boolean esAdmin){
-		if(esAdmin){
-			controlador.abrirAdministracion();
-		}else{
+	private void autenticarVotante(Usuario usuarioIngresado) {
+		if (esCredencialVotanteValida(usuarioIngresado)){
+			controlador.asignarUsuarioDeSesion(usuarioIngresado);
 			controlador.abrirVotacionesEnCurso();
+			vista.autenticacionSeLogro();
+		} else {
+			vista.autenticacionFallo();
 		}
 	}
 
