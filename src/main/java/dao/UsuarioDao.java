@@ -1,7 +1,7 @@
 package dao;
 
 import excepciones.AccesoADatosInterrumpidoException;
-import modelos.Votante;
+import modelos.Usuario;
 import modelos.enums.CampoDeVotacion;
 import modelos.enums.CampoDeVotante;
 import org.json.simple.JSONArray;
@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioDao {
-
-    private static final String RUTA_CREDENCIALES_ADMIN = "src/main/datos/credencialesAdmin.json";
     private static final String RUTA_ADMINISTRADORES = "src/main/datos/administradores.json";
     private static final String RUTA_VOTANTES = "src/main/datos/votantes.json";
 
@@ -25,47 +23,32 @@ public class UsuarioDao {
         return AccesoADatos.parsearArchivoJSON(RUTA_ADMINISTRADORES);
     }
 
-    private static JSONArray parsearCredencialAdmin() throws AccesoADatosInterrumpidoException {
-        return AccesoADatos.parsearArchivoJSON(RUTA_CREDENCIALES_ADMIN);
+    public static List<Usuario> obtenerVotantes() {
+        return obtenerUsuarios(parsearVotantes());
     }
 
-    public static List<Votante> obtenerVotantes() {
-        List<Votante> votantes = new ArrayList<>();
-        JSONArray jsonArrayVotantes = parsearVotantes();
-        for (Object jsonArrayVotante : jsonArrayVotantes) {
-            JSONObject votacionSiguiente = (JSONObject) jsonArrayVotante;
-            Votante votante = new Votante();
-            obtenerAtributosDeVotanteJSON(votante, votacionSiguiente);
-            votantes.add(votante);
+    public static List<Usuario> obtenerAdministradores(){
+        return obtenerUsuarios(parsearAdministradores());
+    }
+
+    public static List<Usuario> obtenerUsuarios(JSONArray jsonArrayUsuarios){
+        List<Usuario> usuarios = new ArrayList<>();
+        for (Object jsonArrayUsuario : jsonArrayUsuarios) {
+            JSONObject jsonArrayUsuarioSiguiente = (JSONObject) jsonArrayUsuario;
+            Usuario usuario = new Usuario();
+            obtenerAtributosDeVotanteJSON(usuario, jsonArrayUsuarioSiguiente);
+            usuarios.add(usuario);
         }
-        return votantes;
-    }
-    //TODO casi igual al método obtenerVotantes
-    public static List<Votante> obtenerAdministradores(){
-        List<Votante> administradores = new ArrayList<>();
-        JSONArray jsonArrayAdmins = parsearAdministradores();
-        for (Object jsonArrayAdmin : jsonArrayAdmins) {
-            JSONObject votacionSiguiente = (JSONObject) jsonArrayAdmin;
-            Votante admin = new Votante();
-            obtenerAtributosDeVotanteJSON(admin, votacionSiguiente);
-            administradores.add(admin);
-        }
-        return administradores;
+        return usuarios;
     }
 
-    public static String obtenerCredencialAdmin() {
-        JSONArray credencialArray = parsearCredencialAdmin();
-        JSONObject credencialObject = (JSONObject) credencialArray.get(0);
-        return String.valueOf(credencialObject.get(CampoDeVotante.CLAVE.getTexto()));
-    }
-
-    private static void obtenerAtributosDeVotanteJSON(Votante votante, JSONObject votanteJSON) {
-        votante.setId(votanteJSON.get(CampoDeVotante.ID.getTexto()));
-        votante.setRut(votanteJSON.get(CampoDeVotante.RUT.getTexto()));
-        votante.setClave(votanteJSON.get(CampoDeVotante.CLAVE.getTexto()));
+    private static void obtenerAtributosDeVotanteJSON(Usuario usuario, JSONObject votanteJSON) {
+        usuario.setId(votanteJSON.get(CampoDeVotante.ID.getTexto()));
+        usuario.setRut(votanteJSON.get(CampoDeVotante.RUT.getTexto()));
+        usuario.setClave(votanteJSON.get(CampoDeVotante.CLAVE.getTexto()));
     }
     
-    public static Votante obtenerVotantePorId(Integer idVotante){
+    public static Usuario obtenerVotantePorId(Integer idVotante){
         var votantes = obtenerVotantes();
         return votantes.stream().filter
                 (votanteSiguiente -> votanteSiguiente.getId().equals(idVotante))

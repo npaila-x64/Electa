@@ -4,7 +4,7 @@ public class Voto {
 
     private Integer id;
     private Votacion votacion;
-    private Votante votante;
+    private Usuario votante;
     private Opcion opcion;
 
     public Voto() {
@@ -27,11 +27,11 @@ public class Voto {
         this.votacion = votacion;
     }
 
-    public Votante getVotante() {
+    public Usuario getVotante() {
         return votante;
     }
 
-    public void setVotante(Votante votante) {
+    public void setVotante(Usuario votante) {
         this.votante = votante;
     }
 

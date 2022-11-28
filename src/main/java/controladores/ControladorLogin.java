@@ -1,6 +1,6 @@
 package controladores;
 
-import modelos.Votante;
+import modelos.Usuario;
 import dao.UsuarioDao;
 import vistas.PanelLogin;
 
@@ -18,13 +18,22 @@ public class ControladorLogin {
 		this.controlador.agregarPanel(vista, "login");
 	}
 
-	private boolean esCredencialVotanteValida(Votante votante) {
-		List<Votante> votantes = UsuarioDao.obtenerVotantes();
-		for (Votante votanteSiguiente : votantes) {
+	private boolean esCredencialVotanteValida(Usuario usuario) {
+		List<Usuario> votantes = UsuarioDao.obtenerVotantes();
+		return esCredencialValida(usuario, votantes);
+	}
+
+	private boolean esCredencialAdminValida(Usuario usuario){
+		List<Usuario> administradores = UsuarioDao.obtenerAdministradores();
+		return esCredencialValida(usuario, administradores);
+	}
+
+	private boolean esCredencialValida(Usuario usuario, List<Usuario> usuarios){
+		for (Usuario usuarioSiguiente : usuarios) {
 			// Primero verifica que los rut sean iguales, después se verifica la clave
-			if (votanteSiguiente.getRut().equals(votante.getRut())) {
-				if (votanteSiguiente.getClave().equals(votante.getClave())) {
-					votante.setId(votanteSiguiente.getId());
+			if (usuarioSiguiente.getRut().equals(usuario.getRut())) {
+				if (usuarioSiguiente.getClave().equals(usuario.getClave())) {
+					usuario.setId(usuarioSiguiente.getId());
 					return true;
 				}
 			}
@@ -49,15 +58,24 @@ public class ControladorLogin {
 	}
 
 	private void autenticarAdministrador() {
-		controlador.abrirAdministracion();
+		Usuario usuarioIngresado = new Usuario();
+		usuarioIngresado.setRut(vista.getRut());
+		usuarioIngresado.setClave(vista.getClave());
+		if (esCredencialAdminValida(usuarioIngresado)) {
+			controlador.asignarUsuarioDeSesion(usuarioIngresado);
+			controlador.abrirVotacionesEnCurso();
+			vista.autenticacionSeLogro();
+		} else {
+			vista.autenticacionFallo();
+		}
 	}
 
 	private void autenticarVotante() {
-		Votante votanteIngresado = new Votante();
-		votanteIngresado.setRut(vista.getRut());
-		votanteIngresado.setClave(vista.getClave());
-		if (esCredencialVotanteValida(votanteIngresado)) {
-			controlador.asignarUsuarioDeSesion(votanteIngresado);
+		Usuario usuarioIngresado = new Usuario();
+		usuarioIngresado.setRut(vista.getRut());
+		usuarioIngresado.setClave(vista.getClave());
+		if (esCredencialVotanteValida(usuarioIngresado)) {
+			controlador.asignarUsuarioDeSesion(usuarioIngresado);
 			controlador.abrirVotacionesEnCurso();
 			vista.autenticacionSeLogro();
 		} else {
@@ -66,7 +84,7 @@ public class ControladorLogin {
 	}
 
 	public void abrir() {
-		controlador.asignarUsuarioDeSesion(new Votante());
+		controlador.asignarUsuarioDeSesion(new Usuario());
 		controlador.mostrarPanel("login");
 		vista.limpiar();
 	}

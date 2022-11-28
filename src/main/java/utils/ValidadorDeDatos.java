@@ -1,14 +1,6 @@
 package utils;
 
-import excepciones.AccesoADatosInterrumpidoException;
-import modelos.enums.CampoDeVotante;
-import modelos.Votacion;
-import modelos.Votante;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;

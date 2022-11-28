@@ -4,7 +4,7 @@ import controladores.admin.ControladorAdministracion;
 import controladores.votante.ControladorVotacion;
 import controladores.votante.ControladorVotacionesEnCurso;
 import modelos.Votacion;
-import modelos.Votante;
+import modelos.Usuario;
 import vistas.Marco;
 
 import javax.swing.*;
@@ -12,7 +12,7 @@ import javax.swing.*;
 public class ControladorAplicacion {
 
     private Marco vista;
-    private Votante usuario;
+    private Usuario usuario;
     private ControladorLogin login;
     private ControladorVotacionesEnCurso votacionesEnCurso;
     private ControladorResultados resultados;
@@ -54,11 +54,11 @@ public class ControladorAplicacion {
         this.votacion.abrir(votacion, votacion.getOpciones());
     }
 
-    public void asignarUsuarioDeSesion(Votante usuario) {
+    public void asignarUsuarioDeSesion(Usuario usuario) {
         this.usuario = usuario;
     }
 
-    public Votante obtenerUsuario() {
+    public Usuario obtenerUsuario() {
         return usuario;
     }
 
