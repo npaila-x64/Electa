@@ -9,6 +9,7 @@ import modelos.Usuario;
 import vistas.Marco;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ControladorAplicacion {
 
@@ -69,7 +70,7 @@ public class ControladorAplicacion {
         return usuario;
     }
 
-    public void agregarPanel(JPanel panel, String nombre) {
+    public void agregarPanel(Container panel, String nombre) {
         vista.agregarPanel(panel, nombre);
     }
 
