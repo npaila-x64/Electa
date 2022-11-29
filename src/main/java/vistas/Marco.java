@@ -48,7 +48,7 @@ public class Marco extends JFrame {
         panel.add("administracion", administracion);
     }
 
-    public void agregarPanel(JPanel panel, String nombre) {
+    public void agregarPanel(Container panel, String nombre) {
         this.panel.add(nombre, panel);
     }
 
