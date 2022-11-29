@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="crea funcionalidad parcial de opciones de votación">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="rediseña editor de votación">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/datos/administradores.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos/administradores.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/datos/votaciones.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos/votaciones.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorEditorDeVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorEditorDeVotacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/AdministracionTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/AdministracionTableModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelEditorVotaciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelEditorVotaciones.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,20 +52,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW&quot;: &quot;false&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/nicol/IdeaProjects/untitled1&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CodeWithMe&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "last_opened_file_path": "C:/Users/nicol/Downloads/jdatepicker-1.3.4.jar",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "CodeWithMe"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="vistas.votante" />
@@ -162,13 +162,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1662468710255</updated>
-    </task>
-    <task id="LOCAL-00011" summary="agrega más atributos a mapa de setter en Votacion">
-      <created>1665239762948</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1665239762948</updated>
     </task>
     <task id="LOCAL-00012" summary="convierte parámetros a clases">
       <created>1665254715215</created>
@@ -506,7 +499,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669679432937</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="rediseña editor de votación">
+      <created>1669688707280</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1669688707280</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -536,7 +536,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="refactoriza método" />
     <MESSAGE value="elimina métodos innecesarios" />
     <MESSAGE value="crea override de toString en Votacion" />
     <MESSAGE value="arregla error de sobreescritura errónea votaciones.json" />
@@ -561,7 +560,8 @@
     <MESSAGE value="crea transiciones entre administración y resultados" />
     <MESSAGE value="arreglar conflictos de merge" />
     <MESSAGE value="crea funcionalidad parcial de opciones de votación" />
-    <option name="LAST_COMMIT_MESSAGE" value="crea funcionalidad parcial de opciones de votación" />
+    <MESSAGE value="rediseña editor de votación" />
+    <option name="LAST_COMMIT_MESSAGE" value="rediseña editor de votación" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

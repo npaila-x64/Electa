@@ -35,12 +35,21 @@ public class AdministracionTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int col) {
-        return switch (col) {
-            case 0 -> votaciones.get(row).getTitulo();
-            case 1 -> votaciones.get(row).getEstadoDeVotacion().getTexto();
-            case 2 -> "Modificar";
+        switch (col) {
+            case 0 -> {
+                return votaciones.get(row).getTitulo();
+            }
+            case 1 -> {
+                return votaciones.get(row).getEstadoDeVotacion().getTexto();
+            }
+            case 2 -> {
+                return switch (votaciones.get(row).getEstadoDeVotacion()) {
+                    case FINALIZADO -> "Ver";
+                    default -> "Modificar";
+                };
+            }
             default -> throw new IllegalStateException();
-        };
+        }
     }
 
     @Override

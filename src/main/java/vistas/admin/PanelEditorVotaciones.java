@@ -2,6 +2,9 @@ package vistas.admin;
 
 import controladores.admin.ControladorEditorDeVotacion;
 import modelos.Votacion;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 import vistas.votante.ButtonColumn;
 
 import javax.swing.*;
@@ -9,6 +12,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Properties;
 
 public class PanelEditorVotaciones extends JPanel implements ActionListener {
 
@@ -18,8 +26,6 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     private JLabel textoDescripcion;
     private JLabel textoFechaInicio;
     private JLabel textoFechaTermino;
-    private JTextField campoTextoFechaInicio;
-    private JTextField campoTextoFechaTermino;
     private JTextField campoTextoTitulo;
     private JTextArea campoTextoDescripcion;
     private JButton bAgregarOpcion;
@@ -34,6 +40,12 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     private JLabel textoOpciones;
     private JTextField campoTextoHoraInicio;
     private JTextField campoTextoHoraTermino;
+    private JDatePickerImpl datePickerFechaInicio;
+    private JDatePickerImpl datePickerFechaTermino;
+    private JSpinner spinnerHoraInicio;
+    private JSpinner spinnerMinutosInicio;
+    private JSpinner spinnerMinutosTermino;
+    private JSpinner spinnerHoraTermino;
 
     public PanelEditorVotaciones(ControladorEditorDeVotacion controlador) {
         this.controlador = controlador;
@@ -50,12 +62,16 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         crearEtiquetaFechaTermino();
         crearEtiquetaHoraTermino();
         crearEtiquetaOpciones();
-        crearCampoDeTextoTitulo();
+        crearEtiquetaSeparadorHoraTermino();
+        crearEtiquetaSeparadorHoraInicio();
         crearAreaDeTextoDescripcion();
-        crearCampoDeTextoFechaInicio();
-        crearCampoDeTextoFechaTermino();
-        crearCampoDeTextoHoraInicio();
-        crearCampoDeTextoHoraTermino();
+        crearCampoDeTextoTitulo();
+        crearDatePickerFechaInicio();
+        crearDatePickerFechaTermino();
+        crearSpinnerHoraInicio();
+        crearSpinnerMinutosInicio();
+        crearSpinnerHoraTermino();
+        crearSpinnerMinutosTermino();
         crearBotonAgregarOpcion();
         crearBotonGuardar();
         crearBotonCancelar();
@@ -63,22 +79,133 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         crearTablaDeVotaciones();
     }
 
-    private void crearCampoDeTextoHoraTermino() {
-        campoTextoHoraTermino = new JTextField();
-        campoTextoHoraTermino.setFont(new Font("Arial", Font.PLAIN, 15));
-        campoTextoHoraTermino.setLocation(501, 434);
-        campoTextoHoraTermino.setSize(141, 40);
-        campoTextoHoraTermino.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panel.add(campoTextoHoraTermino);
+    private void crearEtiquetaSeparadorHoraTermino() {
+        JLabel separador = new JLabel(":");
+        separador.setFont(new Font("Arial", Font.BOLD, 24));
+        separador.setLocation(566,438);
+        separador.setSize(29,29);
+        panel.add(separador);
     }
 
-    private void crearCampoDeTextoHoraInicio() {
-        campoTextoHoraInicio = new JTextField();
-        campoTextoHoraInicio.setFont(new Font("Arial", Font.PLAIN, 15));
-        campoTextoHoraInicio.setLocation(501, 350);
-        campoTextoHoraInicio.setSize(141, 40);
-        campoTextoHoraInicio.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panel.add(campoTextoHoraInicio);
+    private void crearEtiquetaSeparadorHoraInicio() {
+        JLabel separador = new JLabel(":");
+        separador.setFont(new Font("Arial", Font.BOLD, 24));
+        separador.setLocation(566,354);
+        separador.setSize(29,29);
+        panel.add(separador);
+    }
+
+    private void crearSpinnerHoraInicio() {
+        SpinnerDateModel model = new SpinnerDateModel();
+        model.setCalendarField(Calendar.HOUR_OF_DAY);
+        spinnerHoraInicio = new JSpinner(model);
+        spinnerHoraInicio.setEditor(new JSpinner.DateEditor(spinnerHoraInicio, "HH"));
+        spinnerHoraInicio.setLocation(501, 350);
+        spinnerHoraInicio.setSize(55, 40);
+        JTextField textField = ((JSpinner.DefaultEditor) spinnerHoraInicio.getEditor()).getTextField();
+        textField.setHorizontalAlignment(SwingConstants.RIGHT);
+        textField.setFocusable(false);
+        textField.setEditable(false);
+        textField.setBackground(Color.WHITE);
+        textField.setFont(new Font("Arial", Font.PLAIN, 15));
+        textField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        panel.add(spinnerHoraInicio);
+    }
+
+    private void crearSpinnerMinutosInicio() {
+        SpinnerDateModel model = new SpinnerDateModel();
+        model.setCalendarField(Calendar.MINUTE);
+        spinnerMinutosInicio = new JSpinner(model);
+        spinnerMinutosInicio.setEditor(new JSpinner.DateEditor(spinnerMinutosInicio, "mm"));
+        spinnerMinutosInicio.setLocation(587, 350);
+        spinnerMinutosInicio.setSize(55, 40);
+        JTextField textField = ((JSpinner.DefaultEditor) spinnerMinutosInicio.getEditor()).getTextField();
+        textField.setHorizontalAlignment(SwingConstants.RIGHT);
+        textField.setFocusable(false);
+        textField.setEditable(false);
+        textField.setBackground(Color.WHITE);
+        textField.setFont(new Font("Arial", Font.PLAIN, 15));
+        textField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        panel.add(spinnerMinutosInicio);
+    }
+
+    private void crearSpinnerHoraTermino() {
+        SpinnerDateModel model = new SpinnerDateModel();
+        model.setCalendarField(Calendar.HOUR_OF_DAY);
+        spinnerHoraTermino = new JSpinner(model);
+        spinnerHoraTermino.setEditor(new JSpinner.DateEditor(spinnerHoraTermino, "HH"));
+        spinnerHoraTermino.setLocation(501, 434);
+        spinnerHoraTermino.setSize(55, 40);
+        JTextField textField = ((JSpinner.DefaultEditor) spinnerHoraTermino.getEditor()).getTextField();
+        textField.setHorizontalAlignment(SwingConstants.RIGHT);
+        textField.setFocusable(false);
+        textField.setEditable(false);
+        textField.setBackground(Color.WHITE);
+        textField.setFont(new Font("Arial", Font.PLAIN, 15));
+        textField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        panel.add(spinnerHoraTermino);
+    }
+
+    private void crearSpinnerMinutosTermino() {
+        SpinnerDateModel model = new SpinnerDateModel();
+        model.setCalendarField(Calendar.MINUTE);
+        spinnerMinutosTermino = new JSpinner(model);
+        spinnerMinutosTermino.setEditor(new JSpinner.DateEditor(spinnerMinutosTermino, "mm"));
+        spinnerMinutosTermino.setLocation(587, 434);
+        spinnerMinutosTermino.setSize(55, 40);
+        JTextField textField = ((JSpinner.DefaultEditor) spinnerMinutosTermino.getEditor()).getTextField();
+        textField.setHorizontalAlignment(SwingConstants.RIGHT);
+        textField.setFocusable(false);
+        textField.setEditable(false);
+        textField.setBackground(Color.WHITE);
+        textField.setFont(new Font("Arial", Font.PLAIN, 15));
+        textField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        panel.add(spinnerMinutosTermino);
+    }
+
+    private void crearDatePickerFechaInicio() {
+        UtilDateModel model = new UtilDateModel();
+        Properties p = new Properties();
+        p.put("text.today", "Hoy");
+        p.put("text.month", "Mes");
+        p.put("text.year", "Año");
+        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+        datePickerFechaInicio = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePickerFechaInicio.setLocation(245, 353);
+        datePickerFechaInicio.setSize(141, 40);
+        datePickerFechaInicio.setBackground(Color.WHITE);
+        datePickerFechaInicio.setButtonFocusable(false);
+        JFormattedTextField ftf = datePickerFechaInicio.getJFormattedTextField();
+        ftf.setFont(new Font("Arial", Font.PLAIN, 15));
+        ftf.setPreferredSize(new Dimension(141, 40));
+        ftf.setBackground(Color.WHITE);
+        ftf.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        ftf.setBorder(BorderFactory.createCompoundBorder(
+                ftf.getBorder(),
+                BorderFactory.createEmptyBorder(10, 12, 10, 10)));
+        panel.add(datePickerFechaInicio);
+    }
+    private void crearDatePickerFechaTermino() {
+        UtilDateModel model = new UtilDateModel();
+        Properties propiedadesDatePicker = new Properties();
+        propiedadesDatePicker.put("text.today", "Hoy");
+        propiedadesDatePicker.put("text.month", "Mes");
+        propiedadesDatePicker.put("text.year", "Año");
+        JDatePanelImpl datePanel = new JDatePanelImpl(model, propiedadesDatePicker);
+        datePickerFechaTermino = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePickerFechaTermino.setLocation(245, 432);
+        datePickerFechaTermino.setSize(141, 40);
+        datePickerFechaTermino.setBackground(Color.WHITE);
+        datePickerFechaTermino.setButtonFocusable(false);
+        JFormattedTextField ftf = datePickerFechaTermino.getJFormattedTextField();
+        ftf.setFont(new Font("Arial", Font.PLAIN, 15));
+        ftf.setPreferredSize(new Dimension(141, 40));
+        ftf.setBackground(Color.WHITE);
+        ftf.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        ftf.setBorder(BorderFactory.createCompoundBorder(
+                ftf.getBorder(),
+                BorderFactory.createEmptyBorder(10, 12, 10, 10)));
+        panel.add(datePickerFechaTermino);
     }
 
     private void crearEtiquetaHoraTermino() {
@@ -123,6 +250,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(tOpciones);
         scrollPane.setSize(512, 172);
         scrollPane.setLocation(188, 534);
+        scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         panel.add(scrollPane);
 
         Action editarVotacion = new AbstractAction() {
@@ -135,10 +263,10 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     }
 
     private void crearBotonEliminarVotacion() {
-        bEliminarVotacion = new JButton("Eliminar");
+        bEliminarVotacion = new JButton("Eliminar votación");
         bEliminarVotacion.setFont(new Font("Arial", Font.BOLD, 15));
-        bEliminarVotacion.setLocation(24, 31);
-        bEliminarVotacion.setSize(163, 37);
+        bEliminarVotacion.setLocation(683, 809);
+        bEliminarVotacion.setSize(174, 46);
         bEliminarVotacion.setBackground(Color.RED);
         bEliminarVotacion.setForeground(Color.WHITE);
         panel.add(bEliminarVotacion);
@@ -146,7 +274,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
 
     private void crearBotonCancelar() {
         bCancelar = new JButton("Cancelar");
-        bCancelar.setFont(new Font("Arial", Font.PLAIN, 15));
+        bCancelar.setFont(new Font("Arial", Font.BOLD, 15));
         bCancelar.setLocation(33, 809);
         bCancelar.setSize(146, 47);
         bCancelar.setBackground(Color.BLACK);
@@ -156,10 +284,10 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     }
 
     private void crearBotonAgregarOpcion() {
-        bAgregarOpcion = new JButton("Agregar opción");
-        bAgregarOpcion.setFont(new Font("Arial", Font.PLAIN, 15));
-        bAgregarOpcion.setLocation(352, 723);
-        bAgregarOpcion.setSize(182, 48);
+        bAgregarOpcion = new JButton("Agregar nueva opción");
+        bAgregarOpcion.setFont(new Font("Arial", Font.BOLD, 15));
+        bAgregarOpcion.setLocation(340, 723);
+        bAgregarOpcion.setSize(206, 40);
         bAgregarOpcion.setBackground(Color.BLACK);
         bAgregarOpcion.setForeground(Color.WHITE);
         bAgregarOpcion.addActionListener(this);
@@ -168,7 +296,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
 
     private void crearBotonGuardar() {
         bGuardar = new JButton("Guardar");
-        bGuardar.setFont(new Font("Arial", Font.PLAIN, 15));
+        bGuardar.setFont(new Font("Arial", Font.BOLD, 15));
         bGuardar.setSize(200, 50);
         bGuardar.setLocation(343, 809);
         bGuardar.setBackground(Color.BLACK);
@@ -182,7 +310,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         campoTextoTitulo.setLocation(187, 125);
         campoTextoTitulo.setSize(512, 40);
         campoTextoTitulo.setFont(new Font("Arial", Font.PLAIN, 15));
-        campoTextoTitulo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        campoTextoTitulo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         campoTextoTitulo.setBorder(BorderFactory.createCompoundBorder(
                 campoTextoTitulo.getBorder(),
                 BorderFactory.createEmptyBorder(5, 10, 5, 5)));
@@ -194,31 +322,13 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         campoTextoDescripcion.setLocation(187, 207);
         campoTextoDescripcion.setSize(512,93);
         campoTextoDescripcion.setFont(new Font("Arial", Font.PLAIN, 15));
-        campoTextoDescripcion.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        campoTextoDescripcion.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         campoTextoDescripcion.setLineWrap(true);
         campoTextoDescripcion.setWrapStyleWord(true);
         campoTextoDescripcion.setBorder(BorderFactory.createCompoundBorder(
                 campoTextoDescripcion.getBorder(),
                 BorderFactory.createEmptyBorder(10, 10, 5, 10)));
         panel.add(campoTextoDescripcion);
-    }
-
-    private void crearCampoDeTextoFechaInicio() {
-        campoTextoFechaInicio = new JTextField();
-        campoTextoFechaInicio.setFont(new Font("Arial", Font.PLAIN, 15));
-        campoTextoFechaInicio.setLocation(245, 353);
-        campoTextoFechaInicio.setSize(140, 40);
-        campoTextoFechaInicio.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panel.add(campoTextoFechaInicio);
-    }
-
-    private void crearCampoDeTextoFechaTermino() {
-        campoTextoFechaTermino = new JTextField();
-        campoTextoFechaTermino.setFont(new Font("Arial", Font.PLAIN, 15));
-        campoTextoFechaTermino.setLocation(245, 432);
-        campoTextoFechaTermino.setSize(140, 40);
-        campoTextoFechaTermino.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panel.add(campoTextoFechaTermino);
     }
 
     private void crearEtiquetaFechaTermino() {
@@ -276,16 +386,11 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         panel.setBackground(Color.WHITE);
         scroll = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setBounds(0, 0, 890, 600);
-        scroll.getVerticalScrollBar().setUnitIncrement(20);
+        scroll.getVerticalScrollBar().setUnitIncrement(25);
         scroll.getVerticalScrollBar().setPreferredSize(new Dimension(18,0));
         panel.setLayout(null);
         panel.setPreferredSize(new Dimension(400,915));
         add(scroll);
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(900, 800);
     }
 
     @Override
@@ -301,7 +406,27 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     public void cargarVotacion(Votacion votacion) {
         campoTextoTitulo.setText(votacion.getTitulo());
         campoTextoDescripcion.setText(votacion.getDescripcion());
-        campoTextoFechaInicio.setText(votacion.getFechaInicio().toString());
-        campoTextoFechaTermino.setText(votacion.getFechaTermino().toString());
+        var fechaInicio = votacion.getFechaInicio();
+        datePickerFechaInicio.getModel().setDate(
+                fechaInicio.getYear(),
+                fechaInicio.getDayOfMonth(),
+                fechaInicio.getDayOfMonth());
+        datePickerFechaInicio.getModel().setSelected(true);
+        var fechaTermino = votacion.getFechaTermino();
+        datePickerFechaTermino.getModel().setDate(
+                fechaTermino.getYear(),
+                fechaTermino.getDayOfMonth(),
+                fechaTermino.getDayOfMonth());
+        datePickerFechaTermino.getModel().setSelected(true);
+//        var horaInicio = votacion.getTiempoInicio();
+//        spinnerHoraInicio.getModel().setValue(horaInicio.getHour());
+//        spinnerMinutosInicio.getModel().setValue(horaInicio.getMinute());
+//        var horaTermino = votacion.getTiempoTermino();
+//        spinnerHoraTermino.getModel().setValue(horaTermino.getHour());
+//        spinnerMinutosTermino.getModel().setValue(horaTermino.getMinute());
+    }
+
+    public void moverScrollAInicio() {
+        scroll.getViewport().setViewPosition(new Point(0,0));
     }
 }
