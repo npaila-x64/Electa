@@ -243,4 +243,8 @@ public class Votacion {
             .concat(String.format("%s: %s\n", CampoDeVotacion.VOTOS_PREFERENCIALES, votosPreferenciales))
             .concat(String.format("%s: %s\n", CampoDeVotacion.VOTOS_BLANCOS, votosBlancos));
     }
+
+    public void addOpcion(Opcion opcion) {
+        opciones.add(opcion);
+    }
 }

@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="agrega librería jdatepicker">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="crea función de guardado en editor de votación">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/datos/administradores.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos/administradores.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/datos/votaciones.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos/votaciones.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorEditorDeVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorEditorDeVotacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/VotacionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/VotacionDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/modelos/Votacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/Votacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelEditorVotaciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelEditorVotaciones.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,13 +164,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1662468710255</updated>
-    </task>
-    <task id="LOCAL-00013" summary="cambia parámetros de métodos a sus clases respectivas">
-      <created>1665259008096</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1665259008096</updated>
     </task>
     <task id="LOCAL-00014" summary="agrega comentarios">
       <created>1665545912742</created>
@@ -511,7 +501,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669770165081</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="crea función de guardado en editor de votación">
+      <created>1669771790267</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1669771790268</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -541,7 +538,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="crea override de toString en Votacion" />
     <MESSAGE value="arregla error de sobreescritura errónea votaciones.json" />
     <MESSAGE value="arregla error de obtención errónea de votaciones en menú resultados" />
     <MESSAGE value="elimina FIXME" />
@@ -566,7 +562,8 @@
     <MESSAGE value="crea funcionalidad parcial de opciones de votación" />
     <MESSAGE value="rediseña editor de votación" />
     <MESSAGE value="agrega librería jdatepicker" />
-    <option name="LAST_COMMIT_MESSAGE" value="agrega librería jdatepicker" />
+    <MESSAGE value="crea función de guardado en editor de votación" />
+    <option name="LAST_COMMIT_MESSAGE" value="crea función de guardado en editor de votación" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
