@@ -175,10 +175,10 @@ public class Votacion {
         this.votosBlancos = 0;
         for (Voto voto : this.votos) {
             if (voto.getVotacion().getId().equals(this.getId())) {
-                if (voto.getOpcion().getId() != 1) {
-                    this.votosPreferenciales++;
-                } else {
+                if (voto.getOpcion().getId() == 1) {
                     this.votosBlancos++;
+                } else {
+                    this.votosPreferenciales++;
                 }
             }
         }

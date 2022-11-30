@@ -7,8 +7,8 @@ import modelos.Usuario;
 import modelos.Voto;
 import dao.VotacionDao;
 import dao.VotoDao;
+import modelos.tablemodel.OpcionesParaVotarTableModel;
 import vistas.votante.*;
-import vistas.votante.OpcionesTableModel;
 
 import javax.swing.table.TableModel;
 import java.util.List;
@@ -17,13 +17,13 @@ public class ControladorOpciones {
 
     private final ControladorAplicacion controlador;
     private final PanelOpciones vista;
-    private final OpcionesTableModel modelo;
+    private final OpcionesParaVotarTableModel modelo;
     private Votacion votacion;
     private List<Opcion> opciones;
 
     public ControladorOpciones(ControladorAplicacion controlador) {
         this.controlador = controlador;
-        modelo = new OpcionesTableModel();
+        modelo = new OpcionesParaVotarTableModel();
         vista = new PanelOpciones(this);
         this.controlador.agregarPanel(vista, "opciones");
     }

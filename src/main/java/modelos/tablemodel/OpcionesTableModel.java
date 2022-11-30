@@ -1,6 +1,7 @@
-package vistas.admin.tablemodel;
+package modelos.tablemodel;
 
 import modelos.Opcion;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +9,10 @@ import java.util.Optional;
 
 public class OpcionesTableModel extends AbstractTableModel {
 
-    private final String[] columnNames = {"Opción", "Botón"};
-    private final Class[] columnClass = new Class[] {String.class, String.class};
+    private final String[] columnNames = {"Opción", "Votos", "Porcentaje"};
+    private final Class[] columnClass = new Class[] {String.class, Integer.class, Double.class};
     private List<Opcion> opciones;
+    private Integer totalVotos;
 
     public OpcionesTableModel() {
         this.opciones = new ArrayList<>();
@@ -18,7 +20,15 @@ public class OpcionesTableModel extends AbstractTableModel {
 
     public void setOpciones(List<Opcion> opciones) {
         this.opciones = opciones;
+        calcularTotalVotos();
         fireTableDataChanged();
+    }
+
+    private void calcularTotalVotos() {
+        totalVotos = 0;
+        for (Opcion o : opciones) {
+            totalVotos += o.getCantidadDeVotos();
+        }
     }
 
     @Override
@@ -35,7 +45,8 @@ public class OpcionesTableModel extends AbstractTableModel {
     public Object getValueAt(int row, int col) {
         return switch (col) {
             case 0 -> opciones.get(row).getNombre();
-            case 1 -> "Eliminar";
+            case 1 -> opciones.get(row).getCantidadDeVotos();
+            case 2 -> Math.round((opciones.get(row).getCantidadDeVotos().doubleValue()/totalVotos)*10000)/100.0;
             default -> throw new IllegalStateException();
         };
     }
@@ -52,6 +63,6 @@ public class OpcionesTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int row, int col) {
-        return col != 0;
+        return false;
     }
 }

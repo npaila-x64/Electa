@@ -36,7 +36,7 @@ public class PanelEscogerResultado extends JPanel implements ActionListener {
         tVotaciones.setCellSelectionEnabled(false);
         tVotaciones.getColumnModel().getColumn(0).setPreferredWidth(600);
         tVotaciones.getColumnModel().getColumn(1).setPreferredWidth(205);
-        tVotaciones.setFont(new Font("Arial", Font.BOLD, 16));
+        tVotaciones.setFont(new Font("Arial", Font.PLAIN, 14));
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table,
@@ -93,7 +93,7 @@ public class PanelEscogerResultado extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == bVolver) {
-            controlador.volverFueSolitado();
+            controlador.volverFueSolicitado();
         }
     }
 }

@@ -2,10 +2,11 @@ package controladores;
 
 import modelos.Votacion;
 import dao.VotacionDao;
-import modelos.enums.EstadoDeVotacion;
+import modelos.tablemodel.InformeTableModel;
+import modelos.tablemodel.OpcionesTableModel;
 import vistas.PanelEscogerResultado;
 import vistas.PanelResultados;
-import vistas.VotacionesTableModel;
+import modelos.tablemodel.VotacionesTableModel;
 
 import javax.swing.table.TableModel;
 import java.time.format.DateTimeFormatter;
@@ -17,17 +18,21 @@ public class ControladorResultados {
     private ControladorAplicacion controlador;
     private PanelResultados resultados;
     private PanelEscogerResultado escojerResultado;
-    private VotacionesTableModel modeloDeTabla;
+    private VotacionesTableModel modeloDeTablaVotaciones;
+    private OpcionesTableModel modeloDeTablaOpciones;
+    private InformeTableModel modeloDeTablaInforme;
     private String panelPredecesor;
     private List<Votacion> votaciones;
 
     public ControladorResultados(ControladorAplicacion controlador) {
         this.controlador = controlador;
-        modeloDeTabla = new VotacionesTableModel();
+        modeloDeTablaVotaciones = new VotacionesTableModel();
+        modeloDeTablaOpciones = new OpcionesTableModel();
+        modeloDeTablaInforme = new InformeTableModel();
         resultados = new PanelResultados(this);
         escojerResultado = new PanelEscogerResultado(this);
         this.controlador.agregarPanel(resultados, "resultados");
-        this.controlador.agregarPanel(escojerResultado, "escojerResultado");
+        this.controlador.agregarPanel(escojerResultado, "escogerResultado");
     }
 
     public HashMap<String, Object> obtenerDatosDeVotacion(Votacion votacion) {
@@ -43,48 +48,54 @@ public class ControladorResultados {
         return datos;
     }
 
-    public List<Votacion> obtenerVotacionesParaMostrar() {
-        return VotacionDao.obtenerVotacionesConEstado(EstadoDeVotacion.FINALIZADO);
-    }
-
-    public Votacion obtenerVotacion(int opcionElegida) {
-        List<Votacion> votaciones = VotacionDao.obtenerVotacionesFinalizadas();
-        return votaciones.get(opcionElegida - 1);
-    }
-
     public void cargarVotaciones() {
         votaciones = VotacionDao.obtenerVotacionesFinalizadas();
-        modeloDeTabla.setVotaciones(votaciones);
+        modeloDeTablaVotaciones.setVotaciones(votaciones);
     }
 
     public void abrirEscogerResultado() {
         cargarVotaciones();
-        controlador.mostrarPanel("escojerResultado");
+        controlador.mostrarPanel("escogerResultado");
     }
 
     public void abrirResultados(Integer fila) {
-        cargarVotacion(votaciones.get(fila));
+        Votacion votacion = votaciones.get(fila);
+        cargarVotacion(votacion);
+        resultados.cargarVotacion(votacion);
         controlador.mostrarPanel("resultados");
     }
 
     private void cargarVotacion(Votacion votacion) {
-
-        //
+        System.out.println(votacion.getTotalVotos());
+        modeloDeTablaInforme.setVotacion(votacion);
+        modeloDeTablaOpciones.setOpciones(votacion.getOpciones());
     }
 
     public void setPanelPredecesor(String panelPredecesor) {
         this.panelPredecesor = panelPredecesor;
     }
 
-    public void volverFueSolitado() {
+    public void volverFueSolicitado() {
         controlador.mostrarPanel(panelPredecesor);
     }
 
     public TableModel getModeloDeTablaVotaciones() {
-        return modeloDeTabla;
+        return modeloDeTablaVotaciones;
+    }
+
+    public TableModel getModeloDeTablaInforme() {
+        return modeloDeTablaInforme;
     }
 
     public void abrirResultadosDeVotacionFueSolicitado(int fila) {
         abrirResultados(fila);
+    }
+
+    public TableModel getModeloDeTablaOpciones() {
+        return modeloDeTablaOpciones;
+    }
+
+    public void volverAEscogerResultadoFueSolicitado() {
+        controlador.mostrarPanel("escogerResultado");
     }
 }

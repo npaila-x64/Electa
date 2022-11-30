@@ -5,7 +5,7 @@ import modelos.Votacion;
 import dao.VotacionDao;
 import modelos.Usuario;
 import vistas.votante.PanelVotacionesEnCurso;
-import vistas.VotacionesTableModel;
+import modelos.tablemodel.VotacionesTableModel;
 
 import javax.swing.table.TableModel;
 import java.util.List;
