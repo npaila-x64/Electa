@@ -358,4 +358,15 @@ public class VotacionDao {
         List<Opcion> opciones = votacion.getOpciones();
         return opciones.stream().anyMatch(opcion -> opcion.getNombre().equals(nombreOpcion));
     }
+
+    public static void actualizarVotacion(Votacion votacion) {
+        List<Votacion> votaciones = obtenerVotaciones();
+        Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacion);
+        votacionCopia.setTitulo(votacion.getTitulo());
+        votacionCopia.setDescripcion(votacion.getDescripcion());
+        votacionCopia.setFechaTiempoInicio(votacion.getFechaTiempoInicio());
+        votacionCopia.setFechaTiempoTermino(votacion.getFechaTiempoTermino());
+        votacionCopia.setOpciones(votacion.getOpciones());
+        escribirVotaciones(votaciones);
+    }
 }

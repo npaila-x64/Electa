@@ -66,7 +66,12 @@ public class ControladorAdministracion {
     }
 
     public void editarVotacionFueSolicitado(int fila) {
-        controlador.abrirEditor(votaciones.get(fila));
+        Votacion votacion = votaciones.get(fila);
+        if (votacion.getEstadoDeVotacion().equals(EstadoDeVotacion.BORRADOR)) {
+            controlador.abrirEditor(votacion, false, false);
+        } else {
+            controlador.abrirEditor(votacion, false, true);
+        }
     }
 
     public void checkBorradoresFueEjecutado() {
@@ -90,6 +95,6 @@ public class ControladorAdministracion {
     }
 
     public void crearVotacionFueSolicitado() {
-        controlador.abrirEditor(new Votacion());
+        controlador.abrirEditor(new Votacion(), true, false);
     }
 }

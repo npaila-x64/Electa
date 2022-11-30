@@ -58,8 +58,8 @@ public class ControladorAplicacion {
         this.votacion.abrir(votacion, votacion.getOpciones());
     }
 
-    public void abrirEditor(Votacion votacion) {
-        editor.abrir(votacion);
+    public void abrirEditor(Votacion votacion, boolean esNuevaVotacion, boolean modoLectura) {
+        editor.abrir(votacion, esNuevaVotacion, modoLectura);
     }
 
     public void asignarUsuarioDeSesion(Usuario usuario) {

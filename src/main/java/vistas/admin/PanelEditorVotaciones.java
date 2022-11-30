@@ -12,10 +12,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
 
 public class PanelEditorVotaciones extends JPanel implements ActionListener {
@@ -26,7 +22,9 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     private JLabel textoDescripcion;
     private JLabel textoFechaInicio;
     private JLabel textoFechaTermino;
+    private JLabel textoEstado;
     private JTextField campoTextoTitulo;
+    private JTextField campoTextoEstado;
     private JTextArea campoTextoDescripcion;
     private JButton bAgregarOpcion;
     private JButton bGuardar;
@@ -38,8 +36,6 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     private JLabel textoHoraInicio;
     private JLabel textoHoraTermino;
     private JLabel textoOpciones;
-    private JTextField campoTextoHoraInicio;
-    private JTextField campoTextoHoraTermino;
     private JDatePickerImpl datePickerFechaInicio;
     private JDatePickerImpl datePickerFechaTermino;
     private JSpinner spinnerHoraInicio;
@@ -64,8 +60,10 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         crearEtiquetaOpciones();
         crearEtiquetaSeparadorHoraTermino();
         crearEtiquetaSeparadorHoraInicio();
+        crearEtiquetaEstado();
         crearAreaDeTextoDescripcion();
         crearCampoDeTextoTitulo();
+        crearCampoDeTextoEstado();
         crearDatePickerFechaInicio();
         crearDatePickerFechaTermino();
         crearSpinnerHoraInicio();
@@ -77,6 +75,28 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         crearBotonCancelar();
         crearBotonEliminarVotacion();
         crearTablaDeVotaciones();
+    }
+
+    private void crearCampoDeTextoEstado() {
+        campoTextoEstado = new JTextField();
+        campoTextoEstado.setLocation(716, 44);
+        campoTextoEstado.setSize(128, 40);
+        campoTextoEstado.setFont(new Font("Arial", Font.BOLD, 15));
+        campoTextoEstado.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        campoTextoEstado.setBorder(BorderFactory.createCompoundBorder(
+                campoTextoEstado.getBorder(),
+                BorderFactory.createEmptyBorder(5, 10, 5, 5)));
+        campoTextoEstado.setEditable(false);
+        campoTextoEstado.setFocusable(false);
+        panel.add(campoTextoEstado);
+    }
+
+    private void crearEtiquetaEstado() {
+        textoEstado = new JLabel("Estado");
+        textoEstado.setFont(new Font("Arial", Font.PLAIN, 16));
+        textoEstado.setLocation(716,15);
+        textoEstado.setSize(67, 29);
+        panel.add(textoEstado);
     }
 
     private void crearEtiquetaSeparadorHoraTermino() {
@@ -96,10 +116,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     }
 
     private void crearSpinnerHoraInicio() {
-        SpinnerDateModel model = new SpinnerDateModel();
-        model.setCalendarField(Calendar.HOUR_OF_DAY);
-        spinnerHoraInicio = new JSpinner(model);
-        spinnerHoraInicio.setEditor(new JSpinner.DateEditor(spinnerHoraInicio, "HH"));
+        spinnerHoraInicio = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
         spinnerHoraInicio.setLocation(501, 350);
         spinnerHoraInicio.setSize(55, 40);
         JTextField textField = ((JSpinner.DefaultEditor) spinnerHoraInicio.getEditor()).getTextField();
@@ -113,10 +130,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     }
 
     private void crearSpinnerMinutosInicio() {
-        SpinnerDateModel model = new SpinnerDateModel();
-        model.setCalendarField(Calendar.MINUTE);
-        spinnerMinutosInicio = new JSpinner(model);
-        spinnerMinutosInicio.setEditor(new JSpinner.DateEditor(spinnerMinutosInicio, "mm"));
+        spinnerMinutosInicio = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         spinnerMinutosInicio.setLocation(587, 350);
         spinnerMinutosInicio.setSize(55, 40);
         JTextField textField = ((JSpinner.DefaultEditor) spinnerMinutosInicio.getEditor()).getTextField();
@@ -130,10 +144,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     }
 
     private void crearSpinnerHoraTermino() {
-        SpinnerDateModel model = new SpinnerDateModel();
-        model.setCalendarField(Calendar.HOUR_OF_DAY);
-        spinnerHoraTermino = new JSpinner(model);
-        spinnerHoraTermino.setEditor(new JSpinner.DateEditor(spinnerHoraTermino, "HH"));
+        spinnerHoraTermino = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
         spinnerHoraTermino.setLocation(501, 434);
         spinnerHoraTermino.setSize(55, 40);
         JTextField textField = ((JSpinner.DefaultEditor) spinnerHoraTermino.getEditor()).getTextField();
@@ -147,10 +158,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     }
 
     private void crearSpinnerMinutosTermino() {
-        SpinnerDateModel model = new SpinnerDateModel();
-        model.setCalendarField(Calendar.MINUTE);
-        spinnerMinutosTermino = new JSpinner(model);
-        spinnerMinutosTermino.setEditor(new JSpinner.DateEditor(spinnerMinutosTermino, "mm"));
+        spinnerMinutosTermino = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         spinnerMinutosTermino.setLocation(587, 434);
         spinnerMinutosTermino.setSize(55, 40);
         JTextField textField = ((JSpinner.DefaultEditor) spinnerMinutosTermino.getEditor()).getTextField();
@@ -393,6 +401,38 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         add(scroll);
     }
 
+    public String getTitulo() {
+        return campoTextoTitulo.getText();
+    }
+
+    public String getDescripcion() {
+        return campoTextoDescripcion.getText();
+    }
+
+    public int getHoraInicio() {
+        return Integer.parseInt(spinnerHoraInicio.getValue().toString());
+    }
+
+    public int getHoraTermino() {
+        return Integer.parseInt(spinnerHoraTermino.getValue().toString());
+    }
+
+    public int getMinutoInicio() {
+        return Integer.parseInt(spinnerMinutosInicio.getValue().toString());
+    }
+
+    public int getMinutoTermino() {
+        return Integer.parseInt(spinnerMinutosTermino.getValue().toString());
+    }
+
+    public String getFechaInicio() {
+        return datePickerFechaInicio.getJFormattedTextField().getText();
+    }
+
+    public String getFechaTermino() {
+        return datePickerFechaTermino.getJFormattedTextField().getText();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == bCancelar) {
@@ -401,9 +441,13 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         if (e.getSource() == bGuardar) {
             controlador.guardarFueSolicitado();
         }
+        if (e.getSource() == bAgregarOpcion) {
+            controlador.agregarOpcionFueSolicitado();
+        }
     }
 
     public void cargarVotacion(Votacion votacion) {
+        campoTextoEstado.setText(votacion.getEstadoDeVotacion().getTexto());
         campoTextoTitulo.setText(votacion.getTitulo());
         campoTextoDescripcion.setText(votacion.getDescripcion());
         var fechaInicio = votacion.getFechaInicio();
@@ -418,15 +462,40 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
                 fechaTermino.getDayOfMonth(),
                 fechaTermino.getDayOfMonth());
         datePickerFechaTermino.getModel().setSelected(true);
-//        var horaInicio = votacion.getTiempoInicio();
-//        spinnerHoraInicio.getModel().setValue(horaInicio.getHour());
-//        spinnerMinutosInicio.getModel().setValue(horaInicio.getMinute());
-//        var horaTermino = votacion.getTiempoTermino();
-//        spinnerHoraTermino.getModel().setValue(horaTermino.getHour());
-//        spinnerMinutosTermino.getModel().setValue(horaTermino.getMinute());
+        spinnerHoraInicio.getModel().setValue(votacion.getTiempoInicio().getHour());
+        spinnerMinutosInicio.getModel().setValue(votacion.getTiempoInicio().getMinute());
+        spinnerHoraTermino.getModel().setValue(votacion.getTiempoTermino().getHour());
+        spinnerMinutosTermino.getModel().setValue(votacion.getFechaTiempoTermino().getMinute());
     }
 
     public void moverScrollAInicio() {
         scroll.getViewport().setViewPosition(new Point(0,0));
+    }
+
+    public void setModoLectura(boolean modoLectura) {
+        habilitarComponentes(!modoLectura);
+    }
+
+    private void habilitarComponentes(boolean b) {
+        campoTextoTitulo.setEditable(b);
+        campoTextoDescripcion.setEditable(b);
+        datePickerFechaInicio.getComponent(1).setEnabled(b);
+        datePickerFechaTermino.getComponent(1).setEnabled(b);
+        spinnerHoraInicio.setEnabled(b);
+        spinnerHoraTermino.setEnabled(b);
+        spinnerMinutosInicio.setEnabled(b);
+        spinnerMinutosTermino.setEnabled(b);
+        tOpciones.setEnabled(b);
+        bAgregarOpcion.setEnabled(b);
+        bEliminarVotacion.setEnabled(b);
+        bGuardar.setEnabled(b);
+    }
+
+    public void mostrarNoSeCumplenRequisitosObligatorios() {
+        System.out.println("Hay campos obligatorios que no se cumplen");
+    }
+
+    public void mostrarVotacionGuardadaConExito() {
+        System.out.println("La votación ha sido guardada exitosamente");
     }
 }
