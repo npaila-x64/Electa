@@ -40,6 +40,7 @@ public class ControladorEditorDeVotacion {
         modelo.setOpciones(votacion.getOpciones());
         cargarVotacion();
         controlador.mostrarPanel("editor");
+        vista.moverScrollAInicio();
     }
 
     private void cargarVotacion() {
