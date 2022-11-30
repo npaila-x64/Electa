@@ -146,6 +146,10 @@ public class Votacion {
         return new ArrayList<>(opciones);
     }
 
+    public void removeOpcion(int index) {
+        opciones.remove(index);
+    }
+
     public void setOpciones(List<Opcion> opciones) {
         this.opciones = new ArrayList<>(opciones);
     }
