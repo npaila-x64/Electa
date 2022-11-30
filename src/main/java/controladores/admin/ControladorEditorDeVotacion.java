@@ -37,11 +37,15 @@ public class ControladorEditorDeVotacion {
     public void abrir(Votacion votacion, boolean esNuevaVotacion, boolean modoLectura) {
         this.votacion = votacion;
         this.estaVotacionEnProcesoDeCreacion = esNuevaVotacion;
-        modelo.setOpciones(votacion.getOpciones());
+        cargarOpciones();
         cargarVotacion();
         controlador.mostrarPanel("editor");
 //        vista.setModoLector(modoLectura);
         vista.moverScrollAInicio();
+    }
+
+    private void cargarOpciones() {
+        modelo.setOpciones(this.votacion.getOpciones());
     }
 
     private void cargarVotacion() {
@@ -110,7 +114,14 @@ public class ControladorEditorDeVotacion {
                 "Agregar opción",
                 JOptionPane.PLAIN_MESSAGE);
         if (!(nombre.isBlank() || nombre == null)) {
-
+            String id = VotacionDao.obtenerNuevaIdOpcion(votacion);
+            Opcion opcion = new Opcion();
+            opcion.setId(id);
+            opcion.setNombre(nombre);
+            opcion.setVotacion(votacion);
+            opcion.setCantidadDeVotos(0);
+            votacion.addOpcion(opcion);
+            cargarOpciones();
         }
     }
 }
