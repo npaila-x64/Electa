@@ -1,4 +1,4 @@
-package vistas.votante;
+package vistas;
 import controladores.ControladorResultados;
 
 import javax.swing.*;
@@ -23,25 +23,28 @@ public class PanelResultados extends JPanel implements ActionListener {
     private void crearComponentes() {
         configurarPanel();
         crearBotonVolver();
-
-        tEncabezado = new JLabel("Resultados Elecciones Rectoriales");
-        tEncabezado.setFont(new Font("Arial", Font.PLAIN, 36));
-        tEncabezado.setLocation(0,40);
-        tEncabezado.setSize(900, 36);
-        tEncabezado.setHorizontalAlignment(JLabel.CENTER);
-        this.add(tEncabezado);
+        crearEtiquetaEncabezado();
 
         bordesTabla1 = new JLabel();
         bordesTabla1.setSize(805, 170);
         bordesTabla1.setLocation(40, 96);
         bordesTabla1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        this.add(bordesTabla1);
+        add(bordesTabla1);
 
         bordesTabla2 = new JLabel();
         bordesTabla2.setSize(805, 170);
         bordesTabla2.setLocation(40, 286);
         bordesTabla2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        this.add(bordesTabla2);
+        add(bordesTabla2);
+    }
+
+    private void crearEtiquetaEncabezado() {
+        tEncabezado = new JLabel("Resultados Elecciones Rectoriales");
+        tEncabezado.setFont(new Font("Arial", Font.PLAIN, 36));
+        tEncabezado.setLocation(0,40);
+        tEncabezado.setSize(900, 36);
+        tEncabezado.setHorizontalAlignment(JLabel.CENTER);
+        add(tEncabezado);
     }
 
     private void crearBotonVolver() {
@@ -52,12 +55,12 @@ public class PanelResultados extends JPanel implements ActionListener {
         bVolver.setLocation(350, 475);
         bVolver.setBackground(Color.BLACK);
         bVolver.setForeground(Color.WHITE);
-        this.add(bVolver);
+        add(bVolver);
     }
 
     private void configurarPanel() {
-        this.setBackground(Color.WHITE);
-        this.setLayout(null);
+        setBackground(Color.WHITE);
+        setLayout(null);
     }
 
     @Override

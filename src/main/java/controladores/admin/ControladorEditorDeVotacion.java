@@ -5,6 +5,7 @@ import modelos.Opcion;
 import modelos.Votacion;
 import dao.VotacionDao;
 import modelos.enums.EstadoDeVotacion;
+import utils.Utilidades;
 import vistas.admin.tablemodel.OpcionesTableModel;
 import vistas.admin.PanelEditorVotaciones;
 
@@ -108,6 +109,9 @@ public class ControladorEditorDeVotacion {
     private boolean seCumplenRequisitosDeEntrada() {
         if (vista.getTitulo().isBlank()) return false;
         if (votacion.getOpciones().size() < 2) return false;
+        if (!votacion.getFechaTiempoInicio().isAfter(votacion.getFechaTiempoTermino())) {
+            return false;
+        }
         return true;
     }
 

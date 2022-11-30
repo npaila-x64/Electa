@@ -44,7 +44,7 @@ public class ControladorAdministracion {
     }
 
     public void verResultadosFueSolicitado() {
-        controlador.abrirResultados();
+        controlador.abrirEscogerResultado();
     }
 
     public void abrir() {
@@ -66,23 +66,8 @@ public class ControladorAdministracion {
         }
     }
 
-    public void checkBorradoresFueEjecutado() {
-        estados.put(EstadoDeVotacion.BORRADOR, !estados.get(EstadoDeVotacion.BORRADOR));
-        cargarVotaciones();
-    }
-
-    public void checkPendientesFueEjecutado() {
-        estados.put(EstadoDeVotacion.PENDIENTE, !estados.get(EstadoDeVotacion.PENDIENTE));
-        cargarVotaciones();
-    }
-
-    public void checkFinalizadasFueEjecutado() {
-        estados.put(EstadoDeVotacion.FINALIZADO, !estados.get(EstadoDeVotacion.FINALIZADO));
-        cargarVotaciones();
-    }
-
-    public void checkEnCursoFueEjecutado() {
-        estados.put(EstadoDeVotacion.EN_CURSO, !estados.get(EstadoDeVotacion.EN_CURSO));
+    public void checkEstadoFueEjecutado(EstadoDeVotacion estado) {
+        estados.put(estado, !estados.get(estado));
         cargarVotaciones();
     }
 

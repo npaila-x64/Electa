@@ -5,9 +5,12 @@ import modelos.Votacion;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import utils.Utilidades;
 import vistas.votante.ButtonColumn;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -95,6 +98,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
 
     private void crearCampoDeTextoEstado() {
         campoTextoEstado = new JTextField();
+        campoTextoEstado.setHorizontalAlignment(SwingConstants.CENTER);
         campoTextoEstado.setLocation(716, 44);
         campoTextoEstado.setSize(128, 40);
         campoTextoEstado.setFont(new Font("Arial", Font.BOLD, 15));
@@ -135,6 +139,8 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         spinnerHoraInicio = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
         spinnerHoraInicio.setLocation(501, 350);
         spinnerHoraInicio.setSize(55, 40);
+        spinnerHoraInicio.setEditor(
+                new JSpinner.NumberEditor(spinnerHoraInicio, "00"));
         JTextField textField = ((JSpinner.DefaultEditor) spinnerHoraInicio.getEditor()).getTextField();
         textField.setHorizontalAlignment(SwingConstants.RIGHT);
         textField.setFocusable(false);
@@ -149,6 +155,8 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         spinnerMinutosInicio = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         spinnerMinutosInicio.setLocation(587, 350);
         spinnerMinutosInicio.setSize(55, 40);
+        spinnerMinutosInicio.setEditor(
+                new JSpinner.NumberEditor(spinnerMinutosInicio, "00"));
         JTextField textField = ((JSpinner.DefaultEditor) spinnerMinutosInicio.getEditor()).getTextField();
         textField.setHorizontalAlignment(SwingConstants.RIGHT);
         textField.setFocusable(false);
@@ -163,6 +171,8 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         spinnerHoraTermino = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
         spinnerHoraTermino.setLocation(501, 434);
         spinnerHoraTermino.setSize(55, 40);
+        spinnerHoraTermino.setEditor(
+                new JSpinner.NumberEditor(spinnerHoraTermino, "00"));
         JTextField textField = ((JSpinner.DefaultEditor) spinnerHoraTermino.getEditor()).getTextField();
         textField.setHorizontalAlignment(SwingConstants.RIGHT);
         textField.setFocusable(false);
@@ -177,6 +187,8 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         spinnerMinutosTermino = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         spinnerMinutosTermino.setLocation(587, 434);
         spinnerMinutosTermino.setSize(55, 40);
+        spinnerMinutosTermino.setEditor(
+                new JSpinner.NumberEditor(spinnerMinutosTermino, "00"));
         JTextField textField = ((JSpinner.DefaultEditor) spinnerMinutosTermino.getEditor()).getTextField();
         textField.setHorizontalAlignment(SwingConstants.RIGHT);
         textField.setFocusable(false);
@@ -489,7 +501,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         var fechaInicio = votacion.getFechaInicio();
         datePickerFechaInicio.getModel().setDate(
                 fechaInicio.getYear(),
-                fechaInicio.getDayOfMonth(),
+                fechaInicio.getMonthValue(),
                 fechaInicio.getDayOfMonth());
         datePickerFechaInicio.getModel().setSelected(true);
     }
@@ -498,7 +510,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         var fechaTermino = votacion.getFechaTermino();
         datePickerFechaTermino.getModel().setDate(
                 fechaTermino.getYear(),
-                fechaTermino.getDayOfMonth(),
+                fechaTermino.getMonthValue(),
                 fechaTermino.getDayOfMonth());
         datePickerFechaTermino.getModel().setSelected(true);
     }

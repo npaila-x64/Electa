@@ -8,7 +8,7 @@ import modelos.Voto;
 import dao.VotacionDao;
 import dao.VotoDao;
 import vistas.votante.*;
-import vistas.votante.tablemodel.OpcionesTableModel;
+import vistas.votante.OpcionesTableModel;
 
 import javax.swing.table.TableModel;
 import java.util.List;

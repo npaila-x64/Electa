@@ -46,8 +46,12 @@ public class ControladorAplicacion {
         login.abrir();
     }
 
-    public void abrirResultados() {
-        resultados.abrir();
+    public void abrirEscogerResultado() {
+        resultados.abrirEscogerResultado();
+    }
+
+    public void abrirResultados(Integer fila) {
+        resultados.abrirResultados(fila);
     }
 
     public void abrirAdministracion() {

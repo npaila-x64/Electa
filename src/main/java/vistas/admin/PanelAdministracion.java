@@ -1,5 +1,6 @@
 package vistas.admin;
 import controladores.admin.ControladorAdministracion;
+import modelos.enums.EstadoDeVotacion;
 import vistas.votante.ButtonColumn;
 
 import javax.swing.*;
@@ -216,16 +217,16 @@ public class PanelAdministracion extends JPanel implements ActionListener {
             controlador.verResultadosFueSolicitado();
         }
         if (e.getSource() == checkEnCurso) {
-            controlador.checkEnCursoFueEjecutado();
+            controlador.checkEstadoFueEjecutado(EstadoDeVotacion.EN_CURSO);
         }
         if (e.getSource() == checkFinalizadas) {
-            controlador.checkFinalizadasFueEjecutado();
+            controlador.checkEstadoFueEjecutado(EstadoDeVotacion.FINALIZADO);
         }
         if (e.getSource() == checkPendientes) {
-            controlador.checkPendientesFueEjecutado();
+            controlador.checkEstadoFueEjecutado(EstadoDeVotacion.PENDIENTE);
         }
         if (e.getSource() == checkBorradores) {
-            controlador.checkBorradoresFueEjecutado();
+            controlador.checkEstadoFueEjecutado(EstadoDeVotacion.BORRADOR);
         }
     }
 }

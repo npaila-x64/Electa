@@ -5,7 +5,7 @@ import modelos.Votacion;
 import dao.VotacionDao;
 import modelos.Usuario;
 import vistas.votante.PanelVotacionesEnCurso;
-import vistas.votante.tablemodel.VotacionesEnCursoTableModel;
+import vistas.VotacionesTableModel;
 
 import javax.swing.table.TableModel;
 import java.util.List;
@@ -14,12 +14,12 @@ public class ControladorVotacionesEnCurso {
 
 	private final ControladorAplicacion controlador;
 	private final PanelVotacionesEnCurso vista;
-	private final VotacionesEnCursoTableModel modelo;
+	private final VotacionesTableModel modeloDeTabla;
 	private List<Votacion> votaciones;
 
 	public ControladorVotacionesEnCurso(ControladorAplicacion controlador) {
 		this.controlador = controlador;
-		modelo = new VotacionesEnCursoTableModel();
+		modeloDeTabla = new VotacionesTableModel();
 		vista = new PanelVotacionesEnCurso(this);
 		this.controlador.agregarPanel(vista, "votacionesEnCurso");
 	}
@@ -28,7 +28,7 @@ public class ControladorVotacionesEnCurso {
 		Usuario votante = controlador.obtenerUsuario();
 		votaciones = VotacionDao
 				.obtenerVotacionesEnElQuePuedeVotarElVotante(votante);
-		modelo.setVotaciones(votaciones);
+		modeloDeTabla.setVotaciones(votaciones);
 	}
 
 	public void abrir() {
@@ -42,11 +42,11 @@ public class ControladorVotacionesEnCurso {
 	}
 
 	public void abirResultadosFueSolicitada() {
-		controlador.abrirResultados();
+		controlador.abrirEscogerResultado();
 	}
 
 	public TableModel getModeloDeTabla() {
-		return modelo;
+		return modeloDeTabla;
 	}
 
 	public void abrirVotacionFueSolicitado(int id) {
