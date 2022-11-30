@@ -107,9 +107,13 @@ public class ControladorEditorDeVotacion {
     }
 
     private boolean seCumplenRequisitosDeEntrada() {
-        if (vista.getTitulo().isBlank()) return false;
-        if (votacion.getOpciones().size() < 2) return false;
-        if (!votacion.getFechaTiempoInicio().isAfter(votacion.getFechaTiempoTermino())) {
+        if (vista.getTitulo().isBlank()) {
+            return false;
+        }
+        if (votacion.getOpciones().size() < 2) {
+            return false;
+        }
+        if (votacion.getFechaTiempoInicio().isAfter(votacion.getFechaTiempoTermino())) {
             return false;
         }
         return true;
@@ -160,8 +164,8 @@ public class ControladorEditorDeVotacion {
     }
 
     public void guardarFueSolicitado() {
+        obtenerDatosDeVista();
         if (seCumplenRequisitosDeEntrada()) {
-            obtenerDatosDeVista();
             procesarVotacion();
             mostrarDialogoDeExito("¡La votación se guardó en forma exitosa!");
         } else {
@@ -170,9 +174,9 @@ public class ControladorEditorDeVotacion {
     }
 
     public void ponerVotacionEnMarchaFueSolicitado() {
+        obtenerDatosDeVista();
         if (seCumplenRequisitosDeEntrada()) {
             if (pedirConfirmacionAUsuarioParaPonerEnMarcha()) {
-                obtenerDatosDeVista();
                 votacion.setEstadoDeVotacion(EstadoDeVotacion.PENDIENTE);
                 procesarVotacion();
                 vista.cargarVotacion(votacion);

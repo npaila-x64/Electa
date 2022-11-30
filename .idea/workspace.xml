@@ -4,27 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="agrega comportamiento a los botones en el editor de votación">
+    <list default="true" id="1ec606d0-3b29-46c3-be7d-088bb4db538c" name="Changes" comment="agrega panel para escoger resultados">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/datos/administradores.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos/administradores.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/datos/votaciones.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/datos/votaciones.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorAplicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/ControladorResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/ControladorResultados.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorAdministracion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorEditorDeVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/admin/ControladorEditorDeVotacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorOpciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorOpciones.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controladores/votante/ControladorVotacionesEnCurso.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/modelos/enums/CampoDeVotacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelos/enums/CampoDeVotacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Utilidades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Utilidades.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/Marco.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelAdministracion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelAdministracion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelEditorVotaciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/admin/PanelEditorVotaciones.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/MenuResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/MenuResultados.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/PanelResultados.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/PanelResultados.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/VentanaMenuResultados.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/tablemodel/OpcionesTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/votante/OpcionesTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vistas/votante/tablemodel/VotacionesEnCursoTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vistas/VotacionesTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/MenuPrincipalTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MenuPrincipalTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,13 +165,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1662468710255</updated>
-    </task>
-    <task id="LOCAL-00017" summary="remueve argumentos innecesarios">
-      <created>1665548586164</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1665548586164</updated>
     </task>
     <task id="LOCAL-00018" summary="cambia método a manejo de clases">
       <created>1665549249584</created>
@@ -524,7 +502,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669782915692</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="agrega panel para escoger resultados">
+      <created>1669832061843</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1669832061843</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -554,7 +539,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="agrega interfaces vista y controlador, y primer test" />
     <MESSAGE value="reordena inicialización de componentes" />
     <MESSAGE value="elimina interfaces de login" />
     <MESSAGE value="crea marco JFrame" />
@@ -579,7 +563,8 @@
     <MESSAGE value="crea funcionalidad de agregar nuevas opciones a votación" />
     <MESSAGE value="arreglar bug en la agregación de opciones de votación" />
     <MESSAGE value="agrega comportamiento a los botones en el editor de votación" />
-    <option name="LAST_COMMIT_MESSAGE" value="agrega comportamiento a los botones en el editor de votación" />
+    <MESSAGE value="agrega panel para escoger resultados" />
+    <option name="LAST_COMMIT_MESSAGE" value="agrega panel para escoger resultados" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
