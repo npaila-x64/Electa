@@ -1,6 +1,5 @@
-package vistas.votante;
+package vistas.votante.tablemodel;
 
-import modelos.Opcion;
 import modelos.Votacion;
 
 import javax.swing.table.AbstractTableModel;
@@ -8,25 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OpcionesTableModel extends AbstractTableModel {
+public class VotacionesEnCursoTableModel extends AbstractTableModel {
 
-    private final String[] columnNames = {"Opción", "Botón"};
+    private final String[] columnNames = {"Votación", "Botón"};
     private final Class[] columnClass = new Class[] {String.class, String.class};
 
-    private List<Opcion> opciones;
+    private List<Votacion> votaciones;
 
-    public OpcionesTableModel() {
-        this.opciones = new ArrayList<>();
+    public VotacionesEnCursoTableModel() {
+        this.votaciones = new ArrayList<>();
     }
 
-    public void setOpciones(List<Opcion> opciones) {
-        this.opciones = opciones;
+    public void setVotaciones(List<Votacion> votaciones) {
+        this.votaciones = votaciones;
         fireTableDataChanged();
     }
 
     @Override
     public int getRowCount() {
-        return Optional.of(opciones).orElse(new ArrayList<>()).size();
+        return Optional.of(votaciones).orElse(new ArrayList<>()).size();
     }
 
     @Override
@@ -37,8 +36,8 @@ public class OpcionesTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int col) {
         return switch (col) {
-            case 0 -> opciones.get(row).getNombre();
-            case 1 -> "Votar";
+            case 0 -> votaciones.get(row).getTitulo();
+            case 1 -> "Ir a votación";
             default -> throw new IllegalStateException();
         };
     }

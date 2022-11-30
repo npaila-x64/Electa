@@ -54,7 +54,7 @@ public class Votacion {
         this.estadoDeVotacion = EstadoDeVotacion.BORRADOR;
 //      TODO Ver un modo estandarizar fechas de inicio y termino por defecto
         setFechaTiempoInicio(LocalDateTime.now());
-        setFechaTiempoTermino(LocalDateTime.now().plusYears(50));
+        setFechaTiempoTermino(LocalDateTime.now());
         agregarOpcionBlanco();
     }
 

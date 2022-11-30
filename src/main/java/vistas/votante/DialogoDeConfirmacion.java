@@ -14,8 +14,8 @@ public class DialogoDeConfirmacion extends JDialog implements ActionListener {
     private JButton botonNo;
     private boolean confirmacion;
 
-    public DialogoDeConfirmacion(Frame owner, String title, boolean modal) {
-        super(owner, title, modal);
+    public DialogoDeConfirmacion(Frame owner, boolean modal) {
+        super(owner, "Confirme su voto", modal);
         crearComponentes();
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         setSize(489, 356);

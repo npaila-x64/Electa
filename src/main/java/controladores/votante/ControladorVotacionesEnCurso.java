@@ -4,9 +4,8 @@ import controladores.ControladorAplicacion;
 import modelos.Votacion;
 import dao.VotacionDao;
 import modelos.Usuario;
-import modelos.enums.EstadoDeVotacion;
 import vistas.votante.PanelVotacionesEnCurso;
-import vistas.votante.VotacionesEnCursoTableModel;
+import vistas.votante.tablemodel.VotacionesEnCursoTableModel;
 
 import javax.swing.table.TableModel;
 import java.util.List;
@@ -30,10 +29,6 @@ public class ControladorVotacionesEnCurso {
 		votaciones = VotacionDao
 				.obtenerVotacionesEnElQuePuedeVotarElVotante(votante);
 		modelo.setVotaciones(votaciones);
-	}
-
-	public List<Votacion> obtenerVotacionesEnCurso() {
-		return VotacionDao.obtenerVotacionesConEstado(EstadoDeVotacion.EN_CURSO);
 	}
 
 	public void abrir() {

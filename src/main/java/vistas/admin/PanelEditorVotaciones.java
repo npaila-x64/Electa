@@ -28,8 +28,8 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     private JTextArea campoTextoDescripcion;
     private JButton bAgregarOpcion;
     private JButton bGuardar;
-    private JButton bCancelar;
-    private JButton bEliminarVotacion;
+    private JButton bVolver;
+    private JButton bPonerEnMarcha;
     private JTable tOpciones;
     private JScrollPane scroll;
     private JPanel panel;
@@ -50,6 +50,36 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
 
     private void crearComponentes() {
         configurarPanel();
+        crearEtiquetas();
+        crearCampoDeTexto();
+        crearCamposTemporales();
+        crearBotones();
+        crearTablaDeVotaciones();
+    }
+
+    private void crearCamposTemporales() {
+        crearDatePickerFechaInicio();
+        crearDatePickerFechaTermino();
+        crearSpinnerHoraInicio();
+        crearSpinnerMinutosInicio();
+        crearSpinnerHoraTermino();
+        crearSpinnerMinutosTermino();
+    }
+
+    private void crearBotones() {
+        crearBotonAgregarOpcion();
+        crearBotonGuardar();
+        crearBotonCancelar();
+        crearBotonPonerEnMarcha();
+    }
+
+    private void crearCampoDeTexto() {
+        crearAreaDeTextoDescripcion();
+        crearCampoDeTextoTitulo();
+        crearCampoDeTextoEstado();
+    }
+
+    private void crearEtiquetas() {
         crearEtiquetaEncabezado();
         crearEtiquetaTitulo();
         crearEtiquetaDescripcion();
@@ -61,20 +91,6 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         crearEtiquetaSeparadorHoraTermino();
         crearEtiquetaSeparadorHoraInicio();
         crearEtiquetaEstado();
-        crearAreaDeTextoDescripcion();
-        crearCampoDeTextoTitulo();
-        crearCampoDeTextoEstado();
-        crearDatePickerFechaInicio();
-        crearDatePickerFechaTermino();
-        crearSpinnerHoraInicio();
-        crearSpinnerMinutosInicio();
-        crearSpinnerHoraTermino();
-        crearSpinnerMinutosTermino();
-        crearBotonAgregarOpcion();
-        crearBotonGuardar();
-        crearBotonCancelar();
-        crearBotonEliminarVotacion();
-        crearTablaDeVotaciones();
     }
 
     private void crearCampoDeTextoEstado() {
@@ -270,25 +286,26 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         new ButtonColumn(tOpciones, editarVotacion, 1);
     }
 
-    private void crearBotonEliminarVotacion() {
-        bEliminarVotacion = new JButton("Eliminar votación");
-        bEliminarVotacion.setFont(new Font("Arial", Font.BOLD, 15));
-        bEliminarVotacion.setLocation(683, 809);
-        bEliminarVotacion.setSize(174, 46);
-        bEliminarVotacion.setBackground(Color.RED);
-        bEliminarVotacion.setForeground(Color.WHITE);
-        panel.add(bEliminarVotacion);
+    private void crearBotonPonerEnMarcha() {
+        bPonerEnMarcha = new JButton("Poner en marcha");
+        bPonerEnMarcha.setFont(new Font("Arial", Font.BOLD, 15));
+        bPonerEnMarcha.setLocation(683, 809);
+        bPonerEnMarcha.setSize(174, 46);
+        bPonerEnMarcha.setBackground(Color.BLUE);
+        bPonerEnMarcha.setForeground(Color.WHITE);
+        bPonerEnMarcha.addActionListener(this);
+        panel.add(bPonerEnMarcha);
     }
 
     private void crearBotonCancelar() {
-        bCancelar = new JButton("Cancelar");
-        bCancelar.setFont(new Font("Arial", Font.BOLD, 15));
-        bCancelar.setLocation(33, 809);
-        bCancelar.setSize(146, 47);
-        bCancelar.setBackground(Color.BLACK);
-        bCancelar.setForeground(Color.WHITE);
-        bCancelar.addActionListener(this);
-        panel.add(bCancelar);
+        bVolver = new JButton("Volver");
+        bVolver.setFont(new Font("Arial", Font.BOLD, 15));
+        bVolver.setLocation(33, 809);
+        bVolver.setSize(146, 47);
+        bVolver.setBackground(Color.BLACK);
+        bVolver.setForeground(Color.WHITE);
+        bVolver.addActionListener(this);
+        panel.add(bVolver);
     }
 
     private void crearBotonAgregarOpcion() {
@@ -388,16 +405,19 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     }
 
     private void configurarPanel() {
-        setBackground(Color.WHITE);
         setLayout(null);
         panel = new JPanel();
         panel.setBackground(Color.WHITE);
-        scroll = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        panel.setLayout(null);
+        panel.setPreferredSize(new Dimension(400,915));
+        configurarScrollPane();
+    }
+
+    private void configurarScrollPane() {
+        scroll = new JScrollPane(panel);
         scroll.setBounds(0, 0, 890, 600);
         scroll.getVerticalScrollBar().setUnitIncrement(25);
         scroll.getVerticalScrollBar().setPreferredSize(new Dimension(18,0));
-        panel.setLayout(null);
-        panel.setPreferredSize(new Dimension(400,915));
         add(scroll);
     }
 
@@ -435,8 +455,8 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == bCancelar) {
-            controlador.cancelarFueSolicitado();
+        if (e.getSource() == bVolver) {
+            controlador.volverFueSolicitado();
         }
         if (e.getSource() == bGuardar) {
             controlador.guardarFueSolicitado();
@@ -444,39 +464,54 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         if (e.getSource() == bAgregarOpcion) {
             controlador.agregarOpcionFueSolicitado();
         }
+        if (e.getSource() == bPonerEnMarcha) {
+            controlador.ponerVotacionEnMarchaFueSolicitado();
+        }
     }
 
     public void cargarVotacion(Votacion votacion) {
         campoTextoEstado.setText(votacion.getEstadoDeVotacion().getTexto());
         campoTextoTitulo.setText(votacion.getTitulo());
         campoTextoDescripcion.setText(votacion.getDescripcion());
-        var fechaInicio = votacion.getFechaInicio();
-        datePickerFechaInicio.getModel().setDate(
-                fechaInicio.getYear(),
-                fechaInicio.getDayOfMonth(),
-                fechaInicio.getDayOfMonth());
-        datePickerFechaInicio.getModel().setSelected(true);
-        var fechaTermino = votacion.getFechaTermino();
-        datePickerFechaTermino.getModel().setDate(
-                fechaTermino.getYear(),
-                fechaTermino.getDayOfMonth(),
-                fechaTermino.getDayOfMonth());
-        datePickerFechaTermino.getModel().setSelected(true);
+        cargarFechaInicio(votacion);
+        cargarFechaTermino(votacion);
+        cargarHorasYMinutos(votacion);
+    }
+
+    private void cargarHorasYMinutos(Votacion votacion) {
         spinnerHoraInicio.getModel().setValue(votacion.getTiempoInicio().getHour());
         spinnerMinutosInicio.getModel().setValue(votacion.getTiempoInicio().getMinute());
         spinnerHoraTermino.getModel().setValue(votacion.getTiempoTermino().getHour());
         spinnerMinutosTermino.getModel().setValue(votacion.getFechaTiempoTermino().getMinute());
     }
 
-    public void moverScrollAInicio() {
+    private void cargarFechaInicio(Votacion votacion) {
+        var fechaInicio = votacion.getFechaInicio();
+        datePickerFechaInicio.getModel().setDate(
+                fechaInicio.getYear(),
+                fechaInicio.getDayOfMonth(),
+                fechaInicio.getDayOfMonth());
+        datePickerFechaInicio.getModel().setSelected(true);
+    }
+
+    private void cargarFechaTermino(Votacion votacion) {
+        var fechaTermino = votacion.getFechaTermino();
+        datePickerFechaTermino.getModel().setDate(
+                fechaTermino.getYear(),
+                fechaTermino.getDayOfMonth(),
+                fechaTermino.getDayOfMonth());
+        datePickerFechaTermino.getModel().setSelected(true);
+    }
+
+    public void moverScrollAlInicio() {
         scroll.getViewport().setViewPosition(new Point(0,0));
     }
 
     public void setModoLectura(boolean modoLectura) {
-        habilitarComponentes(!modoLectura);
+        setHabilitarComponentes(!modoLectura);
     }
 
-    private void habilitarComponentes(boolean b) {
+    private void setHabilitarComponentes(boolean b) {
         campoTextoTitulo.setEditable(b);
         campoTextoDescripcion.setEditable(b);
         datePickerFechaInicio.getComponent(1).setEnabled(b);
@@ -485,17 +520,13 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         spinnerHoraTermino.setEnabled(b);
         spinnerMinutosInicio.setEnabled(b);
         spinnerMinutosTermino.setEnabled(b);
-        tOpciones.setEnabled(b);
         bAgregarOpcion.setEnabled(b);
-        bEliminarVotacion.setEnabled(b);
+        bPonerEnMarcha.setEnabled(b);
         bGuardar.setEnabled(b);
+        tOpciones.setEnabled(b);
     }
 
-    public void mostrarNoSeCumplenRequisitosObligatorios() {
-        System.out.println("Hay campos obligatorios que no se cumplen");
-    }
-
-    public void mostrarVotacionGuardadaConExito() {
-        System.out.println("La votación ha sido guardada exitosamente");
+    public void setHabilitarBotonPonerEnMarcha(boolean b) {
+        bPonerEnMarcha.setEnabled(b);
     }
 }

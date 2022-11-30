@@ -4,7 +4,7 @@ import controladores.ControladorAplicacion;
 import dao.VotacionDao;
 import modelos.Votacion;
 import modelos.enums.EstadoDeVotacion;
-import vistas.admin.AdministracionTableModel;
+import vistas.admin.tablemodel.AdministracionTableModel;
 import vistas.admin.PanelAdministracion;
 
 import javax.swing.table.TableModel;
@@ -37,14 +37,6 @@ public class ControladorAdministracion {
     private void cargarVotaciones() {
         votaciones = VotacionDao.obtenerVotacionesConEstados(estados);
         modelo.setVotaciones(votaciones);
-    }
-
-    public void mostrarPanelDeControlDeVotaciones() {
-        new ControladorAdministracionDeVotaciones();
-    }
-
-    public void mostrarMenuCreacionDeVotacion() {
-        new ControladorCreacionDeVotacion().iniciar();
     }
 
     public void cerrarSesionFueSolicitado() {

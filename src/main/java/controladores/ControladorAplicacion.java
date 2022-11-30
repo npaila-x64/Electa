@@ -2,7 +2,7 @@ package controladores;
 
 import controladores.admin.ControladorAdministracion;
 import controladores.admin.ControladorEditorDeVotacion;
-import controladores.votante.ControladorVotacion;
+import controladores.votante.ControladorOpciones;
 import controladores.votante.ControladorVotacionesEnCurso;
 import modelos.Votacion;
 import modelos.Usuario;
@@ -18,7 +18,7 @@ public class ControladorAplicacion {
     private ControladorLogin login;
     private ControladorVotacionesEnCurso votacionesEnCurso;
     private ControladorResultados resultados;
-    private ControladorVotacion votacion;
+    private ControladorOpciones votacion;
     private ControladorAdministracion administracion;
     private ControladorEditorDeVotacion editor;
 
@@ -33,7 +33,7 @@ public class ControladorAplicacion {
         login = new ControladorLogin(this);
         votacionesEnCurso = new ControladorVotacionesEnCurso(this);
         resultados = new ControladorResultados(this);
-        votacion = new ControladorVotacion(this);
+        votacion = new ControladorOpciones(this);
         administracion = new ControladorAdministracion(this);
         editor = new ControladorEditorDeVotacion(this);
     }
