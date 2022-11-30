@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public class OpcionesTableModel extends AbstractTableModel {
 
-    private final String[] columnNames = {"Opción", "Votos", "Porcentaje"};
-    private final Class[] columnClass = new Class[] {String.class, Integer.class, Double.class};
+    private final String[] columnNames = {"Opción", "Botón"};
+    private final Class[] columnClass = new Class[] {String.class, String.class};
     private List<Opcion> opciones;
-    private Integer totalVotos;
+    private String texto;
 
     public OpcionesTableModel() {
         this.opciones = new ArrayList<>();
@@ -20,15 +20,11 @@ public class OpcionesTableModel extends AbstractTableModel {
 
     public void setOpciones(List<Opcion> opciones) {
         this.opciones = opciones;
-        calcularTotalVotos();
         fireTableDataChanged();
     }
 
-    private void calcularTotalVotos() {
-        totalVotos = 0;
-        for (Opcion o : opciones) {
-            totalVotos += o.getCantidadDeVotos();
-        }
+    public void setTextoBoton(String texto) {
+        this.texto = texto;
     }
 
     @Override
@@ -45,8 +41,7 @@ public class OpcionesTableModel extends AbstractTableModel {
     public Object getValueAt(int row, int col) {
         return switch (col) {
             case 0 -> opciones.get(row).getNombre();
-            case 1 -> opciones.get(row).getCantidadDeVotos();
-            case 2 -> Math.round((opciones.get(row).getCantidadDeVotos().doubleValue()/totalVotos)*10000)/100.0;
+            case 1 -> texto;
             default -> throw new IllegalStateException();
         };
     }
@@ -63,6 +58,6 @@ public class OpcionesTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int row, int col) {
-        return false;
+        return col != 0;
     }
 }

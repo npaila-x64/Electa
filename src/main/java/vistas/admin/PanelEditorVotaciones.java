@@ -303,7 +303,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         bPonerEnMarcha.setFont(new Font("Arial", Font.BOLD, 15));
         bPonerEnMarcha.setLocation(683, 809);
         bPonerEnMarcha.setSize(174, 46);
-        bPonerEnMarcha.setBackground(Color.BLUE);
+        bPonerEnMarcha.setBackground(new Color(253, 151, 39));
         bPonerEnMarcha.setForeground(Color.WHITE);
         bPonerEnMarcha.addActionListener(this);
         panel.add(bPonerEnMarcha);

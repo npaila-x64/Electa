@@ -144,7 +144,7 @@ public class PanelResultados extends JPanel implements ActionListener {
     }
 
     private void crearEtiquetaEncabezado() {
-        lEncabezado = new JLabel("Resultados Elecciones Rectoriales");
+        lEncabezado = new JLabel("Resultados");
         lEncabezado.setFont(new Font("Arial", Font.PLAIN, 22));
         lEncabezado.setLocation(0,25);
         lEncabezado.setSize(900, 36);
@@ -169,6 +169,7 @@ public class PanelResultados extends JPanel implements ActionListener {
     }
 
     public void cargarVotacion(Votacion votacion) {
+        lEncabezado.setText("Resultados de ".concat(votacion.getTitulo()));
         String fechaHoraInicio = String.format("%s a las %s",
                 votacion.getFechaInicio().format(DateTimeFormatter.ofPattern("dd-MM-uuuu")),
                 votacion.getTiempoInicio());

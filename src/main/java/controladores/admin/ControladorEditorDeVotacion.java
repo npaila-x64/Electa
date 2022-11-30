@@ -5,7 +5,7 @@ import modelos.Opcion;
 import modelos.Votacion;
 import dao.VotacionDao;
 import modelos.enums.EstadoDeVotacion;
-import modelos.tablemodel.OpcionesParaVotarTableModel;
+import modelos.tablemodel.OpcionesTableModel;
 import vistas.admin.PanelEditorVotaciones;
 
 import javax.swing.*;
@@ -17,13 +17,14 @@ public class ControladorEditorDeVotacion {
 
     private final PanelEditorVotaciones vista;
     private final ControladorAplicacion controlador;
-    private final OpcionesParaVotarTableModel modeloDeTabla;
+    private final OpcionesTableModel modeloDeTabla;
     private Votacion votacion = new Votacion();
     private Boolean estaVotacionEnProcesoDeCreacion;
 
     public ControladorEditorDeVotacion(ControladorAplicacion controlador) {
         this.controlador = controlador;
-        modeloDeTabla = new OpcionesParaVotarTableModel();
+        modeloDeTabla = new OpcionesTableModel();
+        modeloDeTabla.setTextoBoton("Eliminar");
         vista = new PanelEditorVotaciones(this);
         this.controlador.agregarPanel(vista, "editor");
     }
@@ -54,7 +55,7 @@ public class ControladorEditorDeVotacion {
         controlador.abrirAdministracion();
     }
 
-    public OpcionesParaVotarTableModel getModeloDeTabla() {
+    public OpcionesTableModel getModeloDeTabla() {
         return modeloDeTabla;
     }
 

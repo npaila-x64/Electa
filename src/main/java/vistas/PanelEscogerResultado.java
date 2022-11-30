@@ -59,7 +59,7 @@ public class PanelEscogerResultado extends JPanel implements ActionListener {
         Action abrirVotacion = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 int fila = Integer.parseInt(e.getActionCommand());
-                controlador.abrirResultadosDeVotacionFueSolicitado(fila);
+                controlador.abrirResultados(fila);
             }
         };
         new ButtonColumn(tVotaciones, abrirVotacion, 1);
