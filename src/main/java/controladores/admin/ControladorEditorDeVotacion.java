@@ -114,7 +114,7 @@ public class ControladorEditorDeVotacion {
                 "Agregar opción",
                 JOptionPane.PLAIN_MESSAGE);
         if (!(nombre.isBlank() || nombre == null)) {
-            String id = VotacionDao.obtenerNuevaIdOpcion(votacion);
+            String id = String.valueOf(votacion.getOpciones().size());
             Opcion opcion = new Opcion();
             opcion.setId(id);
             opcion.setNombre(nombre);
