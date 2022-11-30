@@ -7,8 +7,8 @@ import modelos.Usuario;
 import modelos.Voto;
 import dao.VotacionDao;
 import dao.VotoDao;
+import modelos.tablemodel.OpcionesTableModel;
 import vistas.votante.*;
-import vistas.votante.OpcionesTableModel;
 
 import javax.swing.table.TableModel;
 import java.util.List;
@@ -17,13 +17,14 @@ public class ControladorOpciones {
 
     private final ControladorAplicacion controlador;
     private final PanelOpciones vista;
-    private final OpcionesTableModel modelo;
+    private final OpcionesTableModel modeloDeTabla;
     private Votacion votacion;
     private List<Opcion> opciones;
 
     public ControladorOpciones(ControladorAplicacion controlador) {
         this.controlador = controlador;
-        modelo = new OpcionesTableModel();
+        modeloDeTabla = new OpcionesTableModel();
+        modeloDeTabla.setTextoBoton("Votar");
         vista = new PanelOpciones(this);
         this.controlador.agregarPanel(vista, "opciones");
     }
@@ -81,7 +82,7 @@ public class ControladorOpciones {
     }
 
     public TableModel getModeloDeTabla() {
-        return modelo;
+        return modeloDeTabla;
     }
 
     public void votarPorOpcionFueSolicitado(int id) {
@@ -112,7 +113,7 @@ public class ControladorOpciones {
 
     private void cargarOpciones() {
         // La sublista es necesaria para ocultar la opción por defecto "Abstenerse"
-        modelo.setOpciones(opciones.subList(1, opciones.size()));
+        modeloDeTabla.setOpciones(opciones.subList(1, opciones.size()));
     }
 
     public void volverFueSolicitado() {

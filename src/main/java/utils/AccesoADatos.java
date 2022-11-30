@@ -1,10 +1,7 @@
 package utils;
 
 import excepciones.AccesoADatosInterrumpidoException;
-import modelos.*;
-import modelos.enums.*;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 

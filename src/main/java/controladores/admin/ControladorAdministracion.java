@@ -4,7 +4,7 @@ import controladores.ControladorAplicacion;
 import dao.VotacionDao;
 import modelos.Votacion;
 import modelos.enums.EstadoDeVotacion;
-import vistas.admin.tablemodel.AdministracionTableModel;
+import modelos.tablemodel.AdministracionTableModel;
 import vistas.admin.PanelAdministracion;
 
 import javax.swing.table.TableModel;

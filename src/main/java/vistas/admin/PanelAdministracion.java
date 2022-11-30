@@ -131,7 +131,7 @@ public class PanelAdministracion extends JPanel implements ActionListener {
     }
 
     private void crearBotonResultados() {
-        bResultados = new JButton("Resultados");
+        bResultados = new JButton("Ver resultados");
         bResultados.setFont(new Font("Arial", Font.BOLD, 15));
         bResultados.setSize(200, 50);
         bResultados.setLocation(645, 475);

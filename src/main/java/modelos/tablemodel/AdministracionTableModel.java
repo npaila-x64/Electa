@@ -1,4 +1,4 @@
-package vistas;
+package modelos.tablemodel;
 
 import modelos.Votacion;
 
@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class VotacionesTableModel extends AbstractTableModel {
+public class AdministracionTableModel extends AbstractTableModel {
 
-    private final String[] columnNames = {"Votación", "Botón"};
-    private final Class[] columnClass = new Class[] {String.class, String.class};
+    private final String[] columnNames = {"Votación", "Estado", "Botón"};
+    private final Class[] columnClass = new Class[] {String.class, String.class, String.class};
 
     private List<Votacion> votaciones;
 
-    public VotacionesTableModel() {
+    public AdministracionTableModel() {
         this.votaciones = new ArrayList<>();
     }
 
@@ -35,11 +35,21 @@ public class VotacionesTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int col) {
-        return switch (col) {
-            case 0 -> votaciones.get(row).getTitulo();
-            case 1 -> "Ir a votación";
+        switch (col) {
+            case 0 -> {
+                return votaciones.get(row).getTitulo();
+            }
+            case 1 -> {
+                return votaciones.get(row).getEstadoDeVotacion().getTexto();
+            }
+            case 2 -> {
+                return switch (votaciones.get(row).getEstadoDeVotacion()) {
+                    case FINALIZADO -> "Ver";
+                    default -> "Modificar";
+                };
+            }
             default -> throw new IllegalStateException();
-        };
+        }
     }
 
     @Override
@@ -54,6 +64,6 @@ public class VotacionesTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int row, int col) {
-        return col != 0;
+        return col != 0 && col != 1;
     }
 }

@@ -5,8 +5,7 @@ import modelos.Opcion;
 import modelos.Votacion;
 import dao.VotacionDao;
 import modelos.enums.EstadoDeVotacion;
-import utils.Utilidades;
-import vistas.admin.tablemodel.OpcionesTableModel;
+import modelos.tablemodel.OpcionesTableModel;
 import vistas.admin.PanelEditorVotaciones;
 
 import javax.swing.*;
@@ -25,6 +24,7 @@ public class ControladorEditorDeVotacion {
     public ControladorEditorDeVotacion(ControladorAplicacion controlador) {
         this.controlador = controlador;
         modeloDeTabla = new OpcionesTableModel();
+        modeloDeTabla.setTextoBoton("Eliminar");
         vista = new PanelEditorVotaciones(this);
         this.controlador.agregarPanel(vista, "editor");
     }
