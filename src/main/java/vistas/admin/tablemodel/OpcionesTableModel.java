@@ -1,4 +1,4 @@
-package vistas.admin;
+package vistas.admin.tablemodel;
 
 import modelos.Opcion;
 import javax.swing.table.AbstractTableModel;

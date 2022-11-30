@@ -310,7 +310,6 @@ public class VotacionDao {
 
     public static void crearVotacion(Votacion votacion) {
         votacion.setId(obtenerNuevaIdVotacion());
-        votacion.setEstadoDeVotacion(EstadoDeVotacion.PENDIENTE);
         List<Votacion> votaciones = obtenerVotaciones();
         votaciones.add(votacion);
         escribirVotaciones(votaciones);
@@ -367,6 +366,7 @@ public class VotacionDao {
         votacionCopia.setFechaTiempoInicio(votacion.getFechaTiempoInicio());
         votacionCopia.setFechaTiempoTermino(votacion.getFechaTiempoTermino());
         votacionCopia.setOpciones(votacion.getOpciones());
+        votacionCopia.setEstadoDeVotacion(votacion.getEstadoDeVotacion());
         escribirVotaciones(votaciones);
     }
 }

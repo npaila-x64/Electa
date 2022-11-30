@@ -1,6 +1,6 @@
 package vistas.votante;
 
-import controladores.votante.ControladorVotacion;
+import controladores.votante.ControladorOpciones;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
@@ -9,13 +9,15 @@ import java.awt.event.ActionListener;
 
 public class PanelOpciones extends JPanel implements ActionListener {
 
-    private ControladorVotacion controlador;
-    private JLabel lOpciones;
+    private ControladorOpciones controlador;
+    private JLabel lTitulo;
+    private JLabel lDescripcion;
+    private JTextArea campoTextoDescripcion;
     private JButton bVolver;
     private JButton bAbstencion;
     private JTable tOpciones;
 
-    public PanelOpciones(ControladorVotacion controlador) {
+    public PanelOpciones(ControladorOpciones controlador) {
         this.controlador = controlador;
         crearComponentes();
         setVisible(true);
@@ -23,18 +25,44 @@ public class PanelOpciones extends JPanel implements ActionListener {
 
     private void crearComponentes() {
         configurarPanel();
-        crearEtiquetaOpciones();
+        crearEtiquetaTitulo();
+        crearEtiquetaDescripcion();
         crearTablaDeOpciones();
         crearBotonVolver();
         crearBotonAbstencion();
+        crearCampoDeTextoDescripcion();
     }
 
-    private void crearEtiquetaOpciones() {
-        lOpciones = new JLabel("Opciones");
-        lOpciones.setFont(new Font("Arial", Font.BOLD, 28));
-        lOpciones.setSize(274, 32);
-        lOpciones.setLocation(379, 32);
-        this.add(lOpciones);
+    private void crearCampoDeTextoDescripcion() {
+        campoTextoDescripcion = new JTextArea();
+        campoTextoDescripcion.setLocation(254, 78);
+        campoTextoDescripcion.setSize(476,93);
+        campoTextoDescripcion.setFont(new Font("Arial", Font.PLAIN, 15));
+        campoTextoDescripcion.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        campoTextoDescripcion.setLineWrap(true);
+        campoTextoDescripcion.setWrapStyleWord(true);
+        campoTextoDescripcion.setBorder(BorderFactory.createCompoundBorder(
+                campoTextoDescripcion.getBorder(),
+                BorderFactory.createEmptyBorder(10, 10, 5, 10)));
+        campoTextoDescripcion.setEditable(false);
+        add(campoTextoDescripcion);
+    }
+
+    private void crearEtiquetaTitulo() {
+        lTitulo = new JLabel();
+        lTitulo.setFont(new Font("Arial", Font.BOLD, 26));
+        lTitulo.setSize(900, 70);
+        lTitulo.setHorizontalAlignment(JLabel.CENTER);
+        lTitulo.setVerticalAlignment(JLabel.CENTER);
+        add(lTitulo);
+    }
+
+    private void crearEtiquetaDescripcion() {
+        lDescripcion = new JLabel("Descripción");
+        lDescripcion.setFont(new Font("Arial", Font.PLAIN, 16));
+        lDescripcion.setLocation(148, 112);
+        lDescripcion.setSize(119, 25);
+        add(lDescripcion);
     }
 
     private void crearBotonAbstencion() {
@@ -45,7 +73,7 @@ public class PanelOpciones extends JPanel implements ActionListener {
         bAbstencion.setBackground(Color.WHITE);
         bAbstencion.setForeground(Color.BLACK);
         bAbstencion.addActionListener(this);
-        this.add(bAbstencion);
+        add(bAbstencion);
     }
 
     private void crearBotonVolver() {
@@ -56,7 +84,7 @@ public class PanelOpciones extends JPanel implements ActionListener {
         bVolver.setBackground(Color.BLACK);
         bVolver.setForeground(Color.WHITE);
         bVolver.addActionListener(this);
-        this.add(bVolver);
+        add(bVolver);
     }
 
     private void crearTablaDeOpciones() {
@@ -83,9 +111,9 @@ public class PanelOpciones extends JPanel implements ActionListener {
         tOpciones.setDefaultRenderer(String.class, renderer);
 
         JScrollPane scrollPane = new JScrollPane(tOpciones);
-        scrollPane.setSize(805, 345);
-        scrollPane.setLocation(40, 85);
-        this.add(scrollPane);
+        scrollPane.setLocation(148, 190);
+        scrollPane.setSize(582, 249);
+        add(scrollPane);
 
         Action abrirVotacion = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -99,6 +127,14 @@ public class PanelOpciones extends JPanel implements ActionListener {
     private void configurarPanel() {
         this.setBackground(Color.WHITE);
         this.setLayout(null);
+    }
+
+    public void setTituloDeVotacion(String titulo) {
+        lTitulo.setText(titulo);
+    }
+
+    public void setlDescripcionDeVotacion(String descripcion) {
+        campoTextoDescripcion.setText(descripcion);
     }
 
     @Override

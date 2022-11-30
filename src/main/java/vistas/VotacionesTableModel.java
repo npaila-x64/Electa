@@ -1,4 +1,4 @@
-package vistas.votante;
+package vistas;
 
 import modelos.Votacion;
 
@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class VotacionesEnCursoTableModel extends AbstractTableModel {
+public class VotacionesTableModel extends AbstractTableModel {
 
     private final String[] columnNames = {"Votación", "Botón"};
     private final Class[] columnClass = new Class[] {String.class, String.class};
 
     private List<Votacion> votaciones;
 
-    public VotacionesEnCursoTableModel() {
+    public VotacionesTableModel() {
         this.votaciones = new ArrayList<>();
     }
 

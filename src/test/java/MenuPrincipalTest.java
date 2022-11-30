@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.Utilidades;
 
@@ -37,6 +36,6 @@ class MenuPrincipalTest {
     @Test
     void padTextoTest() {
         assertEquals("test..........................",
-                Utilidades.padTexto("test", ".", 30));
+                Utilidades.padDerechaTexto("test", ".", 30));
     }
 }
