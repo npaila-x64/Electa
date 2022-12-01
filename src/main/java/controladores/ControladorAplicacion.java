@@ -2,7 +2,7 @@ package controladores;
 
 import controladores.admin.ControladorAdministracion;
 import controladores.admin.ControladorEditorDeVotacion;
-import controladores.votante.ControladorVotacion;
+import controladores.votante.ControladorOpciones;
 import controladores.votante.ControladorVotacionesEnCurso;
 import modelos.Votacion;
 import modelos.Usuario;
@@ -18,7 +18,7 @@ public class ControladorAplicacion {
     private ControladorLogin login;
     private ControladorVotacionesEnCurso votacionesEnCurso;
     private ControladorResultados resultados;
-    private ControladorVotacion votacion;
+    private ControladorOpciones votacion;
     private ControladorAdministracion administracion;
     private ControladorEditorDeVotacion editor;
 
@@ -33,7 +33,7 @@ public class ControladorAplicacion {
         login = new ControladorLogin(this);
         votacionesEnCurso = new ControladorVotacionesEnCurso(this);
         resultados = new ControladorResultados(this);
-        votacion = new ControladorVotacion(this);
+        votacion = new ControladorOpciones(this);
         administracion = new ControladorAdministracion(this);
         editor = new ControladorEditorDeVotacion(this);
     }
@@ -46,8 +46,12 @@ public class ControladorAplicacion {
         login.abrir();
     }
 
-    public void abrirResultados() {
-        resultados.abrir();
+    public void abrirEscogerResultado() {
+        resultados.abrirEscogerResultado();
+    }
+
+    public void abrirResultados(Integer fila) {
+        resultados.abrirResultados(fila);
     }
 
     public void abrirAdministracion() {
@@ -58,8 +62,8 @@ public class ControladorAplicacion {
         this.votacion.abrir(votacion, votacion.getOpciones());
     }
 
-    public void abrirEditor(Votacion votacion) {
-        editor.abrir(votacion);
+    public void abrirEditor(Votacion votacion, boolean esNuevaVotacion, boolean modoLectura) {
+        editor.abrir(votacion, esNuevaVotacion, modoLectura);
     }
 
     public void asignarUsuarioDeSesion(Usuario usuario) {

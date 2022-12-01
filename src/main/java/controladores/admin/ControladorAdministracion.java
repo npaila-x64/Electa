@@ -4,7 +4,7 @@ import controladores.ControladorAplicacion;
 import dao.VotacionDao;
 import modelos.Votacion;
 import modelos.enums.EstadoDeVotacion;
-import vistas.admin.AdministracionTableModel;
+import modelos.tablemodel.AdministracionTableModel;
 import vistas.admin.PanelAdministracion;
 
 import javax.swing.table.TableModel;
@@ -39,20 +39,12 @@ public class ControladorAdministracion {
         modelo.setVotaciones(votaciones);
     }
 
-    public void mostrarPanelDeControlDeVotaciones() {
-        new ControladorAdministracionDeVotaciones();
-    }
-
-    public void mostrarMenuCreacionDeVotacion() {
-        new ControladorCreacionDeVotacion().iniciar();
-    }
-
     public void cerrarSesionFueSolicitado() {
         controlador.abrirLogin();
     }
 
     public void verResultadosFueSolicitado() {
-        controlador.abrirResultados();
+        controlador.abrirEscogerResultado();
     }
 
     public void abrir() {
@@ -66,30 +58,20 @@ public class ControladorAdministracion {
     }
 
     public void editarVotacionFueSolicitado(int fila) {
-        controlador.abrirEditor(votaciones.get(fila));
+        Votacion votacion = votaciones.get(fila);
+        if (votacion.getEstadoDeVotacion().equals(EstadoDeVotacion.BORRADOR)) {
+            controlador.abrirEditor(votacion, false, false);
+        } else {
+            controlador.abrirEditor(votacion, false, true);
+        }
     }
 
-    public void checkBorradoresFueEjecutado() {
-        estados.put(EstadoDeVotacion.BORRADOR, !estados.get(EstadoDeVotacion.BORRADOR));
-        cargarVotaciones();
-    }
-
-    public void checkPendientesFueEjecutado() {
-        estados.put(EstadoDeVotacion.PENDIENTE, !estados.get(EstadoDeVotacion.PENDIENTE));
-        cargarVotaciones();
-    }
-
-    public void checkFinalizadasFueEjecutado() {
-        estados.put(EstadoDeVotacion.FINALIZADO, !estados.get(EstadoDeVotacion.FINALIZADO));
-        cargarVotaciones();
-    }
-
-    public void checkEnCursoFueEjecutado() {
-        estados.put(EstadoDeVotacion.EN_CURSO, !estados.get(EstadoDeVotacion.EN_CURSO));
+    public void checkEstadoFueEjecutado(EstadoDeVotacion estado) {
+        estados.put(estado, !estados.get(estado));
         cargarVotaciones();
     }
 
     public void crearVotacionFueSolicitado() {
-        controlador.abrirEditor(new Votacion());
+        controlador.abrirEditor(new Votacion(), true, false);
     }
 }

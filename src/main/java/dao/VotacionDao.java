@@ -4,6 +4,7 @@ import excepciones.AccesoADatosInterrumpidoException;
 import modelos.Opcion;
 import modelos.Votacion;
 import modelos.Usuario;
+import modelos.Voto;
 import modelos.enums.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -45,19 +46,19 @@ public class VotacionDao {
         votacion.setFechaTiempoTermino(parsearFechaTiempoTermino(votacionJSON));
         votacion.setOpciones(obtenerOpcionesDeVotacionJSON(votacion, votacionJSON));
         votacion.setVotantes(obtenerVotantesDeVotacionJSON(votacion, votacionJSON));
-//        votacion.setVotos(obtenerVotosDeVotacion(votacion));
+        votacion.setVotos(obtenerVotosDeVotacion(votacion));
     }
 
-//    private List<Voto> obtenerVotosDeVotacion(Votacion votacion) {
-//        List<Voto> votos = votoDao.obtenerVotos();
-//        List<Voto> votosDeVotacion = new ArrayList<>();
-//        for (Voto voto : votos) {
-//            if (voto.getVotacion().getId().equals(votacion.getId())) {
-//                votosDeVotacion.add(voto);
-//            }
-//        }
-//        return votosDeVotacion;
-//    }
+    private static List<Voto> obtenerVotosDeVotacion(Votacion votacion) {
+        List<Voto> votos = VotoDao.obtenerVotos();
+        List<Voto> votosDeVotacion = new ArrayList<>();
+        for (Voto voto : votos) {
+            if (voto.getVotacion().getId().equals(votacion.getId())) {
+                votosDeVotacion.add(voto);
+            }
+        }
+        return votosDeVotacion;
+    }
 
     private static LocalDateTime parsearFechaTiempoInicio(JSONObject votacion) {
         return parsearFechaTiempoVotacion(
@@ -120,16 +121,6 @@ public class VotacionDao {
         return votantes;
     }
 
-    public static List<Votacion> obtenerVotacionesPendientes() {
-        List<Votacion> votaciones = obtenerVotaciones();
-        List<Votacion> votacionesPendientes = new ArrayList<>();
-        votaciones
-                .stream()
-                .filter(votacionSiguiente -> votacionSiguiente.getEstadoDeVotacion().equals(EstadoDeVotacion.PENDIENTE))
-                .forEach(votacionesPendientes::add);
-        return votacionesPendientes;
-    }
-
     public static List<Votacion> obtenerVotacionesConEstados(HashMap<EstadoDeVotacion, Boolean> estados) {
         List<Votacion> votaciones = obtenerVotaciones();
         List<Votacion> votacionesBorradores = new ArrayList<>();
@@ -147,16 +138,6 @@ public class VotacionDao {
             }
         }
         return false;
-    }
-
-    public static List<Votacion> obtenerVotacionesBorradores() {
-        List<Votacion> votaciones = obtenerVotaciones();
-        List<Votacion> votacionesBorradores = new ArrayList<>();
-        votaciones
-                .stream()
-                .filter(votacionSiguiente -> votacionSiguiente.getEstadoDeVotacion().equals(EstadoDeVotacion.BORRADOR))
-                .forEach(votacionesBorradores::add);
-        return votacionesBorradores;
     }
 
     public static List<Votacion> obtenerVotacionesEnCurso() {
@@ -179,17 +160,6 @@ public class VotacionDao {
         return votacionesEnCurso;
     }
 
-    public static List<Votacion> obtenerVotacionesConEstado(EstadoDeVotacion estado) {
-        List<Votacion> votaciones = obtenerVotaciones();
-        List<Votacion> votacionesCopia = new ArrayList<>();
-        for (Votacion votacionSiguiente : votaciones) {
-            if (votacionSiguiente.estaEnEstado(estado)) {
-                votacionesCopia.add(votacionSiguiente);
-            }
-        }
-        return votacionesCopia;
-    }
-
     public static List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante(Usuario votante) {
         int idVotante = votante.getId();
         List<Votacion> votacionesEnCurso = obtenerVotacionesEnCurso();
@@ -203,15 +173,8 @@ public class VotacionDao {
 
     private static String obtenerNuevaIdVotacion() {
         List<Votacion> votaciones = obtenerVotaciones();
-        var maxID = votaciones.stream().max(Comparator.comparing(Votacion::getId)).get().getId();
-        maxID++;
-        return String.valueOf(maxID);
-    }
-
-    public static String obtenerNuevaIdOpcion(Votacion votacion) {
-        Votacion votacionCopia = obtenerVotacionPorID(obtenerVotaciones(), votacion);
-        List<Opcion> opciones = votacionCopia.getOpciones();
-        var maxID = opciones.stream().max(Comparator.comparing(Opcion::getId)).get().getId();
+        var maxID = votaciones.stream().max(Comparator.comparing(Votacion::getId))
+                .orElse(new Votacion()).getId();
         maxID++;
         return String.valueOf(maxID);
     }
@@ -250,6 +213,8 @@ public class VotacionDao {
         votacionObj.put(CampoDeVotacion.ID.getTexto(), votacion.getId());
         votacionObj.put(CampoDeVotacion.TITULO.getTexto(), votacion.getTitulo());
         votacionObj.put(CampoDeVotacion.DESCRIPCION.getTexto(), votacion.getDescripcion());
+        votacionObj.put(CampoDeVotacion.VOTOS_PREFERENCIALES.getTexto(), votacion.getVotosPreferenciales());
+        votacionObj.put(CampoDeVotacion.VOTOS_BLANCOS.getTexto(), votacion.getVotosBlancos());
         votacionObj.put(CampoDeVotacion.ESTADO.getTexto(), votacion.getEstadoDeVotacion().getTexto());
     }
 
@@ -310,52 +275,20 @@ public class VotacionDao {
 
     public static void crearVotacion(Votacion votacion) {
         votacion.setId(obtenerNuevaIdVotacion());
-        votacion.setEstadoDeVotacion(EstadoDeVotacion.PENDIENTE);
         List<Votacion> votaciones = obtenerVotaciones();
         votaciones.add(votacion);
         escribirVotaciones(votaciones);
     }
 
-    public static void eliminarVotacion(Votacion votacion) {
-        List<Votacion> votaciones = obtenerVotaciones();
-        votaciones.removeIf(votacionSiguiente -> votacionSiguiente.getId().equals(votacion.getId()));
-        escribirVotaciones(votaciones);
-    }
-
-    public static void eliminarOpcionDeVotacion(Votacion votacionElegida, Opcion opcionElegida) {
-        List<Votacion> votaciones = obtenerVotaciones();
-        Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacionElegida);
-        List<Opcion> opciones = votacionCopia.getOpciones();
-        opciones.removeIf(opcion -> opcion.getId().equals(opcionElegida.getId()));
-        votacionCopia.setOpciones(opciones);
-        votacionElegida.setOpciones(opciones);
-        escribirVotaciones(votaciones);
-    }
-
-    public static void actualizarCampoDeVotacion(Votacion votacionElegida, CampoDeVotacion campo, Object valor) {
-        List<Votacion> votaciones = obtenerVotaciones();
-        Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacionElegida);
-        votacionCopia.setAttributo(campo, valor);
-        votacionElegida.setAttributo(campo, valor);
-        escribirVotaciones(votaciones);
-    }
-
-    public static void agregarOpcionAVotacion(Votacion votacion, String nombreOpcion) {
+    public static void actualizarVotacion(Votacion votacion) {
         List<Votacion> votaciones = obtenerVotaciones();
         Votacion votacionCopia = obtenerVotacionPorID(votaciones, votacion);
-        List<Opcion> opciones = votacionCopia.getOpciones();
-        Opcion opcion = new Opcion();
-        opcion.setId(obtenerNuevaIdOpcion(votacionCopia));
-        opcion.setNombre(nombreOpcion);
-        opcion.setCantidadDeVotos(0);
-        opciones.add(opcion);
-        votacionCopia.setOpciones(opciones);
-        votacion.setOpciones(opciones);
+        votacionCopia.setTitulo(votacion.getTitulo());
+        votacionCopia.setDescripcion(votacion.getDescripcion());
+        votacionCopia.setFechaTiempoInicio(votacion.getFechaTiempoInicio());
+        votacionCopia.setFechaTiempoTermino(votacion.getFechaTiempoTermino());
+        votacionCopia.setOpciones(votacion.getOpciones());
+        votacionCopia.setEstadoDeVotacion(votacion.getEstadoDeVotacion());
         escribirVotaciones(votaciones);
-    }
-
-    public static boolean opcionYaExiste(Votacion votacion, String  nombreOpcion){
-        List<Opcion> opciones = votacion.getOpciones();
-        return opciones.stream().anyMatch(opcion -> opcion.getNombre().equals(nombreOpcion));
     }
 }

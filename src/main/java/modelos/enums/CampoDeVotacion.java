@@ -17,7 +17,7 @@ public enum CampoDeVotacion {
     VOTOS_BLANCOS("votos_blancos"),
     ESTADO("estado");
 
-    private String texto;
+    private final String texto;
 
     CampoDeVotacion(String texto) {
         this.texto = texto;

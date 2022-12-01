@@ -1,5 +1,6 @@
 package vistas.admin;
 import controladores.admin.ControladorAdministracion;
+import modelos.enums.EstadoDeVotacion;
 import vistas.votante.ButtonColumn;
 
 import javax.swing.*;
@@ -130,7 +131,7 @@ public class PanelAdministracion extends JPanel implements ActionListener {
     }
 
     private void crearBotonResultados() {
-        bResultados = new JButton("Resultados");
+        bResultados = new JButton("Ver resultados");
         bResultados.setFont(new Font("Arial", Font.BOLD, 15));
         bResultados.setSize(200, 50);
         bResultados.setLocation(645, 475);
@@ -216,16 +217,16 @@ public class PanelAdministracion extends JPanel implements ActionListener {
             controlador.verResultadosFueSolicitado();
         }
         if (e.getSource() == checkEnCurso) {
-            controlador.checkEnCursoFueEjecutado();
+            controlador.checkEstadoFueEjecutado(EstadoDeVotacion.EN_CURSO);
         }
         if (e.getSource() == checkFinalizadas) {
-            controlador.checkFinalizadasFueEjecutado();
+            controlador.checkEstadoFueEjecutado(EstadoDeVotacion.FINALIZADO);
         }
         if (e.getSource() == checkPendientes) {
-            controlador.checkPendientesFueEjecutado();
+            controlador.checkEstadoFueEjecutado(EstadoDeVotacion.PENDIENTE);
         }
         if (e.getSource() == checkBorradores) {
-            controlador.checkBorradoresFueEjecutado();
+            controlador.checkEstadoFueEjecutado(EstadoDeVotacion.BORRADOR);
         }
     }
 }

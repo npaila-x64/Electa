@@ -7,44 +7,26 @@ import modelos.Usuario;
 import modelos.Voto;
 import dao.VotacionDao;
 import dao.VotoDao;
-import utils.ValidadorDeDatos;
+import modelos.tablemodel.OpcionesTableModel;
 import vistas.votante.*;
 
 import javax.swing.table.TableModel;
 import java.util.List;
 
-public class ControladorVotacion {
+public class ControladorOpciones {
 
     private final ControladorAplicacion controlador;
     private final PanelOpciones vista;
-    private final OpcionesTableModel modelo;
+    private final OpcionesTableModel modeloDeTabla;
     private Votacion votacion;
     private List<Opcion> opciones;
 
-    public ControladorVotacion(ControladorAplicacion controlador) {
+    public ControladorOpciones(ControladorAplicacion controlador) {
         this.controlador = controlador;
-        modelo = new OpcionesTableModel();
+        modeloDeTabla = new OpcionesTableModel();
+        modeloDeTabla.setTextoBoton("Votar");
         vista = new PanelOpciones(this);
         this.controlador.agregarPanel(vista, "opciones");
-    }
-
-    public List<Votacion> obtenerVotacionesEnElQuePuedeVotarElVotante() {
-        return VotacionDao
-                .obtenerVotacionesEnElQuePuedeVotarElVotante(controlador.obtenerUsuario());
-    }
-
-    public void mostrarMenuOpcionesParaVotar(Integer opcionElegida) {
-        int nuevaOpcion = ValidadorDeDatos.pedirOpcionHasta(opciones.size());
-        switch (nuevaOpcion) {
-            case 0 -> {return;}
-            default -> registrarVoto(votacion,
-                    controlador.obtenerUsuario(), opciones.get(nuevaOpcion - 1));
-        }
-        mostrarVotoRealizadoConExito();
-    }
-
-    private void mostrarVotoRealizadoConExito() {
-        System.out.println("¡Voto realizado con exito!\n");
     }
 
     public void escribirVoto(Votacion votacion, Opcion opcionElegida) {
@@ -68,10 +50,10 @@ public class ControladorVotacion {
         opcion.setCantidadDeVotos(votosOpcion);
     }
 
-    public void registrarVoto(Votacion votacion, Usuario votante, Opcion opcionElegida) {
+    public void registrarVoto(Opcion opcionElegida) {
         escribirVoto(votacion, opcionElegida);
-        escribirVotoEnVotos(votacion, votante, opcionElegida);
-        escribirVotanteEnVotaciones(votacion, votante);
+        escribirVotoEnVotos(votacion, controlador.obtenerUsuario(), opcionElegida);
+        escribirVotanteEnVotaciones(votacion, controlador.obtenerUsuario());
     }
 
     public void escribirVotanteEnVotaciones(Votacion votacion, Usuario votante) {
@@ -100,33 +82,38 @@ public class ControladorVotacion {
     }
 
     public TableModel getModeloDeTabla() {
-        return modelo;
+        return modeloDeTabla;
     }
 
     public void votarPorOpcionFueSolicitado(int id) {
-        Opcion opcion = opciones.get(id);
-        mostrarDialogoDeConfirmacion(opcion);
-    }
-
-    private void mostrarDialogoDeConfirmacion(Opcion opcion) {
-        DialogoDeConfirmacion dialogo =
-                new DialogoDeConfirmacion(controlador.getMarco(), "Confirme su voto", true);
-        dialogo.setNombreDeOpcion(opcion.getNombre());
-        if (dialogo.obtenerConfirmacion()) {
-            registrarVoto(votacion, controlador.obtenerUsuario(), opcion);
+        // El id + 1 es necesario para obtener el elemento correcto de la
+        // lista opciones pues su primer elemento está oculto en la tabla
+        Opcion opcion = opciones.get(id + 1);
+        if (pedirConfirmacionAUsuario(opcion)) {
+            registrarVoto(opcion);
             controlador.abrirVotacionesEnCurso();
         }
+    }
+
+    private boolean pedirConfirmacionAUsuario(Opcion opcion) {
+        DialogoDeConfirmacion dialogo =
+                new DialogoDeConfirmacion(controlador.getMarco(), true);
+        dialogo.setNombreDeOpcion(opcion.getNombre());
+        return dialogo.obtenerConfirmacion();
     }
 
     public void abrir(Votacion votacion, List<Opcion> opciones) {
         this.votacion = votacion;
         this.opciones = opciones;
         cargarOpciones();
+        vista.setTituloDeVotacion(votacion.getTitulo());
+        vista.setlDescripcionDeVotacion(votacion.getDescripcion());
         controlador.mostrarPanel("opciones");
     }
 
     private void cargarOpciones() {
-        modelo.setOpciones(opciones);
+        // La sublista es necesaria para ocultar la opción por defecto "Abstenerse"
+        modeloDeTabla.setOpciones(opciones.subList(1, opciones.size()));
     }
 
     public void volverFueSolicitado() {
@@ -134,6 +121,10 @@ public class ControladorVotacion {
     }
 
     public void abstenerseFueSolicitado() {
-        mostrarDialogoDeConfirmacion(Opcion.getOpcionConVotoBlanco());
+        var votoBlanco = Opcion.getOpcionConVotoBlanco();
+        if (pedirConfirmacionAUsuario(votoBlanco)) {
+            registrarVoto(votoBlanco);
+            controlador.abrirVotacionesEnCurso();
+        }
     }
 }

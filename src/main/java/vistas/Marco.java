@@ -2,7 +2,6 @@ package vistas;
 
 import vistas.admin.PanelAdministracion;
 import vistas.votante.PanelOpciones;
-import vistas.votante.PanelResultados;
 import vistas.votante.PanelVotacionesEnCurso;
 
 import javax.swing.*;

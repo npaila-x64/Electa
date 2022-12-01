@@ -43,7 +43,7 @@ public class PanelLogin extends JPanel implements ActionListener {
         erut.setFont(new Font("Arial", Font.BOLD, 18));
         erut.setSize(42, 29);
         erut.setLocation(300, 188);
-        this.add(erut);
+        add(erut);
     }
 
     private void crearEtiquetaClave() {
@@ -51,7 +51,7 @@ public class PanelLogin extends JPanel implements ActionListener {
         eclave.setFont(new Font("Arial", Font.BOLD, 18));
         eclave.setSize(169, 29);
         eclave.setLocation(300, 286);
-        this.add(eclave);
+        add(eclave);
     }
 
     private void crearMensajeDeInvalidez() {
@@ -59,12 +59,12 @@ public class PanelLogin extends JPanel implements ActionListener {
         mensajeDeInvalidez.setFont(new Font("Arial", Font.PLAIN, 18));
         mensajeDeInvalidez.setForeground(Color.RED);
         mensajeDeInvalidez.setVisible(false);
-        this.add(mensajeDeInvalidez);
+        add(mensajeDeInvalidez);
     }
 
     private void configurarPanel() {
-        this.setBackground(Color.WHITE);
-        this.setLayout(null);
+        setBackground(Color.WHITE);
+        setLayout(null);
     }
 
     private void crearTitulo() {
@@ -73,7 +73,7 @@ public class PanelLogin extends JPanel implements ActionListener {
         titulo.setSize(900, 270);
         titulo.setHorizontalAlignment(JLabel.CENTER);
         titulo.setVerticalAlignment(JLabel.CENTER);
-        this.add(titulo);
+        add(titulo);
     }
 
     private void crearLogo() {
@@ -85,7 +85,7 @@ public class PanelLogin extends JPanel implements ActionListener {
         logo.setLocation(325, 0);
         logo.setHorizontalAlignment(JLabel.CENTER);
         logo.setVerticalAlignment(JLabel.CENTER);
-        this.add(logo);
+        add(logo);
     }
 
     private void crearCampoDeTextoRut() {
@@ -97,7 +97,7 @@ public class PanelLogin extends JPanel implements ActionListener {
         trut.setBorder(BorderFactory.createCompoundBorder(
                 trut.getBorder(),
                 BorderFactory.createEmptyBorder(5, 10, 5, 5)));
-        this.add(trut);
+        add(trut);
     }
 
     private void crearCampoDeTextoClave() {
@@ -109,7 +109,7 @@ public class PanelLogin extends JPanel implements ActionListener {
         tclave.setBorder(BorderFactory.createCompoundBorder(
                 tclave.getBorder(),
                 BorderFactory.createEmptyBorder(5, 10, 5, 5)));
-        this.add(tclave);
+        add(tclave);
     }
 
     private void crearBotonIngresar() {
@@ -123,7 +123,7 @@ public class PanelLogin extends JPanel implements ActionListener {
         ingreso.setBackground(Color.BLACK);
         ingreso.setForeground(Color.WHITE);
 
-        this.add(ingreso);
+        add(ingreso);
     }
 
     private void crearBotonIngresoAlternativo() {
@@ -138,7 +138,7 @@ public class PanelLogin extends JPanel implements ActionListener {
         ingresoAlternativo.setBackground(Color.WHITE);
         ingresoAlternativo.setForeground(Color.BLACK);
 
-        this.add(ingresoAlternativo);
+        add(ingresoAlternativo);
     }
 
     public String getRut() {

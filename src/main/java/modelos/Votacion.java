@@ -46,6 +46,7 @@ public class Votacion {
     }
 
     public Votacion() {
+        this.id = 0;
         this.opciones = new ArrayList<>();
         this.votantes = new ArrayList<>();
         this.votos = new ArrayList<>();
@@ -54,7 +55,7 @@ public class Votacion {
         this.estadoDeVotacion = EstadoDeVotacion.BORRADOR;
 //      TODO Ver un modo estandarizar fechas de inicio y termino por defecto
         setFechaTiempoInicio(LocalDateTime.now());
-        setFechaTiempoTermino(LocalDateTime.now().plusYears(50));
+        setFechaTiempoTermino(LocalDateTime.now());
         agregarOpcionBlanco();
     }
 
@@ -146,6 +147,10 @@ public class Votacion {
         return new ArrayList<>(opciones);
     }
 
+    public void removeOpcion(int index) {
+        opciones.remove(index);
+    }
+
     public void setOpciones(List<Opcion> opciones) {
         this.opciones = new ArrayList<>(opciones);
     }
@@ -171,10 +176,10 @@ public class Votacion {
         this.votosBlancos = 0;
         for (Voto voto : this.votos) {
             if (voto.getVotacion().getId().equals(this.getId())) {
-                if (voto.getOpcion().getId() != 1) {
-                    this.votosPreferenciales++;
-                } else {
+                if (voto.getOpcion().getId() == 1) {
                     this.votosBlancos++;
+                } else {
+                    this.votosPreferenciales++;
                 }
             }
         }
@@ -238,5 +243,9 @@ public class Votacion {
             .concat(String.format("%s: %s\n", CampoDeVotacion.FECHA_TERMINO, fechaTiempoTermino))
             .concat(String.format("%s: %s\n", CampoDeVotacion.VOTOS_PREFERENCIALES, votosPreferenciales))
             .concat(String.format("%s: %s\n", CampoDeVotacion.VOTOS_BLANCOS, votosBlancos));
+    }
+
+    public void addOpcion(Opcion opcion) {
+        opciones.add(opcion);
     }
 }
