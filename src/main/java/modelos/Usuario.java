@@ -4,6 +4,15 @@ public class Usuario {
 
     private Integer id;
     private String clave;
+    private String rut;
+
+    public String getRut() {
+        return rut;
+    }
+
+    public void setRut(Object rut) {
+        this.rut = rut.toString();
+    }
 
     public Integer getId() {
         return id;

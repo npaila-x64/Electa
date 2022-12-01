@@ -1,11 +1,13 @@
-package app;
+package lanzador;
 
-import modelos.enums.Estado;
+import modelos.enums.EstadoDeVotacion;
 import modelos.Votacion;
-import utils.AccesoADatos;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import dao.VotacionDao;
+
 
 /*
     Clase con métodos dedicados a refrescar
@@ -25,42 +27,36 @@ public class RefrescadorVotaciones {
 
     public static void refrescarEstadosDeVotaciones() throws InterruptedException {
         while (true) {
-            List<Votacion> votaciones = AccesoADatos.obtenerVotaciones();
+            List<Votacion> votaciones = VotacionDao.obtenerVotaciones();
             for (Votacion votacionSiguiente : votaciones) {
                 asignarEstadoAVotacion(obtenerFechaTiempoAhora(), votacionSiguiente);
             }
-            AccesoADatos.escribirVotaciones(votaciones);
+            VotacionDao.escribirVotaciones(votaciones);
             System.out.println("Estados actualizados: " + obtenerFechaTiempoAhora());
             Thread.sleep(1000);
         }
     }
 
     public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, Votacion votacion) {
-        // TODO Arreglar este desorden
-        Estado estado = votacion.getEstado();
-        if (estado.equals(Estado.BORRADOR)) return;
+        EstadoDeVotacion estado = votacion.getEstadoDeVotacion();
+        if (estado.equals(EstadoDeVotacion.BORRADOR)) return;
         var fechaTiempoInicio = votacion.getFechaTiempoInicio();
         var fechaTiempoTermino = votacion.getFechaTiempoTermino();
-        if (fechaTiempoAhora.isAfter(fechaTiempoTermino)) {
-            estado = Estado.FINALIZADO;
-        } else if (fechaTiempoAhora.isBefore(fechaTiempoInicio)) {
-            estado = Estado.PENDIENTE;
+        estado = obtenerEstadoPorFecha(fechaTiempoAhora, fechaTiempoInicio, fechaTiempoTermino);
+        votacion.setEstadoDeVotacion(estado);
+    }
+
+    private static EstadoDeVotacion obtenerEstadoPorFecha(LocalDateTime fechaAhora, LocalDateTime fechaInicio, LocalDateTime fechaTermino) {
+        if (fechaAhora.isAfter(fechaTermino)) {
+            return EstadoDeVotacion.FINALIZADO;
+        } else if (fechaAhora.isBefore(fechaInicio)) {
+            return EstadoDeVotacion.PENDIENTE;
         } else {
-            estado = Estado.EN_CURSO;
+            return EstadoDeVotacion.EN_CURSO;
         }
-        votacion.setEstado(estado);
     }
 
     public static LocalDateTime obtenerFechaTiempoAhora() {
         return LocalDateTime.now();
-    }
-
-    public static boolean esMayor(int[] fechaActual, int[] fechaTermino, int indice) {
-        if (fechaTermino[indice] < fechaActual[indice]) return true;
-        if (fechaTermino[indice] == fechaActual[indice]) {
-            if (fechaActual.length - 1 == indice) return true;
-            return esMayor(fechaActual, fechaTermino, indice + 1);
-        }
-        return false;
     }
 }
