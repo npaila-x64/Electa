@@ -505,7 +505,6 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
 
     private void cargarFechaTermino(Votacion votacion) {
         var fechaTermino = votacion.getFechaTermino();
-        System.out.println(fechaTermino);
         datePickerFechaTermino.getModel().setDate(
                 fechaTermino.getYear(),
                 fechaTermino.getMonthValue() - 1,
