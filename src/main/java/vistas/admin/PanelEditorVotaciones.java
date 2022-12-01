@@ -5,12 +5,9 @@ import modelos.Votacion;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import utils.Utilidades;
 import vistas.votante.ButtonColumn;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -501,7 +498,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         var fechaInicio = votacion.getFechaInicio();
         datePickerFechaInicio.getModel().setDate(
                 fechaInicio.getYear(),
-                fechaInicio.getMonthValue(),
+                fechaInicio.getMonthValue() - 1,
                 fechaInicio.getDayOfMonth());
         datePickerFechaInicio.getModel().setSelected(true);
     }
@@ -510,7 +507,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
         var fechaTermino = votacion.getFechaTermino();
         datePickerFechaTermino.getModel().setDate(
                 fechaTermino.getYear(),
-                fechaTermino.getMonthValue(),
+                fechaTermino.getMonthValue() - 1,
                 fechaTermino.getDayOfMonth());
         datePickerFechaTermino.getModel().setSelected(true);
     }
