@@ -173,7 +173,8 @@ public class VotacionDao {
 
     private static String obtenerNuevaIdVotacion() {
         List<Votacion> votaciones = obtenerVotaciones();
-        var maxID = votaciones.stream().max(Comparator.comparing(Votacion::getId)).get().getId();
+        var maxID = votaciones.stream().max(Comparator.comparing(Votacion::getId))
+                .orElse(new Votacion()).getId();
         maxID++;
         return String.valueOf(maxID);
     }

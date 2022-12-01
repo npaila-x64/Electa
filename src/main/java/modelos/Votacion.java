@@ -46,6 +46,7 @@ public class Votacion {
     }
 
     public Votacion() {
+        this.id = 0;
         this.opciones = new ArrayList<>();
         this.votantes = new ArrayList<>();
         this.votos = new ArrayList<>();
