@@ -40,15 +40,6 @@ class AccesoADatosTest {
         }
     }
 
-//    @Test
-//    void verificaQueVotoOpcionPreferencialNuloTiraExcepcion(){
-//        var exception = assertThrows(NullPointerException.class, () ->
-//                utils.AccesoADatos.votarOpcionPreferencial(null, "1", "1")
-//                , "Se ha ingresado una entrada nula");
-//        logger.info("Se ha lanzado la excepción NullPointerException, dado " +
-//                "que el objeto JSONObject de votaciones es nulo. " + exception.getMessage());
-//    }
-
     @Test
     void verificaQueCargarArchivoJSONNoExistenteTiraExcepcion() {
         var exception = assertThrows(AccesoADatosInterrumpidoException.class,
@@ -56,34 +47,6 @@ class AccesoADatosTest {
         logger.info("Se ha lanzado la excepción excepciones.AccesoADatosInterrumpidoException, dado " +
                 "que el archivo JSON no puede ser parseado. " + exception.getMessage());
     }
-
-//    @Test
-//    void verificaQueIntentarObtenerRutNoExistenteTiraExcepcion() {
-//        var exception = assertThrows(excepciones.AccesoADatosInterrumpidoException.class,
-//                () -> utils.AccesoADatos.obtenerIDDeRut("123"));
-//        logger.info("Se ha lanzado la excepción excepciones.AccesoADatosInterrumpidoException, dado " +
-//                "que la ID asociada al RUT dado no existe. " + exception.getMessage());
-//    }
-
-//    @Test
-//    void verificaQueMetodoTiraExcepcionSiSeLeEntregaCampoNoExistente() {
-//        var exception = assertThrows(NullPointerException.class,
-//                () -> utils.AccesoADatos
-//                        .obtenerVotacionesConEstado(modelos.enums.Estado.FINALIZADO));
-//        logger.info("Se ha lanzado la excepción NullPointerException, dado " +
-//                "que campo de votaciones dado no existe. " + exception.getMessage());
-//    }
-
-//    @Test
-//    void verificaQueMetodoTiraExcepcionSiSeLeEntregaCampoNoExistente2() {
-//        JSONArray jsonArrayVotaciones = utils.AccesoADatos.parsearVotaciones();
-//        var exception = assertThrows(excepciones.AccesoADatosInterrumpidoException.class,
-//                () -> utils.AccesoADatos
-//                        .obtenerVotacionPorCampo(
-//                                jsonArrayVotaciones, "no_existe", "1"));
-//        logger.info("Se ha lanzado la excepción excepciones.AccesoADatosInterrumpidoException, dado " +
-//                "que campo de votaciones dado no existe. " + exception.getMessage());
-//    }
 
     @Test
     void verificaQueMetodoTiraExcepcionSiSeLeEntregaRutaNoExistente() {
@@ -101,14 +64,4 @@ class AccesoADatosTest {
         logger.info("Se ha lanzado la excepción excepciones.AccesoADatosInterrumpidoException, dado " +
                 "que el contenido entregado es nulo. " + exception.getMessage());
     }
-//    @Test
-//    void verificaQueMetodoTiraExcepcionSiSeLeEntregaCampoNoExistente2() {
-//        JSONArray jsonArrayVotaciones = utils.AccesoADatos.parsearVotaciones();
-//        var exception = assertThrows(excepciones.AccesoADatosInterrumpidoException.class,
-//                () -> utils.AccesoADatos
-//                        .obtenerVotacionPorCampo(
-//                                jsonArrayVotaciones, "no_existe", "1"));
-//        logger.info("Se ha lanzado la excepción excepciones.AccesoADatosInterrumpidoException, dado " +
-//                "que campo de votaciones dado no existe. " + exception.getMessage());
-//    }
 }
