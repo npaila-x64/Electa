@@ -4,7 +4,7 @@ import controladores.ControladorAplicacion;
 import controladores.ControladorLogin;
 
 /**
- * Clase dedicada a lanzar la aplicación principal Electa.
+ * Dedicada a lanzar la aplicación principal Electa.
  */
 
 public class Electa {
