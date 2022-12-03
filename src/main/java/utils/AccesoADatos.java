@@ -11,19 +11,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-/*
-    Clase que contiene los métodos que interactúan
-    directamente con los archivos de datos JSON
-
-    Para modificar los datos de las votaciones se realiza una llamada al método
-    obtenerVotaciones() donde estas se parsean desde el archivo votaciones.json
-    a un List<modelos.Votacion>
-    Luego para escribirlos de nuevo al archivo votaciones.json se realiza una llamada
-    al método escribirVotaciones(), que recibe como argumento una List<modelos.Votacion> que
-    contiene todas las votaciones
+/**
+ * Interactúa de forma directa con archivos de tipo JSON. Realiza acciones de lectura,
+ * escritura y parseo.
+ *
  */
 
 public class AccesoADatos {
+
+    /**
+     * Lee y parsea el contenido escrito en un archivo JSON.
+     *
+     * @param ruta la ruta del archivo JSON.
+     * @return un objeto de tipo JSONArray.
+     * @throws AccesoADatosInterrumpidoException cuando ocurre un error al buscar o parsear el archivo.
+     */
 
     public static JSONArray parsearArchivoJSON(String ruta) throws AccesoADatosInterrumpidoException {
         try {
@@ -37,6 +39,14 @@ public class AccesoADatos {
         }
     }
 
+    /**
+     * Lee el contenido de un archivo JSON linea por linea y lo almacena en un String.
+     *
+     * @param ruta la ruta del archivo JSON.
+     * @return un string con el contenido del archivo.
+     * @throws FileNotFoundException cuando no se encuentra ningún archivo JSON con la ruta dada.
+     */
+
     public static String leerContenidosJSON(String ruta) throws FileNotFoundException {
         StringBuilder st = new StringBuilder();
         File archivoJSON = new File(ruta);
@@ -47,6 +57,13 @@ public class AccesoADatos {
         scanner.close();
         return st.toString();
     }
+
+    /**
+     * Escribe un archivo JSON dada una ruta y contenido que deba ser guardado.
+     *
+     * @param ruta la ruta del archivo JSON.
+     * @param contenido un string con el contenido que debe ser escrito en el archivo.
+     */
 
     public static void escribirArchivoJSON(String ruta, String contenido) {
         try {
