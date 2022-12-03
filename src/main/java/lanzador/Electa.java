@@ -4,14 +4,13 @@ import controladores.ControladorAplicacion;
 import controladores.ControladorLogin;
 
 /**
- * Dedicada a lanzar la aplicación principal Electa.
+ * Ejecuta/lanza la aplicación principal Electa.
  */
 
 public class Electa {
 
     /**
-     * Se encarga de iniciar la aplicación haciendo uso de un controlador
-     * de tipo ControladorAplicación.
+     * Inicia la aplicación haciendo uso de un controlador de tipo ControladorAplicación.
      * @param args
      */
 

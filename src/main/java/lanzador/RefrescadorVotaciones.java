@@ -10,15 +10,15 @@ import dao.VotacionDao;
 
 
 /**
- * Dedicada a refrescar continuamente los estados de las votaciones, se ejecuta en un hilo
+ * Actualiza continuamente los estados de las votaciones, se ejecuta en un hilo
  * aparte de la aplicación principal, de esta forma funciona en tiempo real para multiples
  * usuarios.
  */
 
 public class RefrescadorVotaciones {
     /**
-     * Se encarga de llamar al método que refresca los estados de las votaciones y manejar
-     * las excepciones de tipo InterruptedException que pueda lanzar.
+     * Refresca los estados de las votaciones y maneja
+     * las excepciones de tipo InterruptedException que puedan ocurrir.
      * @param args
      */
 
@@ -31,11 +31,11 @@ public class RefrescadorVotaciones {
     }
 
     /**
-     * Se encarga de asignar estados actualizados en cada votación, para luego
-     * sobreescribirlas en el archivo. Esta acción se repite cada 1000 milisegundos.
+     * Asigna estados actualizados en cada votación, para luego
+     * sobreescribirlas en un archivo JSON, esta acción se repite cada 1000 milisegundos.
      *
-     * @throws InterruptedException Cuando ocurre una interrupción inesperada en el proceso
-     * de refrescar los estados de las votaciones.
+     * @throws InterruptedException cuando ocurre una interrupción inesperada en el proceso
+     * de lectura o escritura del archivo JSON que contiene las votaciones.
      */
 
     public static void refrescarEstadosDeVotaciones() throws InterruptedException {
@@ -51,11 +51,11 @@ public class RefrescadorVotaciones {
     }
 
     /**
-     * Se encarga de asignar el estado que le corresponde a una votación dada, guiándose
+     * Asigna el estado que le corresponde a una votación dada, guiándose
      * por márgenes de tiempo.
      *
-     * @param fechaTiempoAhora Indica la fecha y hora actuales.
-     * @param votacion Indica la votación a la cual se le busca asignar un estado.
+     * @param fechaTiempoAhora la fecha y hora actuales.
+     * @param votacion la votación a la cual se le busca asignar un estado.
      */
 
     public static void asignarEstadoAVotacion(LocalDateTime fechaTiempoAhora, Votacion votacion) {
@@ -68,13 +68,13 @@ public class RefrescadorVotaciones {
     }
 
     /**
-     * Se encarga de identificar que estado le corresponde a una votación en un momento
+     * Identifica que estado le corresponde a una votación en un momento
      * dado, según su fecha de inicio y termino.
      *
-     * @param fechaAhora Indica la fecha y hora actuales.
-     * @param fechaInicio Indica la fecha y hora de inicio de la votación.
-     * @param fechaTermino Indica la fecha de y hora de termino de la votación.
-     * @return Devuelve un estado de tipo EstadoDeVotacion.
+     * @param fechaAhora la fecha y hora actuales.
+     * @param fechaInicio la fecha y hora de inicio de la votación.
+     * @param fechaTermino la fecha de y hora de termino de la votación.
+     * @return un estado de tipo EstadoDeVotacion.
      */
 
     private static EstadoDeVotacion obtenerEstadoPorFecha(LocalDateTime fechaAhora, LocalDateTime fechaInicio, LocalDateTime fechaTermino) {
@@ -88,8 +88,8 @@ public class RefrescadorVotaciones {
     }
 
     /**
-     * Se encarga retornar la fecha y hora actuales.
-     * @return Devuelve una fecha y hora de tipo LocalDateTime.
+     * retorna la fecha y hora actuales.
+     * @return una fecha y hora de tipo LocalDateTime.
      */
 
     public static LocalDateTime obtenerFechaTiempoAhora() {

@@ -1,7 +1,7 @@
 package excepciones;
 
 /**
- * Dedicada a crear una excepción personalizada para interrupciones inesperadas en los procesos
+ * Crea una excepción personalizada para interrupciones inesperadas en los procesos
  * de acceso a datos.
  *
  */
@@ -9,10 +9,10 @@ package excepciones;
 public class AccesoADatosInterrumpidoException extends RuntimeException {
 
     /**
-     * Construye un AccesoADatosInterrumpidoException con un mensaje que da detalles de la excepción.
+     * Construye un objeto de AccesoADatosInterrumpidoException con un mensaje que da detalles de la excepción.
      *
      *
-     * @param mensaje Indica un dato del mensaje que se mostrará al lanzarse la excepción. El formato
+     * @param mensaje dato específico del mensaje que se mostrará al lanzarse la excepción, el formato
      * en el cual es mostrado varía dependiendo de la situación.
      */
 
@@ -21,10 +21,10 @@ public class AccesoADatosInterrumpidoException extends RuntimeException {
     }
 
     /**
-     * Se encarga de lanzar una excepción cuando un archivo no pudo ser cargado.
+     * lanza una excepción cuando un archivo no pudo ser cargado.
      *
-     * @param ruta Indica la ruta del archivo que no se pudo cargar.
-     * @return Devuelve una excepción de tipo AccesoADatosInterrumpidoException.
+     * @param ruta la ruta del archivo que no se pudo cargar.
+     * @return una excepción de tipo AccesoADatosInterrumpidoException.
      */
 
     public static AccesoADatosInterrumpidoException noSePudoCargarArchivo(String ruta) {
@@ -32,10 +32,10 @@ public class AccesoADatosInterrumpidoException extends RuntimeException {
     }
 
     /**
-     * Se encarga de lanzar una excepción cuando un archivo no se pudo parsear.
+     * lanza una excepción cuando un archivo no se pudo parsear.
      *
-     * @param ruta Indica la ruta del archivo que no se pudo parsear.
-     * @return Devuelve una excepción de tipo AccesoADatosInterrumpidoException.
+     * @param ruta la ruta del archivo que no se pudo parsear.
+     * @return una excepción de tipo AccesoADatosInterrumpidoException.
      */
 
     public static AccesoADatosInterrumpidoException noSePudoParsearArchivo(String ruta) {
@@ -43,10 +43,10 @@ public class AccesoADatosInterrumpidoException extends RuntimeException {
     }
 
     /**
-     * Se encarga de lanzar una excepción cuando un dato en un archivo no fue encontrado.
+     * lanza una excepción cuando un dato en un archivo no fue encontrado.
      *
-     * @param dato Indica el dato que no pudo ser encontrado.
-     * @return Devuelve una excepción de tipo AccesoADatosInterrumpidoException.
+     * @param dato el dato que no pudo ser encontrado.
+     * @return una excepción de tipo AccesoADatosInterrumpidoException.
      */
 
     public static AccesoADatosInterrumpidoException talElementoNoExiste(String dato) {
@@ -57,8 +57,8 @@ public class AccesoADatosInterrumpidoException extends RuntimeException {
     /**
      * Se encarga de lanzar una excepción cuando no se pudo escribir un archivo.
      *
-     * @param ruta Indica la ruta del archivo que no pudo ser escrito.
-     * @return Devuelve una excepción de tipo AccesoADatosInterrumpidoException.
+     * @param ruta la ruta del archivo que no pudo ser escrito.
+     * @return una excepción de tipo AccesoADatosInterrumpidoException.
      */
 
     public static AccesoADatosInterrumpidoException noSePudoEscribirArchivo(String ruta) {
