@@ -23,7 +23,7 @@ public class ControladorAdministracion {
      */
     private final ControladorAplicacion controlador;
     /**
-     * Indica el modelo de tabla utilizado por el menú de administración.
+     * Indica el modelo de tabla utilizado por la vista.
      */
     private final AdministracionTableModel modelo;
     /**

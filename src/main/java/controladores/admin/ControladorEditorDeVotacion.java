@@ -25,7 +25,7 @@ public class ControladorEditorDeVotacion {
      */
     private final ControladorAplicacion controlador;
     /**
-     * Indica el modelo de tabla utilizado por el editor de votación.
+     * Indica el modelo de tabla utilizado por la vista.
      */
     private final OpcionesTableModel modeloDeTabla;
     /**
