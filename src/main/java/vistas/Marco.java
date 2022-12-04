@@ -1,28 +1,41 @@
 package vistas;
 
-import vistas.admin.PanelAdministracion;
-import vistas.votante.PanelOpciones;
-import vistas.votante.PanelVotacionesEnCurso;
-
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Crea la ventana principal usada durante la totalidad del programa.
+ */
 public class Marco extends JFrame {
-
+    /**
+     * Indica un contenedor para un panel.
+     */
     private Container panel;
+    /**
+     * Indica un administrador de los paneles en un contenedor.
+     */
     private final CardLayout cl;
 
+    /**
+     * Construye una ventana de tipo Marco. Configura los paneles y las especificaciones de la ventana.
+     */
     public Marco() {
         cl = new CardLayout();
         configurarMarco();
         configurarPanel();
     }
 
+    /**
+     * Configura el contenedor con el CardLayout.
+     */
     private void configurarPanel() {
         panel = getContentPane();
         panel.setLayout(cl);
     }
 
+    /**
+     * Configura el nombre, las dimensiones y comportamientos de la ventana.
+     */
     private void configurarMarco() {
         setTitle("Electa");
         setBounds(300, 90, 900, 600);
@@ -31,26 +44,19 @@ public class Marco extends JFrame {
         setResizable(false);
     }
 
-    public void agregarVotacionesEnCurso(PanelVotacionesEnCurso votacionesEnCurso) {
-        panel.add("votacionesEnCurso", votacionesEnCurso);
-    }
-
-    public void agregarResultados(PanelResultados resultados) {
-        panel.add("resultados", resultados);
-    }
-
-    public void agregarOpciones(PanelOpciones opciones) {
-        panel.add("opciones", opciones);
-    }
-
-    public void agregarAdministracion(PanelAdministracion administracion) {
-        panel.add("administracion", administracion);
-    }
-
+    /**
+     * Agrega un panel en el contenedor.
+     * @param panel el panel a agregar.
+     * @param nombre un String cuyo valor representa un nombre identificador del panel.
+     */
     public void agregarPanel(Container panel, String nombre) {
         this.panel.add(nombre, panel);
     }
 
+    /**
+     * Muestra un panel en pantalla.
+     * @param panel un String cuyo valor representa un nombre identificador del panel.
+     */
     public void mostrarPanel(String panel) {
         cl.show(this.panel, panel);
     }
