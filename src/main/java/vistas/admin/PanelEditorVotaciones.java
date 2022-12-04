@@ -123,7 +123,7 @@ public class PanelEditorVotaciones extends JPanel implements ActionListener {
     private JSpinner spinnerHoraTermino;
 
     /**
-     * Construye un panel de tipo PanelEditorVotaciones. Intancia el controlador y los componentes que
+     * Construye un panel de tipo PanelEditorVotaciones. Instancia el controlador y los componentes que
      * forman parte del panel.
      * @param controlador el controlador que maneja la lógica tras el panel.
      */
