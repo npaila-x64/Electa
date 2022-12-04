@@ -9,28 +9,61 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Crea el panel que representa la vista del menú de administración.
+ */
 public class PanelAdministracion extends JPanel implements ActionListener {
-
+    /**
+     * Indica el controlador que administra la lógica de la vista.
+     */
     private ControladorAdministracion controlador;
+    /**
+     * Indica la tabla que contiene las votaciones.
+     */
     private JTable tVotaciones;
-    private JLabel textoDesde;
-    private JLabel textoHasta;
-    private JTextField campoTextoDesde;
-    private JTextField campoTextoHasta;
+    /**
+     * Indica el botón para cerrar sesión.
+     */
     private JButton bCerrarSesion;
+    /**
+     * Indica el botón para crear una nueva votación.
+     */
     private JButton bCrearVotacion;
+    /**
+     * Indica el botón para ver los resultados de alguna votación.
+     */
     private JButton bResultados;
+    /**
+     * Indica la casilla de verificación para las votaciones en curso.
+     */
     private JCheckBox checkEnCurso;
+    /**
+     * Indica la casilla de verificación para las votaciones pendientes.
+     */
     private JCheckBox checkPendientes;
+    /**
+     * Indica la casilla de verificación para las votaciones finalizadas.
+     */
     private JCheckBox checkFinalizadas;
+    /**
+     * Indica la casilla de verificación para las votaciones en borrador.
+     */
     private JCheckBox checkBorradores;
 
+    /**
+     * Construye un panel de tipo PanelAdministracion. Instancia el controlador y los componentes
+     * que formar parte del panel.
+     * @param controlador el controlador que maneja la lógica tras el panel.
+     */
     public PanelAdministracion(ControladorAdministracion controlador) {
         this.controlador = controlador;
         crearComponentes();
         setVisible(true);
     }
 
+    /**
+     * Crea cada uno de los componentes del panel.
+     */
     private void crearComponentes() {
         configurarPanel();
         crearCheckMostrarEnCurso();
@@ -41,46 +74,12 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         crearBotonCrearVotacion();
         crearBotonResultados();
         crearBotonCerrarSesion();
-//        crearEtiquetaFiltroDesde();
-//        crearEtiquetaFiltroHasta();
-//        crearCampoDeTextoFiltroDesde();
-//        crearCampoDeTextoFiltroHasta();
     }
 
-    private void crearCampoDeTextoFiltroHasta() {
-        campoTextoHasta = new JTextField();
-        campoTextoHasta.setFont(new Font("Arial", Font.PLAIN, 15));
-        campoTextoHasta.setSize(100, 40);
-        campoTextoHasta.setLocation(745, 40);
-        campoTextoHasta.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        add(campoTextoHasta);
-    }
-
-    private void crearCampoDeTextoFiltroDesde() {
-        campoTextoDesde = new JTextField();
-        campoTextoDesde.setFont(new Font("Arial", Font.PLAIN, 15));
-        campoTextoDesde.setSize(100, 40);
-        campoTextoDesde.setLocation(560, 40);
-        campoTextoDesde.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        add(campoTextoDesde);
-    }
-
-    private void crearEtiquetaFiltroHasta() {
-        textoHasta = new JLabel("hasta");
-        textoHasta.setFont(new Font("Arial", Font.PLAIN, 15));
-        textoHasta.setSize(100,40);
-        textoHasta.setLocation(685, 40);
-        add(textoHasta);
-    }
-
-    private void crearEtiquetaFiltroDesde() {
-        textoDesde = new JLabel("Filtrar desde");
-        textoDesde.setFont(new Font("Arial", Font.PLAIN, 15));
-        textoDesde.setSize(120,40);
-        textoDesde.setLocation(460, 40);
-        add(textoDesde);
-    }
-
+    /**
+     * Crea una tabla que muestra cada votación con su estado correspondiente y un botón para ver o
+     * modificar dicha votación. Llama al controlador para obtener el modelo de tabla.
+     */
     private void crearTablaDeVotaciones() {
         tVotaciones = new JTable(controlador.getModeloDeTabla());
         tVotaciones.setBounds(30, 40, 200, 300);
@@ -119,6 +118,9 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         new ButtonColumn(tVotaciones, editarVotacion, 2);
     }
 
+    /**
+     * Crea el botón para crear una nueva votación.
+     */
     private void crearBotonCrearVotacion() {
         bCrearVotacion = new JButton("Crear nueva votación");
         bCrearVotacion.setFont(new Font("Arial", Font.BOLD, 15));
@@ -130,6 +132,9 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         add(bCrearVotacion);
     }
 
+    /**
+     * Crea el botón para ver los resultados de alguna votación.
+     */
     private void crearBotonResultados() {
         bResultados = new JButton("Ver resultados");
         bResultados.setFont(new Font("Arial", Font.BOLD, 15));
@@ -141,6 +146,9 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         add(bResultados);
     }
 
+    /**
+     * Crea el botón para cerrar sesión.
+     */
     private void crearBotonCerrarSesion() {
         bCerrarSesion = new JButton("Cerrar sesión");
         bCerrarSesion.setFont(new Font("Arial", Font.BOLD, 15));
@@ -152,6 +160,9 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         add(bCerrarSesion);
     }
 
+    /**
+     * Crea la casilla de verificación para mostrar las votaciones en curso.
+     */
     private void crearCheckMostrarEnCurso() {
         checkEnCurso = new JCheckBox("Mostrar En Curso");
         checkEnCurso.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -163,7 +174,9 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         checkEnCurso.setSelected(true);
         add(checkEnCurso);
     }
-
+    /**
+     * Crea la casilla de verificación para mostrar las votaciones pendientes.
+     */
     private void crearCheckPendientes() {
         checkPendientes = new JCheckBox("Mostrar Pendientes");
         checkPendientes.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -175,7 +188,9 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         checkPendientes.setSelected(true);
         add(checkPendientes);
     }
-
+    /**
+     * Crea la casilla de verificación para mostrar las votaciones finalizadas.
+     */
     private void crearCheckFinalizadas() {
         checkFinalizadas = new JCheckBox("Mostrar Finalizadas");
         checkFinalizadas.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -187,7 +202,9 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         checkFinalizadas.setSelected(true);
         add(checkFinalizadas);
     }
-
+    /**
+     * Crea la casilla de verificación para mostrar las votaciones en borrador.
+     */
     private void crearCheckBorradores() {
         checkBorradores = new JCheckBox("Mostrar Borradores");
         checkBorradores.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -200,11 +217,18 @@ public class PanelAdministracion extends JPanel implements ActionListener {
         add(checkBorradores);
     }
 
+    /**
+     * Configura el color y layout del panel.
+     */
     private void configurarPanel() {
         setBackground(Color.WHITE);
         setLayout(null);
     }
 
+    /**
+     * Capta y procesa algún evento desencadenado por los botones o casillas de verificación.
+     * @param e el evento de tipo ActionEvent a ser procesado.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == bCrearVotacion) {
