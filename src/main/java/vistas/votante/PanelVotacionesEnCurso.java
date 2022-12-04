@@ -6,20 +6,44 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Crea el panel que representa la vista de votaciones en curso.
+ */
 public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
+    /**
+     * Indica una etiqueta visible en el encabezado de la vista.
+     */
     private JLabel lVotaciones;
+    /**
+     * Indica una tabla de votaciones en curso.
+     */
     private JTable tVotacionesEnCurso;
+    /**
+     * Indica un botón para cerrar sesión.
+     */
     private JButton bCerrarSesion;
+    /**
+     * Indica un botón para ver los resultados de una votación.
+     */
     private JButton bResultados;
+    /**
+     * Indica el controlador que administra la lógica de la vista.
+     */
     private final ControladorVotacionesEnCurso controlador;
 
+    /**
+     * Construye un panel de tipo PanelVotacionesEnCurso. Instancia el controlador y los componentes que
+     * forman parte del panel.
+     * @param controlador el controlador que maneja la lógica tras el panel.
+     */
     public PanelVotacionesEnCurso(ControladorVotacionesEnCurso controlador) {
         this.controlador = controlador;
         crearComponentes();
         setVisible(true);
     }
-
+    /**
+     * Crea cada uno de los componentes del panel.
+     */
     private void crearComponentes() {
         configurarPanel();
         crearEtiquetaVotaciones();
@@ -27,7 +51,9 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         crearBotonCerrarSesion();
         crearBotonResultados();
     }
-
+    /**
+     * Crea una etiqueta que indica el nombre de la vista en el encabezado de la ventana.
+     */
     private void crearEtiquetaVotaciones() {
         lVotaciones = new JLabel("Votaciones en curso", SwingConstants.CENTER);
         lVotaciones.setFont(new Font("Arial", Font.BOLD, 28));
@@ -35,7 +61,9 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         lVotaciones.setLocation(0,32);
         add(lVotaciones);
     }
-
+    /**
+     * Crea un botón para ir a la vista escoger resultados.
+     */
     private void crearBotonResultados() {
         bResultados = new JButton("Resultados");
         bResultados.addActionListener(this);
@@ -46,7 +74,11 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         bResultados.setForeground(Color.WHITE);
         add(bResultados);
     }
-
+    /**
+     * Crea una tabla que muestra cada una de las votaciones en curso,
+     * seguido de un botón para votar por votar en dicha votación. Llama al controlador
+     * para obtener el modelo de tabla.
+     */
     private void crearTablaDeVotaciones() {
         tVotacionesEnCurso = new JTable(controlador.getModeloDeTabla());
         tVotacionesEnCurso.setBounds(30, 40, 200, 300);
@@ -83,7 +115,9 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         };
         new ButtonColumn(tVotacionesEnCurso, abrirVotacion, 1);
     }
-
+    /**
+     * Crea el botón para cerrar sesión.
+     */
     private void crearBotonCerrarSesion() {
         bCerrarSesion = new JButton("Cerrar sesión");
         bCerrarSesion.addActionListener(this);
@@ -94,12 +128,17 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
         bCerrarSesion.setForeground(Color.WHITE);
         add(bCerrarSesion);
     }
-
+    /**
+     * Configura el color y layout del panel.
+     */
     private void configurarPanel() {
         setBackground(Color.WHITE);
         setLayout(null);
     }
-
+    /**
+     * Capta y procesa algún evento desencadenado por los botones.
+     * @param e el evento de tipo ActionEvent a ser procesado.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == bCerrarSesion) {
