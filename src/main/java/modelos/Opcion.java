@@ -2,6 +2,7 @@ package modelos;
 
 public class Opcion {
 
+    public static final int BLANCO = 1;
     private Integer id;
     private String nombre;
     private Votacion votacion;
@@ -51,5 +52,9 @@ public class Opcion {
 
     public void setCantidadDeVotos(Object cantidadDeVotos) {
         this.cantidadDeVotos = Integer.parseInt(cantidadDeVotos.toString());
+    }
+
+    public boolean esOpcionBlanco() {
+        return id == BLANCO;
     }
 }

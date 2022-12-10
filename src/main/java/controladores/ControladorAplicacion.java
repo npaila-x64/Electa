@@ -50,10 +50,6 @@ public class ControladorAplicacion {
         resultados.abrirEscogerResultado();
     }
 
-    public void abrirResultados(Integer fila) {
-        resultados.abrirResultados(fila);
-    }
-
     public void abrirAdministracion() {
         administracion.abrir();
     }

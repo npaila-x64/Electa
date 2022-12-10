@@ -7,9 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Votacion {
 
@@ -29,7 +27,7 @@ public class Votacion {
     private Integer votosBlancos;
     private List<Voto> votos;
 
-    // TODO el clon puede ser creado por un método especial llamado clon() en vez de usar el constructor
+    // TODO el clon puede ser creado por un método llamado clonar() en vez de usar el constructor
     // Método constructor usado para clonar una Votacion
     public Votacion(Votacion clon) {
         this.id = clon.getId();
@@ -167,19 +165,15 @@ public class Votacion {
         return votosPreferenciales;
     }
 
-    private void setVotosPreferenciales(Object votosPreferenciales) {
-        this.votosPreferenciales = Integer.parseInt(votosPreferenciales.toString());
-    }
-
     private void updateVotos() {
-        this.votosPreferenciales = 0;
-        this.votosBlancos = 0;
-        for (Voto voto : this.votos) {
-            if (voto.getVotacion().getId().equals(this.getId())) {
-                if (voto.getOpcion().getId() == 1) {
-                    this.votosBlancos++;
+        votosPreferenciales = 0;
+        votosBlancos = 0;
+        for (Voto voto : votos) {
+            if (voto.getIdVotacion().equals(this.id)) {
+                if (voto.esVotoBlanco()) {
+                    votosBlancos++;
                 } else {
-                    this.votosPreferenciales++;
+                    votosPreferenciales++;
                 }
             }
         }
@@ -193,10 +187,6 @@ public class Votacion {
         this.opciones.add(0, Opcion.getOpcionConVotoBlanco());
     }
 
-    private void setVotosBlancos(Object votosBlancos) {
-        this.votosBlancos = Integer.parseInt(votosBlancos.toString());
-    }
-
     public Integer getTotalVotos(){
         return votosPreferenciales+votosBlancos;
     }
@@ -208,28 +198,6 @@ public class Votacion {
     public void setVotos(List<Voto> votos) {
         this.votos = new ArrayList<>(votos);
         updateVotos();
-    }
-
-    public void setAttributo(CampoDeVotacion campo, Object valor) {
-        // TODO Averiguar si esto es buena práctica
-        Map<CampoDeVotacion, Runnable> mapaDeSetters = new HashMap<>();
-        mapaDeSetters.put(CampoDeVotacion.ID, () -> setId(valor));
-        mapaDeSetters.put(CampoDeVotacion.TITULO, () -> setTitulo(valor));
-        mapaDeSetters.put(CampoDeVotacion.DESCRIPCION, () -> setDescripcion(valor));
-        mapaDeSetters.put(CampoDeVotacion.ESTADO, () -> setEstadoDeVotacion(valor));
-        mapaDeSetters.put(CampoDeVotacion.FECHA_INICIO, () -> setFechaInicio((LocalDate) valor));
-        mapaDeSetters.put(CampoDeVotacion.HORA_INICIO, () -> setTiempoInicio((LocalTime) valor));
-        mapaDeSetters.put(CampoDeVotacion.FECHA_TERMINO, () -> setFechaTermino((LocalDate) valor));
-        mapaDeSetters.put(CampoDeVotacion.HORA_TERMINO, () -> setTiempoTermino((LocalTime) valor));
-        mapaDeSetters.put(CampoDeVotacion.OPCIONES, () -> setOpciones((List<Opcion>) valor));
-        mapaDeSetters.put(CampoDeVotacion.VOTANTES, () -> setVotantes((List<Usuario>) valor));
-        mapaDeSetters.put(CampoDeVotacion.VOTOS_BLANCOS, () -> setVotosBlancos(valor));
-        mapaDeSetters.put(CampoDeVotacion.VOTOS_PREFERENCIALES, () -> setVotosPreferenciales(valor));
-        mapaDeSetters.get(campo).run();
-    }
-
-    public boolean estaEnEstado(EstadoDeVotacion estadoConsultado){
-        return estadoDeVotacion.equals(estadoConsultado);
     }
 
     @Override

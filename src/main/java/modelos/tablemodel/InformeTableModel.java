@@ -48,9 +48,9 @@ public class InformeTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         return switch (columnIndex) {
             case 0 -> switch (rowIndex) {
-                case 0 -> "Válidamente emitidos";
+                case 0 -> "Votos preferenciales";
                 case 1 -> "Votos en blanco";
-                case 2 -> "Total de votos";
+                case 2 -> "Total de votos válidamente emitidos";
                 default -> "";
             };
             case 1 -> switch (rowIndex) {
@@ -60,6 +60,7 @@ public class InformeTableModel extends AbstractTableModel {
                 default -> 0;
             };
             case 2 -> switch (rowIndex) {
+                // TODO reemplazar estos códigos como métodos de la clase Votación
                 case 0 -> Math.round((votacion.getVotosPreferenciales().doubleValue() / votacion.getTotalVotos()) * 10000) / 100.0;
                 case 1 -> Math.round((votacion.getVotosBlancos().doubleValue() / votacion.getTotalVotos()) * 10000) / 100.0;
                 case 2 -> 100.0;

@@ -29,13 +29,13 @@ public class ControladorOpciones {
         this.controlador.agregarPanel(vista, "opciones");
     }
 
-    public void escribirVoto(Votacion votacion, Opcion opcionElegida) {
+    public void escribirVotoEnVotacion(Votacion votacion, Opcion opcionElegida) {
         List<Votacion> votaciones = VotacionDao.obtenerVotaciones();
         for (var votacionSiguiente : votaciones) {
             if (votacionSiguiente.getId().equals(votacion.getId())) {
                 List<Opcion> opciones = votacionSiguiente.getOpciones();
                 opciones.stream()
-                        .filter(opcion -> opcion.getId().equals(opcionElegida.getId()))
+                        .filter(opcion -> opcionElegida.getId().equals(opcion.getId()))
                         .forEach(this::incrementarCantidadDeVotosDeOpcionEnUno);
                 votacionSiguiente.setOpciones(opciones);
                 VotacionDao.escribirVotaciones(votaciones);
@@ -51,7 +51,7 @@ public class ControladorOpciones {
     }
 
     public void registrarVoto(Opcion opcionElegida) {
-        escribirVoto(votacion, opcionElegida);
+        escribirVotoEnVotacion(votacion, opcionElegida);
         escribirVotoEnVotos(votacion, controlador.obtenerUsuario(), opcionElegida);
         escribirVotanteEnVotaciones(votacion, controlador.obtenerUsuario());
     }

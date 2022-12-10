@@ -146,7 +146,7 @@ public class ControladorEditorDeVotacion {
     }
 
     private void crearNuevaOpcion(String nombreDeOpcion) {
-        String id = String.valueOf(votacion.getOpciones().size());
+        String id = String.valueOf(votacion.getOpciones().size() + 1);
         Opcion opcion = new Opcion();
         opcion.setId(id);
         opcion.setNombre(nombreDeOpcion);

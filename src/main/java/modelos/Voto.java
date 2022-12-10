@@ -42,4 +42,12 @@ public class Voto {
     public void setOpcion(Opcion opcion) {
         this.opcion = opcion;
     }
+
+    public boolean esVotoBlanco() {
+        return opcion.esOpcionBlanco();
+    }
+
+    public Integer getIdVotacion() {
+        return votacion.getId();
+    }
 }
