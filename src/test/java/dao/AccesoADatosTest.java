@@ -1,9 +1,11 @@
+package dao;
+
 import excepciones.AccesoADatosInterrumpidoException;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.AccesoADatos;
+import dao.AccesoADatos;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -16,7 +18,7 @@ class AccesoADatosTest {
 
     @BeforeEach
     void init() {
-        logger = Logger.getLogger("AccesoADatosTest.class");
+        logger = Logger.getLogger("dao.AccesoADatosTest.class");
     }
 
     @BeforeAll

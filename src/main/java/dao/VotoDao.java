@@ -8,7 +8,6 @@ import modelos.Voto;
 import modelos.enums.CampoDeVoto;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import utils.AccesoADatos;
 
 import java.util.ArrayList;
 import java.util.Comparator;

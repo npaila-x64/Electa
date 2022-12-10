@@ -1,4 +1,4 @@
-package utils;
+package dao;
 
 import excepciones.AccesoADatosInterrumpidoException;
 import org.json.simple.JSONArray;

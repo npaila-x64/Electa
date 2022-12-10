@@ -8,7 +8,6 @@ import modelos.Voto;
 import modelos.enums.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import utils.AccesoADatos;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

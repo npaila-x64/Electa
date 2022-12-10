@@ -5,7 +5,6 @@ import modelos.Votacion;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.AccesoADatos;
 
 import java.util.ArrayList;
 import java.util.List;

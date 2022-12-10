@@ -6,7 +6,6 @@ import modelos.enums.CampoDeVotacion;
 import modelos.enums.CampoDeVotante;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import utils.AccesoADatos;
 
 import java.util.ArrayList;
 import java.util.List;
