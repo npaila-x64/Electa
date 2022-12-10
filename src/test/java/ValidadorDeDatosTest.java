@@ -1,15 +1,11 @@
+import dao.UsuarioDao;
+import modelos.Usuario;
 import org.junit.jupiter.api.Test;
 import utils.ValidadorDeDatos;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ValidadorDeDatosTest {
-
-//    @Test
-//    void esCredencialVotanteValidaTest() {
-//        /* La tupla rut/clave 111111111 / 1111 es parte de las pruebas del sistema */
-//        assertTrue(ValidadorDeDatos.esCredencialVotanteValida("111111111", "1111"));
-//    }
 
     @Test
     void esFormatoFechaValidoTest() {
