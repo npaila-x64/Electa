@@ -62,7 +62,7 @@ public class ControladorEditorDeVotacion {
     public void eliminarOpcionFueSolicitado(int fila) {
         // La fila + 1 es necesaria para eliminar el elemento correcto de la
         // lista opciones pues su primer elemento está oculto en la tabla
-        votacion.removeOpcion(fila + 1);
+        votacion.removerOpcion(fila + 1);
         cargarOpciones();
     }
 
