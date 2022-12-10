@@ -29,10 +29,10 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
     }
 
     private void crearEtiquetaVotaciones() {
-        lVotaciones = new JLabel("Votaciones en curso");
+        lVotaciones = new JLabel("Votaciones en curso", SwingConstants.CENTER);
         lVotaciones.setFont(new Font("Arial", Font.BOLD, 28));
-        lVotaciones.setLocation(305, 32);
-        lVotaciones.setSize(274, 32);
+        lVotaciones.setSize(900, 32);
+        lVotaciones.setLocation(0,32);
         add(lVotaciones);
     }
 
@@ -49,7 +49,7 @@ public class PanelVotacionesEnCurso extends JPanel implements ActionListener {
 
     private void crearTablaDeVotaciones() {
         tVotacionesEnCurso = new JTable(controlador.getModeloDeTabla());
-        tVotacionesEnCurso.setBounds(0, 0, 200, 300);
+        tVotacionesEnCurso.setBounds(30, 40, 200, 300);
         tVotacionesEnCurso.setRowHeight(60);
         tVotacionesEnCurso.setTableHeader(null);
         tVotacionesEnCurso.setCellSelectionEnabled(false);
