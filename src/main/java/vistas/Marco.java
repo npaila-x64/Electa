@@ -1,9 +1,5 @@
 package vistas;
 
-import vistas.admin.PanelAdministracion;
-import vistas.votante.PanelOpciones;
-import vistas.votante.PanelVotacionesEnCurso;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -25,26 +21,11 @@ public class Marco extends JFrame {
 
     private void configurarMarco() {
         setTitle("Electa");
+        setIconImage(new ImageIcon("src/main/img/logo_min.png").getImage());
         setBounds(300, 90, 900, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-    }
-
-    public void agregarVotacionesEnCurso(PanelVotacionesEnCurso votacionesEnCurso) {
-        panel.add("votacionesEnCurso", votacionesEnCurso);
-    }
-
-    public void agregarResultados(PanelResultados resultados) {
-        panel.add("resultados", resultados);
-    }
-
-    public void agregarOpciones(PanelOpciones opciones) {
-        panel.add("opciones", opciones);
-    }
-
-    public void agregarAdministracion(PanelAdministracion administracion) {
-        panel.add("administracion", administracion);
     }
 
     public void agregarPanel(Container panel, String nombre) {
