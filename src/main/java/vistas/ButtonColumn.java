@@ -1,4 +1,4 @@
-package vistas.votante;
+package vistas;
 
 import java.awt.*;
 import java.awt.event.*;

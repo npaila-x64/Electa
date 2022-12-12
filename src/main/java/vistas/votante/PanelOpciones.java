@@ -1,6 +1,8 @@
 package vistas.votante;
 
 import controladores.votante.ControladorOpciones;
+import vistas.ButtonColumn;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;

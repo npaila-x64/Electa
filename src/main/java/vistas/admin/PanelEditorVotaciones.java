@@ -5,7 +5,7 @@ import modelos.Votacion;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import vistas.votante.ButtonColumn;
+import vistas.ButtonColumn;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;

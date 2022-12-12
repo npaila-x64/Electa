@@ -1,7 +1,7 @@
 package vistas.admin;
 import controladores.admin.ControladorAdministracion;
 import modelos.enums.EstadoDeVotacion;
-import vistas.votante.ButtonColumn;
+import vistas.ButtonColumn;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
